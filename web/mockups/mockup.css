@@ -1,0 +1,84 @@
+/* LiveCourse HTML 5 Interface Mockup */
+/* Based on color profile: https://kuler.adobe.com/#themeID/2231691 */
+/* #EBFFE8, #B6B8AD, #A39395, #997DA1, #765391 */
+
+body
+{
+	background-color:#F5F5F5;
+	margin:0;
+	font-family:Verdana, Geneva, sans-serif;
+}
+
+#SideBar
+{
+	position:fixed;
+	left:0;
+	top:0;
+	bottom:0;
+	width:256px;
+	background-color:#2E587E;
+}
+
+#SideBar h1
+{
+	text-align:center;
+	font-family:'cicle';
+	font-size:48px;
+	color:#fff;
+	margin:0.4em 0;
+}
+
+#CourseList
+{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+
+#CourseList li
+{
+	cursor:pointer;
+	padding:8px 8px 8px 16px;
+}
+
+#CourseList li:hover
+{
+	border-left:6px solid #B8C9E5;
+	padding-left:10px;
+}
+
+#CourseList li.selected:hover
+{
+	border-left:6px solid #2E587E;
+	padding-left:10px;
+}
+
+#CourseList li.selected
+{
+	cursor:pointer;
+	background-color:#B8C9E5;
+}
+
+#CourseList li .title
+{
+	color:#fff;
+	font-size:18px;
+}
+
+#CourseList li .subTitle
+{
+	color:#fff;
+	font-size:14px;
+}
+
+#CourseList li.selected .title
+{
+	color:#2E587E;
+	font-size:18px;
+}
+
+#CourseList li.selected .subTitle
+{
+	color:#2E587E;
+	font-size:14px;
+}
