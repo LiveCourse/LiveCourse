@@ -9,7 +9,14 @@ body
 	font-family:Verdana, Geneva, sans-serif;
 }
 
-#SideBar
+input, textarea
+{
+	border:0;
+	border-bottom:3px solid #2E587E;
+	background-color:#dadee6;
+}
+
+#LeftSideBar
 {
 	position:fixed;
 	left:0;
@@ -19,7 +26,7 @@ body
 	background-color:#2E587E;
 }
 
-#SideBar h1
+#LeftSideBar h1
 {
 	text-align:center;
 	font-family:'cicle';
@@ -81,4 +88,62 @@ body
 {
 	color:#2E587E;
 	font-size:14px;
+}
+
+
+#RightSideBar
+{
+	position:fixed;
+	right:0;
+	top:0;
+	bottom:0;
+	width:256px;
+	background-color:#B8C9E5;
+}
+
+#RightSideBar h1
+{
+	text-align:center;
+	font-family:'cicle';
+	font-size:36px;
+	color:#2E587E;
+	margin:0.4em 0;
+}
+
+#ChatFrame
+{
+	position:fixed;
+	left:256px;
+	right:256px;
+	top:0;
+	bottom:64px;
+}
+
+#ChatFrame h1
+{
+	font-family:'cicle';
+	font-size:78px;
+	color:#2E587E;
+	margin-top:0;
+	margin-left:36px;
+}
+
+#ComposeFrame
+{
+	position:fixed;
+	right:256px;
+	left:256px;
+	bottom:4px;
+	height:64px;
+	text-align:center;
+}
+
+#ComposeFrame textarea
+{
+	width:80%;
+	height:42px;
+	min-width:256px;
+	font-size:16px;
+	padding:8px;
+	font-family:sans-serif;
 }
