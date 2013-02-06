@@ -14,6 +14,16 @@ input, textarea
 	border:0;
 	border-bottom:3px solid #2E587E;
 	background-color:#dadee6;
+	resize: none; 
+}
+
+input[type="submit"],button
+{
+	background-color:#2E587E;
+	border:2px solid #fff;
+	color:#fff;
+	font-size:16px;
+	padding:5px 10px;
 }
 
 #LeftSideBar
@@ -24,6 +34,7 @@ input, textarea
 	bottom:0;
 	width:256px;
 	background-color:#2E587E;
+	text-align:center;
 }
 
 #LeftSideBar h1
@@ -38,8 +49,9 @@ input, textarea
 #CourseList
 {
 	list-style-type:none;
-	margin:0;
+	margin:0 0 12px 0;
 	padding:0;
+	text-align:left;
 }
 
 #CourseList li
@@ -103,11 +115,44 @@ input, textarea
 
 #RightSideBar h1
 {
-	text-align:center;
+	text-align:left;
 	font-family:'cicle';
 	font-size:36px;
 	color:#2E587E;
-	margin:0.4em 0;
+	margin:0.4em 0 18px 32px;
+}
+
+#UserList
+{
+	list-style-type:none;
+	margin:0 0 12px 0;
+	padding:0;
+	text-align:left;
+}
+
+#UserList li
+{
+	padding:8px 8px 8px 46px;
+	color:#2E587E;
+	font-size:15px;
+	cursor:default;
+}
+
+#UserList li:hover
+{
+	border-left:6px solid #2E587E;
+	padding-left:40px;
+}
+
+#UserList li.selected
+{
+	background-color:#B8C9E5;
+}
+
+#UserList li.me
+{
+	font-weight:bold;
+	font-size:16px;
 }
 
 #ChatFrame
