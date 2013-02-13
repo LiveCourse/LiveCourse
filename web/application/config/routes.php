@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "welcome";
+$route['default_controller'] = "HTML5Client";
 $route['404_override'] = '';
 
 

@@ -1,2 +1,5 @@
 #Ignore compiled android files
 android/bin
+
+#Ignore temp files
+*~
