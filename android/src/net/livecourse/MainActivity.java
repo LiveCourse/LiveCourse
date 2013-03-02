@@ -1,63 +1,33 @@
 package net.livecourse;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.*;
+import com.viewpagerindicator.PageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
-public class MainActivity extends SherlockActivity {
+public class MainActivity extends SherlockFragmentActivity {
+	
+    TestFragmentAdapter mAdapter;
+    ViewPager mPager;
+    PageIndicator mIndicator;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
-		final ActionBar actionBar = getSupportActionBar();
-		
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		
-		ActionBar.TabListener tabListener = new ActionBar.TabListener()
-		{
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-			@Override
-			public void onTabSelected(Tab tab, FragmentTransaction ft) {
-				// TODO Auto-generated method stub
-				
-			}
+        mAdapter = new TestFragmentAdapter(getSupportFragmentManager());
 
-			@Override
-			public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-				// TODO Auto-generated method stub
-				
-			}
+        mPager = (ViewPager)findViewById(R.id.pager);
+        mPager.setAdapter(mAdapter);
 
-			@Override
-			public void onTabReselected(Tab tab, FragmentTransaction ft) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
-		
-		
-		//Adds three tabs
-		/*
-		for(int i = 0; i<3;i++)
-		{
-			actionBar.addTab(actionBar.newTab().setText("Tab " + (i+1)).setTabListener(tabListener));
-		}
-		*/
-		actionBar.addTab(actionBar.newTab().setText("Class List").setTabListener(tabListener));
-		actionBar.addTab(actionBar.newTab().setText("Chat").setTabListener(tabListener));
-		actionBar.addTab(actionBar.newTab().setText("Participants").setTabListener(tabListener));
-
-
-	
-	}
+        mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
+        mIndicator.setViewPager(mPager);
+    }
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
