@@ -1,4 +1,288 @@
+/* LiveCourse HTML 5 Interface Mockup */
+/* Based on color profile: https://kuler.adobe.com/#themeID/2231691 */
+/* #EBFFE8, #B6B8AD, #A39395, #997DA1, #765391 */
+
 body
 {
+	background-color:#F5F5F5;
+	margin:0;
+	font-family:Verdana, Geneva, sans-serif;
+}
 
+input, textarea
+{
+	border:0;
+	border-bottom:3px solid #2E587E;
+	background-color:#dadee6;
+	resize: none; 
+}
+
+input[type="submit"],button
+{
+	background-color:#2E587E;
+	border:2px solid #fff;
+	color:#fff;
+	font-size:18px;
+	padding:5px 10px;
+	cursor:pointer;
+}
+
+input[type="submit"]:active,button:active
+{
+	background-color:#fff;
+	border-color:#2E587E;
+	color:#2E587E;
+}
+
+#LeftSideBar
+{
+	position:fixed;
+	left:0;
+	top:0;
+	bottom:0;
+	width:256px;
+	background-color:#2E587E;
+	text-align:center;
+}
+
+#LeftSideBar h1
+{
+	text-align:center;
+	font-family:'cicle';
+	font-size:48px;
+	color:#fff;
+	margin:0.4em 0;
+}
+
+#CourseList
+{
+	list-style-type:none;
+	margin:0 0 12px 0;
+	padding:0;
+	text-align:left;
+}
+
+#CourseList li
+{
+	cursor:pointer;
+	padding:8px 8px 8px 16px;
+}
+
+#CourseList li:hover
+{
+	border-left:6px solid #B8C9E5;
+	padding-left:10px;
+}
+
+#CourseList li.selected:hover
+{
+	border-left:6px solid #2E587E;
+	padding-left:10px;
+}
+
+#CourseList li.selected
+{
+	cursor:pointer;
+	background-color:#B8C9E5;
+}
+
+#CourseList li .title
+{
+	color:#fff;
+	font-size:18px;
+}
+
+#CourseList li .subTitle
+{
+	color:#fff;
+	font-size:14px;
+}
+
+#CourseList li.selected .title
+{
+	color:#2E587E;
+	font-size:18px;
+}
+
+#CourseList li.selected .subTitle
+{
+	color:#2E587E;
+	font-size:14px;
+}
+
+
+#RightSideBar
+{
+	position:fixed;
+	right:0;
+	top:0;
+	bottom:0;
+	width:256px;
+	background-color:#B8C9E5;
+}
+
+#RightSideBar h1
+{
+	text-align:left;
+	font-family:'cicle';
+	font-size:36px;
+	color:#2E587E;
+	margin:0.4em 0 18px 32px;
+}
+
+#UserList
+{
+	list-style-type:none;
+	margin:0 0 12px 0;
+	padding:0;
+	text-align:left;
+}
+
+#UserList li
+{
+	padding:8px 8px 8px 46px;
+	color:#2E587E;
+	font-size:15px;
+	cursor:default;
+}
+
+#UserList li:hover
+{
+	border-left:6px solid #2E587E;
+	padding-left:40px;
+}
+
+#UserList li.selected
+{
+	background-color:#B8C9E5;
+}
+
+#UserList li.me
+{
+	font-weight:bold;
+	font-size:16px;
+}
+
+#ChatFrame
+{
+	position:fixed;
+	left:256px;
+	right:256px;
+	top:0;
+	bottom:64px;
+}
+
+#ChatFrame h1
+{
+	font-family:'cicle';
+	font-size:78px;
+	color:#2E587E;
+	margin-top:0;
+	margin-left:36px;
+}
+
+#ComposeFrame
+{
+	position:fixed;
+	right:256px;
+	left:256px;
+	bottom:4px;
+	height:64px;
+	text-align:center;
+}
+
+#ComposeFrame textarea
+{
+	width:80%;
+	height:42px;
+	min-width:256px;
+	font-size:16px;
+	padding:8px;
+	font-family:sans-serif;
+}
+
+#form_login
+{
+	text-align:center;
+	margin-top:48px;
+}
+
+
+#form_login input
+{
+	border:3px solid #fff;
+	font-size:24px;
+	padding:5px 8px;
+	margin:16px 0;
+	background-color:#2E587E;
+	color:#fff;
+}
+
+#form_login input[type="submit"]:active
+{
+	background-color:#fff;
+	border-color:#2E587E;
+	color:#2E587E;
+}
+
+/* AJAX Message Dialog */
+.DialogOverlay
+{
+	display:none;
+	position:fixed;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	background-image:url(../img/white_opacity_80.png);
+	z-index:10;
+}
+
+.DialogContainer
+{
+	display:none;
+	position:absolute;
+	width:100%;
+	top:50%;
+	height:512px;
+	margin-top:-282px; /* negative half of the height */
+	padding-top:26px;
+	padding-bottom:26px;
+	background-color:#2E587E;
+	color:#fff
+}
+
+.DialogContainer h1
+{
+	width:950px;
+	margin:0 auto;
+	padding:0;
+	color:#fff;
+	font-size:54px;
+	font-family:'cicle';
+	font-weight:bold;
+}
+
+.DialogContainer .buttons
+{
+	position:relative;
+	width:950px;
+	height:40px;
+	margin:4px auto 0 auto;
+	text-align:right;
+
+}
+
+.DialogMessage
+{
+	position:relative;
+	height:410px;
+	width:950px;
+	margin:0 auto;
+	overflow:hidden;
+}
+
+.DialogMessage a
+{
+	display:inline;
 }
