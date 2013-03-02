@@ -16,7 +16,14 @@ class TestFragmentAdapter extends FragmentPagerAdapter{
 
     @Override
     public Fragment getItem(int position) {
-        return TestFragment.newInstance(CONTENT[position % CONTENT.length]);
+        
+    	if(position == 0)
+    		return ClassListFragment.newInstance(CONTENT[position % CONTENT.length]);
+    	if(position == 1)
+    		return ChatFragment.newInstance(CONTENT[position % CONTENT.length]);
+    	if(position == 2)
+    		return ParticipantsFragment.newInstance(CONTENT[position % CONTENT.length]);
+    	return TestFragment.newInstance(CONTENT[position % CONTENT.length]);
     }
 
     @Override
