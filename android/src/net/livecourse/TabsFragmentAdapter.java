@@ -4,26 +4,34 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-class TestFragmentAdapter extends FragmentPagerAdapter{
+/**
+ * This adapter handles the swipey tabs, allowing swiping of the tabbed content and switching between the different swiped fragments.
+ * @author Darren
+ *
+ */
+public class TabsFragmentAdapter extends FragmentPagerAdapter{
+	
+	//This is the list of the different tabs
     protected static final String[] CONTENT = new String[] { "Class List", "Chat", "Participants"};
 
-
+    //This is the length of the list of the different tabs
     private int mCount = CONTENT.length;
 
-    public TestFragmentAdapter(FragmentManager fm) {
+    public TabsFragmentAdapter(FragmentManager fm) {
         super(fm);
     }
 
     @Override
     public Fragment getItem(int position) {
         
+    	//Switches between fragments based on current selected tab.
     	if(position == 0)
     		return ClassListFragment.newInstance(CONTENT[position % CONTENT.length]);
     	if(position == 1)
     		return ChatFragment.newInstance(CONTENT[position % CONTENT.length]);
     	if(position == 2)
     		return ParticipantsFragment.newInstance(CONTENT[position % CONTENT.length]);
-    	return TestFragment.newInstance(CONTENT[position % CONTENT.length]);
+    	return null;
     }
 
     @Override
@@ -33,7 +41,7 @@ class TestFragmentAdapter extends FragmentPagerAdapter{
 
     @Override
     public CharSequence getPageTitle(int position) {
-      return TestFragmentAdapter.CONTENT[position % CONTENT.length];
+      return TabsFragmentAdapter.CONTENT[position % CONTENT.length];
     }
     
     public void setCount(int count) {

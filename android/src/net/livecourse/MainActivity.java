@@ -8,10 +8,18 @@ import com.viewpagerindicator.TitlePageIndicator;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
-
+/**
+ * 
+ * The MainActivity class is the base activity for our Android project.  It handles the ActionBar and the swipey tabs.
+ * The tabs are imnplemented through another fragment and that fragments adapter. 
+ * 
+ */
 public class MainActivity extends SherlockFragmentActivity {
 	
-    TestFragmentAdapter mAdapter;
+	/*
+	 * Declares the required classes for the swipey tabs.
+	 */
+    TabsFragmentAdapter mAdapter;
     ViewPager mPager;
     PageIndicator mIndicator;
 
@@ -20,11 +28,13 @@ public class MainActivity extends SherlockFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAdapter = new TestFragmentAdapter(getSupportFragmentManager());
-
+        
+        /*
+         * The following code initalizes the tabs.
+         */
+        mAdapter = new TabsFragmentAdapter(getSupportFragmentManager());
         mPager = (ViewPager)findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
-
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(mPager);
     }

@@ -1,30 +1,43 @@
 package net.livecourse;
 
+import java.util.Arrays;
+import java.util.List;
+
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
-import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockListFragment;
 
-public class ClassListFragment extends SherlockFragment {
+public class ClassListFragment extends SherlockListFragment {
 
-		//Code for the class list goes here
+	//Code for the class list goes here
 	private static final String KEY_CONTENT = "TestFragment:Content";
+	
+	//Temporary list of classes used, will be changed later
+	List<String> classes = Arrays.asList(
+	        "CS252",
+	        "PSY200",
+	        "MA261",
+	        "MA265",
+	        "CS307",
+	        "CS180",
+	        "CS240",
+	        "CS250",
+	        "CS251",
+	        "MA161",
+	        "MA165",
+	        "PSY240"
+	        );
 
     public static ClassListFragment newInstance(String content) {
     	ClassListFragment fragment = new ClassListFragment();
-
+    	/*
         StringBuilder builder = new StringBuilder();
-
         builder.append("This is the class list fragment");
-
         fragment.mContent = builder.toString();
-
+		*/
         return fragment;
     }
 
@@ -41,18 +54,31 @@ public class ClassListFragment extends SherlockFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        TextView text = new TextView(getActivity());
+        
+    	/** Creating an array adapter to store the list of countries **/
+        ClassListAdapter<String> adapter = new ClassListAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,classes);
+ 
+        /** Setting the list adapter for the ListFragment */
+        setListAdapter(adapter);
+ 
+        return super.onCreateView(inflater, container, savedInstanceState);
+    
+    	
+    	
+    	
+    	/*TextView text = new TextView(getActivity());
         text.setGravity(Gravity.CENTER);
         text.setText(mContent);
         text.setTextSize(20 * getResources().getDisplayMetrics().density);
         text.setPadding(20, 20, 20, 20);
 
         LinearLayout layout = new LinearLayout(getActivity());
-        layout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+        layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         layout.setGravity(Gravity.CENTER);
         layout.addView(text);
+        */
 
-        return layout;
+        //return layout;
     }
 
     @Override
