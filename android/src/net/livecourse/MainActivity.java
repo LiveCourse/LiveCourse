@@ -7,6 +7,8 @@ import com.viewpagerindicator.TitlePageIndicator;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 /**
  * 
@@ -27,8 +29,8 @@ public class MainActivity extends SherlockFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         
+
         /*
          * The following code initalizes the tabs.
          */
@@ -37,6 +39,35 @@ public class MainActivity extends SherlockFragmentActivity {
         mPager.setAdapter(mAdapter);
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(mPager);
+        
+        mIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                //Toast.makeText(MainActivity.this, "Changed to page " + position, Toast.LENGTH_SHORT).show();
+            	
+            	if(position == 0)
+            	{
+
+            	}
+            	if(position == 1)
+            	{
+
+            	}
+            	if(position == 2)
+            	{
+
+            	}
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+        
     }
 	
 	@Override
