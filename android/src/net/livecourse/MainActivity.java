@@ -1,18 +1,43 @@
 package net.livecourse;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.*;
+import com.viewpagerindicator.PageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.widget.Toast;
-
-public class MainActivity extends SherlockActivity {
+/**
+ * 
+ * The MainActivity class is the base activity for our Android project.  It handles the ActionBar and the swipey tabs.
+ * The tabs are imnplemented through another fragment and that fragments adapter. 
+ * 
+ */
+public class MainActivity extends SherlockFragmentActivity {
+	
+	/*
+	 * Declares the required classes for the swipey tabs.
+	 */
+    TabsFragmentAdapter mAdapter;
+    ViewPager mPager;
+    PageIndicator mIndicator;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-	}
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        
+        /*
+         * The following code initalizes the tabs.
+         */
+        mAdapter = new TabsFragmentAdapter(getSupportFragmentManager());
+        mPager = (ViewPager)findViewById(R.id.pager);
+        mPager.setAdapter(mAdapter);
+        mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
+        mIndicator.setViewPager(mPager);
+    }
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
