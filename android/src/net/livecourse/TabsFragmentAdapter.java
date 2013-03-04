@@ -3,6 +3,7 @@ package net.livecourse;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.widget.LinearLayout;
 
 /**
  * This adapter handles the swipey tabs, allowing swiping of the tabbed content and switching between the different swiped fragments.
@@ -23,14 +24,19 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
 
     @Override
     public Fragment getItem(int position) {
-        
     	//Switches between fragments based on current selected tab.
     	if(position == 0)
+    	{
     		return ClassListFragment.newInstance(CONTENT[position % CONTENT.length]);
+    	}
     	if(position == 1)
+    	{
     		return ChatFragment.newInstance(CONTENT[position % CONTENT.length]);
+    	}
     	if(position == 2)
+    	{
     		return ParticipantsFragment.newInstance(CONTENT[position % CONTENT.length]);
+    	}
     	return null;
     }
 
