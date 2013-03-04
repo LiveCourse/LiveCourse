@@ -40,7 +40,7 @@ public class ChatFragment extends SherlockFragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        TextView text = new TextView(getActivity());
+        /*TextView text = new TextView(getActivity());
         text.setGravity(Gravity.CENTER);
         text.setText(mContent);
         text.setTextSize(20 * getResources().getDisplayMetrics().density);
@@ -50,8 +50,10 @@ public class ChatFragment extends SherlockFragment{
         layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         layout.setGravity(Gravity.CENTER);
         layout.addView(text);
-
-        return layout;
+        */
+    	
+    	return inflater.inflate(R.layout.chat_layout, container, false);
+        //return layout;
     }
 
     @Override
