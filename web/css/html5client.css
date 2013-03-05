@@ -34,6 +34,15 @@ input[type="submit"]:active,button:active
 	color:#2E587E;
 }
 
+#GlobalLoadingIndicator
+{
+	/*display:none;*/
+	position:fixed;
+	top:-32px;
+	left:20px;
+	z-index:9999;
+}
+
 #LeftSideBar
 {
 	position:fixed;
@@ -207,10 +216,31 @@ input[type="submit"]:active,button:active
 	margin-top:48px;
 }
 
-
-#form_login input
+#form_registration
 {
-	border:3px solid #fff;
+	text-align:center;
+	margin-top:48px;
+}
+#form_joinroom
+{
+	text-align:center;
+}
+
+.large_form input::-webkit-input-placeholder {
+	color:#B8C9E5;
+}
+
+.large_form input::-moz-placeholder {
+	color:#B8C9E5;
+}
+
+.large_form input:-ms-input-placeholder {
+	color:#B8C9E5;
+}
+
+.large_form input
+{
+	width:256px;
 	font-size:24px;
 	padding:5px 8px;
 	margin:16px 0;
@@ -218,11 +248,48 @@ input[type="submit"]:active,button:active
 	color:#fff;
 }
 
-#form_login input[type="submit"]:active
+.large_form input:disabled
+{
+	color:#B8C9E5;
+}
+
+.large_form input[type="email"],.large_form input[type="text"],.large_form input[type="password"]
+{
+	border-bottom:3px solid #B8C9E5;
+}
+
+.large_form input[type="email"]:hover,.large_form input[type="text"]:hover,.large_form input[type="password"]:hover,.large_form input[type="email"]:focus,.large_form input[type="text"]:focus,.large_form input[type="password"]:focus
+{
+	outline-width: 0;
+	border-color:#fff;
+}
+
+.large_form input[type="submit"],.large_form button
+{
+	width:256px;
+	font-size:20px;
+	margin:6px 0;
+}
+.large_form button
+{
+	font-size:16px;
+}
+
+.large_form input[type="submit"]:active, .large_form button:active
 {
 	background-color:#fff;
 	border-color:#2E587E;
 	color:#2E587E;
+}
+
+.large_form input.invalid
+{
+	border-bottom:3px solid #e5b8b8;
+}
+
+.large_form input[type="password"].half
+{
+	width:120px;
 }
 
 /* AJAX Message Dialog */

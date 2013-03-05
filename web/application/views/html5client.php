@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -18,6 +17,9 @@
 		
 		<script type="text/javascript">
 			Cufon.replace('#LeftSideBar h1,#RightSideBar h1,#ChatFrame h1,.DialogContainer h1');
+			$(function() {
+				login_show();
+			});
 		</script>
 		
 	</head>
@@ -80,16 +82,33 @@
 		</div>
 		
 		<!-- Hidden Dialogs beyond this point... -->
+		
+		<!-- Log-in dialog -->
 		<div id="dialog_login" style="display:none;">
-			<form id="form_login">
-				<input name="username" placeholder="User Name" /><br>
-				<input name="password" type="password" placeholder="Password" /><br>
-				<input type="submit" />
+			<form id="form_login" class="large_form">
+				<input name="email" type="email" placeholder="E-Mail Address" /><br>
+				<input name="password" type="password" placeholder="Password" /><br><br>
+				<input type="submit" value="Log In" /><br>
+				<button class="register">Register</button>
 			</form>
 		</div>
 		
+		<!-- Registration dialog -->
+		<div id="dialog_registration" style="display:none;">
+			<form id="form_registration" class="large_form">
+				<input name="email" type="email" placeholder="E-Mail Address" /><br>
+				<input name="name" type="text" placeholder="Your Name" /><br>
+				<input name="password" type="password" placeholder="Password" class="half" />
+				<input name="password_confirmation" type="password" placeholder="Password" class="half" /><br>
+				<input type="submit" value="Register" /><br>
+			</form>
+		</div>
+		
+		<!-- Add a class dialog -->
 		<div id="dialog_joinroom" style="display:none;">
-			Join room dialog.
+			<form id="form_joinroom" class="large_form">
+				<input name="classnumber" type="text" placeholder="Course Number" />
+			</form>
 		</div>
 	</body>
 </html>
