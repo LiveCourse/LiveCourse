@@ -17,52 +17,62 @@ class Rooms extends REST_Controller
 	{
 		//Return a list of all subscribed rooms, unless a room_id is specified
 		$room_id = $this->get('id'); // GET param
+		if($room_id)
+		{
+			$this->db->where('room_id', $room_id);
+			$this->db->from('lc_rooms');
+			$rooms = $this->db->get();
+		}
+		else
+		{
+			$this->db->from('lc_rooms');
+			$rooms = $this->db->get();
+		}
 	}
 	public function join_post()
 	{
 		//Add a user to a room
-		$room_id = clean($this->post('room_id')); // GET param
-		$user_id = clean($this->post('user_id'));
-		$room_check_query =
-			'SELECT
-				*
-			FROM
-				lc_rooms
-			WHERE
-				id = ' . $room_id . '
-			LIMIT 1';
-		if ($room_check_query <= 0)
+		$room_id = $this->post('room_id'); // GET param
+		$user_id = $this->post('user_id');
+		$this->db->from('lc_rooms');
+		$this->db->where('id', $room_id);
+		$room_query = $this->db->get();
+		if (isarray($room_check_query) == false || $room_check_query <= 0)
 		{
 			echo 'Room does not exist!';
 		}
 		else
 		{
-			$room_add_query = 
-				'INSERT INTO 
-					lc_room_participants
-				VALUES
-					' . $room_id . '
-					,
-					' . $user_id . '
-					' . 0;
+			$data = array(
+					'room_id' 		=> $room_id,
+					'user_id' 		=> $user_id,
+					'permissions' 	=> '0');
+			$this->db->insert('lc_room_participants', $data)
 		}
 	}
 	public function leave_post()
 	{
-		//Remove a user from a room
-		$room_id = $this->post('id'); // GET param
+		//remove a user from a room
+		$room_id = $this->post('room_id'); // GET param
+		$user_id = $this->post('user_id');
+		$this->db->from('lc_rooms');
+		$this->db->where('id', $room_id);
+		$room_query = $this->db->get();
+		if (isarray($room_check_query) == false || $room_check_query <= 0)
+		{
+			echo 'Room does not exist!';
+		}
+		else
+		{
+			$data = array(
+					'room_id' 		=> $room_id,
+					'user_id' 		=> $user_id
+					);
+			$this->db->delete('lc_room_participants', $data)
+		}
 	}
 	public function add_put()
 	{
 		//Gather information (class name, location, etc)
-	}
-	public function clean($str)
-	{
-		$clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
-		$clean = preg_replace("/[^a-zA-Z0-9\/_| -]/", '', $clean);
-		$clean = strtolower(trim($clean, ''));
-		$clean = preg_replace("/[\/_| -]+/", '', $clean);
-	
-		return $clean;
 	}
 }
