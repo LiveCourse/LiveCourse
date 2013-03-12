@@ -13,7 +13,13 @@
     <string name="options_sub_menu_1">Sub Menu 1</string>
     <string name="options_sub_menu_2">Sub Menu 2</string>
     
-    <string name="send_text">Send: </string>
+    
+    <!-- 	Chat Layout Strings
+    		These are the strings used in the chat fragment, 
+    		which is the fragment responsible for seeing chat
+    		messages and sending chat messages -->
+    
+    <string name="send_message">Send</string>
     
 
 </resources>

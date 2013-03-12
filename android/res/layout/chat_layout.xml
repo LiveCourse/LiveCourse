@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- 	This document is used as the layout for the ChatFragment, 
+		which is the fragment that handles the showing, sending, 
+		and receiving chat messages.
+		
+		Layout as follows:
+		A vertical LinearLayout to hold a ListView for all the 
+		chat messages and a horizontal LinearLayout used to type 
+		and send messages.  Typing messages will use a EditText
+		and sending will use a Button.
+-->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <ListView
-        android:id="@+id/chat_messages"
+        android:id="@+id/message_list_view"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1" >
+        android:layout_height="0dip"
+        android:layout_weight="1" 
+        android:transcriptMode="alwaysScroll">
+        
         
     </ListView>
 
     <View
-        android:id="@+id/send_message_divider"
+        android:id="@+id/send_message_divider_view"
         android:layout_width="fill_parent"
         android:layout_height="1dip"
         android:background="#dadada" />
@@ -25,7 +39,7 @@
         android:padding="5dp" >
         
         <EditText
-            android:id="@+id/send_message"
+            android:id="@+id/send_message_edit_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -34,5 +48,14 @@
 
             <requestFocus />
         </EditText>
+
+        <Button
+            android:id="@+id/send_button_view"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/send_message" />
+
     </LinearLayout>
 </LinearLayout>
