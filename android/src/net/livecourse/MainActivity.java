@@ -7,19 +7,17 @@ import com.viewpagerindicator.TitlePageIndicator;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 /**
  * 
  * The MainActivity class is the base activity for our Android project.  It handles the ActionBar and the swipey tabs.
- * The tabs are imnplemented through another fragment and that fragments adapter. 
+ * The tabs are implemented through another fragment and that fragments adapter. 
  * 
  */
 public class MainActivity extends SherlockFragmentActivity {
 	
-	/*
-	 * Declares the required classes for the swipey tabs.
+	/**
+	 * Declares the required objects for the swipey tabs.
 	 */
     TabsFragmentAdapter mAdapter;
     ViewPager mPager;
@@ -31,8 +29,8 @@ public class MainActivity extends SherlockFragmentActivity {
         setContentView(R.layout.activity_main);
         
 
-        /*
-         * The following code initalizes the tabs.
+        /**
+         * The following code initializes the tabs.
          */
         mAdapter = new TabsFragmentAdapter(getSupportFragmentManager());
         mPager = (ViewPager)findViewById(R.id.pager);
@@ -40,6 +38,11 @@ public class MainActivity extends SherlockFragmentActivity {
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(mPager);
         
+        
+        /**
+         * The following code is used to change UI and logic based on which page the user is on,
+         * it is currently left empty
+         */
         mIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {

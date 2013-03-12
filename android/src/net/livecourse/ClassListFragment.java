@@ -62,23 +62,6 @@ public class ClassListFragment extends SherlockListFragment {
         setListAdapter(adapter);
  
         return super.onCreateView(inflater, container, savedInstanceState);
-    
-    	
-    	
-    	
-    	/*TextView text = new TextView(getActivity());
-        text.setGravity(Gravity.CENTER);
-        text.setText(mContent);
-        text.setTextSize(20 * getResources().getDisplayMetrics().density);
-        text.setPadding(20, 20, 20, 20);
-
-        LinearLayout layout = new LinearLayout(getActivity());
-        layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        layout.setGravity(Gravity.CENTER);
-        layout.addView(text);
-        */
-
-        //return layout;
     }
 
     @Override
