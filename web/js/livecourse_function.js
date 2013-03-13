@@ -62,6 +62,9 @@ function registration_show(require_login)
  */
 function registration_submit()
 {
+	//Hide messages...
+	$(this).parent().find(".status_message").slideUp();
+	
 	//Set all fields as valid
 	$(this).find("input").removeClass("invalid");
 	
@@ -103,10 +106,49 @@ function registration_submit()
 	var indicator = progress_indicator_show(); //Show a progress indicator for AJAX requests...
 	
 	//TODO: Ajax Request for user registration
+	var email = $(this).find("input[name=email]").val();
+	var encpass = Sha1.hash($(this).find("input[name=password]").val());
+	var display_name = $(this).find("input[name=name]").val();
 	
+	var _this = this;
 	
-	//Just for kicks
-	setTimeout(function() {this.progress_indicator_hide(indicator);},2000);
+	//Send API request
+	$.ajax("index.php/api/users/add",{
+		type: "POST",
+		data:
+		{
+			'email': email,
+			'password': encpass,
+			'display_name': display_name
+		}, 
+		success: function(data) {
+			$(_this).slideUp();
+			$(_this).parent().find(".status_message").html("<br><br>Account created successfully.<br><br>");
+			var login_button = $('<button type="button" style="width:160px;font-size:24px;">Log In</button>').click(function() {
+				login_show();
+				dialog_close($(this).parents(".DialogOverlay").first());
+			});
+			$(_this).parent().find(".status_message").append(login_button);
+			$(_this).parent().find(".status_message").slideDown();
+			Cufon.refresh();
+			progress_indicator_hide(indicator);
+		},
+		error: function(xhr, status) {
+			var err = JSON.parse(xhr.responseText);
+			$(_this).parent().find(".status_message").html("An error was encountered while processing your registration.");
+			if (err.errors.length > 0)
+			{
+				for (var e in (err.errors))
+				{
+					$(_this).parent().find(".status_message").append("<br>"+err.errors[e]);
+				}
+			}
+			Cufon.refresh();
+			$(_this).parent().find(".status_message").slideDown();
+			progress_indicator_hide(indicator);
+			$(_this).find("input").prop('disabled',false); //Re-enable the form
+		}
+	});
 	
 	return false;
 }

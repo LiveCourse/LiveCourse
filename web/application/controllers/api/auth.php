@@ -10,35 +10,31 @@ require(APPPATH.'libraries/REST_Controller.php');
  */
 
 setlocale(LC_ALL, 'en_US.UTF8');
-class Users extends REST_Controller
+class Auth extends REST_Controller
 {
 	// Index command is run when no command is specified.
 	
 	/**
-	 * Retrieves a list of all the users, filterable by variables
-	 * id - User ID to retrieve specific profile
-	 * returns - information for each matching user
+	 * Request authentication.
+	 * email - e-mail of user to authenticate as
+	 * returns - challenge string needed to complete authentication handshake.
 	 */
 	public function index_get()
 	{
-		$this->load->model('Model_Users');
 		//Get a list of all users unless a specific one is requested
-		$user_id = $this->get('id'); // GET parameter
+		$email = $this->get('email'); // GET parameter
 		//TODO: Allow filtering by e-mail.
 		
 		//TODO: Limit returned fields. Should not show password, etc.
 		if($user_id)
 		{
-			$users = $this->Model_Users->fetch_user_by_id($user_id);
-			if (count($users) > 0)
-				$this->response($users);
-			else
-				$this->response($this->rest_error(array("The user id provided is invalid.")),404);
-			return;
+			$users = $this->db
+				->where('id', $user_id)
+				->from('lc_users')
+				->get();
 		}
 		else
 		{
-			//TODO: Replace this with a model
 			$users = $this->db
 				->from('lc_users')
 				->get();
@@ -129,8 +125,6 @@ class Users extends REST_Controller
 	 */
 	public function add_post()
 	{
-		$this->load->model('Model_Users');
-		
 		//Get POST variables...
 		$email = $this->post('email');
 		$pass = $this->post('password');
@@ -158,16 +152,26 @@ class Users extends REST_Controller
 		}
 		
 		//Check for duplicates...
-		$duplicates = $this->Model_Users->fetch_user_by_email($email);
-		if (count($duplicates) <= 0) //No duplicates detected.
+		$user_query = $this->db
+				->from('lc_users')
+				->like('email', $email)
+				->get()
+				->result();
+		if (sizeof($user_query) <= 0) //No duplicates detected.
 		{
-			$this->Model_Users->add_user($email,$pass,$display);
-			$this->response(array(), 201);
+			$data = array(
+					'email'		=> $email,
+					'password'	=> $pass,
+					'display_name'	=> $display,
+					'jointime'	=> time()
+					);
+			$this->db->insert('lc_users', $data);
+			$this->response($data, 201);
 			return;
 		}
 		else
 		{
-			$this->response($this->rest_error(array("This e-mail address has already been used.")), 409);
+			$this->response($this->rest_error(array("This e-mail has already been used.")), 409);
 			return;
 		}
 

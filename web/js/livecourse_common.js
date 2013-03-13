@@ -112,9 +112,9 @@ function dialog_addbutton(dialog,buttonTitle,buttonCallback,prepend)
  */
 function progress_indicator_show()
 {
-	var indicator = $('<img id="GlobalLoadingIndicator" class="showing" src="img/ajax-loader.gif" alt="Loading ...">');
+	var indicator = $('<div id="GlobalLoadingIndicator" class="showing" src="" alt="Loading ..."></div>');
 	$('body').append(indicator);
-	indicator.animate({"top":'20px'},800, "easeOutElastic", null);
+	indicator.animate({"top":'-6px'},300, "easeOutBack", null);
 	return indicator;
 }
 
@@ -124,7 +124,7 @@ function progress_indicator_show()
  */
 function progress_indicator_hide(indicator)
 {
-	indicator.animate({"left":'-40px'},300, "easeInBack", function() {
+	indicator.animate({"top":'-20px'},300, "easeInBack", function() {
 		$(this).remove();
 	});
 }

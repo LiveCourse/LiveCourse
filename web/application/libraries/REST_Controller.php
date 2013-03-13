@@ -22,7 +22,7 @@ abstract class REST_Controller extends CI_Controller
 	 *
 	 * @var string|null
 	 */
-	protected $rest_format = NULL;
+	protected $rest_format = "json"; //Set this to json by default...
 
 	/**
 	 * Defines the list of method properties such as limit, log and level
@@ -130,6 +130,18 @@ abstract class REST_Controller extends CI_Controller
 		'html' => 'text/html',
 		'csv' => 'application/csv'
 	);
+
+	/**
+	 * Formats errors for return in a REST response
+	 * errors - an array of human-readable error strings
+	 * returns an array formatted with error responses for output via the RESTful controller.
+	 */
+	protected function rest_error($errors)
+	{
+		$response = array();
+		$response['errors'] = $errors;
+		return $response;
+	}
 
 	/**
 	 * Developers can extend this class and add a check in here.

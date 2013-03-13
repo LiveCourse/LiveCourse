@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<title>LiveCourse</title>
 		<link rel="stylesheet" href="<?php echo(base_url("css/html5client.css")); ?>" />
+		<script src="<?php echo(base_url("js/sha1.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/json2.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery-1.9.0.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery-ui-1.10.0.custom.min.js")); ?>"></script>
@@ -16,7 +17,7 @@
 		<script src="<?php echo(base_url("js/livecourse_function.js")); ?>"></script>
 		
 		<script type="text/javascript">
-			Cufon.replace('#LeftSideBar h1,#RightSideBar h1,#ChatFrame h1,.DialogContainer h1');
+			Cufon.replace('#LeftSideBar h1,#RightSideBar h1,#ChatFrame h1,.DialogContainer h1,.DialogMessage .status_message');
 			$(function() {
 				login_show();
 			});
@@ -89,12 +90,13 @@
 				<input name="email" type="email" placeholder="E-Mail Address" /><br>
 				<input name="password" type="password" placeholder="Password" /><br><br>
 				<input type="submit" value="Log In" /><br>
-				<button class="register">Register</button>
+				<button type="button" class="register">Register</button>
 			</form>
 		</div>
 		
 		<!-- Registration dialog -->
 		<div id="dialog_registration" style="display:none;">
+			<div class="status_message"></div>
 			<form id="form_registration" class="large_form">
 				<input name="email" type="email" placeholder="E-Mail Address" /><br>
 				<input name="name" type="text" placeholder="Your Name" /><br>

@@ -38,9 +38,12 @@ input[type="submit"]:active,button:active
 {
 	/*display:none;*/
 	position:fixed;
-	top:-32px;
-	left:20px;
+	top:-20px;
+	left:0px;
+	right:0px;
+	height:20px;
 	z-index:9999;
+	background-image:url("../img/progressbar.gif");
 }
 
 #LeftSideBar
@@ -328,6 +331,14 @@ input[type="submit"]:active,button:active
 	font-size:54px;
 	font-family:'cicle';
 	font-weight:bold;
+}
+
+.DialogContainer .status_message
+{
+	display:none;
+	text-align:center;
+	font-size:22px;
+	font-family:'cicle';
 }
 
 .DialogContainer .buttons
