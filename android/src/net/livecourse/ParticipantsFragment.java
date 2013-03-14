@@ -14,7 +14,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 public class ParticipantsFragment extends SherlockFragment{
 	private static final String KEY_CONTENT = "TestFragment:Content";
 
-    public static ParticipantsFragment newInstance(String content) {
+    public static ParticipantsFragment newInstance(String content, TabsFragmentAdapter tabsAdapater) {
     	ParticipantsFragment fragment = new ParticipantsFragment();
 
         StringBuilder builder = new StringBuilder();

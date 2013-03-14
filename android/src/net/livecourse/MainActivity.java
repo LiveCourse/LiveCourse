@@ -38,6 +38,15 @@ public class MainActivity extends SherlockFragmentActivity {
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(mPager);
         
+        /**
+         * Sends stuff through to the adapter so we can handle it at the fragment levels
+         * Pretty sure there is a better way to do this
+         */
+        mAdapter.setIndicator(mIndicator);
+        mAdapter.setPager(mPager);
+        mAdapter.setActivity(this);
+        
+        
         
         /**
          * The following code is used to change UI and logic based on which page the user is on,

@@ -16,12 +16,17 @@ import com.actionbarsherlock.app.SherlockFragment;
 public class ChatFragment extends SherlockFragment {
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
+	
+	/**
+	 * This is the current class we are
+	 */
+	private String CURRENT_CLASS = "";
 
 	/**
 	 * This section declares all the views that this fragment handles Could
 	 * probably do with better names lol
 	 */
-	private View chatView;
+	private View chatLayout;
 	private ListView messageListView;
 	private Button sendButtonView;
 	private EditText sendMessageEditTextView;
@@ -38,12 +43,9 @@ public class ChatFragment extends SherlockFragment {
 	String[] array = {"a","b","c","d","e","f","g"}; 
 	ArrayList<String> messages;
 	
-	public static ChatFragment newInstance(String content) {
+	public static ChatFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
+	{
 		ChatFragment fragment = new ChatFragment();
-		StringBuilder builder = new StringBuilder();
-		builder.append("This is the chat fragment");
-		fragment.mContent = builder.toString();
-
 		return fragment;
 	}
 
@@ -71,10 +73,10 @@ public class ChatFragment extends SherlockFragment {
 		/**
 		 * Connects the views to their XML equivalent
 		 */
-		chatView = inflater.inflate(R.layout.chat_layout, container, false);
-		messageListView = (ListView) chatView.findViewById(R.id.message_list_view);
-		sendButtonView = (Button) chatView.findViewById(R.id.send_button_view);
-		sendMessageEditTextView = (EditText) chatView.findViewById(R.id.send_message_edit_text_view);
+		chatLayout = inflater.inflate(R.layout.chat_layout, container, false);
+		messageListView = (ListView) chatLayout.findViewById(R.id.message_list_view);
+		sendButtonView = (Button) chatLayout.findViewById(R.id.send_button_view);
+		sendMessageEditTextView = (EditText) chatLayout.findViewById(R.id.send_message_edit_text_view);
 		
 		/**
 		 * Adds the adapter to the list and sends the temporary list to it
@@ -107,13 +109,23 @@ public class ChatFragment extends SherlockFragment {
 			}
 		});
 
-		return chatView;
+		return chatLayout;
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString(KEY_CONTENT, mContent);
+	}
+	
+	public String getCurrentClass()
+	{
+		return CURRENT_CLASS;
+	}
+	
+	public void setCurrentClass(String className)
+	{
+		CURRENT_CLASS = className;
 	}
 
 }

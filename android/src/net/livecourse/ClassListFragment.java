@@ -1,22 +1,36 @@
 package net.livecourse;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.app.SherlockFragment;
 
-public class ClassListFragment extends SherlockListFragment {
+public class ClassListFragment extends SherlockFragment {
 
 	//Code for the class list goes here
 	private static final String KEY_CONTENT = "TestFragment:Content";
 	
+	/**
+	 * This is ued to add the other tabs once a class is selected
+	 */
+	private TabsFragmentAdapter tabsAdapter;
+	
+	/**
+	 * The XML views
+	 */
+	private View classListLayout;
+	private ListView classListView;
+	private ClassListAdapter<String> adapter;
+	
 	//Temporary list of classes used, will be changed later
-	List<String> classes = Arrays.asList(
+	String[] array = {
 	        "CS252",
 	        "PSY200",
 	        "MA261",
@@ -29,15 +43,14 @@ public class ClassListFragment extends SherlockListFragment {
 	        "MA161",
 	        "MA165",
 	        "PSY240"
-	        );
+		};
+	ArrayList<String> classes;
 
-    public static ClassListFragment newInstance(String content) {
+
+    public static ClassListFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
+    {
     	ClassListFragment fragment = new ClassListFragment();
-    	/*
-        StringBuilder builder = new StringBuilder();
-        builder.append("This is the class list fragment");
-        fragment.mContent = builder.toString();
-		*/
+    	fragment.tabsAdapter = tabsAdapter;
         return fragment;
     }
 
@@ -53,15 +66,53 @@ public class ClassListFragment extends SherlockListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
+    {
+    	/**
+		 * Initialize the temporary list
+		 */
+		classes = new ArrayList<String>();
+		classes.addAll(Arrays.asList(array));
+		
+		/**
+		 * Conencts the list to the XML
+		 */
+		classListLayout = inflater.inflate(R.layout.classlist_layout, container, false);
+		classListView = (ListView) classListLayout.findViewById(R.id.class_list_view);
+    	
+    	
+    	/** 
+    	 * Create the adapter and set it to the list and populate it
+    	 * **/
+        adapter = new ClassListAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,classes);
+        classListView.setAdapter(adapter);
         
-    	/** Creating an array adapter to store the list of countries **/
-        ClassListAdapter<String> adapter = new ClassListAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,classes);
+        /**
+         * The listener for clicking on an item in the list view
+         */
+        classListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				/**
+				 * Once a class is selected it'll expand the tabs
+				 */
+				tabsAdapter.CONTENT = new String[] { "Class List", "Chat", "Participants"};
+				tabsAdapter.setCount(3);
+				tabsAdapter.notifyDataSetChanged();
+				
+				
+				/**
+				 * And direct us to the chat for the class we are in
+				 */
+				tabsAdapter.getPager().setCurrentItem(1);
+				tabsAdapter.getActivity().setTitle(adapter.getItem(arg2));
+			}
+        	
+		});
  
-        /** Setting the list adapter for the ListFragment */
-        setListAdapter(adapter);
- 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return classListLayout;
     }
 
     @Override
