@@ -14,11 +14,10 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 public class ClassListFragment extends SherlockFragment {
 
-	//Code for the class list goes here
 	private static final String KEY_CONTENT = "TestFragment:Content";
 	
 	/**
-	 * This is ued to add the other tabs once a class is selected
+	 * This is used to add the other tabs once a class is selected
 	 */
 	private TabsFragmentAdapter tabsAdapter;
 	
@@ -29,7 +28,9 @@ public class ClassListFragment extends SherlockFragment {
 	private ListView classListView;
 	private ClassListAdapter<String> adapter;
 	
-	//Temporary list of classes used, will be changed later
+	/**
+	 * Temporary list of classes used, will be changed later
+	 */
 	String[] array = {
 	        "CS252",
 	        "PSY200",
