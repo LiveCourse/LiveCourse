@@ -2,6 +2,9 @@
  * Common javascript functions to be used in the LiveCourse HTML5 UI.
  */
 
+var auth_token = ""; // Global variable for storing the authentication code for the current user.
+var auth_pass = ""; // Global variable for storing the user's SHA1 encrypted password.
+
 /**
  * Shows or generates a horizontal pop-up dialog above the current page.
  * header - Title text shown at the top of the dialog
@@ -126,5 +129,29 @@ function progress_indicator_hide(indicator)
 {
 	indicator.animate({"top":'-20px'},300, "easeInBack", function() {
 		$(this).remove();
+	});
+}
+
+/**
+ * Calls the specified API function via JQuery ajax
+ * Automatically includes required authentication information.
+ * method - URL of API method to execute
+ * type - Type of API Method (GET,POST,DELETE,etc)
+ * data - Data... yeah.
+ * success_callback - function to be called on successful call.
+ * error_callback - function to be called on error.
+ * returns - nothing... I don't think... yup nothing.
+ */
+function call_api(method,type,data,success_callback,error_callback)
+{
+	var auth_code = Sha1.hash(auth_token+auth_pass+method);
+	$.ajax("index.php/api/"+method,{
+		type: type,
+		headers: {
+			"Auth": "LiveCourseAuth token="+auth_token+" auth="+auth_code
+		},
+		data: data,
+		success: success_callback,
+		error: error_callback
 	});
 }

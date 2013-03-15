@@ -20,7 +20,7 @@ function login_show(allow_close)
 	dialog_show(dialog, function() { //Show it!
 		dialog.find("form").find("input").first().focus(); //Focus the username box after the dialog loads
 	}); 
-	
+	name
 }
 
 /**
@@ -28,7 +28,70 @@ function login_show(allow_close)
  */
 function login_submit()
 {
-	console.log("Log in!");
+	$(this).find("input").prop('disabled',true); //disable the form
+	
+	//Validate input
+	var valid = true;
+	var email_regex = /\S+@\S+\.\S+/;
+	
+	//Validate e-mail
+	if (!email_regex.test($(this).find("input[name=email]").val()))
+	{
+		$(this).find("input[name=email]").addClass("invalid");
+		valid = false;
+	}
+	//Validate password
+	if ($(this).find("input[name=password]").val().length <= 0)
+	{
+		$(this).find("input[name=password]").addClass("invalid");
+		valid = false;
+	}
+	
+	if (!valid) { //Stop here if we have any invalid fields
+		$(this).find("input").prop('disabled',false); //Re-enable the form
+		return false; 
+	}
+	
+	//Information is valid, let's send it to the server for additional validation
+	var indicator = progress_indicator_show(); //Show a progress indicator for AJAX requests...
+	
+	//First, begin authentication challenge process
+	//Grab form values...
+	var email = $(this).find("input[name=email]").val();
+	
+	//Send API request
+	//Fetch authentication token
+	var _this = this;
+	$.ajax("index.php/api/auth",{
+		type: "GET",
+		data:
+		{
+			'email': email
+		}, 
+		success: function(data) {
+			auth_token = data.authentication.token;
+			auth_pass = Sha1.hash($(_this).find("input[name=password]").val());
+			//Now let's try authentication...
+			call_api("auth/verify","GET",{},
+				function(data)
+				{
+					//We have successfully authenticated!
+					progress_indicator_hide(indicator);
+					dialog_close($(_this).parents(".DialogOverlay").first());
+				},
+				function(xhr,status)
+				{
+					$(_this).find("input[name=password]").addClass("invalid"); //Failure at this point means our password is probably invalid.
+					$(_this).find("input").prop('disabled',false); //Re-enable the form
+					progress_indicator_hide(indicator);
+				});
+		},
+		error: function(xhr, status) {
+			progress_indicator_hide(indicator);
+			$(_this).find("input[name=email]").addClass("invalid"); //Failure at this point means our e-mail is probably invalid.
+			$(_this).find("input").prop('disabled',false); //Re-enable the form
+		}
+	});
 	return false;
 }
 

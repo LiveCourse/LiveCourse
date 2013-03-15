@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.3
+-- version 3.5.7
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 12, 2013 at 02:24 AM
--- Server version: 5.5.28-log
--- PHP Version: 5.3.15
+-- Generation Time: Mar 14, 2013 at 02:39 AM
+-- Server version: 5.5.30
+-- PHP Version: 5.4.12
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,6 +19,21 @@ SET time_zone = "+00:00";
 --
 -- Database: `livecourse`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lc_authentication`
+--
+
+CREATE TABLE IF NOT EXISTS `lc_authentication` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID of authentication token',
+  `user_id` int(11) NOT NULL COMMENT 'ID of user',
+  `token` varchar(16) NOT NULL COMMENT 'Random string token',
+  `lastused` int(11) NOT NULL COMMENT 'Last time this token was used to successfully authenticate',
+  `device` int(11) NOT NULL COMMENT 'identifier for device that this authentication took place using',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -126,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `display_name` varchar(255) NOT NULL,
   `jointime` int(11) NOT NULL COMMENT 'User''s time of sign-up in UNIX epoch',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
