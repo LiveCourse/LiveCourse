@@ -81,13 +81,15 @@ function login_submit()
 				},
 				function(xhr,status)
 				{
+					//Our API code didn't validate with the server. Oops.
 					$(_this).find("input[name=password]").addClass("invalid"); //Failure at this point means our password is probably invalid.
 					$(_this).find("input").prop('disabled',false); //Re-enable the form
-					progress_indicator_hide(indicator);
+					progress_indicator_hide(indicator); //Hide progress indicator.
 				});
 		},
 		error: function(xhr, status) {
-			progress_indicator_hide(indicator);
+			//Couldn't generate an API token for this e-mail.
+			progress_indicator_hide(indicator); //Hide progress indicator.
 			$(_this).find("input[name=email]").addClass("invalid"); //Failure at this point means our e-mail is probably invalid.
 			$(_this).find("input").prop('disabled',false); //Re-enable the form
 		}

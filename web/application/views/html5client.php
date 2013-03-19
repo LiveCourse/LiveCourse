@@ -28,27 +28,19 @@
 		<div id="LeftSideBar">
 			<h1>LiveCourse</h1>
 			<ul id="CourseList">
-				<li>
+				<!--
+				<li class="selected">
 					<span class="title">Software Engineering I</span>
 					<br />
 					<span class="subTitle">20 members, 10 online</span>
 				</li>
-				<li class="selected">
-					<span class="title">Systems Programming</span>
-					<br />
-					<span class="subTitle">30 members, 8 online</span>
-				</li>
-				<li>
-					<span class="title">Social Psychology</span>
-					<br />
-					<span class="subTitle">25 members, 12 online</span>
-				</li>
+				-->
 			</ul>
 			<button onclick="joinroom_show()">Add a Class</button>
 		</div>
 		
 		<div id="ChatFrame">
-			<h1>Systems Programming</h1>
+			<!-- <h1>Systems Programming</h1> -->
 		</div>
 		
 		<div id="ComposeFrame">
@@ -59,26 +51,13 @@
 			<h1>Participants</h1>
 			<ul id="UserList">
 				<li class="me">
-					Bob Test User
+					Me
 				</li>
-				<li>
-					Darren Cheng
-				</li>
-				<li>
-					Lee Engelman
-				</li>
-				<li>
-					Brandon Klen
-				</li>
-				<li>
-					Hayden McAfee
-				</li>
-				<li>
-					Jeremy Meyer
-				</li>
-				<li>
-					Lars Sorenson
-				</li>
+				<!--
+					<li>
+						This is a user
+					</li>
+				-->
 			</ul>
 		</div>
 		

@@ -29,7 +29,7 @@ class Model_Users extends CI_Model {
 	function fetch_user_by_email($user_email)
 	{
 		$query = $this->db
-				->like('email', $user_email)
+				->like('email', $user_email,'none')
 				->from('lc_users')
 				->get();
 		return $query->result();
