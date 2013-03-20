@@ -8,8 +8,8 @@
 		<script src="<?php echo(base_url("js/json2.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery-1.9.0.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery-ui-1.10.0.custom.min.js")); ?>"></script>
-		<script src="<?php echo(base_url("js/underscore.js")); ?>"></script>
-		<script src="<?php echo(base_url("js/backbone.js")); ?>"></script>
+		<script src="<?php echo(base_url("js/jquery.observe_field.js")); ?>"></script>
+		<script src="<?php echo(base_url("js/jquery.cookie.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/cufon-yui.js")); ?>"></script>
 		<script src="<?php echo(base_url("fonts/font.cicle.js")); ?>"></script>
 		
@@ -19,7 +19,27 @@
 		<script type="text/javascript">
 			Cufon.replace('#LeftSideBar h1,#RightSideBar h1,#ChatFrame h1,.DialogContainer h1,.DialogMessage .status_message');
 			$(function() {
-				login_show();
+				//Check authentication and prompt for log-in if we're not authenticated.
+				if (auth_token != "")
+				{
+					var indicator = progress_indicator_show(indicator);
+					call_api("auth/verify","GET",{},
+						function(data)
+						{
+							//We have successfully authenticated!
+							$.cookie("lc_auth_token", auth_token); //Set authentication cookies
+							$.cookie("lc_auth_pass", auth_pass); //Set authentication cookies
+							progress_indicator_hide(indicator);
+						},
+						function(xhr,status)
+						{
+							//Our API code didn't validate with the server. Oops.
+							login_show();
+							progress_indicator_hide(indicator); //Hide progress indicator.
+						});
+				} else {
+					login_show();
+				}
 			});
 		</script>
 		
@@ -90,6 +110,8 @@
 			<form id="form_joinroom" class="large_form">
 				<input name="classnumber" type="text" placeholder="Course Number" />
 			</form>
+			<div id="joinroom_results">
+			</div>
 		</div>
 	</body>
 </html>
