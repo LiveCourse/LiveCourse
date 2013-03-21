@@ -61,69 +61,30 @@ class Chats extends REST_Controller
 	//TODO: There should be no user_id argument. This should only function for the authenticated user ($authenticated_as)
 	public function join_post()
 	{
+		$this->load->model('Model_Chats');
+		
 		//Add a user to a chat
-		$chat_id = $this->post('chat_id'); // GET param
-		$user_id = $this->post('user_id');
+		$chat_id_string = $this->post('id');
+		$user_id = $authenticated_as;
 
-		if(!$user_id || !$chat_id)
+		if($user_id <= 0 || strlen($chat_id_string) <= 0)
 		{
-			echo 'Not enough information supplied!';
-
-			$data = null;
-			
-			$this->response($data, 409);
-			
+			$this->response($this->rest_error(array("No chat ID was specified.")),403);
 			return;
 		}
 		
-		$chat_query = $this->db
-				->from('lc_chats')
-				->where('id', $chat_id)
-				->get()
-				->result();
-
-		$user_query = $this->db
-				->from('lc_users')
-				->where('id', $user_id)
-				->get()
-				->result();
-				
-		if(sizeof($user_query) <= 0)
-		{
-			echo 'User does not exist!';
-			
-			$data = null;
-			
-			$this->response($data);
-	
-			return;
-		}		
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
 		
-		if (sizeof($chat_query) <= 0)
+		if ($chat_id < 0)
 		{
-			echo 'Chat room does not exist!';
-
-			$data = null;
-
-			$this->response($data);
-			
+			$this->response($this->rest_error(array("Specified chat does not exist.")),404);
 			return;
 		}
-		else
-		{
-			$data = array(
-					'chat_id' 	=> $chat_id,
-					'user_id' 	=> $user_id,
-					'permissions' 	=> '0'
-					);
-
-			$this->db->insert('lc_chat_participants', $data);
-
-			$this->response($data, 201);
-			
-			return;
-		}
-
+		
+		$this->Model_Chats->join_chat_by_id($user_id,$chat_id);
+		
+		$this->response(array(), 200);
 	}
 	
 	//TODO: Add header

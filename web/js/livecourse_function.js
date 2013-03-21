@@ -226,6 +226,74 @@ function registration_submit()
 function joinroom_show()
 {
 	var dialog = dialog_clone("Add a Class","#dialog_joinroom",true,true);
-	// dialog_addbutton(dialog,"Submit",login_submit,false); //This button'd look better under the actual form.
+	$(dialog).find("input[name=classnumber]").observe_field(0.5, function( ) {
+		if ($(dialog).find("input[name=classnumber]").val().length <= 0)
+		{
+			$(dialog).find("#joinroom_results").html("Please enter a course number or course name.");
+		} else {
+			var ind = progress_indicator_show();
+			$(dialog).find("#joinroom_results").html();
+			call_api("chats/search","GET",{query: $(dialog).find("input[name=classnumber]").val()},
+				function (data) {
+					$(dialog).find("#joinroom_results").html('<ul></ul>');
+					for (var i in data)
+					{
+						var start_hour = Math.floor(data[i].start_time/60);
+						var start_minute = data[i].start_time%60;
+						var end_hour = Math.floor(data[i].end_time/60);
+						var end_minute = data[i].end_time%60;
+						var dow = '';
+						if (data[i].dow_monday == 1) dow+='M';
+						if (data[i].dow_tuesday == 1) dow+='T';
+						if (data[i].dow_wednesday == 1) dow+='W';
+						if (data[i].dow_thursday == 1) dow+='R';
+						if (data[i].dow_friday == 1) dow+='F';
+						if (data[i].dow_saturday == 1) dow+='S';
+						if (data[i].dow_sunday == 1) dow+='U';
+						var item = $('<li><span class="name">'+data[i].name+'</span><br><span class="time">'+dow+' from '+start_hour+':'+start_minute+' - '+end_hour+':'+end_minute+'</span></li>');
+						$(dialog).find("#joinroom_results ul").append(item);
+						item.fadeIn();
+						item.click(function() {
+							alert("Join class "+data[i].name+"!");
+						});
+					}
+					Cufon.refresh();
+					progress_indicator_hide(ind);
+				},
+				function (xhr, status)
+				{
+					if (xhr.status == 404)
+						$(dialog).find("#joinroom_results").html("No matching classes could be found.");
+					else
+						$(dialog).find("#joinroom_results").html("There was an error processing your query.");
+					progress_indicator_hide(ind);
+				});
+		}
+	});
 	dialog_show(dialog);
+}
+
+/**
+ * Joins the logged in user to the specified class
+ */
+function class_join(class_idstring,success_callback,error_callback)
+{
+	var join_ind = progress_indicator_show();
+	call_api("chats/join","POST",{id: class_idstring},
+		function (data) {
+			if (typeof success_callback != "undefined")
+			{
+				success_callback(data);
+			}
+			progress_indicator_hide(join_ind);
+		},
+		function (xhr, status)
+		{
+			if (typeof error_callback != "undefined")
+			{
+				error_callback(xhr,status);
+			}
+			progress_indicator_hide(join_ind);
+		});
+
 }

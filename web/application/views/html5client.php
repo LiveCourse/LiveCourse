@@ -17,7 +17,7 @@
 		<script src="<?php echo(base_url("js/livecourse_function.js")); ?>"></script>
 		
 		<script type="text/javascript">
-			Cufon.replace('#LeftSideBar h1,#RightSideBar h1,#ChatFrame h1,.DialogContainer h1,.DialogMessage .status_message');
+			Cufon.replace('#LeftSideBar h1,#RightSideBar h1,#ChatFrame h1,.DialogContainer h1,.DialogMessage .status_message,#joinroom_results ul li .name');
 			$(function() {
 				//Check authentication and prompt for log-in if we're not authenticated.
 				if (auth_token != "")
