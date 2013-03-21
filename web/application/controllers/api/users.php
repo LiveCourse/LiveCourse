@@ -34,18 +34,8 @@ class Users extends REST_Controller
 				$this->response($users);
 			else
 				$this->response($this->rest_error(array("The user id provided is invalid.")),404);
-			return;
 		}
-		else
-		{
-			$users = $this->Model_Users->fetch_all_users();
-			if(count($users) > 0)
-				$this->response($users);
-			else
-				$this->response($this->rest_error(array("No users in the database")),404);
-			
 		return;
-
 	}
 	
 	/**
