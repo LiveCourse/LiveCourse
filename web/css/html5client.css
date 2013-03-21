@@ -363,6 +363,11 @@ input[type="submit"]:active,button:active
 	color:#fff
 }
 
+.DialogContainer.error
+{
+	background-color:#7e2e2e;
+}
+
 .DialogContainer h1
 {
 	width:950px;

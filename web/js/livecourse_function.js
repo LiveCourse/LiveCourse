@@ -250,11 +250,20 @@ function joinroom_show()
 						if (data[i].dow_friday == 1) dow+='F';
 						if (data[i].dow_saturday == 1) dow+='S';
 						if (data[i].dow_sunday == 1) dow+='U';
-						var item = $('<li><span class="name">'+data[i].name+'</span><br><span class="time">'+dow+' from '+start_hour+':'+start_minute+' - '+end_hour+':'+end_minute+'</span></li>');
+						var item = $('<li id="'+data[i].id_string+'"><span class="name">'+data[i].name+'</span><br><span class="time">'+dow+' from '+start_hour+':'+start_minute+' - '+end_hour+':'+end_minute+'</span></li>');
+						item.hide();
 						$(dialog).find("#joinroom_results ul").append(item);
 						item.fadeIn();
 						item.click(function() {
-							alert("Join class "+data[i].name+"!");
+							var _this = this;
+							class_join($(this).attr('id'),function (data) {
+									dialog_close($(_this).parents('.DialogOverlay').first());
+								}, function(xhr, status)
+								{
+									var errdialog = dialog_new("Error Joining","An error occurred while attempting to join this class.",true,true);
+									errdialog.find(".DialogContainer").addClass("error");
+									dialog_show(errdialog);
+								});
 						});
 					}
 					Cufon.refresh();
@@ -285,6 +294,10 @@ function class_join(class_idstring,success_callback,error_callback)
 			{
 				success_callback(data);
 			}
+			var listitem = $('<li><span class="title">'+data.name+'</span><br /><span class="subTitle">0 members, 0 online</span></li>');
+			listitem.hide();
+			$('#CourseList').append(listitem);
+			listitem.slideDown();
 			progress_indicator_hide(join_ind);
 		},
 		function (xhr, status)

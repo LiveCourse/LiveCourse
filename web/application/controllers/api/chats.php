@@ -65,7 +65,7 @@ class Chats extends REST_Controller
 		
 		//Add a user to a chat
 		$chat_id_string = $this->post('id');
-		$user_id = $authenticated_as;
+		$user_id = $this->authenticated_as;
 
 		if($user_id <= 0 || strlen($chat_id_string) <= 0)
 		{
@@ -82,9 +82,10 @@ class Chats extends REST_Controller
 			return;
 		}
 		
+		//TODO: Verify that they are not already joined before adding them!
 		$this->Model_Chats->join_chat_by_id($user_id,$chat_id);
-		
-		$this->response(array(), 200);
+		$chatinfo = $this->Model_Chats->get_chat_by_id($chat_id);
+		$this->response($chatinfo, 200);
 	}
 	
 	//TODO: Add header

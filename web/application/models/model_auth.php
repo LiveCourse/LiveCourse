@@ -26,6 +26,7 @@ class Model_Auth extends CI_Model {
 	 * stores it in the authentication database for later verification.
 	 * userid - identification number of the user
 	 * returns - random authentication token string
+	 * TODO: check for duplicates
 	 */
 	function generate_token($userid,$deviceid = 0)
 	{

@@ -59,5 +59,23 @@ class Model_Chats extends CI_Model {
 				);
 		return $this->db->insert('lc_chat_participants', $data); //Should return NULL or FALSE if failed.
 	}
+	
+	/**
+	 * Gets chat information by ID
+	 * chat_id - ID of chat
+	 * returns - database row of chat specified
+	 */
+	function get_chat_by_id($chat_id)
+	{
+		$query = $this->db
+				->where('id',$chat_id)
+				->from('lc_chats')
+				->get()
+				->result();
+		if (count($query) <= 0)
+			return -1;
+		else
+			return $query[0];
+	}
 
 }
