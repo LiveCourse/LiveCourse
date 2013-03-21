@@ -27,7 +27,7 @@ class Model_Users extends CI_Model {
 	 * fields - array of fields to return
 	 * returns - array of user objects. Empty array on failure.
 	 */
-	function fetch_user_by_id($user_id, $fields)
+	function fetch_user_fields($user_id, $fields)
 	{
 		$query = $this->db
 				->select(implode(",", $fields))
