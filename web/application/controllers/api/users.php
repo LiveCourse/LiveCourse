@@ -21,7 +21,7 @@ class Users extends REST_Controller
 	 */
 	public function index_get()
 	{
-		$this->load->model('Model_Users');
+		$this->load->model('Model_Users','',TRUE);
 		//Get a list of all users unless a specific one is requested
 		$user_id = $this->get('id'); // GET parameter
 		//TODO: Allow filtering by e-mail.
@@ -38,13 +38,11 @@ class Users extends REST_Controller
 		}
 		else
 		{
-			//TODO: Replace this with a model
-			$users = $this->db
-				->from('lc_users')
-				->get();
-		}
-		
-		$this->response($users->result());
+			$users = $this->Model_Users->fetch_all_users();
+			if(count($users) > 0)
+				$this->response($users);
+			else
+				$this->response($this->rest_error(array("No users in the database")),404);
 			
 		return;
 
