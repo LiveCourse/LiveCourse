@@ -23,6 +23,33 @@ class Model_Users extends CI_Model {
 	
 	/**
 	 * Fetch a user's information
+	 * user_id - User's identification number
+	 * fields - array of fields to return
+	 * returns - array of user objects. Empty array on failure.
+	 */
+	function fetch_user_by_id($user_id, $fields)
+	{
+		$query = $this->db
+				->select(implode(",", $fields))
+				->where('id', $user_id)
+				->from('lc_users')
+				->get();
+		return $query->result();
+	}
+	/**
+	 * Fetch every user in the database
+	 * returns - an array of user objects. Empty array on failure.
+	 */
+	function fetch_all_users()
+	{
+		$query = $this->db
+			->from('lc_users')
+			->get();
+		return $query->result();
+	}
+	
+	/**
+	 * Fetch a user's information
 	 * user_email - E-mail address associated with said user
 	 * returns - array of user objects. Empty array on failure.
 	 */
