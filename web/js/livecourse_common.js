@@ -9,6 +9,8 @@ var auth_pass = ""; // Global variable for storing the user's SHA1 encrypted pas
 if (typeof($.cookie("lc_auth_pass")) != "undefined") //Fetch the value from cookie if it exists
 	auth_pass = $.cookie("lc_auth_pass");
 
+var current_chat_room = ""; //Global variable for storing the current chat room.
+
 /**
  * Shows or generates a horizontal pop-up dialog above the current page.
  * header - Title text shown at the top of the dialog

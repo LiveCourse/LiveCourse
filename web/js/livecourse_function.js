@@ -100,6 +100,14 @@ function login_submit()
 }
 
 /**
+ * Initializes LiveCourse UI - supposed to be called after SUCCESSFULLY authenticating.
+ */
+function init_ui()
+{
+	update_chat_list();
+}
+
+/**
  * Shows a dialog to the user to be used for registration.
  * require_login - If true, when registration window is closed, log-in dialog will be shown.
  */
@@ -294,10 +302,7 @@ function class_join(class_idstring,success_callback,error_callback)
 			{
 				success_callback(data);
 			}
-			var listitem = $('<li><span class="title">'+data.name+'</span><br /><span class="subTitle">0 members, 0 online</span></li>');
-			listitem.hide();
-			$('#CourseList').append(listitem);
-			listitem.slideDown();
+			update_chat_list();
 			progress_indicator_hide(join_ind);
 		},
 		function (xhr, status)
@@ -309,4 +314,70 @@ function class_join(class_idstring,success_callback,error_callback)
 			progress_indicator_hide(join_ind);
 		});
 
+}
+
+/**
+ * Update chat room list
+ */
+function update_chat_list()
+{
+	var upd_ind = progress_indicator_show();
+	call_api("chats","GET",{},
+		function (data) {
+			$('#CourseList li').slideUp(300,function() {$(this).remove();});
+			for (i in data)
+			{
+				var listitem = $('<li id="'+data[i].id_string+'"><span class="title">'+data[i].name+'</span><br /><span class="subTitle">0 members, 0 online</span></li>');
+				listitem.hide();
+				if (data[i].id_string == current_chat_room)
+					listitem.addClass("selected");
+				$('#CourseList').append(listitem);
+				listitem.slideDown();
+				listitem.click(function() {
+					switch_chat_room($(this).attr('id'));
+				});
+			}
+			progress_indicator_hide(upd_ind);
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Refreshing Class List","An error occurred while attempting to refresh your class list.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+			progress_indicator_hide(upd_ind);
+		});
+}
+
+/**
+ * Sets the active chat room - switches context and loads content of new chat.
+ * room - string ID of room to switch to.
+ */
+function switch_chat_room(room)
+{
+	var switch_ind = progress_indicator_show();
+	call_api("chats/info","GET",{id: room},
+		function (data) {
+			// Set global variable
+			current_chat_room = room;
+			// Set selected class icon
+			$("#CourseList li").removeClass("selected");
+			$("#CourseList #"+room).addClass("selected");
+			// Header flies away...
+			$("#ChatFrame h1").animate({"padding-left":'328px',"opacity":0.0},200, "easeInQuint", function ()
+			{
+				// Changes name
+				$("#ChatFrame h1").html(data.name);
+				Cufon.refresh(); //Reload font
+				//And flies back.
+				$("#ChatFrame h1").animate({"padding-left":0,"opacity":1.0},350, "easeOutQuart", null);
+			});
+			progress_indicator_hide(switch_ind);
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Switching Class Context","An error occurred while attempting to view a chat.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+			progress_indicator_hide(switch_ind);
+		});
 }

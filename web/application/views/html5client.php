@@ -29,6 +29,7 @@
 							//We have successfully authenticated!
 							$.cookie("lc_auth_token", auth_token); //Set authentication cookies
 							$.cookie("lc_auth_pass", auth_pass); //Set authentication cookies
+							init_ui();
 							progress_indicator_hide(indicator);
 						},
 						function(xhr,status)
@@ -60,7 +61,7 @@
 		</div>
 		
 		<div id="ChatFrame">
-			<!-- <h1>Systems Programming</h1> -->
+			<h1></h1>
 		</div>
 		
 		<div id="ComposeFrame">

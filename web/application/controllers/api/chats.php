@@ -16,24 +16,38 @@ class Chats extends REST_Controller
 	//TODO: Add header
 	public function index_get()
 	{
-		//Return a list of all SUBSCRIBED chats, unless a chat_id is specified
-		$chat_id = $this->get('id'); // GET param
-
-		if($chat_id)
+		$this->load->model('Model_Chats');
+		if ($this->authenticated_as <= 0)
 		{
-			$chats = $this->db
-				->where('id', $chat_id)
-				->from('lc_chats')
-				->get();
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
 		}
-		else
+		$chats = $this->Model_Chats->get_subscribed_chats($this->authenticated_as);
+		$this->response($chats,200);
+	}
+	
+	/**
+	 * Fetches chat room information on a specific room
+	 * id - String form of chat ID
+	 * returns - Room information
+	 */
+	public function info_get()
+	{
+		$this->load->model('Model_Chats');
+		$chat_id_string = $this->get('id');
+		if (strlen($chat_id_string) <= 0)
 		{
-			$chats = $this->db
-				->from('lc_chats')
-				->get();
+			$this->response($this->rest_error(array("Empty queries can not be processed.")),403);
+			return;
 		}
-		$this->response($chats->result());
-
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		if ($chat_id < 0)
+		{
+			$this->response($this->rest_error(array("Specified chat could not be found.")),404);
+			return;
+		}
+		$chat_info = $this->Model_Chats->get_chat_by_id($chat_id);
+		$this->response($chat_info);
 	}
 	
 	public function search_get()

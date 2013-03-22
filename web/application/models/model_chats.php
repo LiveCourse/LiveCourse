@@ -77,5 +77,21 @@ class Model_Chats extends CI_Model {
 		else
 			return $query[0];
 	}
+	
+	/**
+	 * Fetches chats that the specified user is a participant in.
+	 * user_id - ID of user
+	 * returns - array of chat information
+	 */
+	function get_subscribed_chats($user_id)
+	{
+		$query = $this->db
+				->where('user_id',$user_id)
+				->from('lc_chat_participants')
+				->join('lc_chats','lc_chats.id = lc_chat_participants.chat_id')
+				->get()
+				->result();
+		return $query;
+	}
 
 }
