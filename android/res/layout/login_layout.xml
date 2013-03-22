@@ -13,16 +13,6 @@
         android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-   <TextView
-       android:id="@+id/error_text_view"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_alignLeft="@+id/login_button"
-       android:layout_below="@+id/login_button"
-       android:layout_marginTop="14dp"
-       android:visibility="invisible"
-       android:textAppearance="?android:attr/textAppearanceSmall" />
-
    <EditText
        android:id="@+id/login_password_edit_text"
        android:layout_width="wrap_content"
@@ -63,9 +53,20 @@
        android:id="@+id/reg_button"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:layout_alignTop="@+id/error_text_view"
+       android:layout_below="@+id/login_button"
        android:layout_centerHorizontal="true"
+       android:layout_marginTop="14dp"
        android:onClick="onRegClick"
        android:text="@string/reg_button_text" />
+
+   <TextView
+       android:id="@+id/error_text_view"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/login_title_text_view"
+       android:layout_centerHorizontal="true"
+       android:layout_marginTop="19dp"
+       android:visibility="invisible"
+       android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

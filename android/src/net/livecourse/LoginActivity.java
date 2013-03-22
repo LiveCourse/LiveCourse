@@ -1,10 +1,11 @@
 package net.livecourse;
 
+import java.util.ArrayList;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,9 +24,9 @@ public class LoginActivity extends SherlockFragmentActivity{
 	private EditText loginPasswordEditTextView;
 	private TextView errorTextView;
     private Intent mainIntent;
-
-	
-	
+    
+    private ArrayList<String> errorList;
+    
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -37,6 +38,8 @@ public class LoginActivity extends SherlockFragmentActivity{
         loginEmailEditTextView = (EditText) findViewById(R.id.login_email_edit_text_view);
         loginPasswordEditTextView = (EditText) findViewById(R.id.login_password_edit_text);
         errorTextView = (TextView) findViewById(R.id.error_text_view);
+        
+        errorList = new ArrayList<String>();
 	}
 	
 	/**
@@ -46,6 +49,14 @@ public class LoginActivity extends SherlockFragmentActivity{
 	 */
 	public void onLoginClicked(View v)
 	{
+		boolean hasError =  false;
+		
+		/**
+		 * Reset variables
+		 */
+		errorTextView.setText("");
+		errorList.clear();
+		
 		/**
 		 * Code to confirm correct entry of email and password fields
 		 * 
@@ -54,17 +65,26 @@ public class LoginActivity extends SherlockFragmentActivity{
 		 */
 		if(!REST.isEmailValid(loginEmailEditTextView.getText().toString()))
 		{
-			errorTextView.setText("Invalid Email");
-			errorTextView.setVisibility(View.VISIBLE);
-			errorTextView.setTextColor(Color.RED);
-			
-			return;
+			errorList.add("Invalid Email");
+			hasError = true;
 		}
 		if(!REST.isPasswordValid(loginPasswordEditTextView.getText().toString()))
+		{	
+			errorList.add("Invalid Password");
+			hasError = true;
+		}
+		
+		if(hasError)
 		{
-			errorTextView.setText("Invalid Password");
-			errorTextView.setVisibility(View.VISIBLE);
+			String temp = "";
+			for(int x = 0; x < errorList.size();x++)
+			{
+				temp += errorList.get(x) + "\n";
+			}
+			
+			errorTextView.setText(temp);
 			errorTextView.setTextColor(Color.RED);
+			errorTextView.setVisibility(View.VISIBLE);
 			
 			return;
 		}
@@ -99,6 +119,4 @@ public class LoginActivity extends SherlockFragmentActivity{
 		
 		startActivity(regIntent);
 	}
-	
-
 }
