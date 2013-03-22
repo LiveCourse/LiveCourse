@@ -78,6 +78,7 @@ function login_submit()
 					//We have successfully authenticated!
 					$.cookie("lc_auth_token", auth_token); //Set authentication cookies
 					$.cookie("lc_auth_pass", auth_pass); //Set authentication cookies
+					init_ui();
 					progress_indicator_hide(indicator);
 					dialog_close($(_this).parents(".DialogOverlay").first());
 				},
