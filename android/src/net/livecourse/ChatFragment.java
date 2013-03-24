@@ -40,7 +40,7 @@ public class ChatFragment extends SherlockFragment {
 	/**
 	 * Temporary list used to populate the message list
 	 */
-	String[] array = {"apple","banana","c","d","e","f","g"}; 
+	String[] array = {"msg1","msg2","msg3","msg4"}; 
 	ArrayList<String> messages;
 	
 	public static ChatFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
