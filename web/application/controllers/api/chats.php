@@ -120,15 +120,11 @@ class Chats extends REST_Controller
 				->where('id', $chat_id)
 				->get()
 				->result();
-
 		if ( sizeof($chat_query) <= 0)
 		{
 			echo 'Room room does not exist!';
-
 			$data = null;
-
 			$this->response($data);
-			
 			return;
 		}
 		//Check to see if a user is in the chat
@@ -139,11 +135,86 @@ class Chats extends REST_Controller
 					'user_id' => $user_id
 					);
 			$this->db->delete('lc_chat_participants', $data);
-
 			$this->response($data, 200);
-			
 			return;
 		}
-
+	}
+	
+	/**
+	 * Sends a message to the specified room
+	 * chat_id - string ID of room to send to.
+	 * message - message string
+	 * returns - NULL or FALSE on failure.
+	 */
+	public function send_post()
+	{
+		$this->load->model('Model_Chats');
+		
+		$chat_id_string = $this->post('chat_id');
+		$message = $this->post('message');
+		$user_id = $this->authenticated_as;
+	
+		//Make sure we're signed in and we requested a chat ID
+		if($user_id <= 0 || strlen($chat_id_string) <= 0)
+		{
+			$this->response($this->rest_error(array("You are not authorized, or no chat ID was specified.")),403);
+			return;
+		}
+		
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		
+		if ($chat_id < 0)
+		{
+			$this->response($this->rest_error(array("Specified chat does not exist.")),404);
+			return;
+		}
+		
+		//Check to make sure user is joined to this chat.
+		if (!$this->Model_Chats->is_user_subscribed($user_id,$chat_id))
+		{
+			$this->response($this->rest_error(array("You are not subscribed to this chat.")),401);
+			return;
+		}
+		
+		//TODO: Sanitize this text
+		
+		//Check that there is a message provided.
+		if (strlen($message) < 1)
+		{
+			$this->response($this->rest_error(array("You must provide a message.")),403);
+			return;
+		}
+		
+		$this->Model_Chats->send_message($user_id,$chat_id,$message);
+		$this->response(NULL,201); //Success
+	}
+	
+	/**
+	 * Retrieves a number of recent messages from the specified chat.
+	 * chat_id - Chat ID to fetch from
+	 * num_messages - Number of messages to fetch (100 if unspecified)
+	 * returns - messages
+	 */
+	function fetch_recent_get()
+	{
+		$this->load->model('Model_Chats');
+		$chat_id_string = $this->get('chat_id');
+		$num_messages = $this->get('num_messages');
+		if (!isset($num_messages) || $num_messages == "")
+			$num_messages = 100;
+		$user_id = $this->authenticated_as;
+		
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		//Check to make sure user is joined to this chat.
+		if (!$this->Model_Chats->is_user_subscribed($user_id,$chat_id))
+		{
+			$this->response($this->rest_error(array("You are not subscribed to this chat.")),401);
+			return;
+		}
+			
+		$messages = $this->Model_Chats->get_num_latest_messages($chat_id,$num_messages);
+		$this->response($messages,200); //Success
 	}
 }

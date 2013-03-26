@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.3
+-- version 3.5.7
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 19, 2013 at 05:48 PM
--- Server version: 5.5.28-log
--- PHP Version: 5.3.15
+-- Generation Time: Mar 25, 2013 at 09:28 PM
+-- Server version: 5.5.30
+-- PHP Version: 5.4.12
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `lc_authentication` (
   `lastused` int(11) NOT NULL COMMENT 'Last time this token was used to successfully authenticate',
   `device` int(11) NOT NULL COMMENT 'identifier for device that this authentication took place using',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,22 @@ CREATE TABLE IF NOT EXISTS `lc_chats` (
   `dow_saturday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Saturday',
   `dow_sunday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Sunday',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lc_chat_messages`
+--
+
+CREATE TABLE IF NOT EXISTS `lc_chat_messages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID of message',
+  `chat_id` int(11) NOT NULL COMMENT 'ID of chat room message is destined for',
+  `user_id` int(11) NOT NULL COMMENT 'ID of user that sent this message',
+  `send_time` int(11) NOT NULL COMMENT 'Time that this message was sent in UNIX Epoch',
+  `message_string` varchar(2048) NOT NULL COMMENT 'Message content',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -85,7 +100,8 @@ CREATE TABLE IF NOT EXISTS `lc_chats` (
 CREATE TABLE IF NOT EXISTS `lc_chat_participants` (
   `chat_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `permissions` int(11) NOT NULL DEFAULT '0' COMMENT '0 = default, 1 = admin'
+  `permissions` int(11) NOT NULL DEFAULT '0' COMMENT '0 = default, 1 = admin',
+  `jointime` int(11) NOT NULL COMMENT 'Time the user joined this particular chat in UNIX epoch'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -99,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `lc_institutions` (
   `name` varchar(255) NOT NULL COMMENT 'Name of institution',
   `zip` varchar(5) NOT NULL COMMENT 'Zip code of institution location',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -126,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `lc_subjects` (
   `name` varchar(256) NOT NULL COMMENT 'Name of subject',
   `code` varchar(5) NOT NULL COMMENT 'Code (Computer science = CS, etc)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -141,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `display_name` varchar(255) NOT NULL,
   `jointime` int(11) NOT NULL COMMENT 'User''s time of sign-up in UNIX epoch',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
