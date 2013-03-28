@@ -81,10 +81,11 @@ class Chats extends REST_Controller
 	 *Joins a user to a chat
 	 *returns the information of the specified chat if successful
 	 */
-	//TODO: There should be no user_id argument. This should only function for the authenticated user ($authenticated_as)
 	public function join_post()
 	{
 		$this->load->model('Model_Chats');
+		
+		$chat_id_string = $this->post('id');
 		
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
@@ -118,6 +119,7 @@ class Chats extends REST_Controller
 			if ($joined_chats->id == $chat_id)
 			{
 				$this->response($this->rest_error(array("You have already joined that chat.")),403);
+				return;
 			}
 		}
 		
@@ -162,29 +164,21 @@ class Chats extends REST_Controller
 		$this->load->model('Model_Chats');
 		$this->load->model('Model_Users');
 		
-		$user_id = $this->post('user_id');
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
 		$chat_id = $this->post('chat_id');
 		
 		//Make sure they gave us a user id.
 		if ($user_id <= 0)
 		{
-			$this->response($this->rest_error(array("No user ID was specified.")),400);
-			return;
-		}
-		
-		//Check if the user exists
-		$user = NULL;
-		$user = $this->Model_Users->fetch_user_by_id($user_id);
-		if ($user == NULL)
-		{
-			$this->response($this->rest_error(array("User does not exist!")),404);
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
 			return;
 		}
 		
 		//Check to make sure we have a chat id string
 		if (strlen($chat_id_string) <= 0)
 		{
-			$this->response($this->rest_error(array("No chat ID was specified.")),400);
+			$this->response($this->rest_error(array("No chat ID was specified.")),403);
 			return;
 		}
 		
@@ -201,7 +195,7 @@ class Chats extends REST_Controller
 		$subscribed = $this->Model_Chats->is_user_subscribed($user_id,$chat_id);
 		if ($subscribed == false)
 		{
-			$this->response($this->rest_error(array("User was not subscribed to the chat!")),400);
+			$this->response($this->rest_error(array("User was not subscribed to the chat!")),403);
 			return;
 		}
 		
@@ -214,7 +208,7 @@ class Chats extends REST_Controller
 		}
 		else
 		{
-			$this->response($this->rest_error(array("Error removing user from room!")),404);
+			$this->response($this->rest_error(array("Error removing user from room!")),500);
 			return;
 		}
 	}

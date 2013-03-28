@@ -168,6 +168,8 @@ class Model_Chats extends CI_Model {
 			return false;
 		}
 		else
+		{
 			return true;
+		}
 	}
 }
