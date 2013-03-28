@@ -150,4 +150,24 @@ class Model_Chats extends CI_Model {
 				->result();
 		return $query;
 	}
+	
+	/**
+	 *Removes a user from a specific chat
+	 *chat_id - ID of the chat to remove the user from
+	 *user_id - User who is to be removed
+	 *returns - true if unsubscribed, false if not
+	 */
+	function unsubscribe_user($chat_id,$user_id)
+	{
+		$this->db->where('user_id', $user_id)
+			->where('chat_id', $chat_id)
+			->from('lc_chat_participants')
+			->delete();
+		if($this->db->affected_rows() == 0)
+		{
+			return false;
+		}
+		else
+			return true;
+	}
 }
