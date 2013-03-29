@@ -93,5 +93,182 @@ class Model_Chats extends CI_Model {
 				->result();
 		return $query;
 	}
+	
+	/**
+	 * Checks if the specified user is subscribed to the specified chat.
+	 * user_id - ID of the user
+	 * chat_id - integer ID of the chat
+	 * returns - TRUE if user is subscribed, FALSE otherwise.
+	 */
+	function is_user_subscribed($user_id,$chat_id)
+	{
+		$query = $this->db
+				->where('user_id',$user_id)
+				->where('chat_id',$chat_id)
+				->from('lc_chat_participants')
+				->get()
+				->result();
+		if (count($query) > 0)
+			return true;
+		return false;
+	}
+	
+	/**
+	 * Sends a message from the specified user to the specified chat room.
+	 * user_id - ID of the message author
+	 * chat_id - ID of the chat room the message is destined for.
+	 * message_string - SANITIZED message string.
+	 * returns - NULL or FALSE if failed.
+	 */
+	function send_message($user_id,$chat_id,$message_string)
+	{
+		$data = array(
+				'chat_id'	=> $chat_id,
+				'user_id'	=> $user_id,
+				'send_time'	=> time(),
+				'message_string'=> $message_string
+				);
+		return $this->db->insert('lc_chat_messages', $data); //Should return NULL or FALSE if failed.
+	}
+	
+	/**
+	 * Gets the specified number of latest messages from a chat room
+	 * chat_id - ID of chat to fetch from
+	 * num_lines - Number of lines to retrieve
+	 * returns - array of results
+	 */
+	function get_num_latest_messages($chat_id,$num_lines = 100)
+	{
+		$q = 'SELECT * FROM (
+				SELECT * FROM `lc_chat_messages`
+				WHERE `chat_id` = ' . $chat_id . '
+				ORDER BY send_time
+				DESC LIMIT ' . $num_lines . '
+			) sub
+			ORDER BY send_time ASC';
+		$query = $this->db->query($q)
+				->result();
+		return $query;
+	}
+	
+	/**
+	 * Gets messages from a chat room that were sent AFTER the specified time.
+	 * chat_id - ID of chat to fetch from
+	 * time - Time after which to fetch chat messages
+	 * returns - array of results
+	 */
+	function get_messages_after_time($chat_id,$time)
+	{
+		$query = $this->db
+				->where('chat_id',$chat_id)
+				->where('send_time >=',$time)
+				->from('lc_chat_messages')
+				->order_by("send_time", "asc")
+				->get()
+				->result();
+		return $query;
+	}
+	
+	/**
+	 *Adds a message to the flagged message table
+	 *message_id - ID of message that has been flagged
+	 *reporter_id - ID of user that reported message
+	 *reason - string that describes why message was reported
+	 *time - time message was reported
+	 *returns - NULL or FALSE if failed.
+	 */
+	function flag_message($message_id,$reporter_id,$reason,$time)
+	{
+		$data = array(
+			'message_id'=>$message_id,
+			'reporter_id'=>$reporter_id,
+			'reason'=>$reason,
+			'time_submitted'=>$time	
+		);
+		
+		return $this->db->insert('lc_chat_messages_flagged', $data);
+	}
+	
+	/**
+	 *Removes a user from a specific chat
+	 *chat_id - ID of the chat to remove the user from
+	 *user_id - User who is to be removed
+	 *returns - 1 if successful, 0 if not.
+	 */
+	function unsubscribe_user($chat_id,$user_id)
+	{
+		$count = $this->db->count_all('lc_chat_participants');
+		$this->db
+			->where('chat_id', $chat_id)
+			->where('user_id', $user_id)
+			->from('lc_chat_participants')
+			->delete();
+		return $count - $this->db->count_all();
+	}
+	
+	/**
+	 *Adds a new chat to the database
+	 *chat_info - Array of chat information to be added into the database. 
+	 *returns - NULL or FALSE if failed.
+	 */
+	function add_chat($chat_info)
+	{
+		
+		if($chat_info == NULL)
+		{
+			return false;
+		}
+		
+		$data = array(
+			'id_string' => $chat_info['id_string'],
+			'subject_id' => $chat_info['subject_id'],
+			'course_number' => $chat_info['course_number'],
+			'name' => $chat_info['name'],
+			'institution_id' => $chat_info['institution_id'],
+			'room_id' => $chat_info['room_id'],
+			'start_time' => $chat_info['start_time'],
+			'end_time' => $chat_info['end_time'],
+			'dow_monday' => $chat_info['dow_monday'],
+			'dow_tuesday' => $chat_info['dow_tuesday'],
+			'dow_wednesday' => $chat_info['dow_wednesday'],
+			'dow_thursday' => $chat_info['dow_thursday'],
+			'dow_friday' => $chat_info['dow_friday'],
+			'dow_saturday' => $chat_info['dow_saturday'],
+			'dow_sunday' => $chat_info['dow_sunday'],
+			);
+		
+		return $this->db->insert('lc_chats', $chat_info);
+	}
+	
+	/**
+	 *Remove a chat from the database, make sure to clear any participants.
+	 *chat_id - the ID number of the chat room to be removed
+	 *returns true if successful, false if failed
+	 */
+	function remove_chat($chat_id)
+	{
+		
+		$count = $this->db->count_all('lc_chats');
+		
+		$this->db
+			->where('id', $chat_id)
+			->from('lc_chats')
+			->delete();
 
+		
+		$this->db
+			->where('chat_id', $chat_id)
+			->from('lc_chat_participants')
+			->delete();
+				
+						
+		if($count - $this->db->count_all('lc_chats') <= 0)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
 }

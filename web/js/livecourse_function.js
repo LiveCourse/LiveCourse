@@ -2,6 +2,8 @@
  * One-use specific javascript functions to be used in the LiveCourse HTML5 UI.
  */
 
+var eventsource;
+
 /**
  * Shows a dialog to the user to be used for logging in.
  * allow_close - whether or not we should allow the log-in dialog to be closed.
@@ -363,6 +365,9 @@ function switch_chat_room(room)
 			// Set selected class icon
 			$("#CourseList li").removeClass("selected");
 			$("#CourseList #"+room).addClass("selected");
+			$("#ChatFrame h1").css('overflow','hidden');
+			if ($("#ChatFrame h1").height() > 0)
+				$("#ChatFrame h1").height($("#ChatFrame h1").height());
 			// Header flies away...
 			$("#ChatFrame h1").animate({"padding-left":'328px',"opacity":0.0},200, "easeInQuint", function ()
 			{
@@ -370,8 +375,28 @@ function switch_chat_room(room)
 				$("#ChatFrame h1").html(data.name);
 				Cufon.refresh(); //Reload font
 				//And flies back.
-				$("#ChatFrame h1").animate({"padding-left":0,"opacity":1.0},350, "easeOutQuart", null);
+				$("#ChatFrame h1").animate({"padding-left":0,"opacity":1.0},350, "easeOutQuart", function ()
+				{
+					$("#ChatFrame h1").css('overflow','');
+					$("#ChatFrame h1").height('');
+				});
 			});
+			
+			//Load recent chat...
+			load_recent_chat_contents();
+			
+			//Add eventsource for updating with new messages...
+			if (typeof eventsource != "undefined") //Close existing one
+				eventsource.close();
+			var event_auth_code = Sha1.hash(auth_token+auth_pass+"chats/eventsource");
+			eventsource = new EventSource('index.php/api/chats/eventsource?auth_token='+auth_token+'&auth_code='+event_auth_code+'&chat_id='+current_chat_room);
+			eventsource.onmessage = function(e) {
+				var data = JSON.parse(e.data);
+				console.log(data);
+				$("#ChatMessages ul").append('<li><div class="author">'+data.user_id+'</div><div class="timestamp">'+data.send_time+'</div><div class="messageContainer"><div class="message">'+data.message_string+'</div></div><div style="clear:both;"></div></li>');
+				$("#ChatMessages").animate({ scrollTop: $('#ChatMessages ul').height()}, 250);
+			};
+			
 			progress_indicator_hide(switch_ind);
 		},
 		function (xhr, status)
@@ -380,5 +405,70 @@ function switch_chat_room(room)
 			errdialog.find(".DialogContainer").addClass("error");
 			dialog_show(errdialog);
 			progress_indicator_hide(switch_ind);
+		});
+}
+
+/**
+ * Sends a message to the current chat room.
+ * message - Message string to send.
+ * clear_me - JQuery element to clear after the process successfully completes.
+ */
+function send_message(message_string,clear_me)
+{
+
+	if (message_string.length < 1)
+	{
+		return;
+	}
+	
+	if (current_chat_room.length <= 0)
+	{
+		var errdialog = dialog_new("Error Sending Message","You have not selected a chat room to participate in.",true,true);
+		errdialog.find(".DialogContainer").addClass("error");
+		dialog_show(errdialog);
+		return;
+	}
+	
+	var send_ind = progress_indicator_show();
+	var _clear_me = clear_me;
+	call_api("chats/send","POST",{chat_id: current_chat_room, message: message_string},
+		function (data) {
+			if (typeof _clear_me != "undefined")
+			{
+				_clear_me.val("");
+			}
+			progress_indicator_hide(send_ind);
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Sending Message","An error occurred while attempting to send your message.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+			progress_indicator_hide(send_ind);
+		});
+}
+
+/**
+ * Loads recent chat history for selected chat room.
+ */
+function load_recent_chat_contents()
+{
+	var load_ind = progress_indicator_show();
+	call_api("chats/fetch_recent","GET",{chat_id: current_chat_room},
+		function (data) {
+			$("#ChatMessages ul").html('<li class="spacer"></li>');
+			for (i in data)
+			{
+				$("#ChatMessages ul").append('<li><div class="author">'+data[i].user_id+'</div><div class="timestamp">'+data[i].send_time+'</div><div class="messageContainer"><div class="message">'+data[i].message_string+'</div></div><div style="clear:both;"></div></li>');
+			}
+			$("#ChatMessages").animate({ scrollTop: $('#ChatMessages ul').height()}, 250);
+			progress_indicator_hide(load_ind);
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Loading Messages","An error occurred while attempting to load your messages.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+			progress_indicator_hide(load_ind);
 		});
 }

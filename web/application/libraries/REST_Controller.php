@@ -155,15 +155,18 @@ abstract class REST_Controller extends CI_Controller
 		{
 			$this->load->model('Model_Auth');
 			preg_match("/LiveCourseAuth token=([a-zA-Z0-9]{16}) auth=([a-zA-Z0-9]{40})/",$_SERVER['HTTP_AUTH'],$authcodes);
-			$users = $this->Model_Auth->fetch_user_by_token($authcodes[1]);
-			if (count($users) > 0) //Auth token was valid... now let's verify their request.
+			if (count($authcodes) >= 3)
 			{
-				$method = substr($this->uri->uri_string,4); //Strip api/ out of their request string
-				//Generate the expected code
-				$expected_code = sha1($authcodes[1].$users[0]->password.$method);
-				if ($expected_code == $authcodes[2])
+				$users = $this->Model_Auth->fetch_user_by_token($authcodes[1]);
+				if (count($users) > 0) //Auth token was valid... now let's verify their request.
 				{
-					$this->authenticated_as = $users[0]->id;
+					$method = substr($this->uri->uri_string,4); //Strip api/ out of their request string
+					//Generate the expected code
+					$expected_code = sha1($authcodes[1].$users[0]->password.$method);
+					if ($expected_code == $authcodes[2])
+					{
+						$this->authenticated_as = $users[0]->id;
+					}
 				}
 			}
 		}

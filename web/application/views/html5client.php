@@ -41,6 +41,18 @@
 				} else {
 					login_show();
 				}
+				
+				// Code to submit message on enter.
+				$('#form_message textarea').keydown(function() {
+					if (event.keyCode == 13) {
+						send_message($(this).val(),$(this));
+						return false;
+					}
+				});
+				$("#form_message").submit(function() {
+					send_message($(this).find("textarea").val(),$(this).find("textarea"));
+					return false;
+				});
 			});
 		</script>
 		
@@ -61,11 +73,19 @@
 		</div>
 		
 		<div id="ChatFrame">
-			<h1></h1>
+			<div style="position:relative;background-image:url(img/gray_opacity_75.png);z-index:10;">
+				<h1></h1>
+			</div>
+			<div id="ChatMessages">
+				<ul>
+				</ul>
+			</div>
 		</div>
 		
 		<div id="ComposeFrame">
-			<textarea name="message" placeholder="Type your message here."></textarea>
+			<form id="form_message">
+				<textarea name="message" placeholder="Type your message here."></textarea>
+			</form>
 		</div>
 		
 		<div id="RightSideBar">

@@ -13,7 +13,7 @@ setlocale(LC_ALL, 'en_US.UTF8');
 class Auth extends REST_Controller
 {
 	// Index command is run when no command is specified.
-	
+
 	/**
 	 * Request authentication.
 	 * email - e-mail of user to authenticate as
@@ -40,7 +40,7 @@ class Auth extends REST_Controller
 			return;
 		}
 	}
-	
+
 	/**
 	 * Verifies authorization status
 	 */
