@@ -155,7 +155,7 @@ abstract class REST_Controller extends CI_Controller
 		{
 			$this->load->model('Model_Auth');
 			preg_match("/LiveCourseAuth token=([a-zA-Z0-9]{16}) auth=([a-zA-Z0-9]{40})/",$_SERVER['HTTP_AUTH'],$authcodes);
-			if (count($authcodes) >= 2)
+			if (count($authcodes) >= 3)
 			{
 				$users = $this->Model_Auth->fetch_user_by_token($authcodes[1]);
 				if (count($users) > 0) //Auth token was valid... now let's verify their request.

@@ -466,6 +466,82 @@ class Chats extends REST_Controller
 	}
 	
 	/**
+	 * EventSource function called by the HTML 5 client to stream chat updates from a room.
+	 */
+	function eventsource_get()
+	{
+		// verify authentication first. Can't do this through headers...
+		$this->load->model('Model_Auth');
+		$this->load->model('Model_Chats');
+		$auth_token = $this->get('auth_token');
+		$auth_code = $this->get('auth_code');
+		$chat_id_string = $this->get('chat_id');
+		
+		$users = $this->Model_Auth->fetch_user_by_token($auth_token);
+		if (count($users) > 0) //Auth token was valid... now let's verify their request.
+		{
+			$method = substr($this->uri->uri_string,4); //Strip api/ out of their request string
+			//Generate the expected code
+			$expected_code = sha1($auth_token.$users[0]->password.$method);
+			if ($expected_code == $auth_code)
+			{
+				$this->authenticated_as = $users[0]->id;
+			}
+		}
+		
+		$user_id = $this->authenticated_as;
+		
+		//Make sure they gave us a user id.
+		if ($user_id <= 0)
+		{
+			$this->response(NULL,401);
+			return;
+		}
+		
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		
+		//Check to make sure user is joined to this chat.
+		if (!$this->Model_Chats->is_user_subscribed($user_id,$chat_id))
+		{
+			$this->response(NULL,401);
+			return;
+		}
+		
+		header('Content-Type: text/event-stream');
+		header('Cache-Control: no-cache');
+
+		$startedAt = time();
+
+		do {
+			// Cap connections at 60 seconds. The browser will reopen the connection on close
+			if ((time() - $startedAt) > 60) {
+				die();
+			}
+
+			$msgs = $this->Model_Chats->get_messages_after_time($chat_id,time()-1);
+			foreach ($msgs as $msg)
+			{
+				echo "id: $msg->id" . PHP_EOL;
+				echo "data: {\n";
+				foreach($msg as $key => $value) {
+					echo "data: \"$key\": \"$value\",\n";
+				}
+				echo "data: \"done\": \"yup.\"\n";
+				echo "data: }\n";
+			}
+			echo PHP_EOL;
+			ob_flush();
+			flush();
+			sleep(1);
+
+			// If we didn't use a while loop, the browser would essentially do polling
+			// every ~3seconds. Using the while, we keep the connection open and only make
+			// one request.
+		} while(true);
+	}
+	
+	/**
 	 *Remove a chat room
 	 *chat_id_string - The string of the Chat to be removed
 	 *returns 200 on success, 404 on failure

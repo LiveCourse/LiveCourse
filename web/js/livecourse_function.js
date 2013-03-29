@@ -2,6 +2,8 @@
  * One-use specific javascript functions to be used in the LiveCourse HTML5 UI.
  */
 
+var eventsource;
+
 /**
  * Shows a dialog to the user to be used for logging in.
  * allow_close - whether or not we should allow the log-in dialog to be closed.
@@ -383,6 +385,18 @@ function switch_chat_room(room)
 			//Load recent chat...
 			load_recent_chat_contents();
 			
+			//Add eventsource for updating with new messages...
+			if (typeof eventsource != "undefined") //Close existing one
+				eventsource.close();
+			var event_auth_code = Sha1.hash(auth_token+auth_pass+"chats/eventsource");
+			eventsource = new EventSource('index.php/api/chats/eventsource?auth_token='+auth_token+'&auth_code='+event_auth_code+'&chat_id='+current_chat_room);
+			eventsource.onmessage = function(e) {
+				var data = JSON.parse(e.data);
+				console.log(data);
+				$("#ChatMessages ul").append('<li><div class="author">'+data.user_id+'</div><div class="timestamp">'+data.send_time+'</div><div class="messageContainer"><div class="message">'+data.message_string+'</div></div><div style="clear:both;"></div></li>');
+				$("#ChatMessages").animate({ scrollTop: $('#ChatMessages ul').height()}, 250);
+			};
+			
 			progress_indicator_hide(switch_ind);
 		},
 		function (xhr, status)
@@ -447,6 +461,7 @@ function load_recent_chat_contents()
 			{
 				$("#ChatMessages ul").append('<li><div class="author">'+data[i].user_id+'</div><div class="timestamp">'+data[i].send_time+'</div><div class="messageContainer"><div class="message">'+data[i].message_string+'</div></div><div style="clear:both;"></div></li>');
 			}
+			$("#ChatMessages").animate({ scrollTop: $('#ChatMessages ul').height()}, 250);
 			progress_indicator_hide(load_ind);
 		},
 		function (xhr, status)
