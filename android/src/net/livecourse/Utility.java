@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * @author Darren
  *
  */
-public class REST {
+public class Utility {
 
 	/**
 	 * This method checks the email string to see if it is a valid email string.
