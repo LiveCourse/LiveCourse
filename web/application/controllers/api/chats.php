@@ -253,7 +253,7 @@ class Chats extends REST_Controller
 
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
-		$chat_id = $this->post('chat_id');
+		$chat_id_string = $this->post('id');
 
 		//Make sure they gave us a user id.
 		if ($user_id <= 0)
@@ -287,10 +287,10 @@ class Chats extends REST_Controller
 		}
 
 		//Well, all that error checking done, lets unsubscribe the user.
-		$remove = $this->Model_Chats->unsubscribe_user($user_id,$chat_id);
+		$remove = $this->Model_Chats->unsubscribe_user($chat_id,$user_id);
 		if ($remove)
 		{
-			$this->response(true,200);
+			$this->response('User successfully removed!',200);
 			return;
 		}
 		else

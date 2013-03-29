@@ -178,18 +178,11 @@ class Model_Chats extends CI_Model {
 	 */
 	function unsubscribe_user($chat_id,$user_id)
 	{
-		$this->db->where('user_id', $user_id)
+		return $this->db
 			->where('chat_id', $chat_id)
+			->where('user_id', $user_id)
 			->from('lc_chat_participants')
 			->delete();
-		if($this->db->affected_rows() == 0)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
 	}
 	
 	/**
