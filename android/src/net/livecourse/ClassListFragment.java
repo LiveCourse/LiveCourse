@@ -9,11 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-public class ClassListFragment extends SherlockFragment implements OnItemClickListener
+public class ClassListFragment extends SherlockFragment implements OnItemClickListener,OnItemLongClickListener
 {
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
@@ -94,6 +95,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
          * The listener for clicking on an item in the list view
          */
         classListView.setOnItemClickListener(this);
+        classListView.setOnItemLongClickListener(this);
  
         return classListLayout;
     }
@@ -121,5 +123,12 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		tabsAdapter.getPager().setCurrentItem(1);
 		tabsAdapter.getActivity().setTitle(adapter.getItem(arg2));
 		
+	}
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
+			long arg3) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

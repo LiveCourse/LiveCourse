@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -17,9 +19,8 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 
-public class ChatFragment extends SherlockFragment implements OnClickListener,OnMenuItemClickListener{
+public class ChatFragment extends SherlockFragment implements OnClickListener,OnItemLongClickListener{
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
 	
@@ -99,9 +100,10 @@ public class ChatFragment extends SherlockFragment implements OnClickListener,On
 		
 
 		/**
-		 * Sets the onClickListener
+		 * Sets the listeners
 		 */
 		sendButtonView.setOnClickListener(this);
+		messageListView.setOnItemLongClickListener(this);
 		
 		return chatLayout;
 	}
@@ -176,7 +178,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener,On
 	}
 
 	@Override
-	public boolean onMenuItemClick(MenuItem item) {
+	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
+			long arg3) {
 		// TODO Auto-generated method stub
 		return false;
 	}
