@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.7
+-- version 3.4.11.1deb1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 25, 2013 at 09:28 PM
--- Server version: 5.5.30
--- PHP Version: 5.4.12
+-- Generation Time: Mar 29, 2013 at 01:09 AM
+-- Server version: 5.5.27
+-- PHP Version: 5.4.6-1ubuntu1.2
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `lc_authentication` (
   `lastused` int(11) NOT NULL COMMENT 'Last time this token was used to successfully authenticate',
   `device` int(11) NOT NULL COMMENT 'identifier for device that this authentication took place using',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `lc_chats` (
   `dow_saturday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Saturday',
   `dow_sunday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Sunday',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -88,6 +88,21 @@ CREATE TABLE IF NOT EXISTS `lc_chat_messages` (
   `user_id` int(11) NOT NULL COMMENT 'ID of user that sent this message',
   `send_time` int(11) NOT NULL COMMENT 'Time that this message was sent in UNIX Epoch',
   `message_string` varchar(2048) NOT NULL COMMENT 'Message content',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lc_chat_messages_flagged`
+--
+
+CREATE TABLE IF NOT EXISTS `lc_chat_messages_flagged` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'unique id of the flagged message entry',
+  `message_id` int(11) NOT NULL COMMENT 'ID of the message flagged',
+  `reporter_id` int(11) NOT NULL COMMENT 'ID of the user who flagged the message',
+  `reason` varchar(1024) NOT NULL COMMENT 'Reason for reporting the message',
+  `time_submitted` int(11) NOT NULL COMMENT 'Time at which the user reported the message. Seconds since unix epoch.',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -115,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `lc_institutions` (
   `name` varchar(255) NOT NULL COMMENT 'Name of institution',
   `zip` varchar(5) NOT NULL COMMENT 'Zip code of institution location',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -142,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `lc_subjects` (
   `name` varchar(256) NOT NULL COMMENT 'Name of subject',
   `code` varchar(5) NOT NULL COMMENT 'Code (Computer science = CS, etc)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -157,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `display_name` varchar(255) NOT NULL,
   `jointime` int(11) NOT NULL COMMENT 'User''s time of sign-up in UNIX epoch',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
