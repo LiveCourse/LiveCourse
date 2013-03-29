@@ -2,6 +2,7 @@ package net.livecourse;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -12,7 +13,7 @@ import com.actionbarsherlock.app.SherlockActivity;
  * @author Darren
  *
  */
-public class RegistrationActivity extends SherlockActivity
+public class RegistrationActivity extends SherlockActivity implements OnClickListener
 {
 	int check = 0;
 	EditText testText;
@@ -45,5 +46,12 @@ public class RegistrationActivity extends SherlockActivity
 			
 			check =0;
 		}
+	}
+
+	@Override
+	public void onClick(View v) 
+	{
+		
+		
 	}
 }

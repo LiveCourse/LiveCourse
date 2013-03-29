@@ -3,9 +3,11 @@ package net.livecourse;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,8 +16,10 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 
-public class ChatFragment extends SherlockFragment {
+public class ChatFragment extends SherlockFragment implements OnClickListener,OnMenuItemClickListener{
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
 	
@@ -95,28 +99,9 @@ public class ChatFragment extends SherlockFragment {
 		
 
 		/**
-		 * Handles the send button. The button itself will most likely be
-		 * replaced with a cooler looking image And there probably is a better
-		 * way to implement a listener than this but I will need to look that up
-		 * later
+		 * Sets the onClickListener
 		 */
-		sendButtonView.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				
-				if(!sendMessageEditTextView.getText().equals(""))
-				{
-					/**
-					 * Update the list and sends update the adapter, then change
-					 * EditText back to blank
-					 */
-					messages.add(sendMessageEditTextView.getText().toString());
-			        adapter.notifyDataSetChanged();
-					sendMessageEditTextView.setText("");
-				}
-			}
-		});
+		sendButtonView.setOnClickListener(this);
 		
 		return chatLayout;
 	}
@@ -132,8 +117,23 @@ public class ChatFragment extends SherlockFragment {
 	{
 		inflater.inflate(R.menu.chat_fragment_menu,menu);
 		super.onCreateOptionsMenu(menu, inflater);
+		
 	}
 	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case R.id.view_history_item:
+				Intent historyIntent = new Intent(this.getActivity(), HistoryViewActivity.class);
+				this.startActivity(historyIntent);
+				break;
+		}
+
+		return super.onOptionsItemSelected(item);		
+	}
+
 	public String getCurrentClass()
 	{
 		return CURRENT_CLASS;
@@ -142,6 +142,43 @@ public class ChatFragment extends SherlockFragment {
 	public void setCurrentClass(String className)
 	{
 		CURRENT_CLASS = className;
+	}
+	
+	/**
+	 * Handles the send button. The button itself will most likely be
+	 * replaced with a cooler looking image And there probably is a better
+	 * way to implement a listener than this but I will need to look that up
+	 * later
+	 */
+	@Override
+	public void onClick(View v)
+	{
+		/**
+		 * This is the Send Button
+		 */
+		if(v.getId() == R.id.send_button_view)
+		{
+			/**
+			 * Checks to see if there are any text in the send message box, if there are no
+			 * text, don't send any
+			 */
+			if(!sendMessageEditTextView.getText().toString().equals(""))
+			{
+				/**
+				 * Update the list and sends update the adapter, then change
+				 * EditText back to blank
+				 */
+				messages.add(sendMessageEditTextView.getText().toString());
+		        adapter.notifyDataSetChanged();
+				sendMessageEditTextView.setText("");
+			}
+		}
+	}
+
+	@Override
+	public boolean onMenuItemClick(MenuItem item) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

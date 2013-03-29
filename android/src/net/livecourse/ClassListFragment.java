@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-public class ClassListFragment extends SherlockFragment {
+public class ClassListFragment extends SherlockFragment implements OnItemClickListener
+{
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
 	
@@ -91,27 +93,7 @@ public class ClassListFragment extends SherlockFragment {
         /**
          * The listener for clicking on an item in the list view
          */
-        classListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				/**
-				 * Once a class is selected it'll expand the tabs
-				 */
-				tabsAdapter.CONTENT = new String[] { "Class List", "Chat", "Participants"};
-				tabsAdapter.setCount(3);
-				tabsAdapter.notifyDataSetChanged();
-				
-				
-				/**
-				 * And direct us to the chat for the class we are in
-				 */
-				tabsAdapter.getPager().setCurrentItem(1);
-				tabsAdapter.getActivity().setTitle(adapter.getItem(arg2));
-			}
-        	
-		});
+        classListView.setOnItemClickListener(this);
  
         return classListLayout;
     }
@@ -121,4 +103,23 @@ public class ClassListFragment extends SherlockFragment {
         super.onSaveInstanceState(outState);
         outState.putString(KEY_CONTENT, mContent);
     }
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
+	{
+		/**
+		 * Once a class is selected it'll expand the tabs
+		 */
+		tabsAdapter.CONTENT = new String[] { "Class List", "Chat", "Participants"};
+		tabsAdapter.setCount(3);
+		tabsAdapter.notifyDataSetChanged();
+		
+		
+		/**
+		 * And direct us to the chat for the class we are in
+		 */
+		tabsAdapter.getPager().setCurrentItem(1);
+		tabsAdapter.getActivity().setTitle(adapter.getItem(arg2));
+		
+	}
 }
