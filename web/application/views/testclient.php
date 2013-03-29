@@ -122,6 +122,7 @@
 				bottom:0;
 				width:320px;
 				background-color:#B8C9E5;
+				overflow-y:auto;
 			}
 
 			#ParamSideBar h1
@@ -162,6 +163,10 @@
 		<script src="<?php echo(base_url("fonts/font.cicle.js")); ?>"></script>
 		
 		<script type="text/javascript">
+			function addKey()
+			{
+				$("#keys").append('<input name="key[]" placeholder="Key" style="width:112px;"> <input name="value[]" placeholder="Value" style="width:112px;">');
+			}
 			function escapeHtml(text) {
 				return text
 					.replace(/&/g, "&amp;")
@@ -272,6 +277,7 @@
 						},"text");
 					return false;
 				});
+				$('#addKeyButton').click(addKey);
 			});
 		</script>
 		
@@ -295,9 +301,13 @@
 					<option value="PUT">PUT</option>
 					<option value="DELETE">DELETE</option>
 				</select>
-				<input name="key[]" placeholder="Key" style="width:112px;"> <input name="value[]" placeholder="Value" style="width:112px;"><br>
-				<input name="key[]" placeholder="Key" style="width:112px;"> <input name="value[]" placeholder="Value" style="width:112px;"><br>
-				<input name="key[]" placeholder="Key" style="width:112px;"> <input name="value[]" placeholder="Value" style="width:112px;">
+				<div id="keys">
+					<input name="key[]" placeholder="Key" style="width:112px;"> <input name="value[]" placeholder="Value" style="width:112px;"><br>
+					<input name="key[]" placeholder="Key" style="width:112px;"> <input name="value[]" placeholder="Value" style="width:112px;"><br>
+					<input name="key[]" placeholder="Key" style="width:112px;"> <input name="value[]" placeholder="Value" style="width:112px;">
+				</div>
+				<a id="addKeyButton" href="javascript:;">Add Key</a>
+				<br>
 				<input type="submit" value="Submit">
 			</form>
 		</div>
