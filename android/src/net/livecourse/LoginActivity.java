@@ -60,15 +60,15 @@ public class LoginActivity extends SherlockFragmentActivity{
 		/**
 		 * Code to confirm correct entry of email and password fields
 		 * 
-		 * First use the isEmailValid method from the REST ultity class to check if the email field is correct,
+		 * First use the isEmailValid method from the Utility ultity class to check if the email field is correct,
 		 * Then check minimum and maximum password length
 		 */
-		if(!REST.isEmailValid(loginEmailEditTextView.getText().toString()))
+		if(!Utility.isEmailValid(loginEmailEditTextView.getText().toString()))
 		{
 			errorList.add("Invalid Email");
 			hasError = true;
 		}
-		if(!REST.isPasswordValid(loginPasswordEditTextView.getText().toString()))
+		if(!Utility.isPasswordValid(loginPasswordEditTextView.getText().toString()))
 		{	
 			errorList.add("Invalid Password");
 			hasError = true;

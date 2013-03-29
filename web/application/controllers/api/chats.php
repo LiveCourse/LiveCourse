@@ -100,6 +100,28 @@ class Chats extends REST_Controller
 	}
 
 	/**
+	 *Flags a message as inapropriate
+	 */
+	public function flag_message_post()
+	{
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
+		$this->load->model('Model_Chats');
+	
+		$message_id = $this->post('message_id');
+		$reporter_id = $this->authenticated_as;
+		$reason = $this->post('reason');
+		$time = time();
+	
+		$this->Model_Chats->flag_message($message_id,$reporter_id,$reason,$time);
+	
+		return;
+	}
+	
+	/**
 	 *Joins a user to a chat
 	 *returns the information of the specified chat if successful
 	 */
