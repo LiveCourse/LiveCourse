@@ -3,6 +3,7 @@ package net.livecourse;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 
 public class ChatFragment extends SherlockFragment {
 
@@ -108,7 +113,7 @@ public class ChatFragment extends SherlockFragment {
 				}
 			}
 		});
-
+		
 		return chatLayout;
 	}
 
@@ -116,6 +121,25 @@ public class ChatFragment extends SherlockFragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString(KEY_CONTENT, mContent);
+	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+	{
+		inflater.inflate(R.menu.chat_fragment_menu,menu);
+		
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+	
+	
+	/**
+	 * This method handles when the menu button "View History" is clicked and
+	 * sends the user to the history activity
+	 */
+	public void onViewHistoryClick(View v)
+	{
+		Intent historyIntent = new Intent(getActivity(), HistoryViewActivity.class);
+		getActivity().startActivity(historyIntent);
 	}
 	
 	public String getCurrentClass()
