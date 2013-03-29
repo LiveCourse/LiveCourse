@@ -5,6 +5,7 @@ import com.actionbarsherlock.view.*;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
@@ -19,15 +20,15 @@ public class MainActivity extends SherlockFragmentActivity {
 	/**
 	 * Declares the required objects for the swipey tabs.
 	 */
-    TabsFragmentAdapter mAdapter;
-    ViewPager mPager;
-    PageIndicator mIndicator;
+    private TabsFragmentAdapter mAdapter;
+    private ViewPager mPager;
+    private PageIndicator mIndicator;
 
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) 
+	{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
 
         /**
          * The following code initializes the tabs.
@@ -59,14 +60,17 @@ public class MainActivity extends SherlockFragmentActivity {
             	
             	if(position == 0)
             	{
+            		mAdapter.getItem(1).setMenuVisibility(false);
 
             	}
             	if(position == 1)
             	{
-
+            		mAdapter.getItem(1).setMenuVisibility(true);
             	}
             	if(position == 2)
             	{
+            		mAdapter.getItem(1).setMenuVisibility(false);
+
 
             	}
             }
@@ -108,5 +112,15 @@ public class MainActivity extends SherlockFragmentActivity {
 		}
 		
 		return super.onOptionsItemSelected(item);
+	}
+	
+	/**
+	 * This method handles when the menu button "View History" is clicked and
+	 * sends the user to the history activity
+	 */
+	public void onViewHistoryClick(MenuItem item)
+	{
+		Intent historyIntent = new Intent(this, HistoryViewActivity.class);
+		this.startActivity(historyIntent);
 	}
 }

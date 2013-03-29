@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -22,7 +18,8 @@ public class ParticipantsFragment extends SherlockFragment
 	/**
 	 * This is used to add the other tabs once a class is selected
 	 */
-	private TabsFragmentAdapter tabsAdapter;
+	//Not currently used
+	//private TabsFragmentAdapter tabsAdapter;
 	
 	/**
 	 * The XML views

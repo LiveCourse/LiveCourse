@@ -3,7 +3,6 @@ package net.livecourse;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +14,6 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 
 public class ChatFragment extends SherlockFragment {
 
@@ -70,6 +67,13 @@ public class ChatFragment extends SherlockFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
 		/**
+		 * Settings for the fragment
+		 * Allows adding stuff for the options menu
+		 */
+		this.setHasOptionsMenu(true);
+		this.setMenuVisibility(false);
+		
+		/**
 		 * Initialize the temporary list
 		 */
 		messages = new ArrayList<String>();
@@ -91,7 +95,7 @@ public class ChatFragment extends SherlockFragment {
 		
 
 		/**
-		 * Handels the send button. The button itself will most likely be
+		 * Handles the send button. The button itself will most likely be
 		 * replaced with a cooler looking image And there probably is a better
 		 * way to implement a listener than this but I will need to look that up
 		 * later
@@ -127,19 +131,7 @@ public class ChatFragment extends SherlockFragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
 	{
 		inflater.inflate(R.menu.chat_fragment_menu,menu);
-		
 		super.onCreateOptionsMenu(menu, inflater);
-	}
-	
-	
-	/**
-	 * This method handles when the menu button "View History" is clicked and
-	 * sends the user to the history activity
-	 */
-	public void onViewHistoryClick(View v)
-	{
-		Intent historyIntent = new Intent(getActivity(), HistoryViewActivity.class);
-		getActivity().startActivity(historyIntent);
 	}
 	
 	public String getCurrentClass()

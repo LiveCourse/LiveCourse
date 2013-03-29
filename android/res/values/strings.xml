@@ -11,8 +11,7 @@
     <!-- Options Menu Strings -->
     <string name="options_menu_title">Test 1</string>
     <string name="options_sub_menu_1">Sub Menu 1</string>
-    <string name="options_sub_menu_2">Sub Menu 2</string>
-    
+    <string name="options_sub_menu_2">Sub Menu 2</string>    
     
     <!-- 	Chat Layout Strings
     		These are the strings used in the chat fragment, 

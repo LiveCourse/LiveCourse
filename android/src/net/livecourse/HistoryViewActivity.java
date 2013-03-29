@@ -24,7 +24,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity
 	/**
 	 * Temporary list used to populate the history list
 	 */
-	String[] array = {"apple","banana","c","d","e","f","g"}; 
+	String[] array = {"this","is","the","history","e","f","g"}; 
 	ArrayList<String> history;
 	
 	@Override
