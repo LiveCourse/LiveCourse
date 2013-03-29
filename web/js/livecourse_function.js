@@ -477,7 +477,17 @@ function post_message(message,scroll)
 {
 	if (typeof scroll == "undefined")
 		scroll = true;
-	$("#ChatMessages ul").append('<li><div class="author">'+message.user_id+'</div><div class="timestamp">'+message.send_time+'</div><div class="messageContainer"><div class="message">'+message.message_string+'</div></div><div style="clear:both;"></div></li>');
+		
+	//Parse the time stamp.
+	var date = new Date(message.send_time*1000);
+	var currentDate = new Date();
+	//Was this message today?
+	var timestamp = "";
+	if (date.toDateString() != currentDate.toDateString())
+		var timestamp = (('0'+date.getMonth()+1).slice(-2))+"/"+(('0'+date.getDate()+1).slice(-2))+"/"+date.getFullYear()+" @ ";
+	timestamp += (('0'+date.getHours()).slice(-2))+":"+(('0'+date.getMinutes()).slice(-2))+":"+(('0'+date.getSeconds()).slice(-2));
+
+	$("#ChatMessages ul").append('<li><div class="author">'+message.display_name+'</div><div class="timestamp">'+timestamp+'</div><div class="messageContainer"><div class="message">'+message.message_string+'</div></div><div style="clear:both;"></div></li>');
 	last_message_id = message.id;
 	if (scroll)
 		$("#ChatMessages").animate({ scrollTop: $('#ChatMessages ul').height()}, 250);

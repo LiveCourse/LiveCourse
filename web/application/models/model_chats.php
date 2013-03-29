@@ -140,31 +140,14 @@ class Model_Chats extends CI_Model {
 	function get_num_latest_messages($chat_id,$num_lines = 100)
 	{
 		$q = 'SELECT * FROM (
-				SELECT * FROM `lc_chat_messages`
-				WHERE `chat_id` = ' . $chat_id . '
-				ORDER BY send_time
-				DESC LIMIT ' . $num_lines . '
+				SELECT lc_chat_messages.id, lc_chat_messages.chat_id, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_users.email, lc_users.display_name FROM `lc_chat_messages`
+				JOIN lc_users ON lc_users.id = lc_chat_messages.user_id 
+				WHERE lc_chat_messages.chat_id = ' . $chat_id . ' 
+				ORDER BY lc_chat_messages.send_time 
+				DESC LIMIT ' . $num_lines . ' 
 			) sub
 			ORDER BY send_time ASC';
 		$query = $this->db->query($q)
-				->result();
-		return $query;
-	}
-	
-	/**
-	 * Gets messages from a chat room that were sent AFTER the specified time.
-	 * chat_id - ID of chat to fetch from
-	 * time - Time after which to fetch chat messages
-	 * returns - array of results
-	 */
-	function get_messages_after_time($chat_id,$time)
-	{
-		$query = $this->db
-				->where('chat_id',$chat_id)
-				->where('send_time >=',$time)
-				->from('lc_chat_messages')
-				->order_by("send_time", "asc")
-				->get()
 				->result();
 		return $query;
 	}
@@ -178,9 +161,11 @@ class Model_Chats extends CI_Model {
 	function get_messages_after_msg_id($chat_id,$msg_id)
 	{
 		$query = $this->db
-				->where('chat_id',$chat_id)
-				->where('id >',$msg_id)
+				->select('lc_chat_messages.id, lc_chat_messages.chat_id, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_users.email, lc_users.display_name')
+				->where('lc_chat_messages.chat_id',$chat_id)
+				->where('lc_chat_messages.id >',$msg_id)
 				->from('lc_chat_messages')
+				->join('lc_users','lc_users.id = lc_chat_messages.user_id')
 				->order_by("send_time", "asc")
 				->get()
 				->result();
