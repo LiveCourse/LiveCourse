@@ -224,4 +224,5 @@ class Model_Chats extends CI_Model {
 			);
 		
 		return $this->db->insert('lc_chats', $chat_info);
+	}
 }
