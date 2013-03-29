@@ -172,4 +172,44 @@ class Model_Chats extends CI_Model {
 			return true;
 		}
 	}
+	
+	/**
+	 *Adds a new chat to the database
+	 *chat_info - Array of chat information to be added into the database. 
+	 *returns true on success, false on failure
+	 */
+	function add_chat($chat_info)
+	{
+		
+		if($chat_info == NULL)
+		{
+			return false;
+		}
+		
+		$data = array(
+			'id_string' => $chat_info['id_string'],
+			'subject_id' => $chat_info['subject_id'],
+			'course_number' => $chat_info['course_number'],
+			'name' => $chat_info['name'],
+			'institution_id' => $chat_info['institution_id'],
+			'room_id' => $chat_info['room_id'],
+			'start_time' => $chat_info['start_time'],
+			'end_time' => $chat_info['end_time'],
+			'dow_monday' => $chat_info['dow_monday'],
+			'dow_tuesday' => $chat_info['dow_tuesday'],
+			'dow_wednesday' => $chat_info['dow_wednesday'],
+			'dow_thursday' => $chat_info['dow_thursday'],
+			'dow_friday' => $chat_info['dow_friday'],
+			'dow_saturday' => $chat_info['dow_saturday'],
+			'dow_sunday' => $chat_info['dow_sunday'],
+			);
+		
+		$this->db->insert('lc_chats', $chat_info);
+		
+		if($this->db->affected_rows() <= 0)
+		{
+			return false
+		}
+		return true;
+	}
 }

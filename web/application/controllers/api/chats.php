@@ -202,37 +202,37 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("No end time was specified.")),403);
 			return;
 		}
-		if($dow_monday == NULL)
+		if($dow_monday != 0 && $dow_monday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on a Monday.")),403);
 			return;
 		}
-		if($dow_tuesday == NULL)
+		if($dow_tuesday != 0 && $dow_tuesday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on a Tuesday.")),403);
 			return;
 		}
-		if($dow_wednesday == NULL)
+		if($dow_wednesday != 0 && $dow_wednesday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on a Wednesday.")),403);
 			return;
 		}
-		if($dow_thursday == NULL)
+		if($dow_thursday != 0 && $dow_thursday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on a Thursday.")),403);
 			return;
 		}
-		if($dow_friday == NULL)
+		if($dow_friday != 0 && $dow_friday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on Friday.")),403);
 			return;
 		}
-		if($dow_saturday == NULL)
+		if($dow_saturday != 0 && $dow_saturday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on a Saturday.")),403);
 			return;
 		}
-		if($dow_sunday == NULL)
+		if($dow_sunday != 0 && $dow_sunday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on Sunday.")),403);
 			return;

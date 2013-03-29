@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS `lc_chat_messages` (
   `user_id` int(11) NOT NULL COMMENT 'ID of user that sent this message',
   `send_time` int(11) NOT NULL COMMENT 'Time that this message was sent in UNIX Epoch',
   `message_string` varchar(2048) NOT NULL COMMENT 'Message content',
+  `flagged` int(1) NOT NULL COMMENT '1 or 0 to indicate a flagged message',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
