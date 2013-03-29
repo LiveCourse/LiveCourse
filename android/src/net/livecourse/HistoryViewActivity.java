@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public class HistoryViewActivity extends SherlockFragmentActivity
+public class HistoryViewActivity extends SherlockFragmentActivity implements OnItemLongClickListener
 {
 	/**
 	 * View used for the history list
@@ -49,6 +52,14 @@ public class HistoryViewActivity extends SherlockFragmentActivity
 		 */
 		adapter = new ChatListAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1,history);
 		historyListView.setAdapter(adapter);
-        
+		
+		historyListView.setOnItemLongClickListener(this);
+	}
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
+			long arg3) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

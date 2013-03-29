@@ -5,9 +5,9 @@ import com.actionbarsherlock.view.*;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.Toast;
 /**
  * 
@@ -15,7 +15,7 @@ import android.widget.Toast;
  * The tabs are implemented through another fragment and that fragments adapter. 
  * 
  */
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivity extends SherlockFragmentActivity implements OnPageChangeListener{
 	
 	/**
 	 * Declares the required objects for the swipey tabs.
@@ -49,40 +49,8 @@ public class MainActivity extends SherlockFragmentActivity {
         
         
         
-        /**
-         * The following code is used to change UI and logic based on which page the user is on,
-         * it is currently left empty
-         */
-        mIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                //Toast.makeText(MainActivity.this, "Changed to page " + position, Toast.LENGTH_SHORT).show();
-            	
-            	if(position == 0)
-            	{
-            		mAdapter.getItem(1).setMenuVisibility(false);
 
-            	}
-            	if(position == 1)
-            	{
-            		mAdapter.getItem(1).setMenuVisibility(true);
-            	}
-            	if(position == 2)
-            	{
-            		mAdapter.getItem(1).setMenuVisibility(false);
-
-
-            	}
-            }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
+        mIndicator.setOnPageChangeListener(this);
         
     }
 	
@@ -113,14 +81,40 @@ public class MainActivity extends SherlockFragmentActivity {
 		
 		return super.onOptionsItemSelected(item);
 	}
-	
-	/**
-	 * This method handles when the menu button "View History" is clicked and
-	 * sends the user to the history activity
-	 */
-	public void onViewHistoryClick(MenuItem item)
+
+	@Override
+	public void onPageScrollStateChanged(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+    /**
+     * The following code is used to change UI and logic based on which page the user is on,
+     * it is currently left empty
+     */
+	@Override
+	public void onPageSelected(int position) 
 	{
-		Intent historyIntent = new Intent(this, HistoryViewActivity.class);
-		this.startActivity(historyIntent);
+		/**
+		 * Currently just sets the options menu on off
+		 */
+		switch(position)
+		{
+			case 0:
+	    		mAdapter.getItem(1).setMenuVisibility(false);
+	    		break;
+			case 1:
+	    		mAdapter.getItem(1).setMenuVisibility(true);
+	    		break;
+			case 2:
+	    		mAdapter.getItem(1).setMenuVisibility(false);
+	    		break;
+		}		
 	}
 }

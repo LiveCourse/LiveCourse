@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-public class ParticipantsFragment extends SherlockFragment
+public class ParticipantsFragment extends SherlockFragment implements OnItemLongClickListener
 {
 	private static final String KEY_CONTENT = "TestFragment:Content";
 	
@@ -87,6 +89,7 @@ public class ParticipantsFragment extends SherlockFragment
         adapter = new ClassListAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,participants);
         participantsListView.setAdapter(adapter);
         
+        participantsListView.setOnItemLongClickListener(this);
         
         return participantsLayout;
     }
@@ -96,4 +99,11 @@ public class ParticipantsFragment extends SherlockFragment
         super.onSaveInstanceState(outState);
         outState.putString(KEY_CONTENT, mContent);
     }
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
+			long arg3) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
