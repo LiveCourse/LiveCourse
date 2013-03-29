@@ -161,6 +161,17 @@
 		<script src="<?php echo(base_url("fonts/font.cicle.js")); ?>"></script>
 		
 		<script type="text/javascript">
+			function escapeHtml(text) {
+				return text
+					.replace(/&/g, "&amp;")
+					.replace(/</g, "&lt;")
+					.replace(/>/g, "&gt;")
+					.replace(/"/g, "&quot;")
+					.replace(/'/g, "&#039;");
+			}
+		</script>
+		
+		<script type="text/javascript">
 			var auth_token;
 			var auth_pass;
 			Cufon.replace('#LeftSideBar h1,#ParamSideBar h1,#ResultsFrame h1');
@@ -175,8 +186,12 @@
 			 * error_callback - function to be called on error.
 			 * returns - nothing... I don't think... yup nothing.
 			 */
-			function call_api(method,type,data,success_callback,error_callback)
+			function call_api(method,type,data,success_callback,error_callback,plain)
 			{
+				if (typeof plain == "undefined")
+					plain = "json";
+				else
+					plain = "text";
 				var auth_code = Sha1.hash(auth_token+auth_pass+method);
 				$.ajax("api/"+method,{
 					type: type,
@@ -184,11 +199,11 @@
 						"Auth": "LiveCourseAuth token="+auth_token+" auth="+auth_code
 					},
 					data: data,
+					dataType: plain,
 					success: success_callback,
 					error: error_callback
 				});
 			}
-			
 			$(function() {
 				$("#Login").submit(function() {
 					$(this).find("input").prop('disabled',false); //Re-enable the form
@@ -228,6 +243,35 @@
 					});
 					return false;
 				});
+				$("#REST").submit(function () {
+					var func = $(this).find("input[name=call]").val();
+					var method = $(this).find("select[name=method]").val();
+					var values = {};
+					var i = 0;
+					var _this = this;
+					$(this).find("input[name='key\\[\\]']").each(function() {
+						var val = $(_this).find("input[name='key\\[\\]']").eq(i).val();
+						if (val.length > 0)
+						{
+							values[$(_this).find("input[name='key\\[\\]']").eq(i).val()] = $(_this).find("input[name='value\\[\\]']").eq(i).val();
+						}
+						i++;
+					});
+					call_api(func,method,values,
+						function(data)
+						{
+							alert("SUCCESS");
+							data = escapeHtml(data);
+							$("#ResultsFrame").html("<h1>Successful Response:</h1><br>"+data);
+							Cufon.refresh();
+						},
+						function(xhr,status)
+						{
+							$("#ResultsFrame").html("<h1>Error "+xhr.status+"</h1><br>" + escapeHtml(xhr.responseText));
+							Cufon.refresh();
+						},"text");
+					return false;
+				});
 			});
 		</script>
 		
@@ -244,7 +288,7 @@
 		<div id="ParamSideBar">
 			<h1>Parameters</h1>
 			<form id="REST" class="large_form">
-				<input name="call" placeholder="REST Method" class="large_form">
+				<input name="call" placeholder="REST Function" class="large_form">
 				<select name="method">
 					<option value="GET">GET</option>
 					<option value="POST">POST</option>
