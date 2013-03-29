@@ -40,6 +40,14 @@ public class LoginActivity extends SherlockFragmentActivity{
         errorTextView = (TextView) findViewById(R.id.error_text_view);
         
         errorList = new ArrayList<String>();
+        
+        loginEmailEditTextView.requestFocus();
+        
+        /**
+         * These are used for easy login for testing
+         */
+        loginEmailEditTextView.setText("test@test.com");
+        loginPasswordEditTextView.setText("123456789");
 	}
 	
 	/**
