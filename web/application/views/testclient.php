@@ -260,7 +260,6 @@
 					call_api(func,method,values,
 						function(data)
 						{
-							alert("SUCCESS");
 							data = escapeHtml(data);
 							$("#ResultsFrame").html("<h1>Successful Response:</h1><br>"+data);
 							Cufon.refresh();
