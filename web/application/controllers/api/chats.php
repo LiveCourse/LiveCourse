@@ -19,6 +19,8 @@ class Chats extends REST_Controller
 	public function index_get()
 	{
 		$this->load->model('Model_Chats');
+		$this->load->model('Model_Auth');
+		
 		if ($this->authenticated_as <= 0)
 		{
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
@@ -36,7 +38,17 @@ class Chats extends REST_Controller
 	public function info_get()
 	{
 		$this->load->model('Model_Chats');
+		$this->load->model('Model_Auth');
 		$chat_id_string = $this->get('id');
+		
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
 		if (strlen($chat_id_string) <= 0)
 		{
 			$this->response($this->rest_error(array("Empty queries can not be processed.")),403);
@@ -59,7 +71,17 @@ class Chats extends REST_Controller
 	public function search_get()
 	{
 		$this->load->model('Model_Chats');
+		$this->load->model('Model_Auth');
 		$query_string = $this->get('query');
+		
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
 
 		if (strlen($query_string) <= 0)
 		{
@@ -84,6 +106,7 @@ class Chats extends REST_Controller
 	public function join_post()
 	{
 		$this->load->model('Model_Chats');
+		$this->load->model('Model_Auth');
 
 		$chat_id_string = $this->post('id');
 
@@ -151,6 +174,16 @@ class Chats extends REST_Controller
 	public function add_post()
 	{
 		$this->load->model('Model_Auth');
+		$this->load->model('Model_Chats');
+		
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
 		$id_string 		= $this->Model_Auth->_random_string(16);
 		$subject_id 		= $this->post('subject_id');
 		$course_number		= $this->post('course_number');
@@ -237,6 +270,32 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("Did not specify if class is on Sunday.")),403);
 			return;
 		}
+		$chat_info['id_string'] = $id_string;
+		$chat_info['subject_id'] = $subject_id;
+		$chat_info['course_number'] = $course_number;
+		$chat_info['name'] = $name;
+		$chat_info['institution_id'] = $institution_id;
+		$chat_info['room_id'] = $room_id;
+		$chat_info['start_time'] = $start_time;
+		$chat_info['end_time'] = $end_time;
+		$chat_info['dow_monday'] = $dow_monday;
+		$chat_info['dow_tuesday'] = $dow_tuesday;
+		$chat_info['dow_wednesday'] = $dow_wednesday;
+		$chat_info['dow_thursday'] = $dow_thursday;
+		$chat_info['dow_friday'] = $dow_friday;
+		$chat_info['dow_saturday'] = $dow_saturday;
+		$chat_info['dow_sunday'] = $dow_sunday;
+		
+		if($this->Model_Chats->add_chat($chat_info))
+		{
+			$this->response('Successfully added a chat room!', 200);
+			return;
+		}
+		else
+		{
+			$this->response($this->rest_error(array("Failed to add the chat!")),403);
+			return;
+		}
 
 	}
 
@@ -249,7 +308,7 @@ class Chats extends REST_Controller
 	public function leave_post()
 	{
 		$this->load->model('Model_Chats');
-		$this->load->model('Model_Users');
+		$this->load->model('Model_Auth');
 
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
@@ -288,7 +347,8 @@ class Chats extends REST_Controller
 
 		//Well, all that error checking done, lets unsubscribe the user.
 		$remove = $this->Model_Chats->unsubscribe_user($chat_id,$user_id);
-		if ($remove)
+		
+		if (!$remove)
 		{
 			$this->response('User successfully removed!',200);
 			return;
@@ -359,14 +419,19 @@ class Chats extends REST_Controller
 	function fetch_recent_get()
 	{
 		$this->load->model('Model_Chats');
+		
 		$chat_id_string = $this->get('chat_id');
+		
 		$num_messages = $this->get('num_messages');
+		
 		if (!isset($num_messages) || $num_messages == "")
 			$num_messages = 100;
+			
 		$user_id = $this->authenticated_as;
 
 		//Try to find the chat
 		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		
 		//Check to make sure user is joined to this chat.
 		if (!$this->Model_Chats->is_user_subscribed($user_id,$chat_id))
 		{
@@ -376,5 +441,54 @@ class Chats extends REST_Controller
 
 		$messages = $this->Model_Chats->get_num_latest_messages($chat_id,$num_messages);
 		$this->response($messages,200); //Success
+	}
+	
+	/**
+	 *Remove a chat room
+	 *chat_id_string - The string of the Chat to be removed
+	 *returns 200 on success, 404 on failure
+	 */
+	function delete_post()
+	{
+		$this->load->model('Model_Chats');
+		$this->load->model('Model_Auth');
+		
+		$chat_id_string = $this->post('id');
+		
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
+		
+		//Make sure we requested a chat ID
+		if (strlen($chat_id_string) <= 0)
+		{
+			$this->response($this->rest_error(array("No chat ID was specified.")),403);
+			return;
+		}
+
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+
+		if ($chat_id < 0)
+		{
+			$this->response($this->rest_error(array("Specified chat does not exist.")),404);
+			return;
+		}
+		
+		if($this->Model_Chats->remove_chat($chat_id))
+		{
+			$this->response('Successfully removed the chat!', 200);
+			return;
+		}
+		else
+		{
+			$this->response($this->rest_error(array("Failed to remove the chat!")),404);
+			return;
+		}
 	}
 }

@@ -174,15 +174,17 @@ class Model_Chats extends CI_Model {
 	 *Removes a user from a specific chat
 	 *chat_id - ID of the chat to remove the user from
 	 *user_id - User who is to be removed
-	 *returns - true if unsubscribed, false if not
+	 *returns - 1 if successful, 0 if not.
 	 */
 	function unsubscribe_user($chat_id,$user_id)
 	{
-		return $this->db
+		$count = $this->db->count_all('lc_chat_participants');
+		$this->db
 			->where('chat_id', $chat_id)
 			->where('user_id', $user_id)
 			->from('lc_chat_participants')
 			->delete();
+		return $count - $this->db->count_all();
 	}
 	
 	/**
@@ -217,5 +219,37 @@ class Model_Chats extends CI_Model {
 			);
 		
 		return $this->db->insert('lc_chats', $chat_info);
+	}
+	
+	/**
+	 *Remove a chat from the database, make sure to clear any participants.
+	 *chat_id - the ID number of the chat room to be removed
+	 *returns true if successful, false if failed
+	 */
+	function remove_chat($chat_id)
+	{
+		
+		$count = $this->db->count_all('lc_chats');
+		
+		$this->db
+			->where('id', $chat_id)
+			->from('lc_chats')
+			->delete();
+
+		
+		$this->db
+			->where('chat_id', $chat_id)
+			->from('lc_chat_participants')
+			->delete();
+				
+						
+		if($count - $this->db->count_all('lc_chats') <= 0)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 }
