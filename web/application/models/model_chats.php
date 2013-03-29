@@ -195,7 +195,7 @@ class Model_Chats extends CI_Model {
 	/**
 	 *Adds a new chat to the database
 	 *chat_info - Array of chat information to be added into the database. 
-	 *returns true on success, false on failure
+	 *returns - NULL or FALSE if failed.
 	 */
 	function add_chat($chat_info)
 	{
@@ -223,12 +223,5 @@ class Model_Chats extends CI_Model {
 			'dow_sunday' => $chat_info['dow_sunday'],
 			);
 		
-		$this->db->insert('lc_chats', $chat_info);
-		
-		if($this->db->affected_rows() <= 0)
-		{
-			return false
-		}
-		return true;
-	}
+		return $this->db->insert('lc_chats', $chat_info);
 }
