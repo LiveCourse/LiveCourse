@@ -150,6 +150,25 @@ class Model_Chats extends CI_Model {
 				->result();
 		return $query;
 	}
+	/**
+	 *Adds a message to the flagged message table
+	 *message_id - ID of message that has been flagged
+	 *reporter_id - ID of user that reported message
+	 *reason - string that describes why message was reported
+	 *time - time message was reported
+	 *returns - NULL or FALSE if failed.
+	 */
+	function flag_message($message_id,$reporter_id,$reason,$time)
+	{
+		$data = array(
+			'message_id'=>$message_id,
+			'reporter_id'=>$reporter_id,
+			'reason'=>$reason,
+			'time_submitted'=>$time	
+		);
+		
+		return $this->db->insert('lc_chat_messages_flagged', $data);
+	}
 	
 	/**
 	 *Removes a user from a specific chat
