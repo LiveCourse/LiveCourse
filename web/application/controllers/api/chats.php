@@ -467,6 +467,10 @@ class Chats extends REST_Controller
 	
 	/**
 	 * EventSource function called by the HTML 5 client to stream chat updates from a room.
+	 * auth_token - authentication token
+	 * auth_code - authentication signature
+	 * chat_id - chat to stream messages from
+	 * msg_id - last message client has received, fetch messages after this one.
 	 */
 	function eventsource_get()
 	{
@@ -476,6 +480,7 @@ class Chats extends REST_Controller
 		$auth_token = $this->get('auth_token');
 		$auth_code = $this->get('auth_code');
 		$chat_id_string = $this->get('chat_id');
+		$last_msg_id = $this->get('msg_id');
 		
 		$users = $this->Model_Auth->fetch_user_by_token($auth_token);
 		if (count($users) > 0) //Auth token was valid... now let's verify their request.
@@ -493,6 +498,13 @@ class Chats extends REST_Controller
 		
 		//Make sure they gave us a user id.
 		if ($user_id <= 0)
+		{
+			$this->response(NULL,401);
+			return;
+		}
+		
+		//Make sure they gave us a message id.
+		if ($last_msg_id <= 0)
 		{
 			$this->response(NULL,401);
 			return;
@@ -519,7 +531,7 @@ class Chats extends REST_Controller
 				die();
 			}
 
-			$msgs = $this->Model_Chats->get_messages_after_time($chat_id,time()-1);
+			$msgs = $this->Model_Chats->get_messages_after_msg_id($chat_id,$last_msg_id);
 			foreach ($msgs as $msg)
 			{
 				echo "id: $msg->id" . PHP_EOL;
@@ -529,6 +541,7 @@ class Chats extends REST_Controller
 				}
 				echo "data: \"done\": \"yup.\"\n";
 				echo "data: }\n";
+				$last_msg_id = $msg->id;
 			}
 			echo PHP_EOL;
 			ob_flush();

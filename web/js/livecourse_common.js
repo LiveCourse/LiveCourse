@@ -10,6 +10,7 @@ if (typeof($.cookie("lc_auth_pass")) != "undefined") //Fetch the value from cook
 	auth_pass = $.cookie("lc_auth_pass");
 
 var current_chat_room = ""; //Global variable for storing the current chat room.
+var last_message_id;
 
 /**
  * Shows or generates a horizontal pop-up dialog above the current page.
@@ -123,7 +124,9 @@ function progress_indicator_show()
 {
 	var indicator = $('<div id="GlobalLoadingIndicator" class="showing" src="" alt="Loading ..."></div>');
 	$('body').append(indicator);
-	indicator.animate({"top":'-6px'},300, "easeOutBack", null);
+	setTimeout(function () {
+		indicator.animate({"top":'-6px'},300, "easeOutBack", null);
+	}, 1000);
 	return indicator;
 }
 

@@ -170,6 +170,24 @@ class Model_Chats extends CI_Model {
 	}
 	
 	/**
+	 * Gets messages from a chat room that were sent AFTER the specified message ID.
+	 * chat_id - ID of chat to fetch from
+	 * msg_id - msg ID after which to fetch chat messages
+	 * returns - array of results
+	 */
+	function get_messages_after_msg_id($chat_id,$msg_id)
+	{
+		$query = $this->db
+				->where('chat_id',$chat_id)
+				->where('id >',$msg_id)
+				->from('lc_chat_messages')
+				->order_by("send_time", "asc")
+				->get()
+				->result();
+		return $query;
+	}
+	
+	/**
 	 *Adds a message to the flagged message table
 	 *message_id - ID of message that has been flagged
 	 *reporter_id - ID of user that reported message

@@ -385,18 +385,6 @@ function switch_chat_room(room)
 			//Load recent chat...
 			load_recent_chat_contents();
 			
-			//Add eventsource for updating with new messages...
-			if (typeof eventsource != "undefined") //Close existing one
-				eventsource.close();
-			var event_auth_code = Sha1.hash(auth_token+auth_pass+"chats/eventsource");
-			eventsource = new EventSource('index.php/api/chats/eventsource?auth_token='+auth_token+'&auth_code='+event_auth_code+'&chat_id='+current_chat_room);
-			eventsource.onmessage = function(e) {
-				var data = JSON.parse(e.data);
-				console.log(data);
-				$("#ChatMessages ul").append('<li><div class="author">'+data.user_id+'</div><div class="timestamp">'+data.send_time+'</div><div class="messageContainer"><div class="message">'+data.message_string+'</div></div><div style="clear:both;"></div></li>');
-				$("#ChatMessages").animate({ scrollTop: $('#ChatMessages ul').height()}, 250);
-			};
-			
 			progress_indicator_hide(switch_ind);
 		},
 		function (xhr, status)
@@ -459,9 +447,18 @@ function load_recent_chat_contents()
 			$("#ChatMessages ul").html('<li class="spacer"></li>');
 			for (i in data)
 			{
-				$("#ChatMessages ul").append('<li><div class="author">'+data[i].user_id+'</div><div class="timestamp">'+data[i].send_time+'</div><div class="messageContainer"><div class="message">'+data[i].message_string+'</div></div><div style="clear:both;"></div></li>');
+				post_message(data[i],false);
 			}
-			$("#ChatMessages").animate({ scrollTop: $('#ChatMessages ul').height()}, 250);
+			$("#ChatMessages").animate({ scrollTop: $('#ChatMessages ul').height()}, 250); //Scroll to bottom
+			//Add eventsource for updating with new messages...
+			if (typeof eventsource != "undefined") //Close existing one
+				eventsource.close();
+			var event_auth_code = Sha1.hash(auth_token+auth_pass+"chats/eventsource");
+			eventsource = new EventSource('index.php/api/chats/eventsource?auth_token='+auth_token+'&auth_code='+event_auth_code+'&chat_id='+current_chat_room+'&msg_id='+last_message_id);
+			eventsource.onmessage = function(e) {
+				var data = JSON.parse(e.data);
+				post_message(data);
+			};
 			progress_indicator_hide(load_ind);
 		},
 		function (xhr, status)
@@ -471,4 +468,17 @@ function load_recent_chat_contents()
 			dialog_show(errdialog);
 			progress_indicator_hide(load_ind);
 		});
+}
+
+/**
+ * Posts the specified message object in the chat messages frame for user view.
+ */
+function post_message(message,scroll)
+{
+	if (typeof scroll == "undefined")
+		scroll = true;
+	$("#ChatMessages ul").append('<li><div class="author">'+message.user_id+'</div><div class="timestamp">'+message.send_time+'</div><div class="messageContainer"><div class="message">'+message.message_string+'</div></div><div style="clear:both;"></div></li>');
+	last_message_id = message.id;
+	if (scroll)
+		$("#ChatMessages").animate({ scrollTop: $('#ChatMessages ul').height()}, 250);
 }
