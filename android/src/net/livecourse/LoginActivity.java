@@ -102,6 +102,8 @@ public class LoginActivity extends SherlockFragmentActivity{
 		String tempEmail = "";
 		String tempPassword = "";
 		Intent regIntent = new Intent(this,RegistrationActivity.class);
+		//Intent regIntent = new Intent(this,UserInfoActivity.class);
+
 		regIntent.putExtra("KEYemail", tempEmail);
 		regIntent.putExtra("KEYpassword", tempPassword);
 		
