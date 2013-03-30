@@ -30,7 +30,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	 * This is the current class we are
 	 */
 	private String CURRENT_CLASS = "";
-
+	
 	/**
 	 * This section declares all the views that this fragment handles Could
 	 * probably do with better names lol
@@ -209,6 +209,9 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	{
 		MenuInflater inflater = mode.getMenuInflater();
 	    inflater.inflate(R.menu.chat_action_menu, menu);
+	    
+	    actionMode = mode;
+	    
 		return true;
 	}
 	
@@ -216,9 +219,9 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	 * Runs when the contextual action mode is destroyed
 	 */
 	@Override
-	public void onDestroyActionMode(ActionMode mode) {
-		// TODO Auto-generated method stub
-		
+	public void onDestroyActionMode(ActionMode mode) 
+	{
+
 	}
 	
 	/**

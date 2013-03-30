@@ -26,7 +26,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	 */
 	//Not currently used
 	//private TabsFragmentAdapter tabsAdapter;
-	
+
 	/**
 	 * The XML views
 	 */
@@ -135,6 +135,9 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	{
 		MenuInflater inflater = mode.getMenuInflater();
 	    inflater.inflate(R.menu.participants_action_menu, menu);
+	    
+	    actionMode = mode;
+	    
 		return true;
 	}
 	
@@ -142,8 +145,8 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	 * Runs when the contextual action mode is destroyed
 	 */
 	@Override
-	public void onDestroyActionMode(ActionMode mode) {
-		// TODO Auto-generated method stub
+	public void onDestroyActionMode(ActionMode mode) 
+	{
 		
 	}
 	

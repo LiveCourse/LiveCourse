@@ -47,9 +47,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         mAdapter.setPager(mPager);
         mAdapter.setActivity(this);
         
-        
-        
-
         mIndicator.setOnPageChangeListener(this);
         
     }
@@ -116,5 +113,14 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	    		mAdapter.getItem(1).setMenuVisibility(false);
 	    		break;
 		}		
+		/**
+		 * Turns off all action modes
+		 */
+		if(((ClassListFragment)mAdapter.getItem(0)).getActionMode() != null)
+			((ClassListFragment)mAdapter.getItem(0)).getActionMode().finish();
+		if(((ChatFragment)mAdapter.getItem(1)).getActionMode() != null)
+			((ChatFragment)mAdapter.getItem(1)).getActionMode().finish();
+		if(((ParticipantsFragment)mAdapter.getItem(2)).getActionMode() != null)
+			((ParticipantsFragment)mAdapter.getItem(2)).getActionMode().finish();
 	}
 }

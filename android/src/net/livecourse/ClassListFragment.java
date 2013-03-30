@@ -137,6 +137,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
 	{
 		this.getSherlockActivity().startActionMode(this);
+		
 		return true;
 	}
 
@@ -149,7 +150,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) 
 	{
 		MenuInflater inflater = mode.getMenuInflater();
-	    inflater.inflate(R.menu.classlist_action_menu, menu);
+	    inflater.inflate(R.menu.classlist_action_menu, menu);	    
 		return true;
 	}
 
@@ -175,8 +176,8 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	 * Runs when the contextual action mode gets invalidated
 	 */
 	@Override
-	public void onDestroyActionMode(ActionMode mode) {
-		// TODO Auto-generated method stub
+	public void onDestroyActionMode(ActionMode mode) 
+	{
 		
 	}
 }
