@@ -3,8 +3,10 @@ package net.livecourse;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,11 +18,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ChatFragment extends SherlockFragment implements OnClickListener,OnItemLongClickListener{
+public class ChatFragment extends SherlockFragment implements OnClickListener, OnItemLongClickListener, ActionMode.Callback
+{
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
 	
@@ -38,6 +42,11 @@ public class ChatFragment extends SherlockFragment implements OnClickListener,On
 	private Button sendButtonView;
 	private EditText sendMessageEditTextView;
 
+	/**
+	 * The vibrator, only used to vibrate on long press
+	 */
+	private Vibrator vibrator;
+	
 	/**
 	 * This is the adapter used for the message list.
 	 * It is incomplete.
@@ -105,6 +114,11 @@ public class ChatFragment extends SherlockFragment implements OnClickListener,On
 		sendButtonView.setOnClickListener(this);
 		messageListView.setOnItemLongClickListener(this);
 		
+		/**
+		 * Init the vibrator
+		 */
+		vibrator = (Vibrator) container.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+		
 		return chatLayout;
 	}
 
@@ -119,7 +133,6 @@ public class ChatFragment extends SherlockFragment implements OnClickListener,On
 	{
 		inflater.inflate(R.menu.chat_fragment_menu,menu);
 		super.onCreateOptionsMenu(menu, inflater);
-		
 	}
 	
 	@Override
@@ -177,9 +190,55 @@ public class ChatFragment extends SherlockFragment implements OnClickListener,On
 		}
 	}
 
+	/**
+	 * Handles long click on item in the list view, currently starts action
+	 * menu and vibrates for 50 ms
+	 */
 	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
-			long arg3) {
+	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
+	{
+		this.getSherlockActivity().startActionMode(this);
+		vibrator.vibrate(50);
+		return false;
+	}
+
+	/**
+	 * Handles when an contextual action mode item is clicked.
+	 * For more details look at the Android information document
+	 * in google docs.
+	 */
+	@Override
+	public boolean onActionItemClicked(ActionMode mode,
+			MenuItem item) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/**
+	 * Runs when the contextual action mode is created
+	 */
+	@Override
+	public boolean onCreateActionMode(ActionMode mode, Menu menu) 
+	{
+		MenuInflater inflater = mode.getMenuInflater();
+	    inflater.inflate(R.menu.chat_action_menu, menu);
+		return true;
+	}
+	
+	/**
+	 * Runs when the contextual action mode is destroyed
+	 */
+	@Override
+	public void onDestroyActionMode(ActionMode mode) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/**
+	 * Runs when the contextual action mode gets invalidated
+	 */
+	@Override
+	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -20,9 +20,16 @@
     
     <string name="send_message">Send</string>
     	
-    	<!-- 	Chat Fragment Menu Strings
+    <!-- 	Chat Fragment Menu Strings
     			These are the strings used in the menu of the chat layout -->
- 		<string name="view_history_menu_item">See History</string>
+ 	<string name="view_history_menu_item">See History</string>
+ 	
+ 	<!-- 	Chat Fragment Context Menu Strings
+ 				These are the strings used in the context menu of the chat layout -->
+ 	<string name="participants_details_menu_item_title">View User</string>
+ 	<string name="ignore_chat_message_menu_item_title">Ignore Message</string>
+ 	<string name="ignore_participant_chat_message_menu_item_title">Ignore User</string>
+ 	 	
     
     <!-- 	Login Layout Strings
     		These are the strings used in the login activity,
