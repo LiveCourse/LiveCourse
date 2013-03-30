@@ -210,8 +210,6 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		MenuInflater inflater = mode.getMenuInflater();
 	    inflater.inflate(R.menu.chat_action_menu, menu);
 	    
-	    actionMode = mode;
-	    
 		return true;
 	}
 	

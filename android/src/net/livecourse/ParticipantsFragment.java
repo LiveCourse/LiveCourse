@@ -135,9 +135,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	{
 		MenuInflater inflater = mode.getMenuInflater();
 	    inflater.inflate(R.menu.participants_action_menu, menu);
-	    
-	    actionMode = mode;
-	    
+	    	    
 		return true;
 	}
 	
