@@ -97,6 +97,8 @@ public class LoginActivity extends SherlockFragmentActivity{
 			return;
 		}
 		
+		new REST(this).execute();
+		
 		startActivity(mainIntent);	
 	}
 	
