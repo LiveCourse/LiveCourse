@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -128,31 +129,51 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		
 	}
 
+	/**
+	 * Handles long click on item in the list view, currently starts action
+	 * menu
+	 */
 	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
-			long arg3) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
+	{
+		this.getSherlockActivity().startActionMode(this);
+		return true;
 	}
 
+	/**
+	 * Handles when an contextual action mode item is clicked.
+	 * For more details look at the Android information document
+	 * in google docs.
+	 */
 	@Override
-	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean onCreateActionMode(ActionMode mode, Menu menu) 
+	{
+		MenuInflater inflater = mode.getMenuInflater();
+	    inflater.inflate(R.menu.classlist_action_menu, menu);
+		return true;
 	}
 
+	/**
+	 * Runs when the contextual action mode is created
+	 */
 	@Override
 	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
+	/**
+	 * Runs when the contextual action mode is destroyed
+	 */
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	/**
+	 * Runs when the contextual action mode gets invalidated
+	 */
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {
 		// TODO Auto-generated method stub

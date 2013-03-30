@@ -35,6 +35,11 @@
  	<string name="ignore_chat_message_menu_item_title">Ignore Message</string>
  	<string name="ignore_participant_chat_message_menu_item_title">Ignore User</string>
  	 	
+    <!-- 	Participants Fragment Context Menu Strings
+    		These are the strings used in the context menu of the participants fragment -->
+    <string name="participants_fragment_participants_details_menu_item_title">View User</string>
+    <string name="participants_fragment_ignore_participant_chat_message_menu_item_title">Ignore User</string>
+    
     
     <!-- 	Login Layout Strings
     		These are the strings used in the login activity,

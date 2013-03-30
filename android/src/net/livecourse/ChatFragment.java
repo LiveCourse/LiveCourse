@@ -180,7 +180,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 
 	/**
 	 * Handles long click on item in the list view, currently starts action
-	 * menu and vibrates for 50 ms
+	 * menu
 	 */
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 

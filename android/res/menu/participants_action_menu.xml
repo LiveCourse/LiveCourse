@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item 
+        android:id="@+id/participants_fragment_participants_details_menu_item" 
+        android:title="@string/participants_fragment_participants_details_menu_item_title" 
+        android:icon="@drawable/ic_menu_friendslist" 
+        android:showAsAction="ifRoom" />
+    
+    <item 
+        android:id="@+id/participants_fragment_ignore_participant_chat_messages_menu_item" 
+        android:title="@string/participants_fragment_ignore_participant_chat_message_menu_item_title" 
+        android:icon="@drawable/ic_menu_blocked_user"
+        android:showAsAction="ifRoom" />
+
+</menu>
