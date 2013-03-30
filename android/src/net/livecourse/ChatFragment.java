@@ -3,10 +3,8 @@ package net.livecourse;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,11 +39,6 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	private ListView messageListView;
 	private Button sendButtonView;
 	private EditText sendMessageEditTextView;
-
-	/**
-	 * The vibrator, only used to vibrate on long press
-	 */
-	private Vibrator vibrator;
 	
 	/**
 	 * This is the adapter used for the message list.
@@ -113,11 +106,6 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		 */
 		sendButtonView.setOnClickListener(this);
 		messageListView.setOnItemLongClickListener(this);
-		
-		/**
-		 * Init the vibrator
-		 */
-		vibrator = (Vibrator) container.getContext().getSystemService(Context.VIBRATOR_SERVICE);
 		
 		return chatLayout;
 	}
@@ -198,8 +186,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
 	{
 		this.getSherlockActivity().startActionMode(this);
-		vibrator.vibrate(50);
-		return false;
+		return true;
 	}
 
 	/**

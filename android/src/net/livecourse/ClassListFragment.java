@@ -12,9 +12,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.app.SherlockFragment;
 
-public class ClassListFragment extends SherlockFragment implements OnItemClickListener,OnItemLongClickListener
+public class ClassListFragment extends SherlockFragment implements OnItemClickListener,OnItemLongClickListener, ActionMode.Callback
 {
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
@@ -130,5 +133,29 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			long arg3) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onDestroyActionMode(ActionMode mode) {
+		// TODO Auto-generated method stub
+		
 	}
 }

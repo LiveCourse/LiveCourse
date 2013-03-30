@@ -11,7 +11,12 @@
     <!-- Options Menu Strings -->
     <string name="options_menu_title">Test 1</string>
     <string name="options_sub_menu_1">Sub Menu 1</string>
-    <string name="options_sub_menu_2">Sub Menu 2</string>    
+    <string name="options_sub_menu_2">Sub Menu 2</string>
+    
+    <!-- 	ClassList Fragment Context Menu Strings
+    		These are the strings used in the context menu of the classlist fragment -->
+    <string name="class_details_menu_item_title">View Class Information</string>
+    <string name="delete_class_menu_item_title">Delete Class</string>
     
     <!-- 	Chat Layout Strings
     		These are the strings used in the chat fragment, 
@@ -21,11 +26,11 @@
     <string name="send_message">Send</string>
     	
     <!-- 	Chat Fragment Menu Strings
-    			These are the strings used in the menu of the chat layout -->
+    		These are the strings used in the menu of the chat layout -->
  	<string name="view_history_menu_item">See History</string>
  	
  	<!-- 	Chat Fragment Context Menu Strings
- 				These are the strings used in the context menu of the chat layout -->
+ 			These are the strings used in the context menu of the chat fragment -->
  	<string name="participants_details_menu_item_title">View User</string>
  	<string name="ignore_chat_message_menu_item_title">Ignore Message</string>
  	<string name="ignore_participant_chat_message_menu_item_title">Ignore User</string>
