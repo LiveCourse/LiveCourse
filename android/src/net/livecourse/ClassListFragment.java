@@ -3,6 +3,7 @@ package net.livecourse;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class ClassListFragment extends SherlockFragment implements OnItemClickListener,OnItemLongClickListener, ActionMode.Callback
 {
@@ -77,6 +80,13 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
     {
     	/**
+		 * Settings for the fragment
+		 * Allows adding stuff for the options menu
+		 */
+		this.setHasOptionsMenu(true);
+		this.setMenuVisibility(true);
+		
+    	/**
 		 * Initialize the temporary list
 		 */
 		classes = new ArrayList<String>();
@@ -109,6 +119,30 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
         super.onSaveInstanceState(outState);
         outState.putString(KEY_CONTENT, mContent);
     }
+    
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+	{
+		inflater.inflate(R.menu.classlist_fragment_menu,menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case R.id.search_class_menu_item:
+				//TODO: add activity that allows searching for classes via text
+				break;
+			case R.id.add_class_by_qr_menu_item:
+				IntentIntegrator integrator = new IntentIntegrator(this.getSherlockActivity());
+				integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
+				break;
+		}
+
+		return super.onOptionsItemSelected(item);		
+	}
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
@@ -180,4 +214,17 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	{
 		
 	}
+	
+	/**
+	 * Handles input from QR scan
+	 */
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) 
+	{
+		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+		  if (scanResult != null) 
+		  {
+		    // handle scan result
+		  }
+		  // else continue with any other code you need in the method
+		}
 }

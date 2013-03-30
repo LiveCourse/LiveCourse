@@ -48,7 +48,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         mAdapter.setActivity(this);
         
         mIndicator.setOnPageChangeListener(this);
-        
     }
 	
 	@Override
@@ -104,12 +103,15 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		switch(position)
 		{
 			case 0:
+	    		mAdapter.getItem(0).setMenuVisibility(true);
 	    		mAdapter.getItem(1).setMenuVisibility(false);
 	    		break;
 			case 1:
+	    		mAdapter.getItem(0).setMenuVisibility(false);
 	    		mAdapter.getItem(1).setMenuVisibility(true);
 	    		break;
 			case 2:
+	    		mAdapter.getItem(0).setMenuVisibility(false);
 	    		mAdapter.getItem(1).setMenuVisibility(false);
 	    		break;
 		}		

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item 
+        android:id="@+id/search_class_menu_item" 
+        android:title="@string/search_class_menu_item_title" 
+        android:icon="@drawable/ic_search"
+        android:showAsAction="ifRoom" />
+
+    <item 
+        android:id="@+id/add_class_by_qr_menu_item" 
+        android:title="@string/add_class_by_qr_menu_item_title" 
+        android:icon="@drawable/ic_menu_add"
+        android:showAsAction="ifRoom" />
+</menu>
