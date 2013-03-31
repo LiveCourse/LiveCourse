@@ -527,8 +527,8 @@ class Chats extends REST_Controller
 		$startedAt = time();
 
 		do {
-			// Cap connections at 60 seconds. The browser will reopen the connection on close
-			if ((time() - $startedAt) > 60) {
+			// Cap connections at 15 seconds. The browser will reopen the connection on close (update lost msgs)
+			if ((time() - $startedAt) > 15) {
 				die();
 			}
 
