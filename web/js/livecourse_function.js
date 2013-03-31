@@ -358,6 +358,8 @@ function update_chat_list()
 function switch_chat_room(room)
 {
 	var switch_ind = progress_indicator_show();
+	last_message_id = 0;
+	$.cookie("lc_last_msg", last_message_id); //Set last message id
 	call_api("chats/info","GET",{id: room},
 		function (data) {
 			// Set global variable
@@ -454,7 +456,7 @@ function load_recent_chat_contents()
 			if (typeof eventsource != "undefined") //Close existing one
 				eventsource.close();
 			var event_auth_code = Sha1.hash(auth_token+auth_pass+"chats/eventsource");
-			eventsource = new EventSource('index.php/api/chats/eventsource?auth_token='+auth_token+'&auth_code='+event_auth_code+'&chat_id='+current_chat_room+'&msg_id='+last_message_id);
+			eventsource = new EventSource('index.php/api/chats/eventsource?auth_token='+auth_token+'&auth_code='+event_auth_code+'&chat_id='+current_chat_room);
 			eventsource.onmessage = function(e) {
 				var data = JSON.parse(e.data);
 				post_message(data);
@@ -489,6 +491,7 @@ function post_message(message,scroll)
 
 	$("#ChatMessages ul").append('<li><div class="author">'+message.display_name+'</div><div class="timestamp">'+timestamp+'</div><div class="messageContainer"><div class="message">'+escapeHtml(message.message_string)+'</div></div><div style="clear:both;"></div></li>');
 	last_message_id = message.id;
+	$.cookie("lc_last_msg", last_message_id); //Set last message id
 	$("#ChatMessages").mCustomScrollbar("update");
 	if (scroll)
 		$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:1000}); //scroll to bottom
