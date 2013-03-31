@@ -18,6 +18,11 @@ import android.widget.Toast;
 public class MainActivity extends SherlockFragmentActivity implements OnPageChangeListener{
 	
 	/**
+	 * REST stuff
+	 */
+	private String token;
+	
+	/**
 	 * Declares the required objects for the swipey tabs.
 	 */
     private TabsFragmentAdapter mAdapter;
@@ -29,6 +34,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        this.token = this.getIntent().getStringExtra("token");
 
         /**
          * The following code initializes the tabs.

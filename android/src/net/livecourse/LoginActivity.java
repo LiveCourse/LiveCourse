@@ -23,7 +23,6 @@ public class LoginActivity extends SherlockFragmentActivity{
 	private EditText loginEmailEditTextView; 
 	private EditText loginPasswordEditTextView;
 	private TextView errorTextView;
-    private Intent mainIntent;
     
     private ArrayList<String> errorList;
     
@@ -32,9 +31,7 @@ public class LoginActivity extends SherlockFragmentActivity{
 	{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
-        
-        mainIntent = new Intent(this, MainActivity.class);
-        
+                
         loginEmailEditTextView = (EditText) findViewById(R.id.login_email_edit_text_view);
         loginPasswordEditTextView = (EditText) findViewById(R.id.login_password_edit_text);
         errorTextView = (TextView) findViewById(R.id.error_text_view);
@@ -97,9 +94,7 @@ public class LoginActivity extends SherlockFragmentActivity{
 			return;
 		}
 		
-		new REST(this).execute();
-		
-		startActivity(mainIntent);	
+		new REST(this,loginEmailEditTextView.getText().toString(),loginPasswordEditTextView.getText().toString()).execute();		
 	}
 	
 	/**
