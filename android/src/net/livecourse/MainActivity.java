@@ -116,4 +116,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	    		break;
 		}		
 	}
+
+	public TabsFragmentAdapter getTabsAdapter() {
+		return mAdapter;
+	}
+
+	public void setTabsAdapter(TabsFragmentAdapter mAdapter) {
+		this.mAdapter = mAdapter;
+	}
 }

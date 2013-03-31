@@ -61,7 +61,6 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
     public static ClassListFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
     {
     	ClassListFragment fragment = new ClassListFragment();
-    	fragment.tabsAdapter = tabsAdapter;
         return fragment;
     }
 
@@ -79,6 +78,8 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
     {
+    	tabsAdapter = ((MainActivity) this.getSherlockActivity()).getTabsAdapter();
+    	
     	/**
 		 * Settings for the fragment
 		 * Allows adding stuff for the options menu
