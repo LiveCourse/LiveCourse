@@ -449,7 +449,7 @@ function load_recent_chat_contents()
 			{
 				post_message(data[i],false);
 			}
-			$("#ChatMessages").animate({ scrollTop: $('#ChatMessages ul').height()}, 250); //Scroll to bottom
+			$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:1000}); //scroll to bottom
 			//Add eventsource for updating with new messages...
 			if (typeof eventsource != "undefined") //Close existing one
 				eventsource.close();
@@ -489,6 +489,7 @@ function post_message(message,scroll)
 
 	$("#ChatMessages ul").append('<li><div class="author">'+message.display_name+'</div><div class="timestamp">'+timestamp+'</div><div class="messageContainer"><div class="message">'+escapeHtml(message.message_string)+'</div></div><div style="clear:both;"></div></li>');
 	last_message_id = message.id;
+	$("#ChatMessages").mCustomScrollbar("update");
 	if (scroll)
-		$("#ChatMessages").animate({ scrollTop: $('#ChatMessages ul').height()}, 250);
+		$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:1000}); //scroll to bottom
 }

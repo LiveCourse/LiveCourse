@@ -202,7 +202,7 @@ input[type="submit"]:active,button:active
 	left:36px;
 	right:12px;
 	bottom:12px;
-	overflow-y:scroll;
+	overflow-y:hidden;
 	overflow-x:hidden;
 }
 

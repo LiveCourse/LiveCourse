@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<title>LiveCourse</title>
 		<link rel="stylesheet" href="<?php echo(base_url("css/html5client.css")); ?>" />
+		<link rel="stylesheet" href="<?php echo(base_url("css/jquery.mCustomScrollbar.css")); ?>" />
 		<script src="<?php echo(base_url("js/sha1.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/json2.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/eventsource.js")); ?>"></script>
@@ -11,6 +12,7 @@
 		<script src="<?php echo(base_url("js/jquery-ui-1.10.0.custom.min.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery.observe_field.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery.cookie.js")); ?>"></script>
+		<script src="<?php echo(base_url("js/jquery.mCustomScrollbar.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/cufon-yui.js")); ?>"></script>
 		<script src="<?php echo(base_url("fonts/font.cicle.js")); ?>"></script>
 		
@@ -54,6 +56,7 @@
 					send_message($(this).find("textarea").val(),$(this).find("textarea"));
 					return false;
 				});
+				$("#ChatMessages").mCustomScrollbar({scrollInertia:1000});
 			});
 		</script>
 		
@@ -77,7 +80,7 @@
 			<div style="position:relative;background-image:url(img/gray_opacity_75.png);z-index:10;">
 				<h1></h1>
 			</div>
-			<div id="ChatMessages">
+			<div id="ChatMessages" class="nano">
 				<ul>
 				</ul>
 			</div>
