@@ -357,5 +357,17 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
+
+/*
+|--------------------------------------------------------------------------
+| Google API Key
+|--------------------------------------------------------------------------
+|
+| This is used by Google and the server to send push notifications to the
+| android devices.
+*/
+$config['api_key'] = 'AIzaSyABodKWBL4SkAf2MxCQwPlIX1ek0bYzF3I';
+
+
 /* End of file config.php */
 /* Location: ./application/config/config.php */
