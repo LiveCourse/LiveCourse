@@ -164,3 +164,15 @@ function call_api(method,type,data,success_callback,error_callback)
 		error: error_callback
 	});
 }
+
+/**
+ * Escapes provided text for display via HTML.
+ */
+function escapeHtml(text) {
+	return text
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;")
+		.replace(/'/g, "&#039;");
+}
