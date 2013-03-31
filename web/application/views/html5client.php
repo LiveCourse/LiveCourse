@@ -6,6 +6,7 @@
 		<link rel="stylesheet" href="<?php echo(base_url("css/html5client.css")); ?>" />
 		<script src="<?php echo(base_url("js/sha1.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/json2.js")); ?>"></script>
+		<script src="<?php echo(base_url("js/eventsource.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery-1.9.0.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery-ui-1.10.0.custom.min.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery.observe_field.js")); ?>"></script>
@@ -43,7 +44,7 @@
 				}
 				
 				// Code to submit message on enter.
-				$('#form_message textarea').keydown(function() {
+				$('#form_message textarea').keydown(function(event) {
 					if (event.keyCode == 13) {
 						send_message($(this).val(),$(this));
 						return false;

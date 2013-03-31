@@ -484,7 +484,7 @@ function post_message(message,scroll)
 	//Was this message today?
 	var timestamp = "";
 	if (date.toDateString() != currentDate.toDateString())
-		var timestamp = (('0'+date.getMonth()+1).slice(-2))+"/"+(('0'+date.getDate()+1).slice(-2))+"/"+date.getFullYear()+" @ ";
+		var timestamp = (('0'+(date.getMonth()+1)).slice(-2))+"/"+(('0'+(date.getDate()+1)).slice(-2))+"/"+date.getFullYear()+" @ ";
 	timestamp += (('0'+date.getHours()).slice(-2))+":"+(('0'+date.getMinutes()).slice(-2))+":"+(('0'+date.getSeconds()).slice(-2));
 
 	$("#ChatMessages ul").append('<li><div class="author">'+message.display_name+'</div><div class="timestamp">'+timestamp+'</div><div class="messageContainer"><div class="message">'+message.message_string+'</div></div><div style="clear:both;"></div></li>');
