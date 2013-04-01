@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Iterator;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -12,6 +13,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -31,6 +33,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	private int commandType;
 	private String email;
 	private String password;
+	private String query;
 	private String token;
 	private boolean success;
 	
@@ -38,9 +41,10 @@ public class REST extends AsyncTask <Void, Void, String>
 	 * Flags for type of command
 	 */
 	public static final int AUTH_AND_VERIFY = 0;
+	public static final int CLASS_LIST = 1;
 	
 	/**
-	 * Activity is pased through so that REST can make changes to the UI and such
+	 * Activity is passed through so that REST can make changes to the UI and such
 	 */
 	private SherlockFragmentActivity mActivity;
 	
@@ -59,6 +63,23 @@ public class REST extends AsyncTask <Void, Void, String>
 		
 		this.commandType = AUTH_AND_VERIFY;
 	}
+
+	/**
+	 * The constructor used for class list
+	 * @param array
+	 */
+	public REST(SherlockFragmentActivity a, String query, String password, String token)
+	{
+		super();
+		this.mActivity = a;
+		this.token = token;
+		this.success = false;
+		this.query = query;
+		this.password = password;
+		
+		this.commandType = CLASS_LIST;
+	}
+	
 	protected String getASCIIContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException 
 	{
 		InputStream in = entity.getContent();
@@ -89,6 +110,10 @@ public class REST extends AsyncTask <Void, Void, String>
 					result = this.verify(this.token, this.password);
 				}
 				break;
+			case CLASS_LIST:
+				result = "Search Failed";
+				getClassList(this.query,this.token,this.password);
+				break;
 		}
 		return result;
 	}
@@ -102,7 +127,8 @@ public class REST extends AsyncTask <Void, Void, String>
 				if(success)
 				{
 					Intent mainIntent = new Intent(mActivity, MainActivity.class);
-			        mainIntent.putExtra("token", token);
+			        mainIntent.putExtra("token", this.token);
+			        mainIntent.putExtra("password", this.password);
 			        
 					mActivity.startActivity(mainIntent);	
 					
@@ -115,6 +141,9 @@ public class REST extends AsyncTask <Void, Void, String>
 					errorTextView.setTextColor(Color.RED);
 					errorTextView.setVisibility(View.VISIBLE);
 				}
+				break;
+			case CLASS_LIST:
+				//TODO: handle results
 				break;
 		}
 	}
@@ -133,7 +162,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/auth").buildUpon()
 		    .appendQueryParameter("email", email)
 		    .appendQueryParameter("device", "1")
-		    .build();		
+		    .build();
 		
 		HttpGet httpGet = new HttpGet(b.toString());
 		System.out.println(httpGet.getURI().toString());
@@ -253,5 +282,82 @@ public class REST extends AsyncTask <Void, Void, String>
         }
         
 		return buffer.toString();
+	}
+	
+	private String getClassList(String query, String token, String password){
+		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
+		
+		System.out.println("Get Class List - token: "+token+" password: " + password);
+		String shaHead = this.toSha1(token+
+				this.toSha1(password)+"chats/search");
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpContext localContext = new BasicHttpContext();
+		
+		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/chats/search").buildUpon()
+			.appendQueryParameter("query", query)
+			.build();		
+		
+		HttpGet httpGet = new HttpGet(b.toString());
+		System.out.println("shaHead:"+shaHead);
+		httpGet.addHeader("Auth", "LiveCourseAuth token="+token+" auth="+shaHead);
+		
+		System.out.println(httpGet.getURI().toString());
+		String result = null;
+		
+		try 
+		{
+			HttpResponse response = httpClient.execute(httpGet, localContext);
+			HttpEntity entity = response.getEntity();
+			result = getASCIIContentFromEntity(entity);
+			
+			switch(response.getStatusLine().getStatusCode())
+			{
+				case 200:
+					JSONObject parse = new JSONObject(result.trim());
+			        Iterator<?> keys = parse.keys();
+			        Chatroom[] roomlist = new Chatroom[1024];
+
+			        for(int j=0; keys.hasNext();){
+			            String key = (String)keys.next();
+			            if(key.equals("id")){
+			            	roomlist[j] = new Chatroom();
+			            }
+			            if(key.equals("subject_id")){
+			            	(roomlist[j]).setSubject_id(parse.getString(key));
+			            }
+			            if(key.equals("course_number")){
+			            	(roomlist[j]).setCourse_number(parse.getString(key));
+			            }
+			            if(key.equals("name")){
+			            	(roomlist[j]).setName(parse.getString(key));
+			            }
+			            if(key.equals("start_time")){
+			            	(roomlist[j]).setStart_time(parse.getString(key));
+			            }
+			            if(key.equals("dow_sunday")){
+			            	j++;
+			            }
+			        }
+					result = parse.getJSONObject("authentication").getString("token");
+					//parse.
+					
+					this.success = true;
+					break;
+					
+				case 401:
+					this.success = false;
+					result = "Invalid password";
+					break;
+			}
+		} 
+		catch (Exception e) 
+		{
+			return e.getLocalizedMessage();
+		}
+		
+		System.out.println("Search chat result: " + result+"\n");
+		
+		return result;
 	}
 }

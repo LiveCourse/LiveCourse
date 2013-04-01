@@ -39,8 +39,15 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	private ClassListAdapter<String> adapter;
 	
 	/**
+	 * REST call to get class list
 	 * Temporary list of classes used, will be changed later
 	 */
+	
+	//String[] array = new String[128];
+	
+	
+	
+	
 	String[] array = {
 	        "CS252",
 	        "PSY200",
@@ -55,8 +62,9 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	        "MA165",
 	        "PSY240"
 		};
+	
+	
 	ArrayList<String> classes;
-
 
     public static ClassListFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
     {
@@ -78,6 +86,8 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
     {
+    	
+    	
     	tabsAdapter = ((MainActivity) this.getSherlockActivity()).getTabsAdapter();
     	
     	/**
@@ -111,6 +121,8 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
          */
         classListView.setOnItemClickListener(this);
         classListView.setOnItemLongClickListener(this);
+        
+        new REST(this.getSherlockActivity(),"a",((MainActivity)this.getSherlockActivity()).getPassword(),((MainActivity)this.getSherlockActivity()).getToken()).execute();
  
         return classListLayout;
     }
@@ -227,5 +239,6 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		    // handle scan result
 		  }
 		  // else continue with any other code you need in the method
-		}
+		
+	}
 }
