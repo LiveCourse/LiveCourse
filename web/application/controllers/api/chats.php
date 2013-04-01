@@ -540,8 +540,8 @@ class Chats extends REST_Controller
 				foreach($msg as $key => $value) {
 					echo "data: \"$key\": \"$value\",\n";
 				}
-				echo "data: \"done\": \"yup.\"\n";
-				echo "data: }\n";
+				echo "data: \"insignificant\": \".\"\n";
+				echo "data: }\n\n";
 				$last_msg_id = $msg->id;
 			}
 			echo PHP_EOL;
