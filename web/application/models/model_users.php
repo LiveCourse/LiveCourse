@@ -86,7 +86,7 @@ class Model_Users extends CI_Model {
 	 * Removes a user from the database.
 	 * Should also remove ALL RELATED DATA
 	 * user_id - identification number of user
-	 * returns - FALSE or NULL on failure.
+	 * returns - FALSE on failure.
 	 */
 	function remove_user_by_id($user_id)
 	{
@@ -94,6 +94,99 @@ class Model_Users extends CI_Model {
 				'id' => $user_id,
 				);
 		return $this->db->delete('lc_users', $data);
+	}
+	
+	/**
+	 *Retrieves an android user from the gcm database
+	 *user_id - ID of the user
+	 *regid - Registration ID of the device
+	 *returns the user(s) with the given credentials, else false.
+	 */
+	function fetch_android_user($user_id, $gcm_regid)
+	{
+		$droid_user = $this->db
+				->where('user_id', $user_id)
+				->where('gcm_regid', $gcm_regid)
+				->from('lc_gcm_users')
+				->join('lc_users','lc_users.id = lc_gcm_users.user_id')
+				->get()
+				->result();
+				
+		if ($droid_user && count($droid_user) == 1)
+		{
+			return $droid_user;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	/**
+	 *Retrieves all android users from the gcm database
+	 *returns the users, else false.
+	 */
+	function fetch_all_android_user()
+	{
+		$droid_users = $this->db
+				->from('lc_gcm_users')
+				->join('lc_users','lc_users.id = lc_gcm_users.user_id')
+				->get()
+				->result();
+				
+		if ($droid_users)
+		{
+			return $droid_users;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	/**
+	 *Adds an android user to the database
+	 *user_id - ID of the user
+	 *email - Email of the user
+	 *name - Display name of the user
+	 *gcm_regid - Registration ID of the device
+	 *returns inserted information if successful, otherwise null/false.
+	 */
+	function add_android_user($user_id, $email, $name, $gcm_regid)
+	{
+		$data = array(
+			'user_id' => $user_id,
+			'gcm_regid' => $gcm_regid,
+			'created_at' => time(),
+		);
+		
+		$this->db->insert('lc_gcm_users', $data);
+		
+		if ($this->db->affected_rows() > 0)
+		{
+			return $data;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	/**
+	 * Removes an android device from the database.
+	 * Should also remove ALL RELATED DATA
+	 * user_id - identification number of user
+	 * reg_id - identification string of the device
+	 * returns - number of rows effected
+	 */
+	function remove_android($user_id, $reg_id)
+	{
+		$data = array(
+				'user_id' => $user_id,
+				'gcm_regid' => $reg_id,
+				);
+		$this->db->delete('lc_gcm_users', $data);
+		return $this->db->affected_rows();
 	}
 
 }
