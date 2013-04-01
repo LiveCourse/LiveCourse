@@ -39,6 +39,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	private boolean success;
 	
 	private Chatroom[] roomList;
+	private int sizeOfRoomList;
 	
 	/**
 	 * Flags for type of command
@@ -146,7 +147,9 @@ public class REST extends AsyncTask <Void, Void, String>
 				}
 				break;
 			case CLASS_QUERY:
-				//TODO: handle results
+				System.out.println(this.sizeOfRoomList);
+				for(int x = 0;x<this.sizeOfRoomList;x++)
+					System.out.println("Room "+x+": "+roomList[x].toString());
 				break;
 		}
 	}
@@ -292,31 +295,28 @@ public class REST extends AsyncTask <Void, Void, String>
 			switch(response.getStatusLine().getStatusCode())
 			{
 				case 200:
-					JSONObject parse = new JSONObject(result.trim());
-			        Iterator<?> keys = parse.keys();
+					//JSONObject parse = new JSONObject(result.trim());
+			        //Iterator<?> keys = parse.keys();
 			        Chatroom[] roomList = new Chatroom[1024];
-
-			        for(int j=0; keys.hasNext();){
-			            String key = (String)keys.next();
-			            if(key.equals("id")){
-			            	roomList[j] = new Chatroom();
-			            }
-			            if(key.equals("subject_id")){
-			            	(roomList[j]).setSubject_id(parse.getString(key));
-			            }
-			            if(key.equals("course_number")){
-			            	(roomList[j]).setCourse_number(parse.getString(key));
-			            }
-			            if(key.equals("name")){
-			            	(roomList[j]).setName(parse.getString(key));
-			            }
-			            if(key.equals("start_time")){
-			            	(roomList[j]).setStart_time(parse.getString(key));
-			            }
-			            if(key.equals("dow_sunday")){
-			            	j++;
-			            }
+			        
+			        JSONArray parse = new JSONArray(result.trim());
+			        System.out.println("Length of JSONArray: " +parse.length());
+			        int j;
+			        for(j = 0;j<parse.length();j++)
+			        {
+			        	JSONObject ob = parse.getJSONObject(j);
+			        	
+			        	System.out.println("JSONObject @: "+j+" = "+ob.toString());
+			        	
+			        	roomList[j] = new Chatroom();
+			        	
+			        	roomList[j].setId(ob.getString("id"));
+		            	roomList[j].setSubject_id(ob.getString("subject_id"));
+		            	roomList[j].setCourse_number(ob.getString("course_number"));
+		            	roomList[j].setName(ob.getString("name"));
+		            	roomList[j].setStart_time(ob.getString("start_time"));
 			        }
+			        this.sizeOfRoomList = j;
 					//result = parse.getJSONObject("authentication").getString("token");
 			        this.roomList =  roomList;
 					
@@ -331,6 +331,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		} 
 		catch (Exception e) 
 		{
+			System.out.println("Query Failed:\n"+e.getLocalizedMessage());
 			return e.getLocalizedMessage();
 		}
 		

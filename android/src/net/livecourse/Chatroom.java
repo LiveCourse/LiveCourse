@@ -19,6 +19,16 @@ public class Chatroom {
 	private String dow_friday;
 	private String dow_saturday;
 	private String dow_sunday;
+	
+	public String toString()
+	{
+		String temp = "ID: "+id+" ID String: "+id_string+" Course Number: "+course_number+" Name: "+name
+				+"Institution ID: "+institution_id+" Room ID: "+room_id+" Start Time: "+start_time+" End Time: "
+				+end_time+" Start Date: "+start_date+" End Date: "+end_date+" Dow Monday: "+dow_monday+" Dow Monday: "+dow_monday
+				+" Dow Tuesday: "+dow_tuesday+" Dow Wednesday: "+dow_wednesday+" Dow Thursday: "+dow_thursday+" Dow Friday: "+dow_friday
+				+" Dow Sunday: "+dow_sunday;
+		return temp;
+	}
 	public String getEnd_time() {
 		return end_time;
 	}
