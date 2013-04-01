@@ -454,6 +454,7 @@ function select_chat_tab()
 	$("#chat_button").addClass("selected");
 	Cufon.refresh();
 	// Fade out other panes if they're here.
+	$("#ChatFrame #HistoryDateSelect").fadeOut(300);
 	$("#ChatFrame #HistoryMessages").fadeOut(300,function() {
 		$("#ChatFrame #ChatMessages").fadeIn(300,function() {
 			$("#ChatMessages").mCustomScrollbar("update");
@@ -473,7 +474,12 @@ function select_history_tab()
 	Cufon.refresh();
 	// Fade out other panes if they're here.
 	$("#ChatFrame #ChatMessages").fadeOut(300,function() {
-		$("#ChatFrame #HistoryMessages").fadeIn(300);
+		$("#ChatFrame #HistoryMessages").fadeIn(300, function() {
+			$("#ChatFrame #HistoryDateSelect").css('opacity',0);
+			$("#ChatFrame #HistoryDateSelect").css('top','100px');
+			$("#ChatFrame #HistoryDateSelect").css('display','block');
+			$("#ChatFrame #HistoryDateSelect").animate({"top":'124px',"opacity":1},300, "easeOutBack", null);
+		});
 	});
 }
 

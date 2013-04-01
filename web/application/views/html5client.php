@@ -91,6 +91,9 @@
 				</ul>
 				<div style="clear:both;"></div>
 			</div>
+			<div id="HistoryDateSelect">
+				This is a test date.
+			</div>
 			<div id="ChatMessages" class="nano">
 				<ul>
 				</ul>
