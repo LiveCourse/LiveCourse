@@ -80,6 +80,7 @@ function login_submit()
 					//We have successfully authenticated!
 					$.cookie("lc_auth_token", auth_token); //Set authentication cookies
 					$.cookie("lc_auth_pass", auth_pass); //Set authentication cookies
+					current_user_id = data.authentication.user_id;
 					init_ui();
 					progress_indicator_hide(indicator);
 					dialog_close($(_this).parents(".DialogOverlay").first());
@@ -108,6 +109,7 @@ function login_submit()
 function init_ui()
 {
 	update_chat_list();
+	setInterval(function() {update_participant_list();},15000);
 }
 
 /**
@@ -352,6 +354,48 @@ function update_chat_list()
 }
 
 /**
+ * Update participant list for current room
+ */
+function update_participant_list()
+{
+	//Do nothing if we have no selected room.
+	if (current_chat_room.length <= 0)
+		return;
+	call_api("chats/get_participants","GET",{id: current_chat_room},
+		function (data) {
+			var uids = new Array();
+			// Add new participants
+			for (i in data)
+			{
+				uids.push(data[i].id);
+				if ($("#UserList #"+data[i].id).length <= 0)
+				{
+					if (data[i].id == current_user_id)
+						var newu = $('<li id="'+data[i].id+'" class="me">'+data[i].display_name+'</li>');
+					else
+						var newu = $('<li id="'+data[i].id+'">'+data[i].display_name+'</li>');
+					newu.hide();
+					$("#UserList").append(newu);
+					newu.slideDown();
+				}
+			}
+			// Remove old participants.
+			$("#UserList li").each(function() {
+				if ($.inArray($(this).attr('id'),uids) < 0)
+				{
+					$(this).slideUp(function() {
+						$(this).remove();
+					});
+				}
+			});
+		},
+		function (xhr, status)
+		{
+			//silently fail
+		});
+}
+
+/**
  * Sets the active chat room - switches context and loads content of new chat.
  * room - string ID of room to switch to.
  */
@@ -386,7 +430,8 @@ function switch_chat_room(room)
 			
 			//Load recent chat...
 			load_recent_chat_contents();
-			
+			//Load participants...
+			update_participant_list();
 			progress_indicator_hide(switch_ind);
 		},
 		function (xhr, status)

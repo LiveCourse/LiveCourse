@@ -32,6 +32,7 @@
 							//We have successfully authenticated!
 							$.cookie("lc_auth_token", auth_token); //Set authentication cookies
 							$.cookie("lc_auth_pass", auth_pass); //Set authentication cookies
+							current_user_id = data.authentication.user_id;
 							init_ui();
 							progress_indicator_hide(indicator);
 						},
@@ -95,9 +96,11 @@
 		<div id="RightSideBar">
 			<h1>Participants</h1>
 			<ul id="UserList">
+				<!--
 				<li class="me">
 					Me
 				</li>
+				-->
 				<!--
 					<li>
 						This is a user

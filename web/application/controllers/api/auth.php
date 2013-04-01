@@ -48,7 +48,7 @@ class Auth extends REST_Controller
 	{
 		if ($this->authenticated_as > 0)
 		{
-			$response['authentication'] = array('success' => 'true');
+			$response['authentication'] = array('success' => 'true', 'user_id' => $this->authenticated_as);
 			$this->response($response);
 			return;
 		}

@@ -656,9 +656,6 @@ class Chats extends REST_Controller
 			return;
 		}
 		
-		//Because it wanted to include the stdClass objects instead of just giving me an array of data
-		//I had to go through and rip it out.
-		//I was getting errors. Now I'm not.
 		$this->response($users,200);
 	}
 }
