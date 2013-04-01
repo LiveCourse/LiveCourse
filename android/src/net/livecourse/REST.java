@@ -31,17 +31,20 @@ public class REST extends AsyncTask <Void, Void, String>
 	 * Variables saved for use
 	 */
 	private int commandType;
+	
 	private String email;
 	private String password;
 	private String query;
 	private String token;
 	private boolean success;
 	
+	private Chatroom[] roomList;
+	
 	/**
 	 * Flags for type of command
 	 */
 	public static final int AUTH_AND_VERIFY = 0;
-	public static final int CLASS_LIST = 1;
+	public static final int CLASS_QUERY = 1;
 	
 	/**
 	 * Activity is passed through so that REST can make changes to the UI and such
@@ -77,7 +80,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		this.query = query;
 		this.password = password;
 		
-		this.commandType = CLASS_LIST;
+		this.commandType = CLASS_QUERY;
 	}
 	
 	protected String getASCIIContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException 
@@ -102,7 +105,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		switch(commandType)
 		{
 			case AUTH_AND_VERIFY:
-				result = "Invalid email";
+				result = "Authentication Timeout";
 				this.token = this.auth(this.email);
 				if(success)
 				{
@@ -110,9 +113,9 @@ public class REST extends AsyncTask <Void, Void, String>
 					result = this.verify(this.token, this.password);
 				}
 				break;
-			case CLASS_LIST:
-				result = "Search Failed";
-				getClassList(this.query,this.token,this.password);
+			case CLASS_QUERY:
+				result = "Class Query Timeout";
+				queryClassList(this.query,this.token,this.password);
 				break;
 		}
 		return result;
@@ -142,7 +145,7 @@ public class REST extends AsyncTask <Void, Void, String>
 					errorTextView.setVisibility(View.VISIBLE);
 				}
 				break;
-			case CLASS_LIST:
+			case CLASS_QUERY:
 				//TODO: handle results
 				break;
 		}
@@ -251,40 +254,15 @@ public class REST extends AsyncTask <Void, Void, String>
 	}
 	
 	/**
-	 * Converts string into SHA-1 hash
-	 * @param input
-	 * @return
-	 * @throws NoSuchAlgorithmException 
+	 * This is the chat room query api call.  By passing it a query, a token, and the password,
+	 * this call will call the query api and get a list of clatrooms.  The list is passed to the global list
+	 * @param query
+	 * @param token
+	 * @param password
+	 * @return the message
 	 */
-	private String toSha1(String input)
+	private String queryClassList(String query, String token, String password)
 	{
-		String cpyInput = input;
-		MessageDigest md = null;
-		try 
-		{
-			md = MessageDigest.getInstance("SHA-1");
-		} 
-		catch (NoSuchAlgorithmException e) 
-		{
-			e.printStackTrace();
-		}
-        md.update(cpyInput.getBytes());
-        
-        byte byteData[] = md.digest();
-        
-        /**
-         * Convert from byte to hex
-         */
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < byteData.length; i++) 
-        {
-        	buffer.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-        }
-        
-		return buffer.toString();
-	}
-	
-	private String getClassList(String query, String token, String password){
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
 		
 		System.out.println("Get Class List - token: "+token+" password: " + password);
@@ -316,31 +294,31 @@ public class REST extends AsyncTask <Void, Void, String>
 				case 200:
 					JSONObject parse = new JSONObject(result.trim());
 			        Iterator<?> keys = parse.keys();
-			        Chatroom[] roomlist = new Chatroom[1024];
+			        Chatroom[] roomList = new Chatroom[1024];
 
 			        for(int j=0; keys.hasNext();){
 			            String key = (String)keys.next();
 			            if(key.equals("id")){
-			            	roomlist[j] = new Chatroom();
+			            	roomList[j] = new Chatroom();
 			            }
 			            if(key.equals("subject_id")){
-			            	(roomlist[j]).setSubject_id(parse.getString(key));
+			            	(roomList[j]).setSubject_id(parse.getString(key));
 			            }
 			            if(key.equals("course_number")){
-			            	(roomlist[j]).setCourse_number(parse.getString(key));
+			            	(roomList[j]).setCourse_number(parse.getString(key));
 			            }
 			            if(key.equals("name")){
-			            	(roomlist[j]).setName(parse.getString(key));
+			            	(roomList[j]).setName(parse.getString(key));
 			            }
 			            if(key.equals("start_time")){
-			            	(roomlist[j]).setStart_time(parse.getString(key));
+			            	(roomList[j]).setStart_time(parse.getString(key));
 			            }
 			            if(key.equals("dow_sunday")){
 			            	j++;
 			            }
 			        }
-					result = parse.getJSONObject("authentication").getString("token");
-					//parse.
+					//result = parse.getJSONObject("authentication").getString("token");
+			        this.roomList =  roomList;
 					
 					this.success = true;
 					break;
@@ -359,5 +337,39 @@ public class REST extends AsyncTask <Void, Void, String>
 		System.out.println("Search chat result: " + result+"\n");
 		
 		return result;
+	}
+	
+	/**
+	 * Converts string into SHA-1 hash
+	 * @param input
+	 * @return
+	 * @throws NoSuchAlgorithmException 
+	 */
+	private String toSha1(String input)
+	{
+		String cpyInput = input;
+		MessageDigest md = null;
+		try 
+		{
+			md = MessageDigest.getInstance("SHA-1");
+		} 
+		catch (NoSuchAlgorithmException e) 
+		{
+			e.printStackTrace();
+		}
+        md.update(cpyInput.getBytes());
+        
+        byte byteData[] = md.digest();
+        
+        /**
+         * Convert from byte to hex
+         */
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) 
+        {
+        	buffer.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        
+		return buffer.toString();
 	}
 }
