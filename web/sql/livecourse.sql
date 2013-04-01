@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 01, 2013 at 04:00 AM
+-- Generation Time: Apr 01, 2013 at 04:06 AM
 -- Server version: 5.5.29
 -- PHP Version: 5.4.6-1ubuntu1.2
 
@@ -19,21 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `livecourse`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `gcm_users`
---
-
-CREATE TABLE IF NOT EXISTS `gcm_users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `gcm_regid` text,
-  `name` varchar(50) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -133,6 +118,21 @@ CREATE TABLE IF NOT EXISTS `lc_chat_participants` (
   `permissions` int(11) NOT NULL DEFAULT '0' COMMENT '0 = default, 1 = admin',
   `jointime` int(11) NOT NULL COMMENT 'Time the user joined this particular chat in UNIX epoch'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lc_gcm_users`
+--
+
+CREATE TABLE IF NOT EXISTS `lc_gcm_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `gcm_regid` text,
+  `name` varchar(50) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
