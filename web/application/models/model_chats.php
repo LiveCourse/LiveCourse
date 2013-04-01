@@ -31,7 +31,7 @@ class Model_Chats extends CI_Model {
 	{
 		$query = $this->db
 				->select('id')
-				->where('id_string',$chat_id_string)
+				->where('id_string = ',$chat_id_string)
 				->from('lc_chats')
 				->get()
 				->result();
@@ -282,29 +282,14 @@ class Model_Chats extends CI_Model {
 	 */
 	function get_participants($chat_id)
 	{
-		$user_ids = $this->db
-				->select('user_id')
+		$users = $this->db
+				->select('lc_users.id,lc_users.display_name,lc_users.email')
 				->where('chat_id', $chat_id)
 				->from('lc_chat_participants')
+				->join('lc_users','lc_users.id = lc_chat_participants.user_id')
 				->get()
 				->result();
 		
-		if(!$user_ids)
-		{
-			return 0;
-		}
-		
-		$users = null;
-		
-		foreach ($user_ids as $user_id)
-		{
-			$users[] = $this->db
-					->select('id, email, display_name')
-					->where('id', $user_id->user_id)
-					->from('lc_users')
-					->get()
-					->result();
-		}
 		return $users;
 	}
 }

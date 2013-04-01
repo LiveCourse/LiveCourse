@@ -562,6 +562,7 @@ class Chats extends REST_Controller
 	 */
 	function delete_post()
 	{
+		return; //TODO: PERMISSIONS !!
 		$this->load->model('Model_Chats');
 		$this->load->model('Model_Auth');
 		
@@ -645,34 +646,19 @@ class Chats extends REST_Controller
 		
 		if(!$users)
 		{
-			$this->response($this->rest_error(array("Error finding users!")),404);
+			$this->response($this->rest_error(array("Error finding users!")),500);
 			return;
 		}
 		
 		if(count($users) <= 0)
 		{
-			$this->response($this->rest_error(array("No subscribed users")),403);
+			$this->response($this->rest_error(array("No subscribed users")),404);
 			return;
 		}
 		
 		//Because it wanted to include the stdClass objects instead of just giving me an array of data
 		//I had to go through and rip it out.
 		//I was getting errors. Now I'm not.
-		foreach ($users as $user)
-		{
-			$var = null;
-			foreach ($user as $thisisridiculous)
-			{
-				$wtf = get_object_vars($thisisridiculous);
-				$var[] = $wtf['id'];
-				$var[] = $wtf['email'];
-				$var[] = $wtf['display_name'];
-			}
-			$users_array[] = $var;
-		}
-		
-		$users = $users_array;
-		
-		return $users;
+		$this->response($users,200);
 	}
 }
