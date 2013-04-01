@@ -426,6 +426,7 @@ function switch_chat_room(room)
 					$("#ChatFrame h1").css('overflow','');
 					$("#ChatFrame h1").height('');
 				});
+				$("#ChatFrame #ChatFrameHeader #ChatHeaderMenu").fadeIn();
 			});
 			
 			//Load recent chat...
@@ -441,6 +442,39 @@ function switch_chat_room(room)
 			dialog_show(errdialog);
 			progress_indicator_hide(switch_ind);
 		});
+}
+
+/**
+ * Switches to chat tab via chat menu.
+ */
+function select_chat_tab()
+{
+	// Set buttons to proper selection
+	$("#ChatFrame #ChatFrameHeader #ChatHeaderMenu li").removeClass("selected");
+	$("#chat_button").addClass("selected");
+	Cufon.refresh();
+	// Fade out other panes if they're here.
+	$("#ChatFrame #HistoryMessages").fadeOut(300,function() {
+		$("#ChatFrame #ChatMessages").fadeIn(300,function() {
+			$("#ChatMessages").mCustomScrollbar("update");
+			$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:0}); //scroll to bottom
+		});
+	});
+}
+
+/**
+ * Switches to history tab via chat menu.
+ */
+function select_history_tab()
+{
+	// Set buttons to proper selection
+	$("#ChatFrame #ChatFrameHeader #ChatHeaderMenu li").removeClass("selected");
+	$("#history_button").addClass("selected");
+	Cufon.refresh();
+	// Fade out other panes if they're here.
+	$("#ChatFrame #ChatMessages").fadeOut(300,function() {
+		$("#ChatFrame #HistoryMessages").fadeIn(300);
+	});
 }
 
 /**
