@@ -274,4 +274,37 @@ class Model_Chats extends CI_Model {
 			return true;
 		}
 	}
+	
+	/**
+	 *Get all of the users subscribed to a chat room
+	 *chat_id - ID of the chat to get participants
+	 *returns an array of users that are subscribed, 0 on first failure, null on second.
+	 */
+	function get_participants($chat_id)
+	{
+		$user_ids = $this->db
+				->select('user_id')
+				->where('chat_id', $chat_id)
+				->from('lc_chat_participants')
+				->get()
+				->result();
+		
+		if(!$user_ids)
+		{
+			return 0;
+		}
+		
+		$users = null;
+		
+		foreach ($user_ids as $user_id)
+		{
+			$users[] = $this->db
+					->select('id, email, display_name')
+					->where('id', $user_id->user_id)
+					->from('lc_users')
+					->get()
+					->result();
+		}
+		return $users;
+	}
 }

@@ -603,4 +603,76 @@ class Chats extends REST_Controller
 			return;
 		}
 	}
+	
+	/**
+	 *Gets all participants in a selected chat
+	 *id - Chat ID String of the chat to get subscribed users
+	 *returns an array of users on success or an error on failure  
+	 */
+	function get_participants_get()
+	{
+		$this->load->model('Model_Chats');
+		$this->load->model('Model_Auth');
+		
+		$chat_id_string = $this->get('id');
+		
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
+		
+		//Make sure we requested a chat ID
+		if (strlen($chat_id_string) <= 0)
+		{
+			$this->response($this->rest_error(array("No chat ID was specified.")),403);
+			return;
+		}
+
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+
+		if ($chat_id < 0)
+		{
+			$this->response($this->rest_error(array("Specified chat does not exist.")),404);
+			return;
+		}
+		$users = null;
+		$users = $this->Model_Chats->get_participants($chat_id);
+		
+		if(!$users)
+		{
+			$this->response($this->rest_error(array("Error finding users!")),404);
+			return;
+		}
+		
+		if(count($users) <= 0)
+		{
+			$this->response($this->rest_error(array("No subscribed users")),403);
+			return;
+		}
+		
+		//Because it wanted to include the stdClass objects instead of just giving me an array of data
+		//I had to go through and rip it out.
+		//I was getting errors. Now I'm not.
+		foreach ($users as $user)
+		{
+			$var = null;
+			foreach ($user as $thisisridiculous)
+			{
+				$wtf = get_object_vars($thisisridiculous);
+				$var[] = $wtf['id'];
+				$var[] = $wtf['email'];
+				$var[] = $wtf['display_name'];
+			}
+			$users_array[] = $var;
+		}
+		
+		$users = $users_array;
+		
+		return $users;
+	}
 }
