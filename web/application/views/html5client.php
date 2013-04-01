@@ -21,6 +21,9 @@
 		
 		<script type="text/javascript">
 			Cufon.replace('#LeftSideBar h1,#RightSideBar h1,#ChatFrame h1,.DialogContainer h1,.DialogMessage .status_message,#joinroom_results ul li .name');
+			Cufon.replace('#ChatFrame #ChatFrameHeader #ChatHeaderMenu li a',{
+				hover: true
+			});
 			$(function() {
 				//Check authentication and prompt for log-in if we're not authenticated.
 				if (auth_token != "")
@@ -78,10 +81,21 @@
 		</div>
 		
 		<div id="ChatFrame">
-			<div style="position:relative;background-image:url(img/gray_opacity_75.png);z-index:10;">
+			<div id="ChatFrameHeader">
 				<h1></h1>
+				<ul id="ChatHeaderMenu">
+					<li id="chat_button" class="selected"><a href="javascript:;" onclick="select_chat_tab();">chat</a></li>
+					<li id="documents_button"><a href="javascript:;">documents</a></li>
+					<li id="history_button"><a href="javascript:;" onclick="select_history_tab();">history</a></li>
+					<li id="options_button"><a href="javascript:;">options</a></li>
+				</ul>
+				<div style="clear:both;"></div>
 			</div>
 			<div id="ChatMessages" class="nano">
+				<ul>
+				</ul>
+			</div>
+			<div id="HistoryMessages" class="nano">
 				<ul>
 				</ul>
 			</div>
