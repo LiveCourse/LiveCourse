@@ -405,7 +405,6 @@ function switch_chat_room(room)
  */
 function send_message(message_string,clear_me)
 {
-
 	if (message_string.length < 1)
 	{
 		return;
@@ -421,11 +420,16 @@ function send_message(message_string,clear_me)
 	
 	var send_ind = progress_indicator_show();
 	var _clear_me = clear_me;
+	if (typeof _clear_me != "undefined")
+	{
+		_clear_me.prop('disabled',true); //disable the form
+	}
 	call_api("chats/send","POST",{chat_id: current_chat_room, message: message_string},
 		function (data) {
 			if (typeof _clear_me != "undefined")
 			{
 				_clear_me.val("");
+				_clear_me.prop('disabled',false); //enable the form
 			}
 			progress_indicator_hide(send_ind);
 		},
@@ -434,6 +438,10 @@ function send_message(message_string,clear_me)
 			var errdialog = dialog_new("Error Sending Message","An error occurred while attempting to send your message.",true,true);
 			errdialog.find(".DialogContainer").addClass("error");
 			dialog_show(errdialog);
+			if (typeof _clear_me != "undefined")
+			{
+				_clear_me.prop('disabled',false); //enable the form
+			}
 			progress_indicator_hide(send_ind);
 		});
 }
