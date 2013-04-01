@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 01, 2013 at 04:06 AM
+-- Generation Time: Apr 01, 2013 at 05:23 AM
 -- Server version: 5.5.29
 -- PHP Version: 5.4.6-1ubuntu1.2
 
@@ -127,6 +127,7 @@ CREATE TABLE IF NOT EXISTS `lc_chat_participants` (
 
 CREATE TABLE IF NOT EXISTS `lc_gcm_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT 'ID of the user who registered the device',
   `gcm_regid` text,
   `name` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,

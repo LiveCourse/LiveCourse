@@ -197,4 +197,55 @@ class Users extends REST_Controller
 		}
 
 	}
+	
+	/**
+	 *Register an android users' device
+	 *name - Name of the user
+	 *email - Email of the user
+	 *gcm_regid - Registration ID of the device
+	 *returns the data inputted on success, null and 404 on error.
+	 */
+	public function android_add_post()
+	{
+		
+		$this->load->model('Model_Users');
+		$this->load->model('Model_Auth');
+		
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
+		
+		//Get POST variables...
+		$name = $this->post('name');
+		$email = $this->post('email');
+		$reg_id = $this->post('gcm_regid');
+		
+		
+		//Check error conditions:
+		//E-mail must be valid...
+		if (!$this->validEmail($email))
+		{
+			$this->response($this->rest_error(array("You have entered an invalid e-mail address.")),403);
+			return;
+		}
+		
+		//name must not be blank.
+		if (strlen(name) <= 0)
+		{
+			$this->response($this->rest_error(array("You must provide a name.")),403);
+			return;
+		}
+		
+		//must have a valid registration id
+		if (strlen($reg_id) <= 0)
+		{
+			$this->response($this->rest_error(array("Invalid Registration ID.")),403);
+		}
+	}
+	
 }
