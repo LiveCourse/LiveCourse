@@ -53,7 +53,7 @@
 				
 
 				var hidden = "hidden";
-
+				/*
 				// Standards:
 				if (hidden in document)
 					document.addEventListener("visibilitychange", onchange);
@@ -95,6 +95,9 @@
 						//body.className = this[hidden] ? "hidden" : "visible";
 					}
 				}
+				*/
+				$('body').addClass("visible");
+				$(window).blur(function() {$('body').removeClass("visible").addClass("hidden");}).focus(function() {$('body').removeClass("hidden").addClass("visible");window_onfocus();});
 				
 				// Code to submit message on enter.
 				$('#form_message textarea').keydown(function(event) {
