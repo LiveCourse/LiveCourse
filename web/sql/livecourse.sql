@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 02, 2013 at 03:58 PM
+-- Generation Time: Apr 02, 2013 at 05:59 PM
 -- Server version: 5.5.30-log
 -- PHP Version: 5.3.17
 
@@ -183,6 +183,7 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `password` varchar(255) NOT NULL COMMENT 'User''s sha1 encrypted password',
   `display_name` varchar(255) NOT NULL,
   `jointime` int(11) NOT NULL COMMENT 'User''s time of sign-up in UNIX epoch',
+  `color_preference` smallint(6) NOT NULL DEFAULT '0' COMMENT 'User''s UI color preference',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 

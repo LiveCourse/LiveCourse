@@ -14,6 +14,8 @@ var current_chat_room = ""; //Global variable for storing the current chat room.
 var last_message_id;
 var waiting_notifications = 0;
 
+var ui_colors=["","red","brown","green","cyan","purple"];
+
 /**
  * Shows or generates a horizontal pop-up dialog above the current page.
  * header - Title text shown at the top of the dialog

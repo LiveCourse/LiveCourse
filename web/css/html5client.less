@@ -409,6 +409,30 @@ input[type="submit"]:active,button:active
 	color:#fff;
 }
 
+#color_selection
+{
+	width:156px;
+	list-style-type:none;
+	padding:0;
+	text-align:left;
+}
+
+#color_selection li
+{
+	display:block;
+	float:left;
+	width:32px;
+	height:32px;
+	border:2px solid #fff;
+	margin:8px;
+	cursor:pointer;
+}
+
+#color_selection li.selected
+{
+	border-color:#000;
+}
+
 .large_form input::-webkit-input-placeholder {
 	color:@color_secondary;
 }

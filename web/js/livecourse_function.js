@@ -113,6 +113,19 @@ function init_ui()
 }
 
 /**
+ * Switches the UI to the color theme defined by 'code'
+ * code - index of ui_colors array of color to set.
+ */
+function switch_ui_color(code)
+{
+	if (code > 0)
+		$("#ui_stylesheet").attr('href','css/html5client_'+ui_colors[code]+'.css');
+	else
+		$("#ui_stylesheet").attr('href','css/html5client.css');
+	setTimeout(Cufon.refresh,500);
+}
+
+/**
  * Shows a dialog to the user to be used for registration.
  * require_login - If true, when registration window is closed, log-in dialog will be shown.
  */
@@ -293,6 +306,23 @@ function joinroom_show()
 		}
 	});
 	dialog_show(dialog);
+}
+
+/**
+ * Shows a dialog to the user to be used setting preferences
+ */
+function prefs_show()
+{
+	var dialog = dialog_clone("Preferences","#dialog_prefs",true,true);
+	// dialog_addbutton(dialog,"Submit",login_submit,false); //This button'd look better under the actual form.
+	dialog.find("#color_selection li").click(function() {
+		dialog.find("#color_selection li").removeClass("selected");
+		$(this).addClass("selected");
+		switch_ui_color($(this).attr("value"));
+	});
+	dialog_show(dialog, function() { //Show it!
+		
+	}); 
 }
 
 /**

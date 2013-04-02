@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>LiveCourse</title>
-		<link rel="stylesheet" href="<?php echo(base_url("css/html5client.css")); ?>" />
+		<link id="ui_stylesheet" rel="stylesheet" href="<?php echo(base_url("css/html5client.css")); ?>" />
 		<link rel="stylesheet" href="<?php echo(base_url("css/livecourse-theme/jquery-ui-1.10.2.custom.css")); ?>" />
 		<link rel="stylesheet" href="<?php echo(base_url("css/jquery.mCustomScrollbar.css")); ?>" />
 		<script src="<?php echo(base_url("js/sha1.js")); ?>"></script>
@@ -124,7 +124,8 @@
 				</li>
 				-->
 			</ul>
-			<button onclick="joinroom_show()">Add a Class</button>
+			<button onclick="joinroom_show()">Add a Class</button><br>
+			<button onclick="prefs_show()">Preferences</button>
 		</div>
 		
 		<div id="ChatFrame">
@@ -204,6 +205,18 @@
 			</form>
 			<div id="joinroom_results">
 			</div>
+		</div>
+		
+		<!-- User preferences dialog -->
+		<div id="dialog_prefs" style="display:none;">
+			<ul id="color_selection">
+				<li value="0" style="background-color:#2E587E;"></li>
+				<li value="1" style="background-color:#7e2e2e;"></li>
+				<li value="2" style="background-color:#7e4f2e;"></li>
+				<li value="3" style="background-color:#2e7e3b;"></li>
+				<li value="4" style="background-color:#2e7e7e;"></li>
+				<li value="5" style="background-color:#7e2e7e;"></li>
+			</ul>
 		</div>
 	</body>
 </html>

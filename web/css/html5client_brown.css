@@ -1,6 +1,4 @@
-/* Default color definitions! */
-/* Based on color profile: https://kuler.adobe.com/#themeID/2231691 */
-/* #EBFFE8, #B6B8AD, #A39395, #997DA1, #765391 */
+/* Green color definitions! */
 /* LiveCourse HTML 5 Interface Mockup */
 /* Uses LESS! Needs to be compiled with lessc before changes will take effect. */
 body {
@@ -11,13 +9,13 @@ body {
 input,
 textarea {
   border: 0;
-  border-bottom: 3px solid #2e587e;
-  background-color: #dadee6;
+  border-bottom: 3px solid #7e4f2e;
+  background-color: #e6dfda;
   resize: none;
 }
 input[type="submit"],
 button {
-  background-color: #2e587e;
+  background-color: #7e4f2e;
   border: 2px solid #fff;
   color: #fff;
   font-size: 18px;
@@ -27,8 +25,8 @@ button {
 input[type="submit"]:active,
 button:active {
   background-color: #fff;
-  border-color: #2e587e;
-  color: #2e587e;
+  border-color: #7e4f2e;
+  color: #7e4f2e;
 }
 #GlobalLoadingIndicator {
   /*display:none;*/
@@ -47,7 +45,7 @@ button:active {
   top: 0;
   bottom: 0;
   width: 256px;
-  background-color: #2e587e;
+  background-color: #7e4f2e;
   text-align: center;
 }
 #LeftSideBar h1 {
@@ -68,16 +66,16 @@ button:active {
   padding: 8px 8px 8px 16px;
 }
 #CourseList li:hover {
-  border-left: 6px solid #b8c9e5;
+  border-left: 6px solid #e5cbb8;
   padding-left: 10px;
 }
 #CourseList li.selected:hover {
-  border-left: 6px solid #2e587e;
+  border-left: 6px solid #7e4f2e;
   padding-left: 10px;
 }
 #CourseList li.selected {
   cursor: pointer;
-  background-color: #b8c9e5;
+  background-color: #e5cbb8;
 }
 #CourseList li .title {
   color: #fff;
@@ -88,11 +86,11 @@ button:active {
   font-size: 14px;
 }
 #CourseList li.selected .title {
-  color: #2e587e;
+  color: #7e4f2e;
   font-size: 18px;
 }
 #CourseList li.selected .subTitle {
-  color: #2e587e;
+  color: #7e4f2e;
   font-size: 14px;
 }
 #RightSideBar {
@@ -101,13 +99,13 @@ button:active {
   top: 0;
   bottom: 0;
   width: 256px;
-  background-color: #b8c9e5;
+  background-color: #e5cbb8;
 }
 #RightSideBar h1 {
   text-align: left;
   font-family: 'cicle';
   font-size: 36px;
-  color: #2e587e;
+  color: #7e4f2e;
   margin: 0.4em 0 18px 32px;
 }
 #UserList {
@@ -118,16 +116,16 @@ button:active {
 }
 #UserList li {
   padding: 8px 8px 8px 46px;
-  color: #2e587e;
+  color: #7e4f2e;
   font-size: 16px;
   cursor: default;
 }
 #UserList li:hover {
-  border-left: 6px solid #2e587e;
+  border-left: 6px solid #7e4f2e;
   padding-left: 40px;
 }
 #UserList li.selected {
-  background-color: #b8c9e5;
+  background-color: #e5cbb8;
 }
 #UserList li.me {
   font-weight: bold;
@@ -143,7 +141,7 @@ button:active {
 #ChatFrame h1 {
   font-family: 'cicle';
   font-size: 68px;
-  color: #2e587e;
+  color: #7e4f2e;
   margin-top: 0;
   margin-left: 36px;
   margin-bottom: 12px;
@@ -174,7 +172,7 @@ button:active {
   color: #000;
 }
 #ChatFrame #ChatFrameHeader #ChatHeaderMenu li.selected a {
-  color: #2e587e;
+  color: #7e4f2e;
   opacity: 1.0;
 }
 #ChatFrame #ChatFrameHeader #ChatHeaderMenu li a:hover {
@@ -213,7 +211,7 @@ button:active {
   opacity: 0.5;
 }
 #ChatFrame #HistoryDateSelect a:hover {
-  color: #2e587e;
+  color: #7e4f2e;
   opacity: 1.0;
 }
 #ChatFrame #ChatMessages ul,
@@ -260,7 +258,7 @@ button:active {
   float: left;
   font-size: 14px;
   font-weight: bold;
-  color: #2e587e;
+  color: #7e4f2e;
 }
 #ComposeFrame {
   position: fixed;
@@ -309,12 +307,12 @@ button:active {
   padding: 12px 8px;
   font-size: 16px;
   margin: 12px;
-  border: 3px dashed #b8c9e5;
+  border: 3px dashed #e5cbb8;
   /* background-color:@color_secondary; */
 
   /* color:@color_primary; */
 
-  color: #b8c9e5;
+  color: #e5cbb8;
   display: block;
   float: left;
 }
@@ -346,29 +344,29 @@ button:active {
   border-color: #000;
 }
 .large_form input::-webkit-input-placeholder {
-  color: #b8c9e5;
+  color: #e5cbb8;
 }
 .large_form input::-moz-placeholder {
-  color: #b8c9e5;
+  color: #e5cbb8;
 }
 .large_form input:-ms-input-placeholder {
-  color: #b8c9e5;
+  color: #e5cbb8;
 }
 .large_form input {
   width: 256px;
   font-size: 24px;
   padding: 5px 8px;
   margin: 16px 0;
-  background-color: #2e587e;
+  background-color: #7e4f2e;
   color: #fff;
 }
 .large_form input:disabled {
-  color: #b8c9e5;
+  color: #e5cbb8;
 }
 .large_form input[type="email"],
 .large_form input[type="text"],
 .large_form input[type="password"] {
-  border-bottom: 3px solid #b8c9e5;
+  border-bottom: 3px solid #e5cbb8;
 }
 .large_form input[type="email"]:hover,
 .large_form input[type="text"]:hover,
@@ -391,8 +389,8 @@ button:active {
 .large_form input[type="submit"]:active,
 .large_form button:active {
   background-color: #fff;
-  border-color: #2e587e;
-  color: #2e587e;
+  border-color: #7e4f2e;
+  color: #7e4f2e;
 }
 .large_form input.invalid {
   border-bottom: 3px solid #e54545;
@@ -424,7 +422,7 @@ button:active {
 
   padding-top: 26px;
   padding-bottom: 26px;
-  background-color: #2e587e;
+  background-color: #7e4f2e;
   color: #ffffff;
 }
 .DialogContainer.error {
