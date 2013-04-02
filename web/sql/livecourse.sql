@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 02, 2013 at 03:52 PM
+-- Generation Time: Apr 02, 2013 at 03:58 PM
 -- Server version: 5.5.30-log
 -- PHP Version: 5.3.17
 
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `lc_chat_messages` (
   `chat_id` int(11) NOT NULL COMMENT 'ID of chat room message is destined for',
   `user_id` int(11) NOT NULL COMMENT 'ID of user that sent this message',
   `send_time` int(11) NOT NULL COMMENT 'Time that this message was sent in UNIX Epoch',
-  `message_string` varchar(2048) CHARACTER SET latin1 NOT NULL COMMENT 'Message content',
+  `message_string` varchar(2048) NOT NULL COMMENT 'Message content',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `lc_chat_messages_flagged` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'unique id of the flagged message entry',
   `message_id` int(11) NOT NULL COMMENT 'ID of the message flagged',
   `reporter_id` int(11) NOT NULL COMMENT 'ID of the user who flagged the message',
-  `reason` varchar(1024) CHARACTER SET latin1 NOT NULL COMMENT 'Reason for reporting the message',
+  `reason` varchar(1024) NOT NULL COMMENT 'Reason for reporting the message',
   `time_submitted` int(11) NOT NULL COMMENT 'Time at which the user reported the message. Seconds since unix epoch.',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `lc_chat_participants` (
 
 CREATE TABLE IF NOT EXISTS `lc_gcm_users` (
   `user_id` int(11) NOT NULL COMMENT 'ID of the user who registered the device',
-  `gcm_regid` text CHARACTER SET latin1,
+  `gcm_regid` text,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
