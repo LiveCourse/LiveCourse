@@ -7,7 +7,6 @@ import java.security.NoSuchAlgorithmException;
 
 import net.livecourse.android.MainActivity;
 import net.livecourse.android.R;
-import net.livecourse.android.R.id;
 import net.livecourse.database.Chatroom;
 
 import org.apache.http.HttpEntity;
@@ -42,7 +41,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	public static String token;
 	private boolean success;
 	
-	private Chatroom[] roomList;
+	public static Chatroom[] roomList;
 	private int sizeOfRoomList;
 	
 	/**
@@ -301,7 +300,7 @@ public class REST extends AsyncTask <Void, Void, String>
 				case 200:
 					//JSONObject parse = new JSONObject(result.trim());
 			        //Iterator<?> keys = parse.keys();
-			        Chatroom[] roomList = new Chatroom[1024];
+			        roomList = new Chatroom[1024];
 			        
 			        JSONArray parse = new JSONArray(result.trim());
 			        System.out.println("Length of JSONArray: " +parse.length());
@@ -315,15 +314,32 @@ public class REST extends AsyncTask <Void, Void, String>
 			        	
 			        	roomList[j] = new Chatroom();
 			        	
-			        	roomList[j].setId(ob.getString("id"));
-		            	roomList[j].setSubject_id(ob.getString("subject_id"));
-		            	roomList[j].setCourse_number(ob.getString("course_number"));
-		            	roomList[j].setName(ob.getString("name"));
-		            	roomList[j].setStart_time(ob.getString("start_time"));
+			        	roomList[j].setId(ob.getString(				"id"));
+			        	roomList[j].setIdString(ob.getString(		"id_string"));
+		            	roomList[j].setSubjectId(ob.getString(		"subject_id"));
+		            	roomList[j].setCourseNumber(ob.getString(	"course_number"));
+		            	roomList[j].setName(ob.getString(			"name"));
+		            	roomList[j].setStartTime(ob.getString(		"start_time"));	            	
+			        	roomList[j].setInstitutionId(ob.getString(	"institution_id"));
+			        	roomList[j].setRoomId(ob.getString(			"room_id"));
+			        	roomList[j].setStartTime(ob.getString(		"start_time"));
+			        	roomList[j].setEndTime(ob.getString(		"end_time"));
+			        	roomList[j].setStartDate(ob.getString(		"start_date"));
+			        	roomList[j].setEndDate(ob.getString(		"end_date"));
+			        	roomList[j].setDowMonday(ob.getString(		"dow_monday"));
+			        	roomList[j].setDowTuesday(ob.getString(		"dow_tuesday"));
+			        	roomList[j].setDowWednesday(ob.getString(	"dow_wednesday"));
+			        	roomList[j].setDowThursday(ob.getString(	"dow_thursday"));
+			        	roomList[j].setDowFriday(ob.getString(		"dow_friday"));
+			        	roomList[j].setDowSaturday(ob.getString(	"dow_saturday"));
+			        	roomList[j].setDowSunday(ob.getString(		"dow_sunday"));
+			        	
+			        	MainActivity.getAppDb().addClassQuery(roomList[j]);
+
 			        }
 			        this.sizeOfRoomList = j;
 					//result = parse.getJSONObject("authentication").getString("token");
-			        this.roomList =  roomList;
+			        //this.roomList =  roomList;
 					
 					this.success = true;
 					break;

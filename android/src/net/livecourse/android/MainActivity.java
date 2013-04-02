@@ -5,6 +5,7 @@ import com.actionbarsherlock.view.*;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 import net.livecourse.android.R;
+import net.livecourse.database.DatabaseHandler;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -25,6 +26,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	//private String password;
 	
 	/**
+	 * Database
+	 */
+	private static DatabaseHandler appDb;
+	
+	/**
 	 * Declares the required objects for the swipey tabs.
 	 */
     private TabsFragmentAdapter mAdapter;
@@ -39,6 +45,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         
         //this.setToken(this.getIntent().getStringExtra("token"));
         //this.setPassword(this.getIntent().getStringExtra("password"));
+        /**
+         * Init database
+         */
+        appDb = new DatabaseHandler(this.getApplicationContext());
 
         /**
          * The following code initializes the tabs.
@@ -133,5 +143,13 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 
 	public void setTabsAdapter(TabsFragmentAdapter mAdapter) {
 		this.mAdapter = mAdapter;
+	}
+
+	public static DatabaseHandler getAppDb() {
+		return appDb;
+	}
+
+	public static void setAppDb(DatabaseHandler appDb) {
+		MainActivity.appDb = appDb;
 	}
 }
