@@ -15,7 +15,7 @@
     
     <!-- 	ClassList Fragment Menu Strings
     		These are the strings used in the menu of the class list layout -->
-    <string name="search_class_menu_item_title">Search For Class</string>
+    <string name="search_class_menu_item_title">Search Classes</string>
     <string name="add_class_by_qr_menu_item_title">Add Class By QR Code</string>
     		
     <!-- 	ClassList Fragment Context Menu Strings

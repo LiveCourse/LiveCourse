@@ -20,8 +20,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	/**
 	 * REST stuff
 	 */
-	private String token;
-	private String password;
+	//private String token;
+	//private String password;
 	
 	/**
 	 * Declares the required objects for the swipey tabs.
@@ -36,8 +36,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        this.setToken(this.getIntent().getStringExtra("token"));
-        this.setPassword(this.getIntent().getStringExtra("password"));
+        //this.setToken(this.getIntent().getStringExtra("token"));
+        //this.setPassword(this.getIntent().getStringExtra("password"));
 
         /**
          * The following code initializes the tabs.
@@ -132,21 +132,5 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 
 	public void setTabsAdapter(TabsFragmentAdapter mAdapter) {
 		this.mAdapter = mAdapter;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 }

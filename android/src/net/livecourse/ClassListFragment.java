@@ -3,6 +3,8 @@ package net.livecourse;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,11 +19,12 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class ClassListFragment extends SherlockFragment implements OnItemClickListener,OnItemLongClickListener, ActionMode.Callback
+public class ClassListFragment extends SherlockFragment implements OnItemClickListener,OnItemLongClickListener, ActionMode.Callback, SearchView.OnQueryTextListener
 {
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
@@ -42,13 +45,8 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	 * REST call to get class list
 	 * Temporary list of classes used, will be changed later
 	 */
-	
-	//String[] array = new String[128];
-	
-	
-	
-	
 	String[] array = {
+	
 	        "CS252",
 	        "PSY200",
 	        "MA261",
@@ -121,9 +119,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
          */
         classListView.setOnItemClickListener(this);
         classListView.setOnItemLongClickListener(this);
-        
-        new REST(this.getSherlockActivity(),"a",((MainActivity)this.getSherlockActivity()).getPassword(),((MainActivity)this.getSherlockActivity()).getToken()).execute();
- 
+         
         return classListLayout;
     }
 
@@ -137,6 +133,17 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
 	{
 		inflater.inflate(R.menu.classlist_fragment_menu,menu);
+		
+		/**
+		 * Inits the search view
+		 */
+        SearchManager searchManager = (SearchManager) this.getSherlockActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search_class_menu_item).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getSherlockActivity().getComponentName()));
+        searchView.setQueryHint("Search For a Class");
+        searchView.setIconifiedByDefault(false);
+        searchView.setOnQueryTextListener(this);
+		
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 	
@@ -240,5 +247,18 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		  }
 		  // else continue with any other code you need in the method
 		
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) 
+	{        
+		
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

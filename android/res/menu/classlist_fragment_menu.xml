@@ -3,12 +3,14 @@
     <item 
         android:id="@+id/search_class_menu_item" 
         android:title="@string/search_class_menu_item_title" 
-        android:icon="@drawable/ic_search"
-        android:showAsAction="ifRoom" />
+        android:icon="@drawable/ic_search" 
+		android:actionViewClass="com.actionbarsherlock.widget.SearchView"
+        android:showAsAction="always|collapseActionView"/>
 
     <item 
         android:id="@+id/add_class_by_qr_menu_item" 
         android:title="@string/add_class_by_qr_menu_item_title" 
         android:icon="@drawable/ic_menu_add"
         android:showAsAction="ifRoom" />
+    
 </menu>

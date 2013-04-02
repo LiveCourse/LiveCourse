@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Iterator;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -32,10 +31,10 @@ public class REST extends AsyncTask <Void, Void, String>
 	 */
 	private int commandType;
 	
-	private String email;
-	private String password;
-	private String query;
-	private String token;
+	public static String email;
+	public static String password;
+	public static String query;
+	public static String token;
 	private boolean success;
 	
 	private Chatroom[] roomList;
@@ -61,8 +60,8 @@ public class REST extends AsyncTask <Void, Void, String>
 	{
 		super();
 		this.mActivity = a;
-		this.email = email;
-		this.password = password;
+		REST.email = email;
+		REST.password = password;
 		this.success = false;
 		
 		this.commandType = AUTH_AND_VERIFY;
@@ -76,10 +75,10 @@ public class REST extends AsyncTask <Void, Void, String>
 	{
 		super();
 		this.mActivity = a;
-		this.token = token;
+		REST.token = token;
 		this.success = false;
-		this.query = query;
-		this.password = password;
+		REST.query = query;
+		REST.password = password;
 		
 		this.commandType = CLASS_QUERY;
 	}
@@ -107,16 +106,16 @@ public class REST extends AsyncTask <Void, Void, String>
 		{
 			case AUTH_AND_VERIFY:
 				result = "Authentication Timeout";
-				this.token = this.auth(this.email);
+				REST.token = this.auth(REST.email);
 				if(success)
 				{
 					this.success = false;
-					result = this.verify(this.token, this.password);
+					result = this.verify(REST.token, REST.password);
 				}
 				break;
 			case CLASS_QUERY:
 				result = "Class Query Timeout";
-				queryClassList(this.query,this.token,this.password);
+				queryClassList(REST.query,REST.token,REST.password);
 				break;
 		}
 		return result;
@@ -131,8 +130,8 @@ public class REST extends AsyncTask <Void, Void, String>
 				if(success)
 				{
 					Intent mainIntent = new Intent(mActivity, MainActivity.class);
-			        mainIntent.putExtra("token", this.token);
-			        mainIntent.putExtra("password", this.password);
+			        //mainIntent.putExtra("token", REST.token);
+			        //mainIntent.putExtra("password", REST.password);
 			        
 					mActivity.startActivity(mainIntent);	
 					
@@ -301,6 +300,7 @@ public class REST extends AsyncTask <Void, Void, String>
 			        
 			        JSONArray parse = new JSONArray(result.trim());
 			        System.out.println("Length of JSONArray: " +parse.length());
+			        
 			        int j;
 			        for(j = 0;j<parse.length();j++)
 			        {
