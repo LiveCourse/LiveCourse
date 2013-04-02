@@ -37,6 +37,7 @@
 							$.cookie("lc_auth_token", auth_token); //Set authentication cookies
 							$.cookie("lc_auth_pass", auth_pass); //Set authentication cookies
 							current_user_id = data.authentication.user_id;
+							switch_ui_color(data.user.color_preference,false);
 							init_ui();
 							progress_indicator_hide(indicator);
 						},

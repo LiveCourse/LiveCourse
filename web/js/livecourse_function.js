@@ -81,6 +81,7 @@ function login_submit()
 					$.cookie("lc_auth_token", auth_token); //Set authentication cookies
 					$.cookie("lc_auth_pass", auth_pass); //Set authentication cookies
 					current_user_id = data.authentication.user_id;
+					switch_ui_color(data.user.color_preference,false);
 					init_ui();
 					progress_indicator_hide(indicator);
 					dialog_close($(_this).parents(".DialogOverlay").first());
@@ -116,13 +117,26 @@ function init_ui()
  * Switches the UI to the color theme defined by 'code'
  * code - index of ui_colors array of color to set.
  */
-function switch_ui_color(code)
+function switch_ui_color(code,save)
 {
+	if (typeof save == "undefined")
+		save = false;
 	if (code > 0)
 		$("#ui_stylesheet").attr('href','css/html5client_'+ui_colors[code]+'.css');
 	else
 		$("#ui_stylesheet").attr('href','css/html5client.css');
 	setTimeout(Cufon.refresh,500);
+	
+	if (save)
+	{
+		call_api("users/update_color","POST",{color: code},
+			function(data)
+			{
+			},
+			function(xhr,status)
+			{
+			});
+	}
 }
 
 /**
@@ -318,7 +332,7 @@ function prefs_show()
 	dialog.find("#color_selection li").click(function() {
 		dialog.find("#color_selection li").removeClass("selected");
 		$(this).addClass("selected");
-		switch_ui_color($(this).attr("value"));
+		switch_ui_color($(this).attr("value"),true);
 	});
 	dialog_show(dialog, function() { //Show it!
 		

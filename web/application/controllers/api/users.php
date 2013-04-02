@@ -160,6 +160,29 @@ class Users extends REST_Controller
 		}
 
 	}
+	
+	/**
+	 * Update's a user's color preference
+	 * color - color code value between 0 and 5
+	 */
+	function update_color_post()
+	{
+		$this->load->model('Model_Users');
+		
+		//Get POST variables...
+		$color = $this->post('color');
+		$user_id = $this->authenticated_as;
+		
+		//Make sure they gave us a user id.
+		if ($user_id <= 0)
+		{
+			$this->response(NULL,401);
+			return;
+		}
+		
+		$this->Model_Users->update_user_color($user_id,$color);
+		$this->response(NULL,200);
+	}
 
 	/**
 	 * Removes a user from the database.
