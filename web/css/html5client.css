@@ -262,25 +262,38 @@ input[type="submit"]:active,button:active
 	right:0px;
 	height:32px;
 	text-align:center;
-	font-size:18px;
+	font-size:22px;
 	padding:6px;
 	text-align:center;
 	display:none;
 }
 
-#ChatFrame #ChatMessages ul
+#ChatFrame #HistoryDateSelect a
+{
+	text-decoration:none;
+	color:#000;
+	opacity:0.5;
+}
+
+#ChatFrame #HistoryDateSelect a:hover
+{
+	color:#2E587E;
+	opacity:1.0;
+}
+
+#ChatFrame #ChatMessages ul, #ChatFrame #HistoryMessages ul
 {
 	position:relative;
 	list-style-type:none;
 	text-align:left;
 }
 
-#ChatFrame #ChatMessages ul li.spacer
+#ChatFrame #ChatMessages ul li.spacer, #ChatFrame #HistoryMessages ul li.spacer
 {
 	height:480px;
 }
 
-#ChatFrame #ChatMessages ul li
+#ChatFrame #ChatMessages ul li, #ChatFrame #HistoryMessages ul li
 {
 	width:100%;
 	font-family:sans-serif;
@@ -289,20 +302,20 @@ input[type="submit"]:active,button:active
 	margin:6px 0;
 }
 
-#ChatFrame #ChatMessages ul li .messageContainer
+#ChatFrame #ChatMessages ul li .messageContainer, #ChatFrame #HistoryMessages ul li .messageContainer
 {
 	float:left;
 	width:100%;
 }
 
-#ChatFrame #ChatMessages ul li .message
+#ChatFrame #ChatMessages ul li .message, #ChatFrame #HistoryMessages ul li .message
 {
 	float:left;
 	margin-left:16px;
 	padding-right:56px;
 }
 
-#ChatFrame #ChatMessages ul li .timestamp
+#ChatFrame #ChatMessages ul li .timestamp, #ChatFrame #HistoryMessages ul li .timestamp
 {
 	width:30%;
 	font-size:12px;
@@ -311,7 +324,7 @@ input[type="submit"]:active,button:active
 	text-align:right;
 	padding-right:56px;
 }
-#ChatFrame #ChatMessages ul li .author
+#ChatFrame #ChatMessages ul li .author, #ChatFrame #HistoryMessages ul li .author
 {
 	width:50%;
 	float:left;

@@ -428,7 +428,8 @@ function switch_chat_room(room)
 				});
 				$("#ChatFrame #ChatFrameHeader #ChatHeaderMenu").fadeIn();
 			});
-			
+			//Clear out history...
+			$("#HistoryMessages ul").html(''); // Empty it
 			//Load recent chat...
 			load_recent_chat_contents();
 			//Load participants...
@@ -478,9 +479,61 @@ function select_history_tab()
 			$("#ChatFrame #HistoryDateSelect").css('opacity',0);
 			$("#ChatFrame #HistoryDateSelect").css('top','100px');
 			$("#ChatFrame #HistoryDateSelect").css('display','block');
-			$("#ChatFrame #HistoryDateSelect").animate({"top":'124px',"opacity":1},300, "easeOutBack", null);
+			$("#ChatFrame #HistoryDateSelect").animate({"top":'124px',"opacity":1},300, "easeOutBack", function() {
+				$( "#ChatFrame #HistoryDateSelect input" ).datepicker("show");
+				$( "#ChatFrame #HistoryDateSelect input" ).datepicker("widget").position({
+					my: "center top",
+					at: "center bottom",
+					of: $( "#ChatFrame #HistoryDateSelect a" )
+				});
+			});
+			$("#ChatFrame #HistoryDateSelect").html('<input type="text" style="display:none;" /><a href="javascript:;">Select a Date</a>');
+			$( "#ChatFrame #HistoryDateSelect input" ).datepicker({ onSelect: function(dp) {
+				$( "#ChatFrame #HistoryDateSelect a" ).html($(this).val());
+				var start_epoch = ($(this).datepicker('getDate')).getTime() / 1000;
+				load_history(start_epoch);
+			}});
+			$( "#ChatFrame #HistoryDateSelect a" ).click(function() {
+				var dp = $( "#ChatFrame #HistoryDateSelect input" );
+				if (dp.datepicker('widget').is(':hidden')) {
+					dp.datepicker("show");
+					dp.datepicker("widget").position({
+						my: "center top",
+						at: "center bottom",
+						of: this
+					});
+				} else {
+					dp.hide();
+				}
+			});
 		});
 	});
+}
+
+/**
+ * Loads a day's worth of history from the specified day forward into the history pane.
+ */
+function load_history(start_epoch)
+{
+	var load_ind = progress_indicator_show();
+	call_api("chats/fetch_day","GET",{chat_id: current_chat_room, start_epoch: start_epoch},
+		function (data) {
+			$("#HistoryMessages ul").html(''); // Empty it
+			for (i in data)
+			{
+				post_message(data[i],false,"#HistoryMessages");
+			}
+			$("#HistoryMessages").mCustomScrollbar("update");
+			$("#HistoryMessages").mCustomScrollbar("scrollTo","top",{scrollInertia:1000}); //scroll to top
+			progress_indicator_hide(load_ind);
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Loading Messages","An error occurred while attempting to load your messages.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+			progress_indicator_hide(load_ind);
+		});
 }
 
 /**
@@ -568,8 +621,10 @@ function load_recent_chat_contents()
 /**
  * Posts the specified message object in the chat messages frame for user view.
  */
-function post_message(message,scroll)
+function post_message(message,scroll,area)
 {
+	if (typeof area == "undefined")
+		area = "#ChatMessages";
 	if (typeof scroll == "undefined")
 		scroll = true;
 		
@@ -582,10 +637,10 @@ function post_message(message,scroll)
 		var timestamp = (('0'+(date.getMonth()+1)).slice(-2))+"/"+(('0'+(date.getDate()+1)).slice(-2))+"/"+date.getFullYear()+" @ ";
 	timestamp += (('0'+date.getHours()).slice(-2))+":"+(('0'+date.getMinutes()).slice(-2))+":"+(('0'+date.getSeconds()).slice(-2));
 
-	$("#ChatMessages ul").append('<li><div class="author">'+message.display_name+'</div><div class="timestamp">'+timestamp+'</div><div class="messageContainer"><div class="message">'+escapeHtml(message.message_string)+'</div></div><div style="clear:both;"></div></li>');
+	$(area+" ul").append('<li><div class="author">'+message.display_name+'</div><div class="timestamp">'+timestamp+'</div><div class="messageContainer"><div class="message">'+escapeHtml(message.message_string)+'</div></div><div style="clear:both;"></div></li>');
 	last_message_id = message.id;
 	$.cookie("lc_last_msg", last_message_id); //Set last message id
-	$("#ChatMessages").mCustomScrollbar("update");
+	$(area).mCustomScrollbar("update");
 	if (scroll)
-		$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:1000}); //scroll to bottom
+		$(area).mCustomScrollbar("scrollTo","bottom",{scrollInertia:1000}); //scroll to bottom
 }

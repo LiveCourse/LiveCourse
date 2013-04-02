@@ -4,12 +4,13 @@
 		<meta charset="utf-8">
 		<title>LiveCourse</title>
 		<link rel="stylesheet" href="<?php echo(base_url("css/html5client.css")); ?>" />
+		<link rel="stylesheet" href="<?php echo(base_url("css/livecourse-theme/jquery-ui-1.10.2.custom.css")); ?>" />
 		<link rel="stylesheet" href="<?php echo(base_url("css/jquery.mCustomScrollbar.css")); ?>" />
 		<script src="<?php echo(base_url("js/sha1.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/json2.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/eventsource.js")); ?>"></script>
-		<script src="<?php echo(base_url("js/jquery-1.9.0.js")); ?>"></script>
-		<script src="<?php echo(base_url("js/jquery-ui-1.10.0.custom.min.js")); ?>"></script>
+		<script src="<?php echo(base_url("js/jquery-1.9.1.js")); ?>"></script>
+		<script src="<?php echo(base_url("js/jquery-ui-1.10.2.custom.min.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery.observe_field.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery.cookie.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery.mCustomScrollbar.js")); ?>"></script>
@@ -61,6 +62,7 @@
 					return false;
 				});
 				$("#ChatMessages").mCustomScrollbar({scrollInertia:1000});
+				$("#HistoryMessages").mCustomScrollbar({scrollInertia:0});
 			});
 		</script>
 		

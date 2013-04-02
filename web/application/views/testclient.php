@@ -150,19 +150,45 @@
 				color:#2E587E;
 				margin:0.4em 0;
 			}
+			
+			/* Syntax highlighting */
+			pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+			.string { color: green; }
+			.number { color: darkorange; }
+			.boolean { color: blue; }
+			.null { color: magenta; }
+			.key { color: red; }
 		</style>
 
 		
 		<script src="<?php echo(base_url("js/sha1.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/json2.js")); ?>"></script>
-		<script src="<?php echo(base_url("js/jquery-1.9.0.js")); ?>"></script>
-		<script src="<?php echo(base_url("js/jquery-ui-1.10.0.custom.min.js")); ?>"></script>
+		<script src="<?php echo(base_url("js/jquery-1.9.1.js")); ?>"></script>
+		<script src="<?php echo(base_url("js/jquery-ui-1.10.2.custom.min.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery.observe_field.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery.cookie.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/cufon-yui.js")); ?>"></script>
 		<script src="<?php echo(base_url("fonts/font.cicle.js")); ?>"></script>
 		
 		<script type="text/javascript">
+			function syntaxHighlight(json) {
+				json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+				return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+					var cls = 'number';
+					if (/^"/.test(match)) {
+						if (/:$/.test(match)) {
+							cls = 'key';
+						} else {
+							cls = 'string';
+						}
+					} else if (/true|false/.test(match)) {
+						cls = 'boolean';
+					} else if (/null/.test(match)) {
+						cls = 'null';
+					}
+					return '<span class="' + cls + '">' + match + '</span>';
+				});
+			}
 			function addKey()
 			{
 				$("#keys").append('<input name="key[]" placeholder="Key" style="width:112px;"> <input name="value[]" placeholder="Value" style="width:112px;">');
@@ -266,8 +292,8 @@
 					call_api(func,method,values,
 						function(data)
 						{
-							data = escapeHtml(data);
-							$("#ResultsFrame").html("<h1>Successful Response:</h1><br>"+data);
+							var content = syntaxHighlight(JSON.stringify(JSON.parse(data),undefined,4));
+							$("#ResultsFrame").html("<h1>Successful Response:</h1><br><pre>"+content+"</pre>");
 							Cufon.refresh();
 						},
 						function(xhr,status)
