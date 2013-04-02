@@ -428,6 +428,8 @@ function switch_chat_room(room)
 				});
 				$("#ChatFrame #ChatFrameHeader #ChatHeaderMenu").fadeIn();
 			});
+			//Clear notifications...
+			clear_notifications();
 			//Clear out history...
 			$("#HistoryMessages ul").html(''); // Empty it
 			//Load recent chat...
@@ -606,6 +608,11 @@ function load_recent_chat_contents()
 			eventsource.onmessage = function(e) {
 				var data = JSON.parse(e.data);
 				post_message(data);
+				if ($('body').hasClass("hidden"))
+				{
+					waiting_notifications++;
+					setNotifications(waiting_notifications);
+				}
 			};
 			progress_indicator_hide(load_ind);
 		},
