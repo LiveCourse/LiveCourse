@@ -16,6 +16,8 @@ var waiting_notifications = 0;
 
 var ui_colors=["","red","brown","green","cyan","purple"];
 
+var snd = new Audio("snd/update.wav"); // buffers automatically when created
+
 /**
  * Shows or generates a horizontal pop-up dialog above the current page.
  * header - Title text shown at the top of the dialog
@@ -190,6 +192,11 @@ function setNotifications(notification_count)
 	{
 		document.title = "LiveCourse";
 	} else {
+		if (notification_count == 1)
+		{
+			snd.currentTime=0;
+			snd.play();
+		}
 		document.title = "("+notification_count+") LiveCourse";
 	}
 }
