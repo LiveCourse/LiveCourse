@@ -1,4 +1,4 @@
-package net.livecourse;
+package net.livecourse.android;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

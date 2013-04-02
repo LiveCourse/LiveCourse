@@ -1,9 +1,14 @@
-package net.livecourse;
+package net.livecourse.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import net.livecourse.android.MainActivity;
+import net.livecourse.android.R;
+import net.livecourse.android.R.id;
+import net.livecourse.database.Chatroom;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

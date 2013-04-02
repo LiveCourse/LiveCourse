@@ -1,7 +1,8 @@
-package net.livecourse;
+package net.livecourse.android;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import net.livecourse.android.R;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -99,13 +100,14 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		 * Initialize the temporary list
 		 */
 		classes = new ArrayList<String>();
-		classes.addAll(Arrays.asList(array));
+		//classes.addAll(Arrays.asList(array));
 		
 		/**
 		 * Conencts the list to the XML
 		 */
 		classListLayout = inflater.inflate(R.layout.classlist_layout, container, false);
 		classListView = (ListView) classListLayout.findViewById(R.id.class_list_view);
+		classListView.setEmptyView(classListLayout.findViewById(R.id.class_list_empty_text_view));
     	
     	
     	/** 
@@ -113,6 +115,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
     	 * **/
         adapter = new ClassListAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,classes);
         classListView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         
         /**
          * The listener for clicking on an item in the list view

@@ -1,4 +1,4 @@
-package net.livecourse;
+package net.livecourse.android;
 
 import com.viewpagerindicator.PageIndicator;
 

@@ -1,4 +1,4 @@
-package net.livecourse;
+package net.livecourse.database;
 
 public class Chatroom {
 	private String id;

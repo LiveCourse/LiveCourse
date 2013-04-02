@@ -1,9 +1,10 @@
-package net.livecourse;
+package net.livecourse.android;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.*;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
+import net.livecourse.android.R;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;

@@ -1,7 +1,8 @@
-package net.livecourse;
+package net.livecourse.android;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import net.livecourse.android.R;
 
 import android.content.Intent;
 import android.os.Bundle;

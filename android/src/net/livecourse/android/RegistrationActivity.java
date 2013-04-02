@@ -1,4 +1,4 @@
-package net.livecourse;
+package net.livecourse.android;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,6 +6,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import net.livecourse.android.R;
 
 /**
  * This class allows the user to register.

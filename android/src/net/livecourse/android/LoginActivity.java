@@ -1,6 +1,8 @@
-package net.livecourse;
+package net.livecourse.android;
 
 import java.util.ArrayList;
+import net.livecourse.android.R;
+import net.livecourse.rest.REST;
 
 import android.content.Intent;
 import android.graphics.Color;

@@ -1,9 +1,10 @@
-package net.livecourse;
+package net.livecourse.android;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import net.livecourse.android.R;
 
 public class UserInfoActivity extends SherlockFragmentActivity
 {
