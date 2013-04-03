@@ -32,6 +32,6 @@ public class QueryActivity extends SherlockFragmentActivity
 	
 	private void processQuery(String query)
 	{
-        new REST(this,query,REST.password,REST.token).execute();
+        new REST(this,null,null,null,query,REST.token,REST.CLASS_QUERY).execute();
 	}
 }

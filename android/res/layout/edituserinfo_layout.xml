@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+	<PreferenceCategory android:title="@string/menu_settings" >
+        <EditTextPreference
+                android:title="@string/menu_settings"
+                android:summary="@string/menu_settings"
+                android:key="prefUsername"/>
+    </PreferenceCategory>
+     
+    <PreferenceCategory android:title="@string/menu_settings" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prefSendReport"
+            android:summary="@string/menu_settings"
+            android:title="@string/menu_settings" >
+        </CheckBoxPreference>
+ 
+    </PreferenceCategory>
+ 
+</PreferenceScreen>

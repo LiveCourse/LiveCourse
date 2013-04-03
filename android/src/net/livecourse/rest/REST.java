@@ -2,8 +2,11 @@ package net.livecourse.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.livecourse.android.MainActivity;
 import net.livecourse.android.R;
@@ -11,9 +14,15 @@ import net.livecourse.database.Chatroom;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.json.JSONArray;
@@ -36,6 +45,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	private int commandType;
 	
 	public static String email;
+	public static String name;
 	public static String password;
 	public static String query;
 	public static String token;
@@ -47,8 +57,9 @@ public class REST extends AsyncTask <Void, Void, String>
 	/**
 	 * Flags for type of command
 	 */
-	public static final int AUTH_AND_VERIFY = 0;
-	public static final int CLASS_QUERY = 1;
+	public static final int AUTH_AND_VERIFY 	= 0;
+	public static final int CLASS_QUERY 		= 1;
+	public static final int CHANGE_NAME 		= 2;
 	
 	/**
 	 * Activity is passed through so that REST can make changes to the UI and such
@@ -56,35 +67,34 @@ public class REST extends AsyncTask <Void, Void, String>
 	private SherlockFragmentActivity mActivity;
 	
 	/**
-	 * The constructor used for auth and verify
-	 * @param a
-	 * @param email
+	 * The constructor used REST, all unused args will be set to null
+	 * TODO: para and shit
 	 */
-	public REST(SherlockFragmentActivity a, String email, String password)
+	public REST(SherlockFragmentActivity a, String email, String password, String name, String query, String token, int command)
 	{
 		super();
-		this.mActivity = a;
-		REST.email = email;
-		REST.password = password;
-		this.success = false;
 		
-		this.commandType = AUTH_AND_VERIFY;
-	}
-
-	/**
-	 * The constructor used for class list
-	 * @param array
-	 */
-	public REST(SherlockFragmentActivity a, String query, String password, String token)
-	{
-		super();
 		this.mActivity = a;
-		REST.token = token;
 		this.success = false;
-		REST.query = query;
-		REST.password = password;
+		this.commandType = command;
+		System.out.println("Constructor Reached "+ this.commandType);
 		
-		this.commandType = CLASS_QUERY;
+		switch(commandType)
+		{
+			case AUTH_AND_VERIFY:
+				REST.email = email;
+				REST.password = password;
+				break;
+			case CLASS_QUERY:
+				REST.token = token;
+				REST.query = query;
+				//REST.password = password;
+				break;
+			case CHANGE_NAME:
+				System.out.println("Constructor switch case");
+				REST.name = name;
+				break;	
+		}
 	}
 	
 	protected String getASCIIContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException 
@@ -106,6 +116,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	protected String doInBackground(Void... params) 
 	{
 		String result = "No Command Executed\n";
+		System.out.println("do in background reached");
 		switch(commandType)
 		{
 			case AUTH_AND_VERIFY:
@@ -120,6 +131,11 @@ public class REST extends AsyncTask <Void, Void, String>
 			case CLASS_QUERY:
 				result = "Class Query Timeout";
 				queryClassList(REST.query,REST.token,REST.password);
+				break;
+			case CHANGE_NAME:
+				result = "Change Name Timeout";
+				System.out.println("Change Name REST background reached");
+				this.changeName(REST.password, REST.name);
 				break;
 		}
 		return result;
@@ -153,6 +169,10 @@ public class REST extends AsyncTask <Void, Void, String>
 				System.out.println(this.sizeOfRoomList);
 				for(int x = 0;x<this.sizeOfRoomList;x++)
 					System.out.println("Room "+x+": "+roomList[x].toString());
+				break;
+			case CHANGE_NAME:
+				if(success)
+					mActivity.setTitle(REST.name);
 				break;
 		}
 	}
@@ -360,7 +380,59 @@ public class REST extends AsyncTask <Void, Void, String>
 		
 		return result;
 	}
-	
+	private String changeName(String password, String name)
+	{
+		String shaHead = this.toSha1(token+this.toSha1(password)+"users/change_display_name");
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpContext localContext = new BasicHttpContext();
+		
+		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/users/change_display_name").buildUpon()
+		    .build();
+		
+		HttpPost httpPost = new HttpPost(b.toString());
+	    try {
+
+			httpPost.addHeader("Auth", "LiveCourseAuth token="+token+" auth="+shaHead);
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("name", name));
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		System.out.println(httpPost.getURI().toString());
+		String result = "";
+		
+		try 
+		{
+			HttpResponse response = httpClient.execute(httpPost);
+			HttpEntity entity = response.getEntity();
+			result = getASCIIContentFromEntity(entity);
+			
+			switch(response.getStatusLine().getStatusCode())
+			{
+				case 200:
+					this.success = true;
+					break;
+					
+				case 404:
+					this.success = false;
+					//result = "Change Name Failed";
+					break;
+			}
+			
+			
+		} 
+		catch (Exception e) 
+		{
+			return e.getLocalizedMessage();
+		}
+		
+		System.out.println("Change name result: " + result+"\n");
+		return result;
+	}
 	/**
 	 * Converts string into SHA-1 hash
 	 * @param input
