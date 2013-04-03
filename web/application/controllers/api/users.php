@@ -355,4 +355,82 @@ class Users extends REST_Controller
 		}
 
 	}
+	
+	/**
+	 *Changes a user's password
+	 *password - POST variable that includes the new SHA1 hashed password
+	 *returns True if successful, or a verbal error on failure.
+	 */
+	function change_password_post()
+	{
+		$pass = $this->post('password');
+		
+		$this->load->model('Model_Users');
+		$this->load->model('Model_Auth');
+		
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
+		
+		//Password must be a valid SHA1 string
+		if (!(bool)(preg_match('/^[0-9a-f]{40}$/i', $pass)))
+		{
+			$this->response($this->rest_error(array("The password provided is malformed or otherwise invalid.")),403);
+			return;
+		}
+		
+		$pass_changed = $this->Model_Users->change_user_password($user_id, $pass);
+		if($pass_changed)
+		{
+			$this->response(true, 200);
+		}
+		else
+		{
+			$this->response($this->rest_error(array("Password change failed!")),404);
+		}
+		return;
+	}
+	
+	/**
+	 *Changes a user's name
+	 *name - POST variable that includes the user's new name
+	 *returns True if successful, or a verbal error on failure.
+	 */
+	function change_name_post()
+	{
+		$name = $this->post('name');
+		
+		$this->load->model('Model_Users');
+		$this->load->model('Model_Auth');
+		
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
+		
+		//the name must exist
+		if (strlen($name) <= 0)
+		{
+			$this->response($this->rest_error(array("No username supplied!")),403);
+			return;
+		}
+		
+		$name_changed = $this->Model_Users->change_user_name($user_id, $name);
+		if($name_changed)
+		{
+			$this->response(true, 200);
+		}
+		else
+		{
+			$this->response($this->rest_error(array("Name change failed!")),404);
+		}
+		return;
+	}
 }

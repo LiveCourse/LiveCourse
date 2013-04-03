@@ -188,5 +188,53 @@ class Model_Users extends CI_Model {
 		$this->db->delete('lc_gcm_users', $data);
 		return $this->db->affected_rows();
 	}
+	
+	/**
+	 *Changes the user's password
+	 *user_id - the ID of the user whose password we are changing
+	 *password - SHA1 hash of the user's password
+	 *returns TRUE or FALSE depending on success or failure.
+	 */
+	function change_user_password($user_id, $password)
+	{
+		$data = array(
+			'id' => $user_id,
+			'password' => $password
+		);
+		$this->db->where('id',$user_id);
+		$this->db->update('lc_users', $data);
+		if($this->db->affected_rows() <= 0)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	/**
+	 *Changes the user's name
+	 *user_id - the ID of the user whose password we are changing
+	 *name - the user's new name
+	 *returns TRUE or FALSE depending on success or failure.
+	 */
+	function change_user_name($user_id, $name)
+	{
+		$data = array(
+			'id' => $user_id,
+			'display_name' => $name
+		);
+		$this->db->where('id',$user_id);
+		$this->db->update('lc_users', $data);
+		if($this->db->affected_rows() <= 0)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
 
 }
