@@ -217,4 +217,5 @@ function clear_notifications()
 function window_onfocus()
 {
 	clear_notifications();
+	$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:300}); //scroll to bottom
 }
