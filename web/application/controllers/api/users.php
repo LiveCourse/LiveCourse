@@ -423,7 +423,7 @@ class Users extends REST_Controller
 	 *name - POST variable that includes the user's new name
 	 *returns True if successful, or a verbal error on failure.
 	 */
-	function change_name_post()
+	function change_display_name_post()
 	{
 		$name = $this->post('name');
 		
@@ -448,7 +448,7 @@ class Users extends REST_Controller
 		$name_changed = $this->Model_Users->change_user_name($user_id, $name);
 		if($name_changed)
 		{
-			$this->response(true, 200);
+			$this->response(NULL, 200);
 		}
 		else
 		{
