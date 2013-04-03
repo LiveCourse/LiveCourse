@@ -518,12 +518,12 @@ class Chats extends REST_Controller
 		$auth_code = $this->get('auth_code');
 		$chat_id_string = $this->get('chat_id');
 		//$last_msg_id = $this->get('msg_id');
-		if (!isset($_COOKIE['lc_last_msg']) || $_COOKIE['lc_last_msg'] == "")
-		{
+		//if (!isset($_COOKIE['lc_last_msg']) || $_COOKIE['lc_last_msg'] == "")
+		//{
 			$last_msg_id = $this->get('lastEventId');
-		} else {
-			$last_msg_id = $_COOKIE['lc_last_msg'];
-		}
+		//} else {
+		//	$last_msg_id = $_COOKIE['lc_last_msg'];
+		//}
 		
 		$users = $this->Model_Auth->fetch_user_by_token($auth_token);
 		if (count($users) > 0) //Auth token was valid... now let's verify their request.
