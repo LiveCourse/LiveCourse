@@ -225,7 +225,7 @@ class Users extends REST_Controller
 	 *Register an android users' device
 	 *name - Name of the user
 	 *email - Email of the user
-	 *gcm_regid - Registration ID of the device
+	 *regId - Registration ID of the device
 	 *returns the data inputted on success, null and 404 on error.
 	 */
 	public function android_add_post()
@@ -246,7 +246,7 @@ class Users extends REST_Controller
 		//Get POST variables...
 		$name 		= $this->post('name');
 		$email 		= $this->post('email');
-		$reg_id 	= $this->post('gcm_regid');
+		$reg_id 	= $this->post('regId');
 		
 		
 		//Check error conditions:
