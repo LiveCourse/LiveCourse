@@ -565,6 +565,16 @@ class Chats extends REST_Controller
 		
 		header('Content-Type: text/event-stream');
 		header('Cache-Control: no-cache');
+		header('Access-Control-Allow-Origin: *');
+
+		// prevent bufferring
+		if (function_exists('apache_setenv')) {
+			@apache_setenv('no-gzip', 1);
+		}
+		@ini_set('zlib.output_compression', 0);
+		@ini_set('implicit_flush', 1);
+		for ($i = 0; $i < ob_get_level(); $i++) { ob_end_flush(); }
+		ob_implicit_flush(1);
 
 		$startedAt = time();
 		echo ':' . str_repeat(' ', 2048) . "\n"; //2KB header for IE
