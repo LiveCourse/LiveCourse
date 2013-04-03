@@ -147,12 +147,11 @@ class Model_Users extends CI_Model {
 		$droid_users = $this->db
 				->from('lc_gcm_users')
 				->join('lc_users','lc_users.id = lc_gcm_users.user_id')
-				->get()
-				->result();
+				->get();
 				
 		if ($droid_users)
 		{
-			return $droid_users;
+			return $droid_users->result_array;
 		}
 		else
 		{
