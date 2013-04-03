@@ -613,7 +613,7 @@ class Chats extends REST_Controller
 				$last_msg_id = $msg->id;
 			}
 			echo PHP_EOL;
-			ob_flush();
+			//ob_flush();
 			flush();
 			sleep(1);
 
