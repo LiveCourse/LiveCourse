@@ -150,6 +150,8 @@ abstract class REST_Controller extends CI_Controller
 	 */
 	protected function early_checks()
 	{
+		//NO CACHING!
+		header('Cache-Control: no-cache');
 		//Check for authentication
 		if (isset($_SERVER['HTTP_AUTH']))
 		{
