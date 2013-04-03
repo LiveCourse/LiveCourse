@@ -518,7 +518,12 @@ class Chats extends REST_Controller
 		$auth_code = $this->get('auth_code');
 		$chat_id_string = $this->get('chat_id');
 		//$last_msg_id = $this->get('msg_id');
-		$last_msg_id = $_COOKIE['lc_last_msg'];
+		if (!isset($_COOKIE['lc_last_msg']) || $_COOKIE['lc_last_msg'] == "")
+		{
+			$last_msg_id = $this->get('lastEventId');
+		} else {
+			$last_msg_id = $_COOKIE['lc_last_msg'];
+		}
 		
 		$users = $this->Model_Auth->fetch_user_by_token($auth_token);
 		if (count($users) > 0) //Auth token was valid... now let's verify their request.
@@ -542,11 +547,11 @@ class Chats extends REST_Controller
 		}
 		
 		//Make sure they gave us a message id.
-		if ($last_msg_id <= 0)
-		{
-			$this->response(NULL,401);
-			return;
-		}
+		//if ($last_msg_id <= 0)
+		//{
+		//	$this->response(NULL,401);
+		//	return;
+		//}
 		
 		//Try to find the chat
 		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
@@ -564,6 +569,20 @@ class Chats extends REST_Controller
 		$startedAt = time();
 		echo ':' . str_repeat(' ', 2048) . "\n"; //2KB header for IE
 		echo "retry: 2000\n";
+		
+		//Give IE an event ID to send us back if they didn't specify one:
+		if ($last_msg_id == "")
+		{
+			$last_msg = $this->Model_Chats->get_num_latest_messages($chat_id,1);
+			$last_msg = $last_msg[0];
+			$last_msg_id = $last_msg->id;
+			echo "id: $last_msg_id" . PHP_EOL;
+			echo "event: ie_sucks\n";
+			echo "data: {\n";
+			echo "data: \"compatibility\":\"thing.\"\n";
+			echo "data: }\n\n";
+		}
+		
 		do {
 			// Cap connections at 15 seconds. The browser will reopen the connection on close (update lost msgs)
 			if ((time() - $startedAt) > 15) {

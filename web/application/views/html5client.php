@@ -2,7 +2,6 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" /> <!-- Attempt to fix eventsource for IE9 -->
 		<title>LiveCourse</title>
 		<link id="ui_stylesheet" rel="stylesheet" href="<?php echo(base_url("css/html5client.css")); ?>" />
 		<link rel="stylesheet" href="<?php echo(base_url("css/livecourse-theme/jquery-ui-1.10.2.custom.css")); ?>" />
