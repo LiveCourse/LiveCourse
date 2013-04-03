@@ -190,14 +190,14 @@ function setNotifications(notification_count)
 {
 	if (notification_count <= 0)
 	{
-		document.title = "LiveCourse";
+		setTimeout(function() {document.title = "LiveCourse";},200);
 	} else {
 		if (notification_count == 1)
 		{
 			snd.currentTime=0;
 			snd.play();
 		}
-		document.title = "("+notification_count+") LiveCourse";
+		setTimeout(function() {document.title = "("+notification_count+") LiveCourse";},200);
 	}
 }
 
