@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import net.livecourse.android.R;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -124,7 +125,14 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	@Override
 	public boolean onActionItemClicked(ActionMode mode,
 			MenuItem item) {
-		// TODO Auto-generated method stub
+
+		switch(item.getItemId())
+		{
+			case R.id.participants_fragment_participants_details_menu_item:
+				Intent userInfoIntent = new Intent(this.getSherlockActivity(),UserInfoActivity.class);
+				startActivity(userInfoIntent);
+				break;
+		}
 		return false;
 	}
 

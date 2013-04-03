@@ -100,7 +100,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		 * Initialize the temporary list
 		 */
 		classes = new ArrayList<String>();
-		//classes.addAll(Arrays.asList(array));
+		classes.addAll(Arrays.asList(array));
 		
 		/**
 		 * Conencts the list to the XML

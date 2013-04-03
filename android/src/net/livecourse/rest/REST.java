@@ -236,7 +236,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		{
 			HttpResponse response = httpClient.execute(httpGet, localContext);
 			HttpEntity entity = response.getEntity();
-			result = getASCIIContentFromEntity(entity);
+			result = this.getASCIIContentFromEntity(entity);
 			
 			switch(response.getStatusLine().getStatusCode())
 			{

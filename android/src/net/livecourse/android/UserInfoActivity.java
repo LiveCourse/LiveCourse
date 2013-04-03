@@ -5,6 +5,7 @@ import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import net.livecourse.android.R;
+import net.livecourse.rest.REST;
 
 public class UserInfoActivity extends SherlockFragmentActivity
 {
@@ -19,6 +20,8 @@ public class UserInfoActivity extends SherlockFragmentActivity
         setContentView(R.layout.userinfo_layout);
         
         editText = (EditText) findViewById(R.id.edit_Text);
+        
+        editText.setText(REST.email);
 	}
 	
 	public void testClick(View v)
