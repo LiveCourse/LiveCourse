@@ -119,7 +119,7 @@
 				$(window)
 					.blur(function() {$('body').removeClass("visible").addClass("hidden");})
 					.focus(function() {$('body').removeClass("hidden").addClass("visible");window_onfocus();});
-			}
+			});
 		</script>
 		
 	</head>
