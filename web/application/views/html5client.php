@@ -97,7 +97,7 @@
 				}
 				*/
 				$('body').addClass("visible");
-				$(window).blur(function() {$('body').removeClass("visible").addClass("hidden");}).focus(function() {$('body').removeClass("hidden").addClass("visible");window_onfocus();});
+				
 				
 				// Code to submit message on enter.
 				$('#form_message textarea').keydown(function(event) {
@@ -113,6 +113,13 @@
 				$("#ChatMessages").mCustomScrollbar({scrollInertia:0});
 				$("#HistoryMessages").mCustomScrollbar({scrollInertia:0});
 			});
+			
+			jQuery(document).ready(function ()
+			{
+				$(window)
+					.blur(function() {$('body').removeClass("visible").addClass("hidden");})
+					.focus(function() {$('body').removeClass("hidden").addClass("visible");window_onfocus();});
+			}
 		</script>
 		
 	</head>
