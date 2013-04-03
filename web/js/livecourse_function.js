@@ -81,6 +81,7 @@ function login_submit()
 					$.cookie("lc_auth_token", auth_token); //Set authentication cookies
 					$.cookie("lc_auth_pass", auth_pass); //Set authentication cookies
 					current_user_id = data.authentication.user_id;
+					switch_ui_color(data.user.color_preference,false);
 					init_ui();
 					progress_indicator_hide(indicator);
 					dialog_close($(_this).parents(".DialogOverlay").first());
@@ -110,6 +111,32 @@ function init_ui()
 {
 	update_chat_list();
 	setInterval(function() {update_participant_list();},15000);
+}
+
+/**
+ * Switches the UI to the color theme defined by 'code'
+ * code - index of ui_colors array of color to set.
+ */
+function switch_ui_color(code,save)
+{
+	if (typeof save == "undefined")
+		save = false;
+	if (code > 0)
+		$("#ui_stylesheet").attr('href','css/html5client_'+ui_colors[code]+'.css');
+	else
+		$("#ui_stylesheet").attr('href','css/html5client.css');
+	setTimeout(Cufon.refresh,500);
+	
+	if (save)
+	{
+		call_api("users/update_color","POST",{color: code},
+			function(data)
+			{
+			},
+			function(xhr,status)
+			{
+			});
+	}
 }
 
 /**
@@ -296,6 +323,23 @@ function joinroom_show()
 }
 
 /**
+ * Shows a dialog to the user to be used setting preferences
+ */
+function prefs_show()
+{
+	var dialog = dialog_clone("Preferences","#dialog_prefs",true,true);
+	// dialog_addbutton(dialog,"Submit",login_submit,false); //This button'd look better under the actual form.
+	dialog.find("#color_selection li").click(function() {
+		dialog.find("#color_selection li").removeClass("selected");
+		$(this).addClass("selected");
+		switch_ui_color($(this).attr("value"),true);
+	});
+	dialog_show(dialog, function() { //Show it!
+		
+	}); 
+}
+
+/**
  * Joins the logged in user to the specified class
  */
 function class_join(class_idstring,success_callback,error_callback)
@@ -428,7 +472,10 @@ function switch_chat_room(room)
 				});
 				$("#ChatFrame #ChatFrameHeader #ChatHeaderMenu").fadeIn();
 			});
-			
+			//Clear notifications...
+			clear_notifications();
+			//Clear out history...
+			$("#HistoryMessages ul").html(''); // Empty it
 			//Load recent chat...
 			load_recent_chat_contents();
 			//Load participants...
@@ -454,6 +501,7 @@ function select_chat_tab()
 	$("#chat_button").addClass("selected");
 	Cufon.refresh();
 	// Fade out other panes if they're here.
+	$("#ChatFrame #HistoryDateSelect").fadeOut(300);
 	$("#ChatFrame #HistoryMessages").fadeOut(300,function() {
 		$("#ChatFrame #ChatMessages").fadeIn(300,function() {
 			$("#ChatMessages").mCustomScrollbar("update");
@@ -473,8 +521,65 @@ function select_history_tab()
 	Cufon.refresh();
 	// Fade out other panes if they're here.
 	$("#ChatFrame #ChatMessages").fadeOut(300,function() {
-		$("#ChatFrame #HistoryMessages").fadeIn(300);
+		$("#ChatFrame #HistoryMessages").fadeIn(300, function() {
+			$("#ChatFrame #HistoryDateSelect").css('opacity',0);
+			$("#ChatFrame #HistoryDateSelect").css('top','100px');
+			$("#ChatFrame #HistoryDateSelect").css('display','block');
+			$("#ChatFrame #HistoryDateSelect").animate({"top":'124px',"opacity":1},300, "easeOutBack", function() {
+				$( "#ChatFrame #HistoryDateSelect input" ).datepicker("show");
+				$( "#ChatFrame #HistoryDateSelect input" ).datepicker("widget").position({
+					my: "center top",
+					at: "center bottom",
+					of: $( "#ChatFrame #HistoryDateSelect a" )
+				});
+			});
+			$("#ChatFrame #HistoryDateSelect").html('<input type="text" style="display:none;" /><a href="javascript:;">Select a Date</a>');
+			$( "#ChatFrame #HistoryDateSelect input" ).datepicker({ onSelect: function(dp) {
+				$( "#ChatFrame #HistoryDateSelect a" ).html($(this).val());
+				var start_epoch = ($(this).datepicker('getDate')).getTime() / 1000;
+				load_history(start_epoch);
+			}});
+			$( "#ChatFrame #HistoryDateSelect a" ).click(function() {
+				var dp = $( "#ChatFrame #HistoryDateSelect input" );
+				if (dp.datepicker('widget').is(':hidden')) {
+					dp.datepicker("show");
+					dp.datepicker("widget").position({
+						my: "center top",
+						at: "center bottom",
+						of: this
+					});
+				} else {
+					dp.hide();
+				}
+			});
+		});
 	});
+}
+
+/**
+ * Loads a day's worth of history from the specified day forward into the history pane.
+ */
+function load_history(start_epoch)
+{
+	var load_ind = progress_indicator_show();
+	call_api("chats/fetch_day","GET",{chat_id: current_chat_room, start_epoch: start_epoch},
+		function (data) {
+			$("#HistoryMessages ul").html(''); // Empty it
+			for (i in data)
+			{
+				post_message(data[i],false,"#HistoryMessages");
+			}
+			$("#HistoryMessages").mCustomScrollbar("update");
+			$("#HistoryMessages").mCustomScrollbar("scrollTo","top",{scrollInertia:1000}); //scroll to top
+			progress_indicator_hide(load_ind);
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Loading Messages","An error occurred while attempting to load your messages.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+			progress_indicator_hide(load_ind);
+		});
 }
 
 /**
@@ -544,10 +649,15 @@ function load_recent_chat_contents()
 				eventsource.close();
 			var event_auth_code = Sha1.hash(auth_token+auth_pass+"chats/eventsource");
 			eventsource = new EventSource('index.php/api/chats/eventsource?auth_token='+auth_token+'&auth_code='+event_auth_code+'&chat_id='+current_chat_room);
-			eventsource.onmessage = function(e) {
+			eventsource.addEventListener('message', function (e) {
 				var data = JSON.parse(e.data);
 				post_message(data);
-			};
+				if ($('body').hasClass("hidden"))
+				{
+					waiting_notifications++;
+					setNotifications(waiting_notifications);
+				}
+			});
 			progress_indicator_hide(load_ind);
 		},
 		function (xhr, status)
@@ -562,8 +672,10 @@ function load_recent_chat_contents()
 /**
  * Posts the specified message object in the chat messages frame for user view.
  */
-function post_message(message,scroll)
+function post_message(message,scroll,area)
 {
+	if (typeof area == "undefined")
+		area = "#ChatMessages";
 	if (typeof scroll == "undefined")
 		scroll = true;
 		
@@ -576,10 +688,10 @@ function post_message(message,scroll)
 		var timestamp = (('0'+(date.getMonth()+1)).slice(-2))+"/"+(('0'+(date.getDate()+1)).slice(-2))+"/"+date.getFullYear()+" @ ";
 	timestamp += (('0'+date.getHours()).slice(-2))+":"+(('0'+date.getMinutes()).slice(-2))+":"+(('0'+date.getSeconds()).slice(-2));
 
-	$("#ChatMessages ul").append('<li><div class="author">'+message.display_name+'</div><div class="timestamp">'+timestamp+'</div><div class="messageContainer"><div class="message">'+escapeHtml(message.message_string)+'</div></div><div style="clear:both;"></div></li>');
+	$(area+" ul").append('<li><div class="author">'+message.display_name+'</div><div class="timestamp">'+timestamp+'</div><div class="messageContainer"><div class="message">'+escapeHtml(message.message_string)+'</div></div><div style="clear:both;"></div></li>');
 	last_message_id = message.id;
 	$.cookie("lc_last_msg", last_message_id); //Set last message id
-	$("#ChatMessages").mCustomScrollbar("update");
+	$(area).mCustomScrollbar("update");
 	if (scroll)
-		$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:1000}); //scroll to bottom
+		$(area).mCustomScrollbar("scrollTo","bottom",{scrollInertia:1000}); //scroll to bottom
 }

@@ -153,6 +153,28 @@ class Model_Chats extends CI_Model {
 	}
 	
 	/**
+	 * Gets messages in the given time frame from given room.
+	 * chat_id - ID of chat to fetch from
+	 * start_time - Beginning of time window
+	 * end_time - End of time window
+	 * returns - array of results
+	 */
+	function get_time_frame_messages($chat_id,$start_time,$end_time)
+	{
+		$query = $this->db
+				->select('lc_chat_messages.id, lc_chat_messages.chat_id, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_users.email, lc_users.display_name')
+				->where('lc_chat_messages.chat_id',$chat_id)
+				->where('lc_chat_messages.send_time >=',$start_time)
+				->where('lc_chat_messages.send_time <=',$end_time)
+				->from('lc_chat_messages')
+				->join('lc_users','lc_users.id = lc_chat_messages.user_id')
+				->order_by("send_time", "asc")
+				->get()
+				->result();
+		return $query;
+	}
+	
+	/**
 	 * Gets messages from a chat room that were sent AFTER the specified message ID.
 	 * chat_id - ID of chat to fetch from
 	 * msg_id - msg ID after which to fetch chat messages

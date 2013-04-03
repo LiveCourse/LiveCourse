@@ -1,0 +1,462 @@
+/* Green color definitions! */
+/* LiveCourse HTML 5 Interface Mockup */
+/* Uses LESS! Needs to be compiled with lessc before changes will take effect. */
+body {
+  background-color: #f5f5f5;
+  margin: 0;
+  font-family: Verdana, Geneva, sans-serif;
+}
+input,
+textarea {
+  border: 0;
+  border-bottom: 3px solid #2e7e7e;
+  background-color: #dae6e6;
+  resize: none;
+}
+input[type="submit"],
+button {
+  background-color: #2e7e7e;
+  border: 2px solid #fff;
+  color: #fff;
+  font-size: 18px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+input[type="submit"]:active,
+button:active {
+  background-color: #fff;
+  border-color: #2e7e7e;
+  color: #2e7e7e;
+}
+#GlobalLoadingIndicator {
+  /*display:none;*/
+
+  position: fixed;
+  top: -20px;
+  left: 0px;
+  right: 0px;
+  height: 20px;
+  z-index: 9999;
+  background-image: url("../img/progressbar.gif");
+}
+#LeftSideBar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 256px;
+  background-color: #2e7e7e;
+  text-align: center;
+}
+#LeftSideBar h1 {
+  text-align: center;
+  font-family: 'cicle';
+  font-size: 48px;
+  color: #fff;
+  margin: 0.4em 0;
+}
+#CourseList {
+  list-style-type: none;
+  margin: 0 0 12px 0;
+  padding: 0;
+  text-align: left;
+}
+#CourseList li {
+  cursor: pointer;
+  padding: 8px 8px 8px 16px;
+}
+#CourseList li:hover {
+  border-left: 6px solid #b8e5e5;
+  padding-left: 10px;
+}
+#CourseList li.selected:hover {
+  border-left: 6px solid #2e7e7e;
+  padding-left: 10px;
+}
+#CourseList li.selected {
+  cursor: pointer;
+  background-color: #b8e5e5;
+}
+#CourseList li .title {
+  color: #fff;
+  font-size: 18px;
+}
+#CourseList li .subTitle {
+  color: #fff;
+  font-size: 14px;
+}
+#CourseList li.selected .title {
+  color: #2e7e7e;
+  font-size: 18px;
+}
+#CourseList li.selected .subTitle {
+  color: #2e7e7e;
+  font-size: 14px;
+}
+#RightSideBar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 256px;
+  background-color: #b8e5e5;
+}
+#RightSideBar h1 {
+  text-align: left;
+  font-family: 'cicle';
+  font-size: 36px;
+  color: #2e7e7e;
+  margin: 0.4em 0 18px 32px;
+}
+#UserList {
+  list-style-type: none;
+  margin: 0 0 12px 0;
+  padding: 0;
+  text-align: left;
+}
+#UserList li {
+  padding: 8px 8px 8px 46px;
+  color: #2e7e7e;
+  font-size: 16px;
+  cursor: default;
+}
+#UserList li:hover {
+  border-left: 6px solid #2e7e7e;
+  padding-left: 40px;
+}
+#UserList li.selected {
+  background-color: #b8e5e5;
+}
+#UserList li.me {
+  font-weight: bold;
+  font-size: 16px;
+}
+#ChatFrame {
+  position: fixed;
+  left: 256px;
+  right: 256px;
+  top: 0;
+  bottom: 64px;
+}
+#ChatFrame h1 {
+  font-family: 'cicle';
+  font-size: 68px;
+  color: #2e7e7e;
+  margin-top: 0;
+  margin-left: 36px;
+  margin-bottom: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+#ChatFrame #ChatFrameHeader {
+  position: relative;
+  background-image: url(../img/gray_opacity_90.png);
+  z-index: 10;
+  /* height:128px; */
+
+}
+#ChatFrame #ChatFrameHeader #ChatHeaderMenu {
+  margin-left: 36px;
+  list-style-type: none;
+  padding: 0;
+  text-align: left;
+  display: none;
+}
+#ChatFrame #ChatFrameHeader #ChatHeaderMenu li a {
+  display: block;
+  float: left;
+  font-family: 'cicle', sans-serif;
+  font-size: 28px;
+  padding: 0px 56px 0px 0px;
+  opacity: 0.3;
+  color: #000;
+}
+#ChatFrame #ChatFrameHeader #ChatHeaderMenu li.selected a {
+  color: #2e7e7e;
+  opacity: 1.0;
+}
+#ChatFrame #ChatFrameHeader #ChatHeaderMenu li a:hover {
+  opacity: 1.0;
+}
+/* TODO: On-resize, set top to the (dynamic) height of the chatframeheader. */
+#ChatFrame #ChatMessages,
+#ChatFrame #HistoryMessages {
+  position: absolute;
+  z-index: 0;
+  top: 124px;
+  left: 36px;
+  right: 12px;
+  bottom: 12px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+#ChatFrame #HistoryMessages {
+  display: none;
+}
+#ChatFrame #HistoryDateSelect {
+  position: absolute;
+  z-index: 1;
+  top: 124px;
+  left: 0px;
+  right: 0px;
+  height: 32px;
+  font-size: 22px;
+  padding: 6px;
+  text-align: center;
+  display: none;
+}
+#ChatFrame #HistoryDateSelect a {
+  text-decoration: none;
+  color: #000;
+  opacity: 0.5;
+}
+#ChatFrame #HistoryDateSelect a:hover {
+  color: #2e7e7e;
+  opacity: 1.0;
+}
+#ChatFrame #ChatMessages ul,
+#ChatFrame #HistoryMessages ul {
+  position: relative;
+  list-style-type: none;
+  text-align: left;
+}
+#ChatFrame #ChatMessages ul li.spacer,
+#ChatFrame #HistoryMessages ul li.spacer {
+  height: 480px;
+}
+#ChatFrame #ChatMessages ul li,
+#ChatFrame #HistoryMessages ul li {
+  width: 100%;
+  font-family: sans-serif;
+  font-size: 14px;
+  color: #000;
+  margin: 6px 0;
+}
+#ChatFrame #ChatMessages ul li .messageContainer,
+#ChatFrame #HistoryMessages ul li .messageContainer {
+  float: left;
+  width: 100%;
+}
+#ChatFrame #ChatMessages ul li .message,
+#ChatFrame #HistoryMessages ul li .message {
+  float: left;
+  margin-left: 16px;
+  padding-right: 56px;
+}
+#ChatFrame #ChatMessages ul li .timestamp,
+#ChatFrame #HistoryMessages ul li .timestamp {
+  width: 30%;
+  font-size: 12px;
+  color: #555;
+  float: right;
+  text-align: right;
+  padding-right: 56px;
+}
+#ChatFrame #ChatMessages ul li .author,
+#ChatFrame #HistoryMessages ul li .author {
+  width: 50%;
+  float: left;
+  font-size: 14px;
+  font-weight: bold;
+  color: #2e7e7e;
+}
+#ComposeFrame {
+  position: fixed;
+  right: 256px;
+  left: 256px;
+  bottom: 4px;
+  height: 64px;
+  text-align: center;
+}
+#ComposeFrame textarea {
+  width: 80%;
+  height: 42px;
+  min-width: 256px;
+  font-size: 16px;
+  padding: 8px;
+  font-family: sans-serif;
+}
+#form_login {
+  text-align: center;
+  margin-top: 48px;
+}
+#form_registration {
+  text-align: center;
+  margin-top: 48px;
+}
+#form_joinroom {
+  text-align: left;
+  width: 275px;
+  float: left;
+}
+#joinroom_results {
+  width: 650px;
+  text-align: center;
+  font-size: 22px;
+  float: right;
+}
+#joinroom_results ul {
+  list-style-type: none;
+  padding: 0;
+  text-align: left;
+}
+#joinroom_results ul li {
+  cursor: pointer;
+  text-align: center;
+  width: 278px;
+  padding: 12px 8px;
+  font-size: 16px;
+  margin: 12px;
+  border: 3px dashed #b8e5e5;
+  /* background-color:@color_secondary; */
+
+  /* color:@color_primary; */
+
+  color: #b8e5e5;
+  display: block;
+  float: left;
+}
+#joinroom_results ul li:hover {
+  border-color: #fff;
+}
+#joinroom_results ul li .name {
+  font-size: 24px;
+  font-family: 'cicle', sans-serif;
+  font-weight: bold;
+  color: #fff;
+}
+#color_selection {
+  width: 156px;
+  list-style-type: none;
+  padding: 0;
+  text-align: left;
+}
+#color_selection li {
+  display: block;
+  float: left;
+  width: 32px;
+  height: 32px;
+  border: 2px solid #fff;
+  margin: 8px;
+  cursor: pointer;
+}
+#color_selection li.selected {
+  border-color: #000;
+}
+.large_form input::-webkit-input-placeholder {
+  color: #b8e5e5;
+}
+.large_form input::-moz-placeholder {
+  color: #b8e5e5;
+}
+.large_form input:-ms-input-placeholder {
+  color: #b8e5e5;
+}
+.large_form input {
+  width: 256px;
+  font-size: 24px;
+  padding: 5px 8px;
+  margin: 16px 0;
+  background-color: #2e7e7e;
+  color: #fff;
+}
+.large_form input:disabled {
+  color: #b8e5e5;
+}
+.large_form input[type="email"],
+.large_form input[type="text"],
+.large_form input[type="password"] {
+  border-bottom: 3px solid #b8e5e5;
+}
+.large_form input[type="email"]:hover,
+.large_form input[type="text"]:hover,
+.large_form input[type="password"]:hover,
+.large_form input[type="email"]:focus,
+.large_form input[type="text"]:focus,
+.large_form input[type="password"]:focus {
+  outline-width: 0;
+  border-color: #fff;
+}
+.large_form input[type="submit"],
+.large_form button {
+  width: 256px;
+  font-size: 20px;
+  margin: 6px 0;
+}
+.large_form button {
+  font-size: 16px;
+}
+.large_form input[type="submit"]:active,
+.large_form button:active {
+  background-color: #fff;
+  border-color: #2e7e7e;
+  color: #2e7e7e;
+}
+.large_form input.invalid {
+  border-bottom: 3px solid #e54545;
+  /* #e5b8b8 */
+
+}
+.large_form input[type="password"].half {
+  width: 120px;
+}
+/* AJAX Message Dialog */
+.DialogOverlay {
+  display: none;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-image: url(../img/white_opacity_80.png);
+  z-index: 10;
+}
+.DialogContainer {
+  display: none;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  height: 512px;
+  margin-top: -282px;
+  /* negative half of the height */
+
+  padding-top: 26px;
+  padding-bottom: 26px;
+  background-color: #2e7e7e;
+  color: #ffffff;
+}
+.DialogContainer.error {
+  background-color: #7e2e2e;
+}
+.DialogContainer h1 {
+  width: 950px;
+  margin: 0 auto;
+  padding: 0;
+  color: #fff;
+  font-size: 54px;
+  font-family: 'cicle';
+  font-weight: bold;
+}
+.DialogContainer .status_message {
+  display: none;
+  text-align: center;
+  font-size: 22px;
+  font-family: 'cicle';
+}
+.DialogContainer .buttons {
+  position: relative;
+  width: 950px;
+  height: 40px;
+  margin: 4px auto 0 auto;
+  text-align: right;
+}
+.DialogMessage {
+  position: relative;
+  height: 410px;
+  width: 950px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.DialogMessage a {
+  display: inline;
+}

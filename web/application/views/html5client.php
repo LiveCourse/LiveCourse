@@ -3,13 +3,14 @@
 	<head>
 		<meta charset="utf-8">
 		<title>LiveCourse</title>
-		<link rel="stylesheet" href="<?php echo(base_url("css/html5client.css")); ?>" />
+		<link id="ui_stylesheet" rel="stylesheet" href="<?php echo(base_url("css/html5client.css")); ?>" />
+		<link rel="stylesheet" href="<?php echo(base_url("css/livecourse-theme/jquery-ui-1.10.2.custom.css")); ?>" />
 		<link rel="stylesheet" href="<?php echo(base_url("css/jquery.mCustomScrollbar.css")); ?>" />
 		<script src="<?php echo(base_url("js/sha1.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/json2.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/eventsource.js")); ?>"></script>
-		<script src="<?php echo(base_url("js/jquery-1.9.0.js")); ?>"></script>
-		<script src="<?php echo(base_url("js/jquery-ui-1.10.0.custom.min.js")); ?>"></script>
+		<script src="<?php echo(base_url("js/jquery-1.9.1.js")); ?>"></script>
+		<script src="<?php echo(base_url("js/jquery-ui-1.10.2.custom.min.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery.observe_field.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery.cookie.js")); ?>"></script>
 		<script src="<?php echo(base_url("js/jquery.mCustomScrollbar.js")); ?>"></script>
@@ -36,6 +37,7 @@
 							$.cookie("lc_auth_token", auth_token); //Set authentication cookies
 							$.cookie("lc_auth_pass", auth_pass); //Set authentication cookies
 							current_user_id = data.authentication.user_id;
+							switch_ui_color(data.user.color_preference,false);
 							init_ui();
 							progress_indicator_hide(indicator);
 						},
@@ -49,6 +51,54 @@
 					login_show();
 				}
 				
+
+				var hidden = "hidden";
+				/*
+				// Standards:
+				if (hidden in document)
+					document.addEventListener("visibilitychange", onchange);
+				else if ((hidden = "mozHidden") in document)
+					document.addEventListener("mozvisibilitychange", onchange);
+				else if ((hidden = "webkitHidden") in document)
+					document.addEventListener("webkitvisibilitychange", onchange);
+				else if ((hidden = "msHidden") in document)
+					document.addEventListener("msvisibilitychange", onchange);
+
+				// IE 9 and lower:
+				else if ('onfocusin' in document)
+					document.onfocusin = document.onfocusout = onchange;
+
+				// All others:
+				else
+					window.onfocus = window.onblur = onchange;
+	
+				function onchange (evt) {
+					var body = document.body;
+					evt = evt || window.event;
+
+					if (evt.type == "focus" || evt.type == "focusin")
+					{
+						body.className = "visible";
+						window_onfocus();
+					}
+					else if (evt.type == "blur" || evt.type == "focusout")
+						body.className = "hidden";
+					else
+					{
+						if (this[hidden])
+							body.className = "hidden";
+						else
+						{
+							body.className = "visible";
+							window_onfocus();
+						}
+						//body.className = this[hidden] ? "hidden" : "visible";
+					}
+				}
+				*/
+				$('body').addClass("visible");
+				$(window).blur(function() {$('body').removeClass("visible").addClass("hidden");}).focus(function() {$('body').removeClass("hidden").addClass("visible");window_onfocus();});
+				
 				// Code to submit message on enter.
 				$('#form_message textarea').keydown(function(event) {
 					if (event.keyCode == 13) {
@@ -60,7 +110,8 @@
 					send_message($(this).find("textarea").val(),$(this).find("textarea"));
 					return false;
 				});
-				$("#ChatMessages").mCustomScrollbar({scrollInertia:1000});
+				$("#ChatMessages").mCustomScrollbar({scrollInertia:0});
+				$("#HistoryMessages").mCustomScrollbar({scrollInertia:0});
 			});
 		</script>
 		
@@ -77,7 +128,8 @@
 				</li>
 				-->
 			</ul>
-			<button onclick="joinroom_show()">Add a Class</button>
+			<button onclick="joinroom_show()">Add a Class</button><br>
+			<button onclick="prefs_show()">Preferences</button>
 		</div>
 		
 		<div id="ChatFrame">
@@ -90,6 +142,9 @@
 					<li id="options_button"><a href="javascript:;">options</a></li>
 				</ul>
 				<div style="clear:both;"></div>
+			</div>
+			<div id="HistoryDateSelect">
+				This is a test date.
 			</div>
 			<div id="ChatMessages" class="nano">
 				<ul>
@@ -154,6 +209,18 @@
 			</form>
 			<div id="joinroom_results">
 			</div>
+		</div>
+		
+		<!-- User preferences dialog -->
+		<div id="dialog_prefs" style="display:none;">
+			<ul id="color_selection">
+				<li value="0" style="background-color:#2E587E;"></li>
+				<li value="1" style="background-color:#7e2e2e;"></li>
+				<li value="2" style="background-color:#7e4f2e;"></li>
+				<li value="3" style="background-color:#2e7e3b;"></li>
+				<li value="4" style="background-color:#2e7e7e;"></li>
+				<li value="5" style="background-color:#7e2e7e;"></li>
+			</ul>
 		</div>
 	</body>
 </html>

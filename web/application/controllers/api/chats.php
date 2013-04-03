@@ -466,6 +466,43 @@ class Chats extends REST_Controller
 	}
 	
 	/**
+	 * Retrieves all messages from a given room between specified time and specified time + 24 hours.
+	 * NOTE: This operates in UTC time, effectively. Client should do some conversions before requesting
+	 *       if they expect results to be arranged like their local time zone.
+	 * chat_id - Chat ID to fetch from
+	 * num_messages - Number of messages to fetch (100 if unspecified)
+	 * returns - messages
+	 */
+	function fetch_day_get()
+	{
+		$this->load->model('Model_Chats');
+		
+		$chat_id_string = $this->get('chat_id');
+		$start_epoch = $this->get('start_epoch');
+		
+		if (!isset($start_epoch) || $start_epoch == "")
+		{
+			$this->response($this->rest_error(array("No time frame given.")),403);
+			return;
+		}
+		
+		$user_id = $this->authenticated_as;
+
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		
+		//Check to make sure user is joined to this chat.
+		if (!$this->Model_Chats->is_user_subscribed($user_id,$chat_id))
+		{
+			$this->response($this->rest_error(array("You are not subscribed to this chat.")),401);
+			return;
+		}
+
+		$messages = $this->Model_Chats->get_time_frame_messages($chat_id,$start_epoch,$start_epoch+(24*60*60));
+		$this->response($messages,200); //Success
+	}
+	
+	/**
 	 * EventSource function called by the HTML 5 client to stream chat updates from a room.
 	 * auth_token - authentication token
 	 * auth_code - authentication signature
@@ -525,7 +562,8 @@ class Chats extends REST_Controller
 		header('Cache-Control: no-cache');
 
 		$startedAt = time();
-
+		echo ':' . str_repeat(' ', 2048) . "\n"; //2KB header for IE
+		echo "retry: 2000\n";
 		do {
 			// Cap connections at 15 seconds. The browser will reopen the connection on close (update lost msgs)
 			if ((time() - $startedAt) > 15) {
@@ -538,6 +576,7 @@ class Chats extends REST_Controller
 				echo "id: $msg->id" . PHP_EOL;
 				echo "data: {\n";
 				foreach($msg as $key => $value) {
+					$value = str_replace('"','\\"',$value);
 					echo "data: \"$key\": \"$value\",\n";
 				}
 				echo "data: \"insignificant\": \".\"\n";

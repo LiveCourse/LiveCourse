@@ -15,6 +15,7 @@ class Model_Users extends CI_Model {
 	function fetch_user_by_id($user_id)
 	{
 		$query = $this->db
+				->select('id, email, display_name, jointime, color_preference')
 				->where('id', $user_id)
 				->from('lc_users')
 				->get();
@@ -36,6 +37,21 @@ class Model_Users extends CI_Model {
 				->get();
 		return $query->result();
 	}
+	
+	/**
+	 * Update a user's color preference
+	 * color - color code to set as user's color
+	 * returns 
+	 */
+	function update_user_color($user_id,$color)
+	{
+		$data = array(
+			'color_preference' => $color
+		);
+		$this->db->where('id', $user_id);
+		return $this->db->update('lc_users', $data); 
+	}
+	
 	/**
 	 * Fetch every user in the database
 	 * returns - an array of user objects. Empty array on failure.

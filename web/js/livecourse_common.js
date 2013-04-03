@@ -12,6 +12,11 @@ var current_user_id = -1;
 
 var current_chat_room = ""; //Global variable for storing the current chat room.
 var last_message_id;
+var waiting_notifications = 0;
+
+var ui_colors=["","red","brown","green","cyan","purple"];
+
+var snd = new Audio("snd/update.wav"); // buffers automatically when created
 
 /**
  * Shows or generates a horizontal pop-up dialog above the current page.
@@ -176,4 +181,40 @@ function escapeHtml(text) {
 		.replace(/>/g, "&gt;")
 		.replace(/"/g, "&quot;")
 		.replace(/'/g, "&#039;");
+}
+
+/**
+ * Sets the tab title to the specified count (when greater than zero)
+ */
+function setNotifications(notification_count)
+{
+	if (notification_count <= 0)
+	{
+		document.title = "LiveCourse";
+	} else {
+		if (notification_count == 1)
+		{
+			snd.currentTime=0;
+			snd.play();
+		}
+		document.title = "("+notification_count+") LiveCourse";
+	}
+}
+
+/**
+ * Clears all tab title notifications.
+ */
+function clear_notifications()
+{
+	//Clear notifications
+	waiting_notifications = 0;
+	setNotifications(waiting_notifications);
+}
+
+/**
+ * This should run when the browser window / tab is focused.
+ */
+function window_onfocus()
+{
+	clear_notifications();
 }
