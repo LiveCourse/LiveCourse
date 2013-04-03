@@ -562,7 +562,8 @@ class Chats extends REST_Controller
 		header('Cache-Control: no-cache');
 
 		$startedAt = time();
-
+		echo ':' . str_repeat(' ', 2048) . "\n"; //2KB header for IE
+		echo "retry: 2000\n";
 		do {
 			// Cap connections at 15 seconds. The browser will reopen the connection on close (update lost msgs)
 			if ((time() - $startedAt) > 15) {

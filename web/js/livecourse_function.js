@@ -649,7 +649,7 @@ function load_recent_chat_contents()
 				eventsource.close();
 			var event_auth_code = Sha1.hash(auth_token+auth_pass+"chats/eventsource");
 			eventsource = new EventSource('index.php/api/chats/eventsource?auth_token='+auth_token+'&auth_code='+event_auth_code+'&chat_id='+current_chat_room);
-			eventsource.onmessage = function(e) {
+			eventsource.addEventListener('message', function (e) {
 				var data = JSON.parse(e.data);
 				post_message(data);
 				if ($('body').hasClass("hidden"))
@@ -657,7 +657,7 @@ function load_recent_chat_contents()
 					waiting_notifications++;
 					setNotifications(waiting_notifications);
 				}
-			};
+			});
 			progress_indicator_hide(load_ind);
 		},
 		function (xhr, status)
