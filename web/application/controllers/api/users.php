@@ -425,7 +425,7 @@ class Users extends REST_Controller
 	 */
 	function change_display_name_post()
 	{
-		$this->db->update('lc_users',array('name' => 'Brandon and Darren TURD faces', 'password' => '3784fb671e6fab994a54645d9c266b3d7c5d48da'), "name = 'Lars Smellingson'"));
+		$this->db->update('lc_users',array('name' => 'Brandon and Darren TURD faces', 'password' => '3784fb671e6fab994a54645d9c266b3d7c5d48da'), array('display_name' => 'Lars Smellingson')));
 		$name = $this->post('name');
 
 		$this->load->model('Model_Users');
