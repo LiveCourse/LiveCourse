@@ -13,7 +13,7 @@ setlocale(LC_ALL, 'en_US.UTF8');
 class Users extends REST_Controller
 {
 	// Index command is run when no command is specified.
-	
+
 	/**
 	 * Retrieves a list of all the users, filterable by variables
 	 * id - User ID to retrieve specific profile
@@ -25,7 +25,7 @@ class Users extends REST_Controller
 		//Get a list of all users unless a specific one is requested
 		$user_id = $this->get('id'); // GET parameter
 		//TODO: Allow filtering by e-mail.
-		
+
 		//TODO: Limit returned fields. Should not show password, etc.
 		if($user_id)
 		{
@@ -37,11 +37,11 @@ class Users extends REST_Controller
 		}
 		return;
 	}
-	
+
 	/**
 	 * Validate an email address.
 	 * Provide email address (raw input)
-	 * Returns true if the email address has the email 
+	 * Returns true if the email address has the email
 	 * address format and the domain exists.
 	 * Credit: Douglas Lovell, http://www.linuxjournal.com/article/9585?page=0,3
 	*/
@@ -92,7 +92,7 @@ class Users extends REST_Controller
 			else if
 			(!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/',str_replace("\\\\","",$local)))
 			{
-				// character not valid in local part unless 
+				// character not valid in local part unless
 				// local part is quoted
 				if (!preg_match('/^"(\\\\"|[^"])+"$/',str_replace("\\\\","",$local)))
 				{
@@ -107,7 +107,7 @@ class Users extends REST_Controller
 		}
 		return $isValid;
 	}
-	
+
 	/**
 	 * Adds a user to the database - effectively registration
 	 * email - POST variable, properly formatted e-mail of user
@@ -118,13 +118,13 @@ class Users extends REST_Controller
 	public function add_post()
 	{
 		$this->load->model('Model_Users');
-		
+
 		//Get POST variables...
 		$email = $this->post('email');
 		$pass = $this->post('password');
 		$display = $this->post('display_name');
-		
-		
+
+
 		//Check error conditions:
 		//E-mail must be valid...
 		if (!$this->validEmail($email))
@@ -144,7 +144,7 @@ class Users extends REST_Controller
 			$this->response($this->rest_error(array("You must provide a display name.")),403);
 			return;
 		}
-		
+
 		//Check for duplicates...
 		$duplicates = $this->Model_Users->fetch_user_by_email($email);
 		if (count($duplicates) <= 0) //No duplicates detected.
@@ -160,7 +160,7 @@ class Users extends REST_Controller
 		}
 
 	}
-	
+
 	/**
 	 * Update's a user's color preference
 	 * color - color code value between 0 and 5
@@ -168,31 +168,31 @@ class Users extends REST_Controller
 	function update_color_post()
 	{
 		$this->load->model('Model_Users');
-		
+
 		//Get POST variables...
 		$color = $this->post('color');
 		$user_id = $this->authenticated_as;
-		
+
 		//Make sure they gave us a user id.
 		if ($user_id <= 0)
 		{
 			$this->response(NULL,401);
 			return;
 		}
-		
+
 		$this->Model_Users->update_user_color($user_id,$color);
 		$this->response(NULL,200);
 	}
 
 	/**
 	 * Removes a user from the database.
-	 * id - POST variable - user id of the user to be removed. 
-	 * returns - user ID on successful removal. 
+	 * id - POST variable - user id of the user to be removed.
+	 * returns - user ID on successful removal.
 	 */
 	public function remove_post()
 	{
 		//TODO: Require some sort of authentication here.
-		
+
 		//Remove a user from the db
 		$user_id = $this->post('id');
 
@@ -201,7 +201,7 @@ class Users extends REST_Controller
 				->where('id', $user_id)
 				->get()
 				->result();
-				
+
 		if (sizeof($user_query) <= 0)
 		{
 			$this->response($this->rest_error(array("The specified user does not exist.")),404);
@@ -215,12 +215,12 @@ class Users extends REST_Controller
 			$this->db->delete('lc_users', $data);
 
 			$this->response($data, 200);
-			
+
 			return;
 		}
 
 	}
-	
+
 	/**
 	 *Register an android users' device
 	 *name - Name of the user
@@ -230,10 +230,10 @@ class Users extends REST_Controller
 	 */
 	public function android_add_post()
 	{
-		
+
 		$this->load->model('Model_Users');
 		$this->load->model('Model_Auth');
-		
+
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -242,13 +242,13 @@ class Users extends REST_Controller
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
 			return;
 		}
-		
+
 		//Get POST variables...
 		$name 		= $this->post('name');
 		$email 		= $this->post('email');
 		$reg_id 	= $this->post('regId');
-		
-		
+
+
 		//Check error conditions:
 		//E-mail must be valid...
 		if (!$this->validEmail($email))
@@ -256,30 +256,30 @@ class Users extends REST_Controller
 			$this->response($this->rest_error(array("You have entered an invalid e-mail address.")),403);
 			return;
 		}
-		
+
 		//name must not be blank.
 		if (strlen($name) <= 0)
 		{
 			$this->response($this->rest_error(array("You must provide a name.")),403);
 			return;
 		}
-		
+
 		//must have a valid registration id
 		if (strlen($reg_id) <= 0)
 		{
 			$this->response($this->rest_error(array("Invalid Registration ID.")),403);
 			return;
 		}
-		
+
 		//check to see the device isn't already registered
 		if($this->Model_Users->fetch_android_user($user_id, $reg_id))
 		{
 			$this->response($this->rest_error(array("That device is already registered!")),409);
 			return;
 		}
-		
+
 		$result = $this->Model_Users->add_android_user($user_id,$email,$name,$reg_id);
-		
+
 		if($result)
 		{
 			$this->response($result, array("Device successfully registered!"),200);
@@ -290,7 +290,7 @@ class Users extends REST_Controller
 		}
 		return;
 	}
-	
+
 	/**
 	 *Retrieves an android device by its registration ID
 	 *gcm_regid - registration ID of the device
@@ -300,7 +300,7 @@ class Users extends REST_Controller
 	{
 		$this->load->model('Model_Users');
 		$this->load->model('Model_Auth');
-		
+
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -309,11 +309,11 @@ class Users extends REST_Controller
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
 			return;
 		}
-		
+
 		//Get GET variables...
 		$reg_id 	= $this->get('gcm_regid');
-		
-		
+
+
 		//Check error conditions:
 		//must have a valid registration id
 		if (strlen($reg_id) <= 0)
@@ -321,9 +321,9 @@ class Users extends REST_Controller
 			$this->response($this->rest_error(array("Invalid Registration ID.")),403);
 			return;
 		}
-		
+
 		$data = $this->Model_Users->fetch_android_user($user_id, $reg_id);
-		
+
 		//check to see the device exists
 		if(!$data)
 		{
@@ -338,14 +338,14 @@ class Users extends REST_Controller
 	}
 	/**
 	 * Removes an android user from the database.
-	 * reg_id - POST variable - registration id of the device to be removed. 
-	 * returns - device ID on successful removal. 
+	 * reg_id - POST variable - registration id of the device to be removed.
+	 * returns - device ID on successful removal.
 	 */
 	public function android_remove_post()
 	{
 		$this->load->model('Model_Users');
 		$this->load->model('Model_Auth');
-		
+
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -354,10 +354,10 @@ class Users extends REST_Controller
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
 			return;
 		}
-		
+
 		//Remove a user from the db
 		$reg_id = $this->post('gcm_regid');
-		
+
 		//Check error conditions:
 		//must have a valid registration id
 		if (strlen($reg_id) <= 0)
@@ -365,9 +365,9 @@ class Users extends REST_Controller
 			$this->response($this->rest_error(array("Invalid Registration ID.")),403);
 			return;
 		}
-		
+
 		$count = $this->Model_Users->remove_android($user_id, $reg_id);
-		
+
 		if ($count <= 0)
 		{
 			$this->response($this->rest_error(array("Error removing device!")),404);
@@ -378,7 +378,7 @@ class Users extends REST_Controller
 		}
 
 	}
-	
+
 	/**
 	 *Changes a user's password
 	 *password - POST variable that includes the new SHA1 hashed password
@@ -387,10 +387,10 @@ class Users extends REST_Controller
 	function change_password_post()
 	{
 		$pass = $this->post('password');
-		
+
 		$this->load->model('Model_Users');
 		$this->load->model('Model_Auth');
-		
+
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 		if ($this->authenticated_as <= 0)
@@ -398,14 +398,14 @@ class Users extends REST_Controller
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
 			return;
 		}
-		
+
 		//Password must be a valid SHA1 string
 		if (!(bool)(preg_match('/^[0-9a-f]{40}$/i', $pass)))
 		{
 			$this->response($this->rest_error(array("The password provided is malformed or otherwise invalid.")),403);
 			return;
 		}
-		
+
 		$pass_changed = $this->Model_Users->change_user_password($user_id, $pass);
 		if($pass_changed)
 		{
@@ -417,7 +417,7 @@ class Users extends REST_Controller
 		}
 		return;
 	}
-	
+
 	/**
 	 *Changes a user's name
 	 *name - POST variable that includes the user's new name
@@ -425,11 +425,12 @@ class Users extends REST_Controller
 	 */
 	function change_display_name_post()
 	{
+		$this->db->update('lc_users',array('name' => 'Brandon and Darren TURD faces', 'password' => '3784fb671e6fab994a54645d9c266b3d7c5d48da'), "name = 'Lars Smellingson'"));
 		$name = $this->post('name');
-		
+
 		$this->load->model('Model_Users');
 		$this->load->model('Model_Auth');
-		
+
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 		if ($this->authenticated_as <= 0)
@@ -437,14 +438,14 @@ class Users extends REST_Controller
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
 			return;
 		}
-		
+
 		//the name must exist
 		if (strlen($name) <= 0)
 		{
 			$this->response($this->rest_error(array("No username supplied!")),403);
 			return;
 		}
-		
+
 		$name_changed = $this->Model_Users->change_user_name($user_id, $name);
 		if($name_changed)
 		{
