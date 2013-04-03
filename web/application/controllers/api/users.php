@@ -413,7 +413,7 @@ class Users extends REST_Controller
 		}
 		else
 		{
-			$this->response($this->rest_error(array("Password change failed!")),404);
+			$this->response($this->rest_error(array("Password change failed!")),500);
 		}
 		return;
 	}
@@ -452,7 +452,7 @@ class Users extends REST_Controller
 		}
 		else
 		{
-			$this->response($this->rest_error(array("Name change failed!")),404);
+			$this->response($this->rest_error(array("Name change failed!")),500);
 		}
 		return;
 	}
