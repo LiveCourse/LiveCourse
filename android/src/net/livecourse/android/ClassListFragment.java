@@ -5,6 +5,8 @@ import java.util.Arrays;
 import net.livecourse.android.R;
 import net.livecourse.database.ClassEnrollLoader;
 import net.livecourse.rest.REST;
+import net.livecourse.utility.ChatMessageViewHolder;
+import net.livecourse.utility.ChatroomViewHolder;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -13,7 +15,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	//private ClassListAdapter<String> adapter;
 	//private SimpleCursorAdapter adapter;
 	private ClassListCursorAdapter adapter;
+	private MenuItem searchViewMenuItem;
 	/**
 	 * REST call to get class list
 	 * Temporary list of classes used, will be changed later
@@ -93,6 +95,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
     {    	
     	tabsAdapter = ((MainActivity) this.getSherlockActivity()).getTabsAdapter();
+    	MainActivity.classListFragment = this;
     	
     	/**
 		 * Settings for the fragment
@@ -129,8 +132,8 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
         classListView.setOnItemClickListener(this);
         classListView.setOnItemLongClickListener(this);
         
-        new REST(this.getSherlockActivity(),this,null,null,null,null,null,null,REST.GRAB_CHATS).execute();
-         
+        this.updateList();
+        
         return classListLayout;
     }
 
@@ -150,6 +153,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		 */
         SearchManager searchManager = (SearchManager) this.getSherlockActivity().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search_class_menu_item).getActionView();
+        searchViewMenuItem = (MenuItem) menu.findItem(R.id.search_class_menu_item);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getSherlockActivity().getComponentName()));
         searchView.setQueryHint("Search For a Class");
         searchView.setIconified(false);
@@ -167,7 +171,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 				//TODO: add activity that allows searching for classes via text
 				break;
 			case R.id.add_class_by_qr_menu_item:
-				IntentIntegrator integrator = new IntentIntegrator(this.getSherlockActivity());
+				IntentIntegrator integrator = new IntentIntegrator(this.getSherlockActivity());				
 				integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
 				break;
 		}
@@ -176,7 +180,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
+	public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) 
 	{
 		/**
 		 * Once a class is selected it'll expand the tabs
@@ -185,6 +189,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		tabsAdapter.setCount(3);
 		tabsAdapter.notifyDataSetChanged();
 		
+		MainActivity.chatFragment.updateList();
 		
 		/**
 		 * And direct us to the chat for the class we are in
@@ -246,29 +251,35 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		
 	}
 	
-	/**
-	 * Handles input from QR scan
-	 */
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) 
 	{
+		super.onActivityResult(requestCode,resultCode,intent);
+		
+		System.out.println("Request Code: " + requestCode);
+		if(requestCode == IntentIntegrator.REQUEST_CODE)
+		{
 		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		  if (scanResult != null) 
 		  {
 		    // handle scan result
 		  }
 		  // else continue with any other code you need in the method
+		}
 		
 	}
 
 	@Override
 	public boolean onQueryTextSubmit(String query) 
 	{        
-		
+		searchViewMenuItem.collapseActionView();
+
 		return false;
 	}
 
 	@Override
-	public boolean onQueryTextChange(String newText) {
+	public boolean onQueryTextChange(String newText) 
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -286,5 +297,9 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 
+	}
+	public void updateList()
+	{
+		new REST(this.getSherlockActivity(),this,null,null,null,null,null,null,REST.GRAB_CHATS).execute();
 	}
 }

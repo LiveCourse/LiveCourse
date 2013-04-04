@@ -17,7 +17,12 @@ import android.widget.Toast;
  * The tabs are implemented through another fragment and that fragments adapter. 
  * 
  */
-public class MainActivity extends SherlockFragmentActivity implements OnPageChangeListener{
+public class MainActivity extends SherlockFragmentActivity implements OnPageChangeListener
+{
+	/**
+	 * Some globals
+	 */
+	public static String currentChatId;
 	
 	/**
 	 * REST stuff
@@ -36,6 +41,13 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
     private TabsFragmentAdapter mAdapter;
     private ViewPager mPager;
     private PageIndicator mIndicator;
+    
+    /**
+     * Fragments
+     */
+    public static ClassListFragment classListFragment;
+    public static ChatFragment chatFragment;
+    public static ParticipantsFragment participantsFragment;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) 

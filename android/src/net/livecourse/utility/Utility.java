@@ -73,6 +73,8 @@ public class Utility {
 	public static String convertMinutesTo24Hour(String minutes)
 	{
 		int time = Integer.parseInt(minutes);
+		if(time%60 == 0)
+			return time/60 + ":" + time%60+"0";
 		return time/60 + ":" + time%60;
 	}
 }

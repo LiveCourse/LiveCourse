@@ -20,7 +20,7 @@ import com.actionbarsherlock.widget.SearchView;
 import net.livecourse.android.R;
 import net.livecourse.database.Chatroom;
 import net.livecourse.rest.REST;
-import net.livecourse.utility.ViewHolder;
+import net.livecourse.utility.ChatroomViewHolder;
 
 public class QueryActivity extends SherlockFragmentActivity implements SearchView.OnQueryTextListener, OnItemClickListener
 {
@@ -105,7 +105,7 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	{
-		ViewHolder v = (ViewHolder) view.getTag();
+		ChatroomViewHolder v = (ChatroomViewHolder) view.getTag();
 		
 		new REST(this, null, null, null, null, null, null, v.idString, REST.JOIN_CHAT).execute();
 	}

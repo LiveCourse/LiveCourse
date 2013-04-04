@@ -3,9 +3,14 @@ package net.livecourse.android;
 import java.util.ArrayList;
 import java.util.Arrays;
 import net.livecourse.android.R;
+import net.livecourse.database.ChatMessagesLoader;
+import net.livecourse.rest.REST;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +27,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ChatFragment extends SherlockFragment implements OnClickListener, OnItemLongClickListener, ActionMode.Callback
+public class ChatFragment extends SherlockFragment implements OnClickListener, OnItemLongClickListener, ActionMode.Callback, LoaderCallbacks<Cursor>
 {
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
@@ -45,8 +50,9 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	 * This is the adapter used for the message list.
 	 * It is incomplete.
 	 */
-	private ChatListAdapter<String> adapter;
-	
+	//private ChatListAdapter<String> adapter;
+	private ChatCursorAdapter adapter;
+
 	/**
 	 * Temporary list used to populate the message list
 	 */
@@ -74,6 +80,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
+		MainActivity.chatFragment = this;
 		/**
 		 * Settings for the fragment
 		 * Allows adding stuff for the options menu
@@ -98,7 +105,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		/**
 		 * Adds the adapter to the list and sends the temporary list to it
 		 */
-		adapter = new ChatListAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,messages);
+		//adapter = new ChatListAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,messages);
+		adapter = new ChatCursorAdapter(this.getSherlockActivity(),null,0);
 		messageListView.setAdapter(adapter);
 		
 
@@ -107,7 +115,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		 */
 		sendButtonView.setOnClickListener(this);
 		messageListView.setOnItemLongClickListener(this);
-		
+				
 		return chatLayout;
 	}
 
@@ -231,6 +239,28 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) 
+	{
+		return new ChatMessagesLoader(this.getSherlockActivity(), MainActivity.getAppDb());
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) 
+	{
+		adapter.swapCursor(cursor);		
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void updateList()
+	{
+		new REST(this.getSherlockActivity(),this,null,null,null,null,null,null,REST.FETCH_RECENT).execute();
 	}
 
 }

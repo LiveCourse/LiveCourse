@@ -12,6 +12,7 @@ import net.livecourse.android.MainActivity;
 import net.livecourse.android.QueryActivity;
 import net.livecourse.android.R;
 import net.livecourse.database.Chatroom;
+import net.livecourse.database.ChatMessage;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -38,6 +39,7 @@ import android.os.AsyncTask;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class REST extends AsyncTask <Void, Void, String> 
 {
@@ -64,6 +66,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	public static final int CHANGE_NAME 		= 2;
 	public static final int GRAB_CHATS			= 3;
 	public static final int JOIN_CHAT			= 4;
+	public static final int FETCH_RECENT		= 5;
 	
 	
 	/**
@@ -103,7 +106,11 @@ public class REST extends AsyncTask <Void, Void, String>
 				this.mFragment = f;
 				break;
 			case JOIN_CHAT:
-				this.chatId = chatId;
+				REST.chatId = chatId;
+				break;
+			case FETCH_RECENT:
+				REST.chatId = chatId;
+				this.mFragment = f;
 				break;
 		}
 	}
@@ -155,6 +162,9 @@ public class REST extends AsyncTask <Void, Void, String>
 			case JOIN_CHAT:
 				this.joinChat(REST.chatId);
 				break;
+			case FETCH_RECENT:
+				this.fetchRecent(REST.chatId);
+				break;
 		}
 		return result;
 	}
@@ -195,6 +205,21 @@ public class REST extends AsyncTask <Void, Void, String>
 				break;
 			case GRAB_CHATS:
 				mActivity.getSupportLoaderManager().initLoader(1, null, (LoaderCallbacks<Cursor>) mFragment);
+				break;
+			case JOIN_CHAT:
+				if(success)
+				{	
+					MainActivity.classListFragment.updateList();
+					mActivity.finish();
+				}
+				else
+				{
+					Toast.makeText(mActivity, "Failed", Toast.LENGTH_SHORT).show();
+
+				}
+				break;
+			case FETCH_RECENT:
+				mActivity.getSupportLoaderManager().initLoader(2, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 		}
 	}
@@ -528,6 +553,76 @@ public class REST extends AsyncTask <Void, Void, String>
 			
 			
 		} 
+		catch (Exception e) 
+		{
+			return e.getLocalizedMessage();
+		}
+		
+		System.out.println("Join Chat Result: " + result+"\n");
+		return result;
+	}
+	
+	private String fetchRecent(String chatId)
+	{
+		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
+		
+		//System.out.println("Get Class List - token: "+REST.token+" password: " + REST.password);
+		String shaHead = this.toSha1(REST.token+this.toSha1(REST.password)+"chats/fetch_recent");
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpContext localContext = new BasicHttpContext();
+		
+		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/chats/fetch_recent").buildUpon()
+			.appendQueryParameter("char_id", REST.chatId)
+			.build();		
+		
+		HttpGet httpGet = new HttpGet(b.toString());
+		System.out.println("shaHead:"+shaHead);
+		httpGet.addHeader("Auth", "LiveCourseAuth token="+REST.token+" auth="+shaHead);
+		
+		System.out.println(httpGet.getURI().toString());
+		String result = null;
+		
+		try 
+		{
+			HttpResponse response = httpClient.execute(httpGet, localContext);
+			HttpEntity entity = response.getEntity();
+			result = getASCIIContentFromEntity(entity);
+			
+			switch(response.getStatusLine().getStatusCode())
+			{
+				case 200:
+			        JSONArray parse = new JSONArray(result.trim());
+			        System.out.println("Length of JSONArray: " +parse.length());
+			        //MainActivity.getAppDb().recreateClassEnroll();
+			        
+			        ChatMessage message = new ChatMessage();
+			        
+			        for(int j = 0;j<parse.length();j++)
+			        {
+			        	JSONObject ob = parse.getJSONObject(j);
+			        	
+			        	System.out.println("JSONObject @: "+j+" = "+ob.toString());
+			        	
+			        	message.setChatId(ob.getString("chat_id"));
+			        	message.setSendTime(ob.getString("send_time"));
+			        	message.setMessageString(ob.getString("message_string"));
+			        	message.setEmail(ob.getString("email"));
+			        	message.setDisplayName(ob.getString("display_name"));
+			        	
+			        	MainActivity.getAppDb().addChatMessage(message);
+			        	//System.out.println(message.toString());
+			        }
+			        
+					this.success = true;
+					break;
+					
+				case 401:
+					this.success = false;
+					result = "Fetching Chats Messages Failed";
+					break;
+			}
+		}
 		catch (Exception e) 
 		{
 			return e.getLocalizedMessage();

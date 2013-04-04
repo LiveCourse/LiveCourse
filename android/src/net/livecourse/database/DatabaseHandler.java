@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper
 {
-	private static final int DATABASE_VERSION = 12;
+	private static final int DATABASE_VERSION = 16;
 	
 	/**
 	 * Database name
@@ -20,6 +20,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 * The tables we are going to use
 	 */
 	public static final String TABLE_CLASS_ENROLL 			= "classEnroll";
+	public static final String TABLE_CHAT_MESSAGES			= "chatMessages";
 	
 	/**
 	 * Fields used for the classroom object
@@ -42,6 +43,16 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	private static final String KEY_CLASS_DOW_FRIDAY 		= "dow_friday";
 	private static final String KEY_CLASS_DOW_SATURDAY 		= "dow_saturday";
 	private static final String KEY_CLASS_DOW_SUNDAY 		= "dow_sunday";
+	
+	/**
+	 * For chats
+	 * @param context
+	 */
+	private static final String KEY_CHAT_ID					= "chat_id";
+	private static final String KEY_CHAT_SEND_TIME			= "send_time";
+	private static final String KEY_CHAT_MESSAGE_STRING		= "message_string";
+	private static final String KEY_CHAT_EMAIL				= "email";
+	private static final String KEY_CHAT_DISPLAY_NAME		= "display_name";
 	
 	public DatabaseHandler(Context context)
 	{
@@ -72,7 +83,17 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	                						+ KEY_CLASS_DOW_SATURDAY 	+ " tinyint(1), "	
 	                						+ KEY_CLASS_DOW_SUNDAY		+ " tinyint(1) "
 	                						+ ")";
+		
+		String CREATE_TABLE_CHAT_MESSAGES = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
+											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
+											+ KEY_CHAT_SEND_TIME		+ " int(11), "
+											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
+											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
+											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255) "
+											+ ")";
         db.execSQL(CREATE_TABLE_CLASS_QUERY);
+        db.execSQL(CREATE_TABLE_CHAT_MESSAGES);
 		
 	}
 	@Override
@@ -82,6 +103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		 * Drop the tables
 		 */
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASS_ENROLL);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHAT_MESSAGES);
 		
 		/**
 		 * Recreate tables
@@ -123,6 +145,30 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		 */
 		//db.insert(TABLE_CLASS_ENROLL, null, values);
 		db.insertWithOnConflict(TABLE_CLASS_ENROLL, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+		db.close();
+	}
+	
+	public void addChatMessage(ChatMessage a)
+	{
+		/**
+		 * Grab the DB
+		 */
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		/**
+		 * Put all the values in
+		 */
+		ContentValues values = new ContentValues();
+		values.put(KEY_CHAT_ID,					a.getChatId());
+		values.put(KEY_CHAT_SEND_TIME,			a.getSendTime());
+		values.put(KEY_CHAT_MESSAGE_STRING,		a.getMessageString());
+		values.put(KEY_CHAT_EMAIL, 				a.getEmail());
+		values.put(KEY_CHAT_DISPLAY_NAME,		a.getDisplayName());
+		
+		/**
+		 * Insert the row into the table and the close the connection to the DB
+		 */
+		db.insertWithOnConflict(TABLE_CHAT_MESSAGES, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		db.close();
 	}
 	/**
@@ -186,9 +232,10 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	{
 		
 	}
+
 	public void recreateClassEnroll()
 	{
-		System.out.println("Attempting to recreate db");
+		System.out.println("Attempting to recreate table: " + TABLE_CLASS_ENROLL);
 		SQLiteDatabase db = this.getWritableDatabase();
 		db = this.getDatabase();
 
@@ -225,6 +272,33 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	                						+ ")";
         db.execSQL(CREATE_TABLE_CLASS_QUERY);	
 	}
+	
+	public void recreateChatMessages()
+	{
+		System.out.println("Attempting to recreate table: " + TABLE_CHAT_MESSAGES);
+		SQLiteDatabase db = this.getWritableDatabase();
+		db = this.getDatabase();
+
+		/**
+		 * Drop the tables
+		 */
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHAT_MESSAGES);
+		
+		/**
+		 * Recreate tables
+		 */
+		String CREATE_TABLE_CHAT_MESSAGES = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
+											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
+											+ KEY_CHAT_SEND_TIME		+ " int(11), "
+											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
+											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
+											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255), "
+											+ ")";
+		
+		db.execSQL(CREATE_TABLE_CHAT_MESSAGES);
+	}
+	
 	public SQLiteDatabase getDatabase()
 	{
 		return this.getReadableDatabase();

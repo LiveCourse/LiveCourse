@@ -1,7 +1,7 @@
 package net.livecourse.android;
 
 import net.livecourse.utility.Utility;
-import net.livecourse.utility.ViewHolder;
+import net.livecourse.utility.ChatroomViewHolder;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
@@ -25,7 +25,7 @@ public class ClassListCursorAdapter extends CursorAdapter
 	{
 		View view = LayoutInflater.from(mContext).inflate(R.layout.classlist_item_layout, parent, false);
 		
-		ViewHolder v = new ViewHolder();
+		ChatroomViewHolder v = new ChatroomViewHolder();
 		v.className = (TextView) view.findViewById(R.id.classquery_item_class_name_text_view);
 		v.classTime = (TextView) view.findViewById(R.id.classquery_item_class_time_text_view);
 		
@@ -37,7 +37,7 @@ public class ClassListCursorAdapter extends CursorAdapter
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) 
 	{
-		ViewHolder v = (ViewHolder) view.getTag();
+		ChatroomViewHolder v = (ChatroomViewHolder) view.getTag();
 		
 		String name = "\t" + cursor.getString(cursor.getColumnIndexOrThrow("name"));
 		String time = "\t\t";

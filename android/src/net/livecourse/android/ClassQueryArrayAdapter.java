@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import net.livecourse.database.Chatroom;
 import net.livecourse.utility.Utility;
-import net.livecourse.utility.ViewHolder;
+import net.livecourse.utility.ChatroomViewHolder;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +28,7 @@ public class ClassQueryArrayAdapter extends ArrayAdapter<Chatroom>
 	public View getView(int position, View convertView, ViewGroup parent) 
 	{
         View view = convertView;
-        ViewHolder v = new ViewHolder();
+        ChatroomViewHolder v = new ChatroomViewHolder();
         
         if (view == null) 
         {
