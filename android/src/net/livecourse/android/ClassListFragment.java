@@ -311,6 +311,6 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	}
 	public void updateList()
 	{
-		new REST(this.getSherlockActivity(),this,null,null,null,null,null,null,REST.GRAB_CHATS).execute();
+		new REST(this.getSherlockActivity(),this,null,null,null,null,null,null,null,REST.GRAB_CHATS).execute();
 	}
 }

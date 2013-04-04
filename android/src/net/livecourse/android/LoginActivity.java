@@ -97,7 +97,7 @@ public class LoginActivity extends SherlockFragmentActivity{
 			return;
 		}
 		
-		new REST(this,null,loginEmailEditTextView.getText().toString(),loginPasswordEditTextView.getText().toString(),null,null,null,null,REST.AUTH_AND_VERIFY).execute();		
+		new REST(this,null,loginEmailEditTextView.getText().toString(),loginPasswordEditTextView.getText().toString(),null,null,null,null,null,REST.AUTH_AND_VERIFY).execute();		
 	}
 	
 	/**

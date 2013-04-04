@@ -23,7 +23,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	 * This is the adapter used for the history list.
 	 * It is incomplete.
 	 */
-	private ChatListAdapter<String> adapter;
+	//private ChatListAdapter<String> adapter;
 	
 	/**
 	 * Temporary list used to populate the history list
@@ -51,8 +51,8 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 		/**
 		 * Adds the adapter to the list and sends the temporary list to it
 		 */
-		adapter = new ChatListAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1,history);
-		historyListView.setAdapter(adapter);
+		//adapter = new ChatListAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1,history);
+		//historyListView.setAdapter(adapter);
 		
 		historyListView.setOnItemLongClickListener(this);
 	}

@@ -78,7 +78,7 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	
 	private void processQuery(String query)
 	{
-        new REST(this,null,null,null,null,query,null,null,REST.CLASS_QUERY).execute();
+        new REST(this,null,null,null,null,query,null,null,null,REST.CLASS_QUERY).execute();
 	}
 	
 	public ClassQueryArrayAdapter getAdapter() 
@@ -107,6 +107,6 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	{
 		ChatroomViewHolder v = (ChatroomViewHolder) view.getTag();
 		
-		new REST(this, null, null, null, null, null, null, v.idString, REST.JOIN_CHAT).execute();
+		new REST(this, null, null, null, null, null, null, v.idString,null, REST.JOIN_CHAT).execute();
 	}
 }

@@ -34,7 +34,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	 */
 	private View participantsLayout;
 	private ListView participantsListView;
-	private ClassListAdapter<String> adapter;
+	//private ClassListAdapter<String> adapter;
 	
 	/**
 	 * Temporary list of classes used, will be changed later
@@ -92,8 +92,8 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
     	/** 
     	 * Create the adapter and set it to the list and populate it
     	 * **/
-        adapter = new ClassListAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,participants);
-        participantsListView.setAdapter(adapter);
+        //adapter = new ClassListAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,participants);
+        //participantsListView.setAdapter(adapter);
         
         participantsListView.setOnItemLongClickListener(this);
         

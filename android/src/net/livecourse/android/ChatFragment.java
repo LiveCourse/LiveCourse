@@ -180,7 +180,9 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 				 * Update the list and sends update the adapter, then change
 				 * EditText back to blank
 				 */
-				messages.add(sendMessageEditTextView.getText().toString());
+				//messages.add(sendMessageEditTextView.getText().toString());
+				new REST(this.getSherlockActivity(),this,null,null,null,null,null,MainActivity.currentChatId,sendMessageEditTextView.getText().toString(),REST.SEND).execute();
+				
 		        adapter.notifyDataSetChanged();
 				sendMessageEditTextView.setText("");
 			}
@@ -263,7 +265,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	}
 	public void updateList()
 	{
-		new REST(this.getSherlockActivity(),this,null,null,null,null,null,MainActivity.currentChatId,REST.FETCH_RECENT).execute();
+		new REST(this.getSherlockActivity(),this,null,null,null,null,null,MainActivity.currentChatId,null,REST.FETCH_RECENT).execute();
 	}
 	public void clearList()
 	{

@@ -69,18 +69,21 @@ public class REST extends AsyncTask <Void, Void, String>
 	public static final int FETCH_RECENT		= 5;
 	public static final int SEND				= 6;
 	
+	public static final String MAX_MESSAGE_SIZE = "20";
+	
 	
 	/**
 	 * Activity is passed through so that REST can make changes to the UI and such
 	 */
 	private SherlockFragmentActivity mActivity;
 	private SherlockFragment mFragment;
+	private String message;
 	
 	/**
 	 * The constructor used REST, all unused args will be set to null
 	 * TODO: para and shit
 	 */
-	public REST(SherlockFragmentActivity a, SherlockFragment f, String email, String password, String name, String query, String token, String chatId, int command)
+	public REST(SherlockFragmentActivity a, SherlockFragment f, String email, String password, String name, String query, String token, String chatId, String message,int command)
 	{
 		super();
 		
@@ -100,7 +103,6 @@ public class REST extends AsyncTask <Void, Void, String>
 				//REST.password = password;
 				break;
 			case CHANGE_NAME:
-				System.out.println("Constructor switch case");
 				REST.name = name;
 				break;	
 			case GRAB_CHATS:
@@ -113,7 +115,23 @@ public class REST extends AsyncTask <Void, Void, String>
 				REST.chatId = chatId;
 				this.mFragment = f;
 				break;
+			case SEND:
+				this.message = message;
+				REST.chatId = chatId;
 		}
+	}
+	
+	/**
+	 * This is the new constructor used for REST.  it will be more clean and stuff
+	 * @param a
+	 * @param f
+	 * @param args0
+	 * @param args1
+	 * @param command
+	 */
+	public REST(SherlockFragmentActivity a, SherlockFragment f, String args0, String args1, int command)
+	{
+	
 	}
 	
 	protected String getASCIIContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException 
@@ -165,6 +183,9 @@ public class REST extends AsyncTask <Void, Void, String>
 				break;
 			case FETCH_RECENT:
 				this.fetchRecent(REST.chatId);
+				break;
+			case SEND:
+				this.sendMessage(REST.chatId,this.message);
 				break;
 		}
 		return result;
@@ -221,6 +242,8 @@ public class REST extends AsyncTask <Void, Void, String>
 				break;
 			case FETCH_RECENT:
 				mActivity.getSupportLoaderManager().restartLoader(2, null, (LoaderCallbacks<Cursor>) mFragment);
+				break;
+			case SEND:
 				break;
 		}
 	}
@@ -575,6 +598,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		
 		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/chats/fetch_recent").buildUpon()
 			.appendQueryParameter("chat_id", REST.chatId)
+			.appendQueryParameter("num_messages", REST.MAX_MESSAGE_SIZE)
 			.build();		
 		
 		HttpGet httpGet = new HttpGet(b.toString());
@@ -630,6 +654,62 @@ public class REST extends AsyncTask <Void, Void, String>
 		}
 		
 		System.out.println("Join Chat Result: " + result+"\n");
+		return result;
+	}
+	
+	private String sendMessage(String chatId, String message)
+	{
+		String shaHead = this.toSha1(REST.token+this.toSha1(REST.password)+"chats/send");
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		
+		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/chats/send").buildUpon()
+		    .build();
+		
+		HttpPost httpPost = new HttpPost(b.toString());
+	    try {
+
+			httpPost.addHeader("Auth", "LiveCourseAuth token="+REST.token+" auth="+shaHead);
+			
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("chat_id", chatId));
+			nameValuePairs.add(new BasicNameValuePair("message", message));
+			
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		System.out.println(httpPost.getURI().toString());
+		String result = "";
+		
+		try 
+		{
+			HttpResponse response = httpClient.execute(httpPost);
+			HttpEntity entity = response.getEntity();
+			result = getASCIIContentFromEntity(entity);
+			
+			switch(response.getStatusLine().getStatusCode())
+			{
+				case 200:
+					this.success = true;
+					break;
+					
+				case 404:
+					this.success = false;
+					//result = "Change Name Failed";
+					break;
+			}
+			
+			
+		} 
+		catch (Exception e) 
+		{
+			return e.getLocalizedMessage();
+		}
+		
+		System.out.println("Send Chat Result: " + result+"\n");
 		return result;
 	}
 	
