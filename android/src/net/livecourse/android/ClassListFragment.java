@@ -47,8 +47,8 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	private View classListLayout;
 	private ListView classListView;
 	//private ClassListAdapter<String> adapter;
-	private SimpleCursorAdapter adapter;
-	
+	//private SimpleCursorAdapter adapter;
+	private ClassListCursorAdapter adapter;
 	/**
 	 * REST call to get class list
 	 * Temporary list of classes used, will be changed later
@@ -119,7 +119,8 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
     	 * Create the adapter and set it to the list and populate it
     	 * **/
         //adapter = new ClassListAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,classes);
-        adapter = new SimpleCursorAdapter(this.getSherlockActivity(), R.layout.classlist_item_layout, null, null, null, 0);
+        //adapter = new SimpleCursorAdapter(this.getSherlockActivity(), R.layout.classlist_item_layout, null, null, null, 0);
+		adapter = new ClassListCursorAdapter(this.getSherlockActivity(),null,0);
 		classListView.setAdapter(adapter);
         
         /**
@@ -128,7 +129,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
         classListView.setOnItemClickListener(this);
         classListView.setOnItemLongClickListener(this);
         
-        //new REST(this.getSherlockActivity(),this,null,null,null,null,null,REST.GRAB_CHATS).execute();
+        new REST(this.getSherlockActivity(),this,null,null,null,null,null,null,REST.GRAB_CHATS).execute();
          
         return classListLayout;
     }

@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper
 {
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 12;
 	
 	/**
 	 * Database name
@@ -53,8 +53,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		 * Creates the class query table
 		 */
 		String CREATE_TABLE_CLASS_QUERY = 	"CREATE TABLE " 			+ TABLE_CLASS_ENROLL 	+ "( "
-											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
-	                						+ KEY_CLASS_ID_STRING 		+ " varchar(12), "
+											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+	                						+ KEY_CLASS_ID_STRING 		+ " varchar(12) UNIQUE, "
 	                						+ KEY_CLASS_SUBJECT_ID 		+ " int(11), "
 	                						+ KEY_CLASS_COURSE_NUMBER 	+ " smallint(6), "
 	                						+ KEY_CLASS_NAME 			+ " varchar(100), "
@@ -121,7 +121,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		/**
 		 * Insert the row into the table and the close the connection to the DB
 		 */
-		db.insert(TABLE_CLASS_ENROLL, null, values);
+		//db.insert(TABLE_CLASS_ENROLL, null, values);
+		db.insertWithOnConflict(TABLE_CLASS_ENROLL, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		db.close();
 	}
 	/**
@@ -187,7 +188,10 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	}
 	public void recreateClassEnroll()
 	{
+		System.out.println("Attempting to recreate db");
 		SQLiteDatabase db = this.getWritableDatabase();
+		db = this.getDatabase();
+
 		/**
 		 * Drop the tables
 		 */
@@ -196,7 +200,30 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		/**
 		 * Recreate tables
 		 */
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_CLASS_ENROLL);
+		/**
+		 * Creates the class query table
+		 */
+		String CREATE_TABLE_CLASS_QUERY = 	"CREATE TABLE " 			+ TABLE_CLASS_ENROLL 	+ "( "
+											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
+	                						+ KEY_CLASS_ID_STRING 		+ " varchar(12), "
+	                						+ KEY_CLASS_SUBJECT_ID 		+ " int(11), "
+	                						+ KEY_CLASS_COURSE_NUMBER 	+ " smallint(6), "
+	                						+ KEY_CLASS_NAME 			+ " varchar(100), "
+	                						+ KEY_CLASS_INSTITUTION_ID 	+ " int(11), "
+	                						+ KEY_CLASS_ROOM_ID 		+ " int(11), "	
+	                						+ KEY_CLASS_START_TIME 		+ " int(5), "
+	                						+ KEY_CLASS_END_TIME 		+ " int(5), "	
+	                						+ KEY_CLASS_START_DATE 		+ " date, "
+	                						+ KEY_CLASS_END_DATE 		+ " date, "	
+	                						+ KEY_CLASS_DOW_MONDAY 		+ " tinyint(1), "
+	                						+ KEY_CLASS_DOW_TUESDAY 	+ " tinyint(1), "	
+	                						+ KEY_CLASS_DOW_WEDNESDAY 	+ " tinyint(1), "
+	                						+ KEY_CLASS_DOW_THURSDAY 	+ " tinyint(1), "	
+	                						+ KEY_CLASS_DOW_FRIDAY 		+ " tinyint(1), "
+	                						+ KEY_CLASS_DOW_SATURDAY 	+ " tinyint(1), "	
+	                						+ KEY_CLASS_DOW_SUNDAY		+ " tinyint(1) "
+	                						+ ")";
+        db.execSQL(CREATE_TABLE_CLASS_QUERY);	
 	}
 	public SQLiteDatabase getDatabase()
 	{

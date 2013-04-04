@@ -51,6 +51,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	public static String password;
 	public static String query;
 	public static String token;
+	public static String chatId;
 	private boolean success;
 	
 	public static Chatroom[] roomList;
@@ -61,7 +62,8 @@ public class REST extends AsyncTask <Void, Void, String>
 	public static final int AUTH_AND_VERIFY 	= 0;
 	public static final int CLASS_QUERY 		= 1;
 	public static final int CHANGE_NAME 		= 2;
-	public static final int GRAB_CHATS		= 3;
+	public static final int GRAB_CHATS			= 3;
+	public static final int JOIN_CHAT			= 4;
 	
 	
 	/**
@@ -74,14 +76,14 @@ public class REST extends AsyncTask <Void, Void, String>
 	 * The constructor used REST, all unused args will be set to null
 	 * TODO: para and shit
 	 */
-	public REST(SherlockFragmentActivity a, SherlockFragment f, String email, String password, String name, String query, String token, int command)
+	public REST(SherlockFragmentActivity a, SherlockFragment f, String email, String password, String name, String query, String token, String chatId, int command)
 	{
 		super();
 		
 		this.mActivity = a;
 		this.success = false;
 		this.commandType = command;
-		System.out.println("Constructor Reached "+ this.commandType);
+		System.out.println("Constructor Reached with command: "+ this.commandType);
 		
 		switch(commandType)
 		{
@@ -90,7 +92,6 @@ public class REST extends AsyncTask <Void, Void, String>
 				REST.password = password;
 				break;
 			case CLASS_QUERY:
-				REST.token = token;
 				REST.query = query;
 				//REST.password = password;
 				break;
@@ -100,6 +101,9 @@ public class REST extends AsyncTask <Void, Void, String>
 				break;	
 			case GRAB_CHATS:
 				this.mFragment = f;
+				break;
+			case JOIN_CHAT:
+				this.chatId = chatId;
 				break;
 		}
 	}
@@ -132,7 +136,7 @@ public class REST extends AsyncTask <Void, Void, String>
 				if(success)
 				{
 					this.success = false;
-					result = this.verify(REST.token, REST.password);
+					result = this.verify(REST.password);
 				}
 				break;
 			case CLASS_QUERY:
@@ -147,6 +151,10 @@ public class REST extends AsyncTask <Void, Void, String>
 			case GRAB_CHATS:
 				result = "Class Enroll Timeout";
 				this.grabChats();
+				break;
+			case JOIN_CHAT:
+				this.joinChat(REST.chatId);
+				break;
 		}
 		return result;
 	}
@@ -248,10 +256,10 @@ public class REST extends AsyncTask <Void, Void, String>
 	 * @param password
 	 * @return result
 	 */
-	private String verify(String token, String password)
+	private String verify(String password)
 	{
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
-		String shaHead = this.toSha1(token+this.toSha1(password)+"auth/verify");
+		String shaHead = this.toSha1(REST.token+this.toSha1(password)+"auth/verify");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
@@ -261,7 +269,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		
 		HttpGet httpGet = new HttpGet(b.toString());
 		System.out.println("shaHead:"+shaHead);
-		httpGet.addHeader("Auth", "LiveCourseAuth token="+token+" auth="+shaHead);
+		httpGet.addHeader("Auth", "LiveCourseAuth token="+REST.token+" auth="+shaHead);
 		
 		System.out.println(httpGet.getURI().toString());
 		String result = null;
@@ -369,7 +377,6 @@ public class REST extends AsyncTask <Void, Void, String>
 					
 				case 401:
 					this.success = false;
-					result = "Invalid password";
 					break;
 			}
 		} 
@@ -379,7 +386,7 @@ public class REST extends AsyncTask <Void, Void, String>
 			return e.getLocalizedMessage();
 		}
 		
-		System.out.println("Search chat result: " + result+"\n");
+		System.out.println("Query Classes Result: " + result+"\n");
 		
 		return result;
 	}
@@ -389,7 +396,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
 		
 		System.out.println("Get Class List - token: "+REST.token+" password: " + REST.password);
-		String shaHead = this.toSha1(token+this.toSha1(REST.password)+"chats");
+		String shaHead = this.toSha1(REST.token+this.toSha1(REST.password)+"chats");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
@@ -415,6 +422,7 @@ public class REST extends AsyncTask <Void, Void, String>
 				case 200:
 			        JSONArray parse = new JSONArray(result.trim());
 			        System.out.println("Length of JSONArray: " +parse.length());
+			        //MainActivity.getAppDb().recreateClassEnroll();
 			        
 			        roomList = new Chatroom[parse.length()];
 			        
@@ -467,6 +475,68 @@ public class REST extends AsyncTask <Void, Void, String>
 		return result;
 	}
 	
+	private String joinChat(String roomId)
+	{
+		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
+		String shaHead = this.toSha1(REST.token+this.toSha1(REST.password)+"chats/join");
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		
+		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/chats/join").buildUpon()
+		    .build();
+		
+		HttpPost httpPost = new HttpPost(b.toString());
+	    try {
+
+			httpPost.addHeader("Auth", "LiveCourseAuth token="+REST.token+" auth="+shaHead);
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("id", chatId));
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			
+		} 
+	    catch (UnsupportedEncodingException e1) 
+	    {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		System.out.println(httpPost.getURI().toString());
+		String result = "";
+		
+		try 
+		{
+			HttpResponse response = httpClient.execute(httpPost);
+			HttpEntity entity = response.getEntity();
+			result = getASCIIContentFromEntity(entity);
+			
+			switch(response.getStatusLine().getStatusCode())
+			{
+				case 200:
+					this.success = true;
+					break;
+				case 401:
+					this.success = false;
+					break;
+				case 403:
+					this.success = false;
+					break;
+				case 404:
+					this.success = false;
+					//result = "Change Name Failed";
+					break;
+			}
+			
+			
+		} 
+		catch (Exception e) 
+		{
+			return e.getLocalizedMessage();
+		}
+		
+		System.out.println("Join Chat Result: " + result+"\n");
+		return result;
+	}
+	
 	
 	/**
 	 * This is the REST API call that allows users to change their names
@@ -486,7 +556,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		HttpPost httpPost = new HttpPost(b.toString());
 	    try {
 
-			httpPost.addHeader("Auth", "LiveCourseAuth token="+token+" auth="+shaHead);
+			httpPost.addHeader("Auth", "LiveCourseAuth token="+REST.token+" auth="+shaHead);
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 			nameValuePairs.add(new BasicNameValuePair("name", name));
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));

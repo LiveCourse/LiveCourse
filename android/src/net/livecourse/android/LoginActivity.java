@@ -3,6 +3,7 @@ package net.livecourse.android;
 import java.util.ArrayList;
 import net.livecourse.android.R;
 import net.livecourse.rest.REST;
+import net.livecourse.utility.Utility;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -96,7 +97,7 @@ public class LoginActivity extends SherlockFragmentActivity{
 			return;
 		}
 		
-		new REST(this,null,loginEmailEditTextView.getText().toString(),loginPasswordEditTextView.getText().toString(),null,null,null,REST.AUTH_AND_VERIFY).execute();		
+		new REST(this,null,loginEmailEditTextView.getText().toString(),loginPasswordEditTextView.getText().toString(),null,null,null,null,REST.AUTH_AND_VERIFY).execute();		
 	}
 	
 	/**
