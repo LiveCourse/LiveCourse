@@ -3,11 +3,17 @@ package net.livecourse.android;
 import java.util.ArrayList;
 import java.util.Arrays;
 import net.livecourse.android.R;
+import net.livecourse.database.ClassEnrollLoader;
+import net.livecourse.rest.REST;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +31,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class ClassListFragment extends SherlockFragment implements OnItemClickListener,OnItemLongClickListener, ActionMode.Callback, SearchView.OnQueryTextListener
+public class ClassListFragment extends SherlockFragment implements OnItemClickListener,OnItemLongClickListener, ActionMode.Callback, SearchView.OnQueryTextListener,  LoaderCallbacks<Cursor>
 {
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
@@ -40,7 +46,8 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	 */
 	private View classListLayout;
 	private ListView classListView;
-	private ClassListAdapter<String> adapter;
+	//private ClassListAdapter<String> adapter;
+	private SimpleCursorAdapter adapter;
 	
 	/**
 	 * REST call to get class list
@@ -84,9 +91,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
-    {
-    	
-    	
+    {    	
     	tabsAdapter = ((MainActivity) this.getSherlockActivity()).getTabsAdapter();
     	
     	/**
@@ -113,15 +118,17 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
     	/** 
     	 * Create the adapter and set it to the list and populate it
     	 * **/
-        adapter = new ClassListAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,classes);
-        classListView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        //adapter = new ClassListAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,classes);
+        adapter = new SimpleCursorAdapter(this.getSherlockActivity(), R.layout.classlist_item_layout, null, null, null, 0);
+		classListView.setAdapter(adapter);
         
         /**
          * The listener for clicking on an item in the list view
          */
         classListView.setOnItemClickListener(this);
         classListView.setOnItemLongClickListener(this);
+        
+        //new REST(this.getSherlockActivity(),this,null,null,null,null,null,REST.GRAB_CHATS).execute();
          
         return classListLayout;
     }
@@ -144,7 +151,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
         SearchView searchView = (SearchView) menu.findItem(R.id.search_class_menu_item).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getSherlockActivity().getComponentName()));
         searchView.setQueryHint("Search For a Class");
-        searchView.setIconifiedByDefault(false);
+        searchView.setIconified(false);
         searchView.setOnQueryTextListener(this);
 		
 		super.onCreateOptionsMenu(menu, inflater);
@@ -182,7 +189,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		 * And direct us to the chat for the class we are in
 		 */
 		tabsAdapter.getPager().setCurrentItem(1);
-		tabsAdapter.getActivity().setTitle(adapter.getItem(arg2));
+		//tabsAdapter.getActivity().setTitle(adapter.getItem(arg2));
 		
 	}
 
@@ -263,5 +270,20 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	public boolean onQueryTextChange(String newText) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		return new ClassEnrollLoader(this.getSherlockActivity(), MainActivity.getAppDb());
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		adapter.swapCursor(cursor);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+
 	}
 }

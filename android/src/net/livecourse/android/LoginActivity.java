@@ -45,7 +45,7 @@ public class LoginActivity extends SherlockFragmentActivity{
         /**
          * These are used for easy login for testing
          */
-        loginEmailEditTextView.setText("test@test.com");
+        loginEmailEditTextView.setText("test1@test.com");
         loginPasswordEditTextView.setText("123456789");
 	}
 	
@@ -96,7 +96,7 @@ public class LoginActivity extends SherlockFragmentActivity{
 			return;
 		}
 		
-		new REST(this,loginEmailEditTextView.getText().toString(),loginPasswordEditTextView.getText().toString(),null,null,null,REST.AUTH_AND_VERIFY).execute();		
+		new REST(this,null,loginEmailEditTextView.getText().toString(),loginPasswordEditTextView.getText().toString(),null,null,null,REST.AUTH_AND_VERIFY).execute();		
 	}
 	
 	/**

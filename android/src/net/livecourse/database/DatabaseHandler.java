@@ -4,13 +4,12 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper
 {
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 3;
 	
 	/**
 	 * Database name
@@ -20,13 +19,12 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	/**
 	 * The tables we are going to use
 	 */
-	private static final String TABLE_CLASS_QUERY 			= "classQuery";
-	private static final String TABLE_CLASS_ENROLL 			= "classEnroll";
+	public static final String TABLE_CLASS_ENROLL 			= "classEnroll";
 	
 	/**
 	 * Fields used for the classroom object
 	 */
-	private static final String KEY_CLASS_ID 				= "id";
+	private static final String KEY_ID						= "_id";
 	private static final String KEY_CLASS_ID_STRING 		= "id_string";
 	private static final String KEY_CLASS_SUBJECT_ID 		= "subject_id";
 	private static final String KEY_CLASS_COURSE_NUMBER 	= "course_number";
@@ -54,26 +52,26 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		/**
 		 * Creates the class query table
 		 */
-		String CREATE_TABLE_CLASS_QUERY = 	"CREATE TABLE " 			+ TABLE_CLASS_QUERY 	+ "("
-	                						+ KEY_CLASS_ID 				+ " int(11)," 
-	                						+ KEY_CLASS_ID_STRING 		+ " varchar(12),"
-	                						+ KEY_CLASS_SUBJECT_ID 		+ " int(11),"
-	                						+ KEY_CLASS_COURSE_NUMBER 	+ " smallint(6),"
-	                						+ KEY_CLASS_NAME 			+ " varchar(100),"
-	                						+ KEY_CLASS_INSTITUTION_ID 	+ " int(11),"
-	                						+ KEY_CLASS_ROOM_ID 		+ " int(11),"	
-	                						+ KEY_CLASS_START_TIME 		+ " int(5),"
-	                						+ KEY_CLASS_END_TIME 		+ " int(5),"	
-	                						+ KEY_CLASS_START_DATE 		+ " date,"
-	                						+ KEY_CLASS_END_DATE 		+ " date,"	
-	                						+ KEY_CLASS_DOW_MONDAY 		+ " tinyint(1),"
-	                						+ KEY_CLASS_DOW_TUESDAY 	+ " tinyint(1),"	
-	                						+ KEY_CLASS_DOW_WEDNESDAY 	+ " tinyint(1),"
-	                						+ KEY_CLASS_DOW_THURSDAY 	+ " tinyint(1),"	
-	                						+ KEY_CLASS_DOW_FRIDAY 		+ " tinyint(1),"
-	                						+ KEY_CLASS_DOW_SATURDAY 	+ " tinyint(1),"	
-	                						+ KEY_CLASS_DOW_SUNDAY		+ " tinyint(1)"
-	                						+ ") ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";
+		String CREATE_TABLE_CLASS_QUERY = 	"CREATE TABLE " 			+ TABLE_CLASS_ENROLL 	+ "( "
+											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
+	                						+ KEY_CLASS_ID_STRING 		+ " varchar(12), "
+	                						+ KEY_CLASS_SUBJECT_ID 		+ " int(11), "
+	                						+ KEY_CLASS_COURSE_NUMBER 	+ " smallint(6), "
+	                						+ KEY_CLASS_NAME 			+ " varchar(100), "
+	                						+ KEY_CLASS_INSTITUTION_ID 	+ " int(11), "
+	                						+ KEY_CLASS_ROOM_ID 		+ " int(11), "	
+	                						+ KEY_CLASS_START_TIME 		+ " int(5), "
+	                						+ KEY_CLASS_END_TIME 		+ " int(5), "	
+	                						+ KEY_CLASS_START_DATE 		+ " date, "
+	                						+ KEY_CLASS_END_DATE 		+ " date, "	
+	                						+ KEY_CLASS_DOW_MONDAY 		+ " tinyint(1), "
+	                						+ KEY_CLASS_DOW_TUESDAY 	+ " tinyint(1), "	
+	                						+ KEY_CLASS_DOW_WEDNESDAY 	+ " tinyint(1), "
+	                						+ KEY_CLASS_DOW_THURSDAY 	+ " tinyint(1), "	
+	                						+ KEY_CLASS_DOW_FRIDAY 		+ " tinyint(1), "
+	                						+ KEY_CLASS_DOW_SATURDAY 	+ " tinyint(1), "	
+	                						+ KEY_CLASS_DOW_SUNDAY		+ " tinyint(1) "
+	                						+ ")";
         db.execSQL(CREATE_TABLE_CLASS_QUERY);
 		
 	}
@@ -83,7 +81,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		/**
 		 * Drop the tables
 		 */
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASS_QUERY);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASS_ENROLL);
 		
 		/**
 		 * Recreate tables
@@ -91,7 +89,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		onCreate(db);
 	}
 	
-	public void addClassQuery(Chatroom a)
+	public void addClassEnroll(Chatroom a)
 	{
 		/**
 		 * Grab the DB
@@ -102,7 +100,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		 * Put all the values in
 		 */
 		ContentValues values = new ContentValues();
-		values.put(KEY_CLASS_ID, 				a.getId());
 		values.put(KEY_CLASS_ID_STRING, 		a.getIdString());
 		values.put(KEY_CLASS_SUBJECT_ID, 		a.getSubjectId());
 		values.put(KEY_CLASS_COURSE_NUMBER, 	a.getCourseNumber());
@@ -124,7 +121,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		/**
 		 * Insert the row into the table and the close the connection to the DB
 		 */
-		db.insert(TABLE_CLASS_QUERY, null, values);
+		db.insert(TABLE_CLASS_ENROLL, null, values);
 		db.close();
 	}
 	/**
@@ -132,7 +129,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 * @param id
 	 * @return
 	 */
-	public Chatroom getClassQuery(int id)
+	public Chatroom getClassEnroll(int id)
 	{
 		//SQLiteDatabase db = this.getReadableDatabase();
 		
@@ -157,7 +154,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 * TODO: NOT IMPLEMENTED MIGHT NOT BE USED
 	 * @return
 	 */
-	public List<Chatroom> getAllClassQuery()
+	public List<Chatroom> getAllClassEnroll()
 	{
 		return null;
 	}
@@ -166,7 +163,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 * TODO: NOT IMPLEMENTED MIGHT NOT BE USED
 	 * @return
 	 */
-	public int getClassQueryCount()
+	public int getClassEnrollCount()
 	{
 		return 0;
 	}
@@ -176,7 +173,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 * @param a
 	 * @return
 	 */
-	public int updateClassQuery(Chatroom a)
+	public int updateClassEnroll(Chatroom a)
 	{
 		return 0;
 	}
@@ -184,9 +181,22 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 * TODO: NOT IMPLEMENTED MIGHT NOT BE USED
 	 * @param a
 	 */
-	public void deleteClassQuery(Chatroom a)
+	public void deleteClassEnroll(Chatroom a)
 	{
 		
+	}
+	public void recreateClassEnroll()
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		/**
+		 * Drop the tables
+		 */
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASS_ENROLL);
+		
+		/**
+		 * Recreate tables
+		 */
+		db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_CLASS_ENROLL);
 	}
 	public SQLiteDatabase getDatabase()
 	{

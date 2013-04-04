@@ -1,7 +1,6 @@
 package net.livecourse.database;
 
 public class Chatroom {
-	private String id;
 	private String id_string;
 	private String subject_id;
 	private String course_number;
@@ -22,7 +21,7 @@ public class Chatroom {
 	
 	public String toString()
 	{
-		String temp = "ID: "+id+" ID String: "+id_string+" Course Number: "+course_number+" Name: "+name
+		String temp = "ID String: "+id_string+" Course Number: "+course_number+" Name: "+name
 				+"Institution ID: "+institution_id+" Room ID: "+room_id+" Start Time: "+start_time+" End Time: "
 				+end_time+" Start Date: "+start_date+" End Date: "+end_date+" Dow Monday: "+dow_monday+" Dow Monday: "+dow_monday
 				+" Dow Tuesday: "+dow_tuesday+" Dow Wednesday: "+dow_wednesday+" Dow Thursday: "+dow_thursday+" Dow Friday: "+dow_friday
@@ -88,12 +87,6 @@ public class Chatroom {
 	}
 	public void setDowSunday(String dow_sunday) {
 		this.dow_sunday = dow_sunday;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
 	}
 	public String getIdString() {
 		return id_string;

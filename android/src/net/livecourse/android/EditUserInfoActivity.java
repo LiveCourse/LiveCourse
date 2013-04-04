@@ -6,6 +6,7 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
 public class EditUserInfoActivity extends SherlockPreferenceActivity
 {
+	@SuppressWarnings("deprecation")
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
 	{

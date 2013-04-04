@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.livecourse.android.MainActivity;
+import net.livecourse.android.QueryActivity;
 import net.livecourse.android.R;
 import net.livecourse.database.Chatroom;
 
@@ -21,19 +22,20 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.view.View;
 import android.widget.TextView;
 
@@ -52,7 +54,6 @@ public class REST extends AsyncTask <Void, Void, String>
 	private boolean success;
 	
 	public static Chatroom[] roomList;
-	private int sizeOfRoomList;
 	
 	/**
 	 * Flags for type of command
@@ -60,17 +61,20 @@ public class REST extends AsyncTask <Void, Void, String>
 	public static final int AUTH_AND_VERIFY 	= 0;
 	public static final int CLASS_QUERY 		= 1;
 	public static final int CHANGE_NAME 		= 2;
+	public static final int GRAB_CHATS		= 3;
+	
 	
 	/**
 	 * Activity is passed through so that REST can make changes to the UI and such
 	 */
 	private SherlockFragmentActivity mActivity;
+	private SherlockFragment mFragment;
 	
 	/**
 	 * The constructor used REST, all unused args will be set to null
 	 * TODO: para and shit
 	 */
-	public REST(SherlockFragmentActivity a, String email, String password, String name, String query, String token, int command)
+	public REST(SherlockFragmentActivity a, SherlockFragment f, String email, String password, String name, String query, String token, int command)
 	{
 		super();
 		
@@ -94,6 +98,9 @@ public class REST extends AsyncTask <Void, Void, String>
 				System.out.println("Constructor switch case");
 				REST.name = name;
 				break;	
+			case GRAB_CHATS:
+				this.mFragment = f;
+				break;
 		}
 	}
 	
@@ -130,17 +137,21 @@ public class REST extends AsyncTask <Void, Void, String>
 				break;
 			case CLASS_QUERY:
 				result = "Class Query Timeout";
-				queryClassList(REST.query,REST.token,REST.password);
+				this.queryClassList(REST.query);
 				break;
 			case CHANGE_NAME:
 				result = "Change Name Timeout";
 				System.out.println("Change Name REST background reached");
-				this.changeName(REST.password, REST.name);
+				this.changeName(REST.name);
 				break;
+			case GRAB_CHATS:
+				result = "Class Enroll Timeout";
+				this.grabChats();
 		}
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onPostExecute(String results) 
 	{
@@ -166,13 +177,16 @@ public class REST extends AsyncTask <Void, Void, String>
 				}
 				break;
 			case CLASS_QUERY:
-				System.out.println(this.sizeOfRoomList);
-				for(int x = 0;x<this.sizeOfRoomList;x++)
-					System.out.println("Room "+x+": "+roomList[x].toString());
+				((QueryActivity) mActivity).getAdapter().clear();
+				((QueryActivity) mActivity).getAdapter().addAll(REST.roomList);
+				((QueryActivity) mActivity).getAdapter().notifyDataSetChanged();
 				break;
 			case CHANGE_NAME:
 				if(success)
 					mActivity.setTitle(REST.name);
+				break;
+			case GRAB_CHATS:
+				mActivity.getSupportLoaderManager().initLoader(1, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 		}
 	}
@@ -287,13 +301,12 @@ public class REST extends AsyncTask <Void, Void, String>
 	 * @param password
 	 * @return the message
 	 */
-	private String queryClassList(String query, String token, String password)
+	private String queryClassList(String query)
 	{
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
 		
-		System.out.println("Get Class List - token: "+token+" password: " + password);
-		String shaHead = this.toSha1(token+
-				this.toSha1(password)+"chats/search");
+		System.out.println("Get Class List - token: "+REST.token+" password: " + REST.password);
+		String shaHead = this.toSha1(token+this.toSha1(REST.password)+"chats/search");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
@@ -304,7 +317,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		
 		HttpGet httpGet = new HttpGet(b.toString());
 		System.out.println("shaHead:"+shaHead);
-		httpGet.addHeader("Auth", "LiveCourseAuth token="+token+" auth="+shaHead);
+		httpGet.addHeader("Auth", "LiveCourseAuth token="+REST.token+" auth="+shaHead);
 		
 		System.out.println(httpGet.getURI().toString());
 		String result = null;
@@ -318,15 +331,12 @@ public class REST extends AsyncTask <Void, Void, String>
 			switch(response.getStatusLine().getStatusCode())
 			{
 				case 200:
-					//JSONObject parse = new JSONObject(result.trim());
-			        //Iterator<?> keys = parse.keys();
-			        roomList = new Chatroom[1024];
-			        
 			        JSONArray parse = new JSONArray(result.trim());
 			        System.out.println("Length of JSONArray: " +parse.length());
 			        
-			        int j;
-			        for(j = 0;j<parse.length();j++)
+			        roomList = new Chatroom[parse.length()];
+			        
+			        for(int j = 0;j<parse.length();j++)
 			        {
 			        	JSONObject ob = parse.getJSONObject(j);
 			        	
@@ -334,7 +344,6 @@ public class REST extends AsyncTask <Void, Void, String>
 			        	
 			        	roomList[j] = new Chatroom();
 			        	
-			        	roomList[j].setId(ob.getString(				"id"));
 			        	roomList[j].setIdString(ob.getString(		"id_string"));
 		            	roomList[j].setSubjectId(ob.getString(		"subject_id"));
 		            	roomList[j].setCourseNumber(ob.getString(	"course_number"));
@@ -352,14 +361,8 @@ public class REST extends AsyncTask <Void, Void, String>
 			        	roomList[j].setDowThursday(ob.getString(	"dow_thursday"));
 			        	roomList[j].setDowFriday(ob.getString(		"dow_friday"));
 			        	roomList[j].setDowSaturday(ob.getString(	"dow_saturday"));
-			        	roomList[j].setDowSunday(ob.getString(		"dow_sunday"));
-			        	
-			        	MainActivity.getAppDb().addClassQuery(roomList[j]);
-
+			        	roomList[j].setDowSunday(ob.getString(		"dow_sunday"));			   
 			        }
-			        this.sizeOfRoomList = j;
-					//result = parse.getJSONObject("authentication").getString("token");
-			        //this.roomList =  roomList;
 					
 					this.success = true;
 					break;
@@ -380,12 +383,102 @@ public class REST extends AsyncTask <Void, Void, String>
 		
 		return result;
 	}
-	private String changeName(String password, String name)
+	
+	private String grabChats()
 	{
-		String shaHead = this.toSha1(token+this.toSha1(password)+"users/change_display_name");
+		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
+		
+		System.out.println("Get Class List - token: "+REST.token+" password: " + REST.password);
+		String shaHead = this.toSha1(token+this.toSha1(REST.password)+"chats");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
+		
+		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/chats").buildUpon()
+			.build();		
+		
+		HttpGet httpGet = new HttpGet(b.toString());
+		System.out.println("shaHead:"+shaHead);
+		httpGet.addHeader("Auth", "LiveCourseAuth token="+REST.token+" auth="+shaHead);
+		
+		System.out.println(httpGet.getURI().toString());
+		String result = null;
+		
+		try 
+		{
+			HttpResponse response = httpClient.execute(httpGet, localContext);
+			HttpEntity entity = response.getEntity();
+			result = getASCIIContentFromEntity(entity);
+			
+			switch(response.getStatusLine().getStatusCode())
+			{
+				case 200:
+			        JSONArray parse = new JSONArray(result.trim());
+			        System.out.println("Length of JSONArray: " +parse.length());
+			        
+			        roomList = new Chatroom[parse.length()];
+			        
+			        for(int j = 0;j<parse.length();j++)
+			        {
+			        	JSONObject ob = parse.getJSONObject(j);
+			        	
+			        	System.out.println("JSONObject @: "+j+" = "+ob.toString());
+			        	
+			        	roomList[j] = new Chatroom();
+			        	
+			        	roomList[j].setIdString(ob.getString(		"id_string"));
+		            	roomList[j].setSubjectId(ob.getString(		"subject_id"));
+		            	roomList[j].setCourseNumber(ob.getString(	"course_number"));
+		            	roomList[j].setName(ob.getString(			"name"));
+		            	roomList[j].setStartTime(ob.getString(		"start_time"));	            	
+			        	roomList[j].setInstitutionId(ob.getString(	"institution_id"));
+			        	roomList[j].setRoomId(ob.getString(			"room_id"));
+			        	roomList[j].setStartTime(ob.getString(		"start_time"));
+			        	roomList[j].setEndTime(ob.getString(		"end_time"));
+			        	roomList[j].setStartDate(ob.getString(		"start_date"));
+			        	roomList[j].setEndDate(ob.getString(		"end_date"));
+			        	roomList[j].setDowMonday(ob.getString(		"dow_monday"));
+			        	roomList[j].setDowTuesday(ob.getString(		"dow_tuesday"));
+			        	roomList[j].setDowWednesday(ob.getString(	"dow_wednesday"));
+			        	roomList[j].setDowThursday(ob.getString(	"dow_thursday"));
+			        	roomList[j].setDowFriday(ob.getString(		"dow_friday"));
+			        	roomList[j].setDowSaturday(ob.getString(	"dow_saturday"));
+			        	roomList[j].setDowSunday(ob.getString(		"dow_sunday"));
+			        	
+			        	MainActivity.getAppDb().addClassEnroll(roomList[j]);
+			        	System.out.println(roomList[j].toString());
+			        }
+					
+					this.success = true;
+					break;
+					
+				case 401:
+					this.success = false;
+					result = "Grabbing Class List Failed";
+					break;
+			}
+		}
+		catch (Exception e) 
+		{
+			System.out.println("Query Failed:\n"+e.getLocalizedMessage());
+			return e.getLocalizedMessage();
+		}
+		
+		return result;
+	}
+	
+	
+	/**
+	 * This is the REST API call that allows users to change their names
+	 * @param password
+	 * @param name
+	 * @return
+	 */
+	private String changeName(String name)
+	{
+		String shaHead = this.toSha1(REST.token+this.toSha1(REST.password)+"users/change_display_name");
+		
+		HttpClient httpClient = new DefaultHttpClient();
 		
 		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/users/change_display_name").buildUpon()
 		    .build();

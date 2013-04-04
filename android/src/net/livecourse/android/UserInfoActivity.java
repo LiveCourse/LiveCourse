@@ -87,7 +87,7 @@ public class UserInfoActivity extends SherlockFragmentActivity
         //settingsTextView.setText(builder.toString());
         //this.setTitle(builder.toString());
         System.out.println(builder.toString());
-        new REST(this, null, null, builder.toString(), null, null, REST.CHANGE_NAME).execute();
+        new REST(this,null, null, null, builder.toString(), null, null, REST.CHANGE_NAME).execute();
     }
 	
 	public void testClick(View v)

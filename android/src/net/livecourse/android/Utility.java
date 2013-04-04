@@ -65,6 +65,14 @@ public class Utility {
 		return 0;
 	}
 	
-	
-	
+	/**
+	 * Converts minutes (in string) to HH:mm
+	 * @param minutes
+	 * @return HH:mm
+	 */
+	public static String convertMinutesTo24Hour(String minutes)
+	{
+		int time = Integer.parseInt(minutes);
+		return time/60 + ":" + time%60;
+	}
 }
