@@ -40,9 +40,9 @@ public class ChatCursorAdapter extends CursorAdapter
 	{
 		ChatMessageViewHolder v = (ChatMessageViewHolder) view.getTag();
 		
-		String name = "\t" + cursor.getString(cursor.getColumnIndexOrThrow("display_name"));
+		String name = cursor.getString(cursor.getColumnIndexOrThrow("display_name"));
 		String time = cursor.getString(cursor.getColumnIndexOrThrow("send_time")) + "\t";
-		String message = "\t\t" + cursor.getString(cursor.getColumnIndexOrThrow("message_string"));
+		String message = cursor.getString(cursor.getColumnIndexOrThrow("message_string"));
 		
 		v.displayName.setText(name);
 		v.time.setText(time);

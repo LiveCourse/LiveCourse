@@ -67,6 +67,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	public static final int GRAB_CHATS			= 3;
 	public static final int JOIN_CHAT			= 4;
 	public static final int FETCH_RECENT		= 5;
+	public static final int SEND				= 6;
 	
 	
 	/**
@@ -219,7 +220,7 @@ public class REST extends AsyncTask <Void, Void, String>
 				}
 				break;
 			case FETCH_RECENT:
-				mActivity.getSupportLoaderManager().initLoader(2, null, (LoaderCallbacks<Cursor>) mFragment);
+				mActivity.getSupportLoaderManager().restartLoader(2, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 		}
 	}
@@ -573,7 +574,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		HttpContext localContext = new BasicHttpContext();
 		
 		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/chats/fetch_recent").buildUpon()
-			.appendQueryParameter("char_id", REST.chatId)
+			.appendQueryParameter("chat_id", REST.chatId)
 			.build();		
 		
 		HttpGet httpGet = new HttpGet(b.toString());
@@ -602,9 +603,9 @@ public class REST extends AsyncTask <Void, Void, String>
 			        {
 			        	JSONObject ob = parse.getJSONObject(j);
 			        	
-			        	System.out.println("JSONObject @: "+j+" = "+ob.toString());
+			        	//System.out.println("JSONObject @: "+j+" = "+ob.toString());
 			        	
-			        	message.setChatId(ob.getString("chat_id"));
+			        	message.setChatId(ob.getString("id"));
 			        	message.setSendTime(ob.getString("send_time"));
 			        	message.setMessageString(ob.getString("message_string"));
 			        	message.setEmail(ob.getString("email"));

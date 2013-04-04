@@ -5,7 +5,6 @@ import java.util.Arrays;
 import net.livecourse.android.R;
 import net.livecourse.database.ClassEnrollLoader;
 import net.livecourse.rest.REST;
-import net.livecourse.utility.ChatMessageViewHolder;
 import net.livecourse.utility.ChatroomViewHolder;
 
 import android.app.SearchManager;
@@ -185,10 +184,22 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		/**
 		 * Once a class is selected it'll expand the tabs
 		 */
-		tabsAdapter.CONTENT = new String[] { "Class List", "Chat", "Participants"};
-		tabsAdapter.setCount(3);
-		tabsAdapter.notifyDataSetChanged();
+		if(!tabsAdapter.CONTENT.equals(new String[] { "Class List", "Chat", "Participants"}))
+		{
+			tabsAdapter.CONTENT = new String[] { "Class List", "Chat", "Participants"};
+			tabsAdapter.setCount(3);
+			tabsAdapter.notifyDataSetChanged();
+		}
 		
+		if(((ChatroomViewHolder)view.getTag()).idString != MainActivity.currentChatId)
+		{
+			MainActivity.getAppDb().recreateChatMessages();
+			System.out.println("Recreating...");
+			MainActivity.chatFragment.clearList();
+		
+		}
+		
+		MainActivity.currentChatId = ((ChatroomViewHolder)view.getTag()).idString;
 		MainActivity.chatFragment.updateList();
 		
 		/**

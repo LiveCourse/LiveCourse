@@ -250,17 +250,24 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) 
 	{
-		adapter.swapCursor(cursor);		
+		adapter.notifyDataSetChanged();
+		adapter.swapCursor(cursor);
+		this.messageListView.setStackFromBottom(true);
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Cursor> loader) {
-		// TODO Auto-generated method stub
+	public void onLoaderReset(Loader<Cursor> loader) 
+	{
+		adapter.swapCursor(null);
 		
 	}
 	public void updateList()
 	{
-		new REST(this.getSherlockActivity(),this,null,null,null,null,null,null,REST.FETCH_RECENT).execute();
+		new REST(this.getSherlockActivity(),this,null,null,null,null,null,MainActivity.currentChatId,REST.FETCH_RECENT).execute();
+	}
+	public void clearList()
+	{
+		adapter.swapCursor(null);
 	}
 
 }

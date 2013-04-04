@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper
 {
-	private static final int DATABASE_VERSION = 16;
+	private static final int DATABASE_VERSION = 18;
 	
 	/**
 	 * Database name
@@ -164,6 +164,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		values.put(KEY_CHAT_MESSAGE_STRING,		a.getMessageString());
 		values.put(KEY_CHAT_EMAIL, 				a.getEmail());
 		values.put(KEY_CHAT_DISPLAY_NAME,		a.getDisplayName());
+		//System.out.println("Adding message with id: " + a.getChatId());
 		
 		/**
 		 * Insert the row into the table and the close the connection to the DB
@@ -293,7 +294,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 											+ KEY_CHAT_SEND_TIME		+ " int(11), "
 											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
 											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
-											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255), "
+											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255) "
 											+ ")";
 		
 		db.execSQL(CREATE_TABLE_CHAT_MESSAGES);

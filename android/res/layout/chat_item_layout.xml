@@ -15,16 +15,17 @@
 		android:layout_height="wrap_content"
 		android:textIsSelectable="false"
 		android:layout_marginTop="5dp"
-		android:textStyle="bold"
+		android:layout_marginLeft="10dp"
 		android:textAppearance="?android:attr/textAppearanceMedium" />
     
        <TextView
 		android:id="@+id/chat_item_time_text_view"
-		android:layout_width="wrap_content"
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:textIsSelectable="false"
 		android:layout_marginTop="5dp"
 		android:gravity="right"
+		
 		android:textAppearance="?android:attr/textAppearanceSmall" />
     
     </LinearLayout>
@@ -35,6 +36,7 @@
 		android:layout_height="wrap_content"
 		android:textIsSelectable="false"
 		android:layout_marginBottom="5dp"
-		android:textAppearance="?android:attr/textAppearanceMedium" />
+		android:layout_marginLeft="20dp"
+		android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>
