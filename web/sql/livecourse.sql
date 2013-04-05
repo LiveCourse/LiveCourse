@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.7
+-- version 3.4.11.1deb1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 05, 2013 at 12:47 AM
--- Server version: 5.5.30
--- PHP Version: 5.4.11
+-- Generation Time: Apr 05, 2013 at 06:25 AM
+-- Server version: 5.5.29
+-- PHP Version: 5.4.6-1ubuntu1.2
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `hayden_livecourse`
+-- Database: `livecourse`
 --
 
 -- --------------------------------------------------------
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `lc_authentication` (
   `lastused` int(11) NOT NULL COMMENT 'Last time this token was used to successfully authenticate',
   `device` int(11) NOT NULL COMMENT 'identifier for device that this authentication took place using',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `lc_chats` (
   `dow_saturday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Saturday',
   `dow_sunday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Sunday',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `lc_chat_messages` (
   `send_time` int(11) NOT NULL COMMENT 'Time that this message was sent in UNIX Epoch',
   `message_string` varchar(2048) NOT NULL COMMENT 'Message content',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -187,7 +187,18 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `time_lastfocus` int(11) NOT NULL DEFAULT '0' COMMENT 'Time of the user''s last message / focus. Used to determine online status.',
   `time_lastrequest` int(11) NOT NULL DEFAULT '0' COMMENT 'Time of user''s last active request to the server. Used to determine online status.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lc_users_ignored`
+--
+
+CREATE TABLE IF NOT EXISTS `lc_users_ignored` (
+  `user_id` int(11) NOT NULL,
+  `ignore_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
