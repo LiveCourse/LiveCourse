@@ -248,7 +248,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	}
 	public void updateList()
 	{
-		new REST(this.getSherlockActivity(),this,null,null,null,null,null,MainActivity.currentChatId,null,REST.FETCH_RECENT).execute();
+		
+		new REST(this.getSherlockActivity(),this,null,null,null,null,null,REST.chatId,null,REST.FETCH_RECENT).execute();
 	}
 	public void clearList()
 	{
