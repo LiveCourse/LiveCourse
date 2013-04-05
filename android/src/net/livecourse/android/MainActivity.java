@@ -3,11 +3,14 @@ package net.livecourse.android;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.*;
 import com.google.android.gcm.GCMRegistrar;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 import net.livecourse.android.R;
 import net.livecourse.database.DatabaseHandler;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -66,6 +69,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
          * Init database
          */
         appDb = new DatabaseHandler(this.getApplicationContext());
+        appDb.recreateClassEnroll();
 
         /**
          * The following code initializes the tabs.
@@ -193,5 +197,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 
 	public static void setAppDb(DatabaseHandler appDb) {
 		MainActivity.appDb = appDb;
+	}
+	
+	
+	public void onActivityResult(int request, int result, Intent i) 
+	{
+		classListFragment.onActivityResult(request, result, i);
 	}
 }

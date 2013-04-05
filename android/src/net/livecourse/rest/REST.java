@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.livecourse.android.ClassListFragment;
 import net.livecourse.android.MainActivity;
 import net.livecourse.android.QueryActivity;
 import net.livecourse.android.R;
@@ -61,6 +62,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	public static final int 			SEND				= 6;
 	public static final int				ANDROID_ADD			= 7;
 	public static final int				PARTICIPANTS		= 8;
+	public static final int				HISTORY				= 9;
 	
 	/**
 	 * Variables saved for use
@@ -75,6 +77,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	public static String 				chatId;
 	public static String				regId;
 	public static String				colorPref;
+	public static String				startEpoch;
 	
 	private int 						commandType;
 	private boolean 					success;
@@ -129,6 +132,9 @@ public class REST extends AsyncTask <Void, Void, String>
 			case PARTICIPANTS:
 				REST.chatId = chatId;
 				break;
+			case HISTORY:
+				REST.chatId = chatId;
+				break;
 		}
 	}
 	
@@ -165,6 +171,9 @@ public class REST extends AsyncTask <Void, Void, String>
 	 * 		args0 = regId
 	 * 
 	 * For PARTICIPANTS
+	 * 		args0 = chatId
+	 * 
+	 * For HISTORY
 	 * 		args0 = chatId
 	 * 
 	 * @param a The SherlockFragmentActivity
@@ -211,6 +220,9 @@ public class REST extends AsyncTask <Void, Void, String>
 				REST.regId = args0;
 				break;
 			case PARTICIPANTS:
+				REST.chatId = args0;
+				break;
+			case HISTORY:
 				REST.chatId = args0;
 				break;
 		}
@@ -265,6 +277,9 @@ public class REST extends AsyncTask <Void, Void, String>
 			case PARTICIPANTS:
 				this.fetchParticipants(REST.chatId);
 				break;
+			case HISTORY:
+				this.fetchHistory(REST.chatId);
+				break;
 		}
 		return result;
 	}
@@ -302,13 +317,19 @@ public class REST extends AsyncTask <Void, Void, String>
 					mActivity.setTitle(REST.name);
 				break;
 			case GRAB_CHATS:
-				mActivity.getSupportLoaderManager().initLoader(1, null, (LoaderCallbacks<Cursor>) mFragment);
+				mActivity.getSupportLoaderManager().restartLoader(1, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 			case JOIN_CHAT:
 				if(success)
 				{	
 					MainActivity.classListFragment.updateList();
-					mActivity.finish();
+					if(mActivity instanceof QueryActivity)
+						mActivity.finish();
+					else if(mFragment instanceof ClassListFragment)
+					{
+						((ClassListFragment)mFragment).QRJoinChat();
+						MainActivity.chatFragment.updateList();
+					}
 				}
 				else
 				{
@@ -320,6 +341,7 @@ public class REST extends AsyncTask <Void, Void, String>
 				mActivity.getSupportLoaderManager().restartLoader(2, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 			case SEND:
+				
 				break;
 			case ANDROID_ADD:
 				Intent mainIntent = new Intent(mActivity, MainActivity.class);
@@ -327,6 +349,9 @@ public class REST extends AsyncTask <Void, Void, String>
 				break;
 			case PARTICIPANTS:
 				mActivity.getSupportLoaderManager().restartLoader(3, null, (LoaderCallbacks<Cursor>) mFragment);
+				break;
+			case HISTORY:
+				mActivity.getSupportLoaderManager().restartLoader(4, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 		}
 	}
@@ -802,7 +827,7 @@ public class REST extends AsyncTask <Void, Void, String>
 					
 				case 401:
 					this.success = false;
-					result = "Fetching Chats Messages Failed";
+					//result = "Fetching Chats Messages Failed";
 					break;
 			}
 		}
@@ -896,6 +921,88 @@ public class REST extends AsyncTask <Void, Void, String>
 		}
 		
 		System.out.println("Get Participants Result: " + result+"\n");
+		return result;
+	}
+	
+	private String fetchHistory(String chatId)
+	{
+		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
+		
+		//System.out.println("Get Class List - token: "+REST.token+" password: " + REST.password);
+		String shaHead = this.toSha1(REST.token + REST.passwordToken + "chats/get_day");
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpContext localContext = new BasicHttpContext();
+		
+		Uri b = Uri.parse("http://livecourse.net/index.php/api/chats/get_day").buildUpon()
+			.appendQueryParameter("id", REST.chatId)
+			.appendQueryParameter("start_epoch", REST.startEpoch)
+			.build();		
+		
+		HttpGet httpGet = new HttpGet(b.toString());
+		System.out.println("shaHead:"+shaHead);
+		httpGet.addHeader("Auth", "LiveCourseAuth token="+REST.token+" auth="+shaHead);
+		
+		System.out.println(httpGet.getURI().toString());
+		String result = null;
+		
+		try 
+		{
+			HttpResponse response = httpClient.execute(httpGet, localContext);
+			HttpEntity entity = response.getEntity();
+			result = getASCIIContentFromEntity(entity);
+			
+			switch(response.getStatusLine().getStatusCode())
+			{
+				case 200:
+					JSONArray parse = new JSONArray(result.trim());
+			        System.out.println("Length of JSONArray: " +parse.length());
+			        
+			        ChatMessage message = new ChatMessage();
+			        
+			        for(int j = 0;j<parse.length();j++)
+			        {
+			        	JSONObject ob = parse.getJSONObject(j);
+			        	
+			        	message.setChatId(ob.getString("id"));
+			        	message.setSendTime(ob.getString("send_time"));
+			        	message.setMessageString(ob.getString("message_string"));
+			        	message.setEmail(ob.getString("email"));
+			        	message.setDisplayName(ob.getString("display_name"));
+			        	
+			        	MainActivity.getAppDb().addChatMessage(message);
+			        }
+			        
+					this.success = true;
+					break;
+					
+				case 401:
+					this.success = false;
+					result = "Unauthorized Access";
+					break;
+					
+				case 403:
+					this.success = false;
+					result = "Unspecified Chat ID";
+					break;
+					
+				case 404:
+					this.success = false;
+					result = "Chat Room Does Not Exist";
+					break;
+					
+				case 500:
+					this.success = false;
+					result = "Server Error";
+					break;
+			}
+		}
+		catch (Exception e) 
+		{
+			return e.getLocalizedMessage();
+		}
+		
+		System.out.println("Get History Result: " + result+"\n");
 		return result;
 	}
 	

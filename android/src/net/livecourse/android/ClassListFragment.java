@@ -171,7 +171,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 				break;
 			case R.id.add_class_by_qr_menu_item:
 				IntentIntegrator integrator = new IntentIntegrator(this.getSherlockActivity());				
-				integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
+				integrator.initiateScan(IntentIntegrator.ALL_CODE_TYPES);
 				break;
 		}
 
@@ -200,6 +200,8 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		}
 		
 		MainActivity.currentChatId = ((ChatroomViewHolder)view.getTag()).idString;
+		REST.chatId = MainActivity.currentChatId;
+		
 		MainActivity.chatFragment.updateList();
 		
 		/**
@@ -262,22 +264,15 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		
 	}
 	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent intent) 
-	{
-		super.onActivityResult(requestCode,resultCode,intent);
-		
-		System.out.println("Request Code: " + requestCode);
-		if(requestCode == IntentIntegrator.REQUEST_CODE)
-		{
-		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-		  if (scanResult != null) 
-		  {
-		    // handle scan result
-		  }
-		  // else continue with any other code you need in the method
-		}
-		
+	public void onActivityResult(int request, int result, Intent i) {
+	    IntentResult scan=IntentIntegrator.parseActivityResult(request, result, i);
+	    String qrURL = scan.getContents();
+	    int index= qrURL.lastIndexOf('/');
+	    String chatRoom = qrURL.substring(index+1, qrURL.length());
+	    //System.out.printf("qrURL:%s\n", chatRoom);
+	    if (scan!=null) {    	
+	    	new REST(this.getSherlockActivity(), this, chatRoom,null, REST.JOIN_CHAT).execute();
+	    }
 	}
 
 	@Override
@@ -306,11 +301,32 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Cursor> loader) {
+	public void onLoaderReset(Loader<Cursor> loader) 
+	{
+		adapter.swapCursor(null);
 
 	}
 	public void updateList()
 	{
 		new REST(this.getSherlockActivity(),this,null,null,null,null,null,null,null,REST.GRAB_CHATS).execute();
+	}
+	public void QRJoinChat()
+	{
+		if(!tabsAdapter.CONTENT.equals(new String[] { "Class List", "Chat", "Participants"}))
+		{
+			tabsAdapter.CONTENT = new String[] { "Class List", "Chat", "Participants"};
+			tabsAdapter.setCount(3);
+			tabsAdapter.notifyDataSetChanged();
+		}
+    	
+    	if(REST.chatId != MainActivity.currentChatId)
+		{
+			MainActivity.getAppDb().recreateChatMessages();
+			System.out.println("Recreating...");
+			MainActivity.chatFragment.clearList();
+		}
+    	
+    	tabsAdapter.getPager().setCurrentItem(1);
+    	new REST(this.getSherlockActivity(),this,null,null,REST.GRAB_CHATS).execute();
 	}
 }
