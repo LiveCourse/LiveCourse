@@ -58,6 +58,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	public static final int 			JOIN_CHAT			= 4;
 	public static final int 			FETCH_RECENT		= 5;
 	public static final int 			SEND				= 6;
+	public static final int				ANDROID_ADD			= 7;
 	
 	/**
 	 * Variables saved for use
@@ -69,6 +70,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	public static String 				query;
 	public static String 				token;
 	public static String 				chatId;
+	public static String				regId;
 	
 	private int 						commandType;
 	private boolean 					success;
@@ -134,7 +136,6 @@ public class REST extends AsyncTask <Void, Void, String>
 	 * 
 	 * For CLASS_QUERY
 	 * 		args0 = query
-	 * 		args1 = null
 	 * 
 	 * For CHANGE_NAME
 	 * 		args0 = name
@@ -152,13 +153,18 @@ public class REST extends AsyncTask <Void, Void, String>
 	 * 		args0 = chatId
 	 * 		args1 = message
 	 * 
+	 * For ANDROID_ADD
+	 * 		args0 = email
+	 * 		args1 = 
+	 * 		args2 = regId
+	 * 
 	 * @param a The SherlockFragmentActivity
 	 * @param f The SherlockFragment
 	 * @param args0 The first argument
 	 * @param args1 The second argument
 	 * @param command The type of REST API command call
 	 */
-	public REST(SherlockFragmentActivity a, SherlockFragment f, String args0, String args1, int command)
+	public REST(SherlockFragmentActivity a, SherlockFragment f, String args0, String args1, String args2, int command)
 	{
 		super();
 		
@@ -191,6 +197,12 @@ public class REST extends AsyncTask <Void, Void, String>
 			case SEND:
 				REST.chatId = args0;
 				this.message = args1;
+				break;
+			case ANDROID_ADD:
+				REST.email = args0;
+				REST.name = args1;
+				Rest.regId = args2;
+				//reg_id
 				break;
 		}
 	}
