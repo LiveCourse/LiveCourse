@@ -228,4 +228,14 @@ function window_onfocus()
 {
 	clear_notifications();
 	$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:300}); //scroll to bottom
+	//Update focus
+	call_api("users/focus","POST",{},
+		function(data)
+		{
+			
+		},
+		function(xhr,status)
+		{
+			
+		});
 }

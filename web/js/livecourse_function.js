@@ -412,6 +412,7 @@ function update_participant_list()
 		function (data) {
 			var uids = new Array();
 			// Add new participants
+			var epoch = ((new Date).getTime())/1000;
 			for (i in data)
 			{
 				uids.push(data[i].id);
@@ -424,6 +425,16 @@ function update_participant_list()
 					newu.hide();
 					$("#UserList").append(newu);
 					newu.slideDown();
+				}
+				
+				//Update online status.
+				$("#UserList #"+data[i].id).removeClass("online").removeClass("idle");
+				if (data[i].time_lastfocus > epoch - 30) //Focused closer than 30 secs ago? Online.
+				{
+					$("#UserList #"+data[i].id).addClass("online");
+				} else if (data[i].time_lastrequest > epoch - 60) //Client connected closer than 60 secs ago? Idle.
+				{
+					$("#UserList #"+data[i].id).addClass("idle");
 				}
 			}
 			// Remove old participants.

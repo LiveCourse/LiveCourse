@@ -220,7 +220,25 @@ class Users extends REST_Controller
 		}
 
 	}
+	
+	/**
+	 * Updates online status of current user to be focused NOW.
+	 */
+	public function focus_post()
+	{
+		$this->load->model('Model_Users');
 
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
+		$this->Model_Users->update_user_focus_time($this->authenticated_as);
+	}
+	
 	/**
 	 *Register an android users' device
 	 *name - Name of the user
@@ -336,6 +354,7 @@ class Users extends REST_Controller
 		}
 		return;
 	}
+	
 	/**
 	 * Removes an android user from the database.
 	 * reg_id - POST variable - registration id of the device to be removed.

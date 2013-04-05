@@ -168,6 +168,9 @@ abstract class REST_Controller extends CI_Controller
 					if ($expected_code == $authcodes[2])
 					{
 						$this->authenticated_as = $users[0]->id;
+						//Update the last request time for this user
+						$this->load->model('Model_Users');
+						$this->Model_Users->update_user_request_time($this->authenticated_as);
 					}
 				}
 			}

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.6
+-- version 3.5.7
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 02, 2013 at 05:59 PM
--- Server version: 5.5.30-log
--- PHP Version: 5.3.17
+-- Generation Time: Apr 05, 2013 at 12:47 AM
+-- Server version: 5.5.30
+-- PHP Version: 5.4.11
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `livecourse`
+-- Database: `hayden_livecourse`
 --
 
 -- --------------------------------------------------------
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `lc_institutions` (
   `name` varchar(255) NOT NULL COMMENT 'Name of institution',
   `zip` varchar(5) NOT NULL COMMENT 'Zip code of institution location',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `lc_subjects` (
   `name` varchar(256) NOT NULL COMMENT 'Name of subject',
   `code` varchar(5) NOT NULL COMMENT 'Code (Computer science = CS, etc)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -184,6 +184,8 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `display_name` varchar(255) NOT NULL,
   `jointime` int(11) NOT NULL COMMENT 'User''s time of sign-up in UNIX epoch',
   `color_preference` smallint(6) NOT NULL DEFAULT '0' COMMENT 'User''s UI color preference',
+  `time_lastfocus` int(11) NOT NULL DEFAULT '0' COMMENT 'Time of the user''s last message / focus. Used to determine online status.',
+  `time_lastrequest` int(11) NOT NULL DEFAULT '0' COMMENT 'Time of user''s last active request to the server. Used to determine online status.',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 

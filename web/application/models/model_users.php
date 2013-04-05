@@ -53,6 +53,32 @@ class Model_Users extends CI_Model {
 	}
 	
 	/**
+	 * Update a user's last focus time to NOW.
+	 * returns 
+	 */
+	function update_user_focus_time($user_id)
+	{
+		$data = array(
+			'time_lastfocus' => time()
+		);
+		$this->db->where('id', $user_id);
+		return $this->db->update('lc_users', $data); 
+	}
+	
+	/**
+	 * Update a user's last request time to NOW.
+	 * returns 
+	 */
+	function update_user_request_time($user_id)
+	{
+		$data = array(
+			'time_lastrequest' => time()
+		);
+		$this->db->where('id', $user_id);
+		return $this->db->update('lc_users', $data); 
+	}
+	
+	/**
 	 * Fetch every user in the database
 	 * returns - an array of user objects. Empty array on failure.
 	 */

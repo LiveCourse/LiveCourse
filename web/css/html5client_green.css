@@ -121,8 +121,8 @@ button:active {
   cursor: default;
 }
 #UserList li:hover {
-  border-left: 6px solid #2e7e3b;
-  padding-left: 40px;
+  background-color: #2e7e3b;
+  color: #b8e5bf;
 }
 #UserList li.selected {
   background-color: #b8e5bf;
@@ -130,6 +130,14 @@ button:active {
 #UserList li.me {
   font-weight: bold;
   font-size: 16px;
+}
+#UserList li.online {
+  border-left: 6px solid #2e7e3b;
+  padding-left: 40px;
+}
+#UserList li.idle {
+  border-left: 2px solid #2e7e3b;
+  padding-left: 40px;
 }
 #ChatFrame {
   position: fixed;

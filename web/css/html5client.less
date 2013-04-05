@@ -159,8 +159,8 @@ input[type="submit"]:active,button:active
 
 #UserList li:hover
 {
-	border-left:6px solid @color_primary;
-	padding-left:40px;
+	background-color:@color_primary;
+	color:@color_secondary;
 }
 
 #UserList li.selected
@@ -172,6 +172,18 @@ input[type="submit"]:active,button:active
 {
 	font-weight:bold;
 	font-size:16px;
+}
+
+#UserList li.online
+{
+	border-left:6px solid @color_primary;
+	padding-left:40px;
+}
+
+#UserList li.idle
+{
+	border-left:2px solid @color_primary;
+	padding-left:40px;
 }
 
 #ChatFrame

@@ -122,6 +122,8 @@ class Model_Chats extends CI_Model {
 	 */
 	function send_message($user_id,$chat_id,$message_string)
 	{
+		$this->load->model('Model_Users');
+		$this->Model_Users->update_user_focus_time($user_id);
 		$data = array(
 				'chat_id'	=> $chat_id,
 				'user_id'	=> $user_id,
@@ -305,7 +307,7 @@ class Model_Chats extends CI_Model {
 	function get_participants($chat_id)
 	{
 		$users = $this->db
-				->select('lc_users.id,lc_users.display_name,lc_users.email')
+				->select('lc_users.id,lc_users.display_name,lc_users.email,lc_users.time_lastfocus,lc_users.time_lastrequest')
 				->where('chat_id', $chat_id)
 				->from('lc_chat_participants')
 				->join('lc_users','lc_users.id = lc_chat_participants.user_id')

@@ -514,6 +514,7 @@ class Chats extends REST_Controller
 		// verify authentication first. Can't do this through headers...
 		$this->load->model('Model_Auth');
 		$this->load->model('Model_Chats');
+		$this->load->model('Model_Users');
 		$auth_token = $this->get('auth_token');
 		$auth_code = $this->get('auth_code');
 		$chat_id_string = $this->get('chat_id');
@@ -545,6 +546,9 @@ class Chats extends REST_Controller
 			$this->response(NULL,401);
 			return;
 		}
+		
+		//Update their request activity
+		$this->Model_Users->update_user_request_time($user_id);
 		
 		//Make sure they gave us a message id.
 		//if ($last_msg_id <= 0)
