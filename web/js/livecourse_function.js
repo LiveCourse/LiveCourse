@@ -429,7 +429,7 @@ function update_participant_list()
 				
 				//Update online status.
 				$("#UserList #"+data[i].id).removeClass("online").removeClass("idle");
-				if (data[i].time_lastfocus > epoch - 30) //Focused closer than 30 secs ago? Online.
+				if (data[i].time_lastfocus > epoch - 60) //Focused closer than 60 secs ago? Online.
 				{
 					$("#UserList #"+data[i].id).addClass("online");
 				} else if (data[i].time_lastrequest > epoch - 60) //Client connected closer than 60 secs ago? Idle.
