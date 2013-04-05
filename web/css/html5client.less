@@ -154,13 +154,14 @@ input[type="submit"]:active,button:active
 	padding:8px 8px 8px 46px;
 	color:@color_primary;
 	font-size:16px;
-	cursor:default;
+	cursor:pointer;
 }
 
 #UserList li:hover
 {
 	background-color:@color_primary;
 	color:@color_secondary;
+	border-color:@color_secondary;
 }
 
 #UserList li.selected
@@ -584,4 +585,33 @@ input[type="submit"]:active,button:active
 .DialogMessage a
 {
 	display:inline;
+}
+
+#dialog_profile #user_icon
+{
+	background-color:@color_secondary;
+	padding:32px;
+	margin-top:24px;
+	height:322px;
+	float:left;
+}
+
+#dialog_profile #user_icon img
+{
+	max-width:400px;
+	max-height:322px;
+}
+
+#dialog_profile #class_list
+{
+	float:left;
+	margin-left:32px;
+	margin-top:32px;
+}
+
+#dialog_profile #class_list h2
+{
+	font-family:'cicle';
+	font-size:40px;
+	margin:0;
 }

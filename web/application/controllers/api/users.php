@@ -37,7 +37,7 @@ class Users extends REST_Controller
 		}
 		return;
 	}
-
+	
 	/**
 	 * Validate an email address.
 	 * Provide email address (raw input)

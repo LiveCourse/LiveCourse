@@ -26,7 +26,12 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
 			return;
 		}
-		$chats = $this->Model_Chats->get_subscribed_chats($this->authenticated_as);
+		
+		$user_id = $this->get('user_id');
+		if (!isset($user_id) || $user_id == "")
+			$user_id = $this->authenticated_as;
+		
+		$chats = $this->Model_Chats->get_subscribed_chats($user_id);
 		$this->response($chats,200);
 	}
 
