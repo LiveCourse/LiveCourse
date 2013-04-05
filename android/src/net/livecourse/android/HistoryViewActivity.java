@@ -7,6 +7,7 @@ import net.livecourse.database.ParticipantsLoader;
 import net.livecourse.rest.REST;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,7 +18,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 
-public class HistoryViewActivity extends SherlockFragmentActivity implements OnItemLongClickListener
+public class HistoryViewActivity extends SherlockFragmentActivity implements OnItemLongClickListener, LoaderCallbacks<Cursor>
 {
 	/**
 	 * View used for the history list
@@ -60,7 +61,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 		
 		historyListView.setOnItemLongClickListener(this);
 		
-		new REST(this,null,MainActivity.currentChatId,null/* start_epoch */,REST.HISTORY).execute();
+		//new REST(this,null,MainActivity.currentChatId,null/* start_epoch */,REST.HISTORY).execute();
 	
 	}
 
