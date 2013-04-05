@@ -342,7 +342,7 @@ class Users extends REST_Controller
 		}
 
 		//Get GET variables...
-		$reg_id 	= $this->get('gcm_regid');
+		$reg_id 	= $this->get('reg_id');
 
 
 		//Check error conditions:
@@ -388,7 +388,7 @@ class Users extends REST_Controller
 		}
 
 		//Remove a user from the db
-		$reg_id = $this->post('gcm_regid');
+		$reg_id = $this->post('reg_id');
 
 		//Check error conditions:
 		//must have a valid registration id
@@ -464,6 +464,7 @@ class Users extends REST_Controller
 
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
+		
 		if ($this->authenticated_as <= 0)
 		{
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
@@ -477,7 +478,7 @@ class Users extends REST_Controller
 			return;
 		}
 
-		$name_changed = $this->Model_Users->change_user_name($user_id, $name);
+		$name_changed = $this->Model_Users->change_display_name($user_id, $name);
 		if($name_changed)
 		{
 			$this->response(NULL, 200);

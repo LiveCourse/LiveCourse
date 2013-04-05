@@ -254,15 +254,15 @@ class Model_Users extends CI_Model {
 			'password' => $password
 		);
 		$this->db->where('id',$user_id);
-		$this->db->update('lc_users', $data);
-		if($this->db->affected_rows() <= 0)
+		return $this->db->update('lc_users', $data);
+		/*if($this->db->affected_rows() <= 0)
 		{
 			return false;
 		}
 		else
 		{
 			return true;
-		}
+		}*/
 	}
 	
 	/**
@@ -271,22 +271,22 @@ class Model_Users extends CI_Model {
 	 *name - the user's new name
 	 *returns TRUE or FALSE depending on success or failure.
 	 */
-	function change_user_name($user_id, $name)
+	function change_display_name($user_id, $name)
 	{
 		$data = array(
 			'id' => $user_id,
 			'display_name' => $name
 		);
 		$this->db->where('id',$user_id);
-		$this->db->update('lc_users', $data);
-		if($this->db->affected_rows() <= 0)
+		return $this->db->update('lc_users', $data);
+		/*if($this->db->affected_rows() <= 0)
 		{
 			return false;
 		}
 		else
 		{
 			return true;
-		}
+		}*/
 	}
 
 }
