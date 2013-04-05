@@ -62,13 +62,11 @@ public class ParticipantsAdapter extends CursorAdapter
 	 */
 	public void bindView(View view, Context context, Cursor cursor) 
 	{
-		ChatMessageViewHolder v = (ChatMessageViewHolder) view.getTag();
+		ParticipantViewHolder v = (ParticipantViewHolder) view.getTag();
 				
 		String name = cursor.getString(cursor.getColumnIndexOrThrow("display_name"));
 				
 		v.displayName.setText(name);
-		
-		v.messageId = cursor.getString(cursor.getColumnIndexOrThrow("chat_id"));
 
 		view.setTag(v);
 	}

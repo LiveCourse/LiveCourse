@@ -3,11 +3,16 @@ package net.livecourse.android;
 import java.util.ArrayList;
 import java.util.Arrays;
 import net.livecourse.android.R;
+import net.livecourse.database.ChatMessagesLoader;
 import net.livecourse.database.DatabaseHandler;
+import net.livecourse.database.ParticipantsLoader;
 import net.livecourse.rest.REST;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +26,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ParticipantsFragment extends SherlockFragment implements OnItemLongClickListener,ActionMode.Callback
+public class ParticipantsFragment extends SherlockFragment implements OnItemLongClickListener,ActionMode.Callback, LoaderCallbacks<Cursor>
 {
 	private static final String KEY_CONTENT = "TestFragment:Content";
 	
@@ -37,30 +42,10 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	private View participantsLayout;
 	private ListView participantsListView;
 	private ParticipantsAdapter adapter;
-
-	/**
-	 * Database
-	 */
-	private static DatabaseHandler partDb;
 	
 	/**
 	 * Temporary list of classes used, will be changed later
 	 */
-//	String[] array = {
-//	        "Darren",
-//	        "Hayden",
-//	        "Lars",
-//	        "Jermey",
-//	        "Lee",
-//	        "Brandon",
-//	        "Android",
-//	        "Google",
-//	        "Person A",
-//	        "Person B",
-//	        "Jim",
-//	        "Bob"
-//		};
-//	ArrayList<String> participants;
 
     public static ParticipantsFragment newInstance(String content, TabsFragmentAdapter tabsAdapater) 
     {
@@ -78,11 +63,6 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mContent = savedInstanceState.getString(KEY_CONTENT);
         }
-        
-        /**
-         * Init database
-         */
-        partDb = new DatabaseHandler(this.getSherlockActivity());
     }
 
     @Override
@@ -109,7 +89,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
         
         participantsListView.setOnItemLongClickListener(this);
         
-		new REST(this.getSherlockActivity(),this,null,null,null,null,null,MainActivity.currentChatId,null,REST.PARTICIPANTS).execute();
+		new REST(this.getSherlockActivity(),this,MainActivity.currentChatId,null,REST.PARTICIPANTS).execute();
         
         return participantsLayout;
     }
@@ -180,12 +160,32 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 		return false;
 	}
 
-	public static DatabaseHandler getDb() {
-		return partDb;
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1)
+	{
+		return new ParticipantsLoader(this.getSherlockActivity(), MainActivity.getAppDb());
 	}
 
-	public static void setAppDb(DatabaseHandler partDb) {
-		ParticipantsFragment.partDb = partDb;
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) 
+	{
+		adapter.notifyDataSetChanged();
+		adapter.swapCursor(cursor);
+		this.participantsListView.setStackFromBottom(true);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0)
+	{
+		adapter.swapCursor(null);
+	}
+	public void updateList()
+	{
+		new REST(this.getSherlockActivity(),this,MainActivity.currentChatId,null,REST.PARTICIPANTS).execute();
+	}
+	public void clearList()
+	{
+		adapter.swapCursor(null);
 	}
 	
 }

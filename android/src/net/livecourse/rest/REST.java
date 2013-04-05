@@ -326,6 +326,7 @@ public class REST extends AsyncTask <Void, Void, String>
 				mActivity.startActivity(mainIntent);	
 				break;
 			case PARTICIPANTS:
+				mActivity.getSupportLoaderManager().restartLoader(3, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 		}
 	}
@@ -825,7 +826,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		HttpContext localContext = new BasicHttpContext();
 		
 		Uri b = Uri.parse("http://livecourse.net/index.php/api/chats/get_participants").buildUpon()
-			.appendQueryParameter("chat_id", REST.chatId)
+			.appendQueryParameter("id", REST.chatId)
 			.build();		
 		
 		HttpGet httpGet = new HttpGet(b.toString());
@@ -845,8 +846,7 @@ public class REST extends AsyncTask <Void, Void, String>
 			{
 				case 200:
 			        JSONArray parse = new JSONArray(result.trim());
-			        System.out.println("Length of JSONArray: " +parse.length());
-			        //MainActivity.getAppDb().recreateClassEnroll();
+			        //System.out.println("Length of JSONArray: " +parse.length());
 			        
 			        Participant participant = new Participant();
 			        
@@ -863,7 +863,7 @@ public class REST extends AsyncTask <Void, Void, String>
 			        	participant.setTime_lastrequest(ob.getString("time_lastrequest"));
 			        	
 			        	MainActivity.getAppDb().addParticipant(participant);
-			        	//System.out.println(message.toString());
+			        	//System.out.println(participant.toString());
 			        }
 			        
 					this.success = true;

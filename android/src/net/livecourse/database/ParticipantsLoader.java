@@ -18,7 +18,7 @@ public class ParticipantsLoader extends SimpleCursorLoader
      public Cursor loadInBackground() 
 	 {
              SQLiteDatabase db = ParticipantsdbHandler.getReadableDatabase();
-             Cursor cursor = db.query(DatabaseHandler.TABLE_CHAT_MESSAGES, null, null, null, null, null, null);
+             Cursor cursor = db.query(DatabaseHandler.TABLE_PARTICIPANTS, null, null, null, null, null, null);
              return cursor;
      }
 
