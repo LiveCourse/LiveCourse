@@ -129,14 +129,25 @@ class Model_Users extends CI_Model {
 	 * Should also remove ALL RELATED DATA
 	 * user_id - identification number of user
 	 * returns - FALSE on failure.
-	 */
+	 
 	function remove_user_by_id($user_id)
 	{
 		$data = array(
 				'id' => $user_id,
 				);
+		
+		$data2 = array(
+				'user_id' => $user_id,
+				);
+		
+		$this->db->delete('lc_chat_participants', $data2);
+		
+		$this->db->delete('lc_gcm_users', $data2)
+		
+		$this->db->delete('lc_authentication', $data2)
+		
 		return $this->db->delete('lc_users', $data);
-	}
+	}*/
 	
 	/**
 	 *Retrieves an android user from the gcm database
@@ -243,15 +254,15 @@ class Model_Users extends CI_Model {
 			'password' => $password
 		);
 		$this->db->where('id',$user_id);
-		$this->db->update('lc_users', $data);
-		if($this->db->affected_rows() <= 0)
+		return $this->db->update('lc_users', $data);
+		/*if($this->db->affected_rows() <= 0)
 		{
 			return false;
 		}
 		else
 		{
 			return true;
-		}
+		}*/
 	}
 	
 	/**
@@ -260,22 +271,22 @@ class Model_Users extends CI_Model {
 	 *name - the user's new name
 	 *returns TRUE or FALSE depending on success or failure.
 	 */
-	function change_user_name($user_id, $name)
+	function change_display_name($user_id, $name)
 	{
 		$data = array(
 			'id' => $user_id,
 			'display_name' => $name
 		);
 		$this->db->where('id',$user_id);
-		$this->db->update('lc_users', $data);
-		if($this->db->affected_rows() <= 0)
+		return $this->db->update('lc_users', $data);
+		/*if($this->db->affected_rows() <= 0)
 		{
 			return false;
 		}
 		else
 		{
 			return true;
-		}
+		}*/
 	}
 
 }

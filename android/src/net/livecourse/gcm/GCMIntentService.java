@@ -1,45 +1,50 @@
 package net.livecourse.gcm;
-
+ 
+import net.livecourse.android.MainActivity;
 import android.content.Context;
 import android.content.Intent;
-
+import android.util.Log;
+ 
 import com.google.android.gcm.GCMBaseIntentService;
-
+ 
 public class GCMIntentService extends GCMBaseIntentService
 {
-
-	@Override
-	protected void onError(Context arg0, String arg1) 
+	 
+	public GCMIntentService() 
 	{
-		// TODO Auto-generated method stub
-		
+		super(MainActivity.SENDER_ID);
 	}
-
+	 
+	private static final String TAG = "===GCMIntentService===";
+	 
+	 
 	@Override
-	protected void onMessage(Context arg0, Intent arg1) 
+	protected void onRegistered(Context arg0, String registrationId) 
 	{
-		// TODO Auto-generated method stub
-		
+		Log.i(TAG, "Device registered: regId = " + registrationId);
 	}
-
-	@Override
-	protected void onRegistered(Context arg0, String arg1) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
+	 
 	@Override
 	protected void onUnregistered(Context arg0, String arg1) 
 	{
-		// TODO Auto-generated method stub
-		
+		Log.i(TAG, "unregistered = "+arg1);
 	}
+	 
 	@Override
-	protected boolean onRecoverableError(Context context, String errorId)
+	protected void onMessage(Context arg0, Intent arg1) 
 	{
-		// TODO Auto-generated method stub
-		return false;
+		Log.i(TAG, "new message= ");
 	}
-
+	 
+	@Override
+	protected void onError(Context arg0, String errorId) 
+	{
+		Log.i(TAG, "Received error: " + errorId);
+	}
+	 
+	@Override
+	protected boolean onRecoverableError(Context context, String errorId) 
+	{
+		return super.onRecoverableError(context, errorId);
+	}
 }
