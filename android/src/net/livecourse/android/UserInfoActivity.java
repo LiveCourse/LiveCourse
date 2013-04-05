@@ -1,10 +1,16 @@
 package net.livecourse.android;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,10 +24,30 @@ import net.livecourse.rest.REST;
 
 public class UserInfoActivity extends SherlockFragmentActivity
 {
-	private EditText editText; 
 	
 	int check = 0;
 	private static final int RESULT_SETTINGS = 1;
+	private View userinfoLayout;
+	private ListView userinfoView;
+	private ClassListAdapter adapter;
+	
+	/**
+	 * Temporary list of classes used, will be changed later
+	 */
+	String[] array = {
+	        "Systems Programmin A",
+	        "Foods",
+	        "Intro To Pants",
+	        "Female Anatomy",
+	        "Elvish, the language of \"Lord of the Rings\"",
+	        "European Witchcraft",
+	        "Age of Piracy",
+	        "The Amazing World of Bubbles",
+	        "The Strategy of Starcraft",
+	        "Star Trek and Religion",
+	        "The Art of Warcraft: A Closer Look at the Virtual World Phenomenon"
+		};
+	ArrayList<String> participants;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -29,10 +55,27 @@ public class UserInfoActivity extends SherlockFragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.userinfo_layout);
         
-        editText = (EditText) findViewById(R.id.edit_Text);
-        
-        editText.setText(REST.email);
+        /**
+		 * Initialize the temporary list
+		 */
+		participants = new ArrayList<String>();
+		participants.addAll(Arrays.asList(array));
+		
+		/**
+		 * Conencts the list to the XML
+		 */
+		//userinfoLayout = inflater.inflate(R.layout.classlist_layout, container, false);
+		userinfoView = (ListView) this.findViewById(R.id.message_list_view);
+    	
+    	
+    	/** 
+    	 * Create the adapter and set it to the list and populate it
+    	 * **/
+        adapter = new ClassListAdapter(this, android.R.layout.simple_list_item_1,participants);
+        userinfoView.setAdapter(adapter);        
 	}
+	
+	 
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -89,27 +132,4 @@ public class UserInfoActivity extends SherlockFragmentActivity
         System.out.println(builder.toString());
         new REST(this,null, null, null, builder.toString(), null, null,null,null, REST.CHANGE_NAME).execute();
     }
-	
-	public void testClick(View v)
-	{
-		if(check == 0)
-		{
-			editText.setClickable(false);
-			editText.setFocusable(false);
-			editText.setFocusableInTouchMode(false);
-			
-			check = 1;
-		}
-		else
-		{
-			editText.setClickable(true);
-			editText.setFocusable(true);
-			editText.setFocusableInTouchMode(true);
-			editText.requestFocus();
-			
-			check = 0;
-		}
-	}
-	
-
 }

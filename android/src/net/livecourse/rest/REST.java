@@ -310,7 +310,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		
-		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/auth").buildUpon()
+		Uri b = Uri.parse("http://livecourse.net/index.php/api/auth").buildUpon()
 		    .appendQueryParameter("email", email)
 		    .appendQueryParameter("device", "1")
 		    .build();
@@ -364,7 +364,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		
-		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/auth/verify").buildUpon()
+		Uri b = Uri.parse("http://livecourse.net/index.php/api/auth/verify").buildUpon()
 		    .build();		
 		
 		HttpGet httpGet = new HttpGet(b.toString());
@@ -419,7 +419,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		
-		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/chats/search").buildUpon()
+		Uri b = Uri.parse("http://livecourse.net/index.php/api/chats/search").buildUpon()
 			.appendQueryParameter("query", query)
 			.build();		
 		
@@ -501,7 +501,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		
-		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/chats").buildUpon()
+		Uri b = Uri.parse("http://livecourse.net/index.php/api/chats").buildUpon()
 			.build();		
 		
 		HttpGet httpGet = new HttpGet(b.toString());
@@ -582,7 +582,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		
-		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/chats/join").buildUpon()
+		Uri b = Uri.parse("http://livecourse.net/index.php/api/chats/join").buildUpon()
 		    .build();
 		
 		HttpPost httpPost = new HttpPost(b.toString());
@@ -647,7 +647,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		
-		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/chats/fetch_recent").buildUpon()
+		Uri b = Uri.parse("http://livecourse.net/index.php/api/chats/fetch_recent").buildUpon()
 			.appendQueryParameter("chat_id", REST.chatId)
 			.appendQueryParameter("num_messages", REST.MAX_MESSAGE_SIZE)
 			.build();		
@@ -714,7 +714,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		
-		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/chats/send").buildUpon()
+		Uri b = Uri.parse("http://livecourse.net/index.php/api/chats/send").buildUpon()
 		    .build();
 		
 		HttpPost httpPost = new HttpPost(b.toString());
@@ -773,11 +773,11 @@ public class REST extends AsyncTask <Void, Void, String>
 	 */
 	private String changeName(String name)
 	{
-		String shaHead = this.toSha1(REST.token+this.toSha1(REST.passwordToken)+"users/change_display_name");
+		String shaHead = this.toSha1(REST.token+REST.passwordToken+"users/change_display_name");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		
-		Uri b = Uri.parse("http://www.livecourse.net/index.php/api/users/change_display_name").buildUpon()
+		Uri b = Uri.parse("http://livecourse.net/index.php/api/users/change_display_name").buildUpon()
 		    .build();
 		
 		HttpPost httpPost = new HttpPost(b.toString());
@@ -811,6 +811,8 @@ public class REST extends AsyncTask <Void, Void, String>
 					this.success = false;
 					//result = "Change Name Failed";
 					break;
+				case 500:
+					result = "threw 500";
 			}
 			
 			
