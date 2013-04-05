@@ -404,6 +404,7 @@ function user_profile_show(user_id)
 									unignorebutton.prop('disabled',true); //disable the form
 									unignorebutton.html("Unignored");
 									ignored_users.splice( $.inArray(user_data.id, ignored_users), 1 );
+									$("#UserList #"+user_data.id).removeClass("ignored");
 								},
 								function (xhr, status) {
 									var errdialog = dialog_new("Error Unignoring User","An error occurred while attempting to unignore this user.",true,true);
