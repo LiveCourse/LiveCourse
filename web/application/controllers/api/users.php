@@ -31,13 +31,13 @@ class Users extends REST_Controller
 		{
 			$users = $this->Model_Users->fetch_user_by_id($user_id);
 			if (count($users) > 0)
-				$this->response($users);
+				$this->response($users, 200);
 			else
 				$this->response($this->rest_error(array("The user id provided is invalid.")),404);
 		}
 		return;
 	}
-
+	
 	/**
 	 * Validate an email address.
 	 * Provide email address (raw input)
@@ -188,20 +188,22 @@ class Users extends REST_Controller
 	 * Removes a user from the database.
 	 * id - POST variable - user id of the user to be removed.
 	 * returns - user ID on successful removal.
-	 */
+	 
 	public function remove_post()
 	{
-		//TODO: Require some sort of authentication here.
+		$this->load->model('Model_Users');
 
-		//Remove a user from the db
-		$user_id = $this->post('id');
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
 
-		$user_query = $this->db
-				->from('lc_users')
-				->where('id', $user_id)
-				->get()
-				->result();
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
 
+		$user_query = $this->Model_Users->fetch_user_by_id($user_id);
+		
 		if (sizeof($user_query) <= 0)
 		{
 			$this->response($this->rest_error(array("The specified user does not exist.")),404);
@@ -209,17 +211,28 @@ class Users extends REST_Controller
 		}
 		else
 		{
-			$data = array(
-					'id' => $user_id,
-					);
-			$this->db->delete('lc_users', $data);
-
-			$this->response($data, 200);
+			
+			$count = $this->db->count_all('lc_users');
+			
+			$this->Model_Users->remove_user_by_id($user_id);
+			
+			if ($count > $this->db->count_all('lc_users'))
+			{
+			
+				$this->response($this->rest_error(array("Error removing users!")),404);
+				
+			}
+			else
+			{
+				
+				$this->response($data, 200);
+				
+			}
 
 			return;
 		}
 
-	}
+	}*/
 	
 	/**
 	 * Updates online status of current user to be focused NOW.
@@ -329,7 +342,7 @@ class Users extends REST_Controller
 		}
 
 		//Get GET variables...
-		$reg_id 	= $this->get('gcm_regid');
+		$reg_id 	= $this->get('reg_id');
 
 
 		//Check error conditions:
@@ -375,7 +388,7 @@ class Users extends REST_Controller
 		}
 
 		//Remove a user from the db
-		$reg_id = $this->post('gcm_regid');
+		$reg_id = $this->post('reg_id');
 
 		//Check error conditions:
 		//must have a valid registration id
@@ -451,6 +464,7 @@ class Users extends REST_Controller
 
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
+		
 		if ($this->authenticated_as <= 0)
 		{
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
@@ -464,7 +478,7 @@ class Users extends REST_Controller
 			return;
 		}
 
-		$name_changed = $this->Model_Users->change_user_name($user_id, $name);
+		$name_changed = $this->Model_Users->change_display_name($user_id, $name);
 		if($name_changed)
 		{
 			$this->response(NULL, 200);
@@ -475,4 +489,134 @@ class Users extends REST_Controller
 		}
 		return;
 	}
+	
+	/**
+	 *Ignores a user, making sure any future messages are not displayed for the user.
+	 *ignore_id = ID of the user to be ignored.
+	 *Returns 200 on success, 404 on failure to find the user to be ignored, 401 if not logged in
+	 *and 403 if no ID is supplied.
+	 */
+	function ignore_user_post()
+	{
+		
+		$this->load->model('Model_Users');
+		$this->load->model('Model_Auth');
+		
+		$user_id = $this->authenticated_as;
+		
+		if ($this->authenticated_as <= 0)
+		{
+			
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		
+		}
+		
+		$ignore_id = $this->post('ignore_id');
+		
+		if (!$ignore_id)
+		{
+			
+			$this->response($this->rest_error(array("No ignore id supplied!")),403);
+			return;
+		
+		}
+		
+		$ignore_user = $this->Model_Users->fetch_user_by_id($ignore_id);
+		
+		if (!$ignore_user)
+		{
+			
+			$this->response($this->rest_error(array("User to ignore does not exist!")),404);
+			return;
+			
+		}
+		
+		$ignored = $this->Model_Users->check_if_ignored($user_id, $ignore_id);
+		
+		if($ignored)
+		{
+			
+			$this->response($this->rest_error(array("User is already ignored!")),403);
+			
+		}
+		
+		$ignore = $this->Model_Users->ignore_user($user_id, $ignore_id);
+		
+		if ($ignore)
+		{
+			
+			$this->response(NULL, 200);
+			
+		}
+		else
+		{
+			
+			$this->response($this->rest_error(array("Ignore user failed!")),404);
+			
+		}
+		
+		return;
+	}
+	
+	/**
+	 *Checks to see if the user has ignored a specific user
+	 *ignored_id - ID of the user to check against
+	 *Returns 200 on success, 404 on failure to find the user to be ignored, 401 if not logged in
+	 *and 403 if no ID is supplied.
+	 */
+	function check_if_ignored_post()
+	{
+		
+		$this->load->model('Model_Users');
+		$this->load->model('Model_Auth');
+		
+		$user_id = $this->authenticated_as;
+		
+		if ($this->authenticated_as <= 0)
+		{
+			
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		
+		}
+		
+		$ignore_id = $this->post('ignore_id');
+		
+		if (!$ignore_id)
+		{
+			
+			$this->response($this->rest_error(array("No ignore id supplied!")),403);
+			return;
+		
+		}
+		
+		$ignore_user = $this->Model_Users->fetch_user_by_id($ignore_id);
+		
+		if (!$ignore_user)
+		{
+			
+			$this->response($this->rest_error(array("User to ignore does not exist!")),404);
+			return;
+			
+		}
+		
+		$ignored = $this->Model_Users->check_if_ignored($user_id, $ignore_id);
+		
+		if($ignored)
+		{
+			
+			$this->response(NULL, 200);
+			
+		}
+		else
+		{
+			
+			$this->response($this->rest_error(array("User is not ignored!")),404);
+			
+		}
+		
+		return;
+	}
+	
 }

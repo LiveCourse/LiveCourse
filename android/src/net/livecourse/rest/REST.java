@@ -66,6 +66,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	 * Variables saved for use
 	 */
 	public static Chatroom[] 			roomList;
+	public static String				userId;
 	public static String 				email;
 	public static String 				name;
 	public static String 				passwordToken;
@@ -73,6 +74,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	public static String 				token;
 	public static String 				chatId;
 	public static String				regId;
+	public static String				colorPref;
 	
 	private int 						commandType;
 	private boolean 					success;
@@ -160,9 +162,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	 * 		args1 = message
 	 * 
 	 * For ANDROID_ADD
-	 * 		args0 = email
-	 * 		args1 = 
-	 * 		args2 = regId
+	 * 		args0 = regId
 	 * 
 	 * For PARTICIPANTS
 	 * 		args0 = chatId
@@ -173,7 +173,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	 * @param args1 The second argument
 	 * @param command The type of REST API command call
 	 */
-	public REST(SherlockFragmentActivity a, SherlockFragment f, String args0, String args1, String args2, int command)
+	public REST(SherlockFragmentActivity a, SherlockFragment f, String args0, String args1, int command)
 	{
 		super();
 		
@@ -208,9 +208,7 @@ public class REST extends AsyncTask <Void, Void, String>
 				this.message = args1;
 				break;
 			case ANDROID_ADD:
-				REST.email = args0;
-				REST.name = args1;
-				REST.regId = args2;
+				REST.regId = args0;
 				break;
 			case PARTICIPANTS:
 				REST.chatId = args0;
@@ -261,6 +259,9 @@ public class REST extends AsyncTask <Void, Void, String>
 			case SEND:
 				this.sendMessage(REST.chatId,this.message);
 				break;
+			case ANDROID_ADD:
+				this.androidAdd(REST.regId);
+				break;
 			case PARTICIPANTS:
 				this.fetchParticipants(REST.chatId);
 				break;
@@ -277,11 +278,9 @@ public class REST extends AsyncTask <Void, Void, String>
 			case AUTH_AND_VERIFY:
 				if(success)
 				{
-					Intent mainIntent = new Intent(mActivity, MainActivity.class);
 			        //mainIntent.putExtra("token", REST.token);
 			        //mainIntent.putExtra("password", REST.password);
-			        
-					mActivity.startActivity(mainIntent);	
+					new REST(this.mActivity,this.mFragment,MainActivity.SENDER_ID,null,REST.ANDROID_ADD).execute();
 					
 					System.out.println(results);
 				}
@@ -321,6 +320,10 @@ public class REST extends AsyncTask <Void, Void, String>
 				mActivity.getSupportLoaderManager().restartLoader(2, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 			case SEND:
+				break;
+			case ANDROID_ADD:
+				Intent mainIntent = new Intent(mActivity, MainActivity.class);
+				mActivity.startActivity(mainIntent);	
 				break;
 			case PARTICIPANTS:
 				break;
@@ -412,6 +415,15 @@ public class REST extends AsyncTask <Void, Void, String>
 			{
 				case 200:
 					this.success = true;
+					
+					JSONObject obje = new JSONObject(result);
+					JSONObject auth = obje.getJSONObject("authentication");
+					JSONObject user = obje.getJSONObject("user"); 
+					
+					REST.userId 	= auth.getString("user_id");
+					REST.name 		= user.getString("display_name");
+					REST.colorPref 	= user.getString("color_preference");
+					
 					break;
 					
 				case 401:
@@ -429,6 +441,72 @@ public class REST extends AsyncTask <Void, Void, String>
 		return result;
 	}
 	
+	private String androidAdd(String regId)
+	{
+		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
+		String shaHead = this.toSha1(REST.token + REST.passwordToken + "users/android_add");
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		
+		Uri b = Uri.parse("http://livecourse.net/index.php/api/users/android_add").buildUpon()
+		    .build();
+		
+		HttpPost httpPost = new HttpPost(b.toString());
+	    try {
+
+			httpPost.addHeader("Auth", "LiveCourseAuth token="+REST.token+" auth="+shaHead);
+			
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+			nameValuePairs.add(new BasicNameValuePair("email", REST.email));
+			nameValuePairs.add(new BasicNameValuePair("display_name", REST.name));
+			nameValuePairs.add(new BasicNameValuePair("reg_id", regId));
+			
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			
+		} 
+	    catch (UnsupportedEncodingException e1) 
+	    {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		System.out.println(httpPost.getURI().toString());
+		String result = "";
+		
+		try 
+		{
+			HttpResponse response = httpClient.execute(httpPost);
+			HttpEntity entity = response.getEntity();
+			result = getASCIIContentFromEntity(entity);
+			
+			switch(response.getStatusLine().getStatusCode())
+			{
+				case 200:
+					System.out.println("Sent Add Android");
+					this.success = true;
+					break;
+				case 401:
+					this.success = false;
+					break;
+				case 403:
+					this.success = false;
+					break;
+				case 404:
+					this.success = false;
+					//result = "Change Name Failed";
+					break;
+			}
+			
+			
+		} 
+		catch (Exception e) 
+		{
+			return e.getLocalizedMessage();
+		}
+		
+		System.out.println("Join Chat Result: " + result+"\n");
+		return result;
+	}
 	/**
 	 * This is the chat room query api call.  By passing it a query, a token, and the password,
 	 * this call will call the query api and get a list of clatrooms.  The list is passed to the global list
