@@ -140,6 +140,10 @@ button:active {
   border-left: 2px solid #7e2e7e;
   padding-left: 40px;
 }
+#UserList li.ignored {
+  text-decoration: line-through;
+  opacity: 0.3;
+}
 #ChatFrame {
   position: fixed;
   left: 256px;

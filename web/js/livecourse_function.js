@@ -533,6 +533,13 @@ function update_participant_list(callback)
 				{
 					$("#UserList #"+data[i].id).addClass("idle");
 				}
+				
+				//Update ignored
+				$("#UserList #"+data[i].id).removeClass("ignored");
+				if (data[i].ignored == 1)
+				{
+					$("#UserList #"+data[i].id).addClass("ignored");
+				}
 			}
 			// Remove old participants.
 			$("#UserList li").each(function() {
