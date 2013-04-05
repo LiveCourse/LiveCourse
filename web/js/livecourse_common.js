@@ -18,6 +18,8 @@ var ui_colors=["","red","brown","green","cyan","purple"];
 
 var snd = new Audio("snd/update.wav"); // buffers automatically when created
 
+var ignored_users = new Array();
+
 /**
  * Shows or generates a horizontal pop-up dialog above the current page.
  * header - Title text shown at the top of the dialog

@@ -516,6 +516,13 @@ class Users extends REST_Controller
 			$this->response($this->rest_error(array("No ignore id supplied!")),403);
 			return;
 		}
+		
+		if ($ignore_id == $user_id)
+		{
+			$this->response($this->rest_error(array("You can not ignore yourself!")),403);
+			return;
+		}
+		
 		$ignore_user = $this->Model_Users->fetch_user_by_id($ignore_id);
 		if (!$ignore_user)
 		{
@@ -537,6 +544,52 @@ class Users extends REST_Controller
 		else
 		{
 			$this->response($this->rest_error(array("Ignore user failed!")),404);
+		}
+		return;
+	}
+	
+	/**
+	 *Unignores a user, making sure any future messages are displayed for the user.
+	 *unignore_id = ID of the user to be ignored.
+	 *Returns 200 on success, 404 on failure to find the user to be unignored, 401 if not logged in
+	 *and 403 if no ID is supplied.
+	 */
+	function unignore_user_post()
+	{
+		$this->load->model('Model_Users');
+		$this->load->model('Model_Auth');
+		
+		$user_id = $this->authenticated_as;
+		
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
+		
+		$unignore_id = $this->post('unignore_id');
+		
+		if (!$unignore_id)
+		{
+			$this->response($this->rest_error(array("No unignore id supplied!")),403);
+			return;
+		}
+		
+		$ignored = $this->Model_Users->check_if_ignored($user_id, $unignore_id);
+		if(!$ignored)
+		{
+			$this->response($this->rest_error(array("User is not ignored!")),403);
+		}
+		
+		$unignore = $this->Model_Users->unignore_user($user_id, $unignore_id);
+		
+		if ($unignore)
+		{
+			$this->response(NULL, 200);
+		}
+		else
+		{
+			$this->response($this->rest_error(array("Unignore user failed!")),404);
 		}
 		return;
 	}

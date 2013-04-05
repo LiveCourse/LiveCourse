@@ -374,7 +374,44 @@ function user_profile_show(user_id)
 					{
 						dialog.find("#class_list ul").append('<li>'+class_data[i].name+'</li>');
 					}
-					
+					if ($.inArray(user_data.id,ignored_users) < 0)
+					{ //If this user is not ignored...
+						var ignorebutton = $('<button class="DialogButton">Ignore</button>');
+						ignorebutton.click(function() {
+							call_api("users/ignore_user","POST",{ignore_id: user_data.id},
+								function (data) {
+									ignorebutton.prop('disabled',true); //disable the form
+									ignorebutton.html("Ignored");
+									ignored_users.push(user_data.id);
+								},
+								function (xhr, status) {
+									var errdialog = dialog_new("Error Ignoring User","An error occurred while attempting to ignore this user.",true,true);
+									errdialog.find(".DialogContainer").addClass("error");
+									dialog_show(errdialog);
+								});
+						});
+						if (user_data.id != current_user_id) //Shouldn't be able to ignore yourself.
+						{
+							dialog.find(".DialogContainer .buttons").prepend(ignorebutton);
+						}
+					} else
+					{
+						var unignorebutton = $('<button class="DialogButton">Unignore</button>');
+						unignorebutton.click(function() {
+							call_api("users/unignore_user","POST",{unignore_id: user_data.id},
+								function (data) {
+									unignorebutton.prop('disabled',true); //disable the form
+									unignorebutton.html("Unignored");
+									ignored_users.splice( $.inArray(user_data.id, ignored_users), 1 );
+								},
+								function (xhr, status) {
+									var errdialog = dialog_new("Error Unignoring User","An error occurred while attempting to unignore this user.",true,true);
+									errdialog.find(".DialogContainer").addClass("error");
+									dialog_show(errdialog);
+								});
+						});
+						dialog.find(".DialogContainer .buttons").prepend(unignorebutton);
+					}
 					dialog_show(dialog);
 				},
 				function (xhr, status)
@@ -464,10 +501,17 @@ function update_participant_list()
 	call_api("chats/get_participants","GET",{id: current_chat_room},
 		function (data) {
 			var uids = new Array();
+			ignored_users = new Array(); //reinitialize ignored users.
 			// Add new participants
 			var epoch = ((new Date).getTime())/1000;
 			for (i in data)
 			{
+				//Add ignored users to the ignored users array.
+				if (data[i].ignored == 1)
+				{
+					ignored_users.push(data[i].id);
+				}
+					
 				uids.push(data[i].id);
 				if ($("#UserList #"+data[i].id).length <= 0)
 				{
@@ -556,9 +600,11 @@ function switch_chat_room(room)
 			//Clear out history...
 			$("#HistoryMessages ul").html(''); // Empty it
 			//Load recent chat...
-			load_recent_chat_contents();
-			//Load participants...
 			update_participant_list();
+			
+			setTimeout(function() {load_recent_chat_contents();},250);
+			//Load participants...
+			
 			progress_indicator_hide(switch_ind);
 		},
 		function (xhr, status)
@@ -762,6 +808,12 @@ function post_message(message,scroll,area)
 	if (typeof scroll == "undefined")
 		scroll = true;
 		
+	//Ignore messages from ignored users.
+	if ($.inArray(message.user_id,ignored_users) >= 0)
+	{
+		return;
+	}
+	
 	//Parse the time stamp.
 	var date = new Date(message.send_time*1000);
 	var currentDate = new Date();

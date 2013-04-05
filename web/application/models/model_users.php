@@ -297,14 +297,24 @@ class Model_Users extends CI_Model {
 	 */
 	function ignore_user($user_id, $ignore_id)
 	{
-		
 		$data = array(
 			'user_id' => $user_id,
 			'ignore_id' => $ignore_id,
 		);
-		
 		return $this->db->insert('lc_users_ignored', $data);
-		
+	}
+	
+	/**
+	 *Unignores a user
+	 *user_id - ID of the user who is ignoring
+	 *ignore_id - ID of the user being unignored
+	 *returns TRUE on success, FALSE on failure
+	 */
+	function unignore_user($user_id, $unignore_id)
+	{
+		$this->db->where('user_id', $user_id);
+		$this->db->where('ignore_id', $unignore_id);
+		return $this->db->delete('lc_users_ignored'); 
 	}
 	
 	/**
