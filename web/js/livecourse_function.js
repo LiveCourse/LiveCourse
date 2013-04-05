@@ -373,18 +373,21 @@ function update_chat_list()
 	var upd_ind = progress_indicator_show();
 	call_api("chats","GET",{},
 		function (data) {
-			$('#CourseList li').slideUp(300,function() {$(this).remove();});
-			for (i in data)
+			if (data.length > 0)
 			{
-				var listitem = $('<li id="'+data[i].id_string+'"><span class="title">'+data[i].name+'</span><br /><span class="subTitle">0 members, 0 online</span></li>');
-				listitem.hide();
-				if (data[i].id_string == current_chat_room)
-					listitem.addClass("selected");
-				$('#CourseList').append(listitem);
-				listitem.slideDown();
-				listitem.click(function() {
-					switch_chat_room($(this).attr('id'));
-				});
+				$('#CourseList li').slideUp(300,function() {$(this).remove();});
+				for (i in data)
+				{
+					var listitem = $('<li id="'+data[i].id_string+'"><span class="title">'+data[i].name+'</span><br /><span class="subTitle">0 members, 0 online</span></li>');
+					listitem.hide();
+					if (data[i].id_string == current_chat_room)
+						listitem.addClass("selected");
+					$('#CourseList').append(listitem);
+					listitem.slideDown();
+					listitem.click(function() {
+						switch_chat_room($(this).attr('id'));
+					});
+				}
 			}
 			progress_indicator_hide(upd_ind);
 		},
@@ -639,9 +642,13 @@ function load_recent_chat_contents()
 	call_api("chats/fetch_recent","GET",{chat_id: current_chat_room},
 		function (data) {
 			$("#ChatMessages ul").html('<li class="spacer"></li>');
-			for (i in data)
+			$("#ChatMessages").mCustomScrollbar("update");
+			if (data.length > 0)
 			{
-				post_message(data[i],false);
+				for (i in data)
+				{
+					post_message(data[i],false);
+				}
 			}
 			$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:1000}); //scroll to bottom
 			//Add eventsource for updating with new messages...

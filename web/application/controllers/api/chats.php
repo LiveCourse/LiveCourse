@@ -584,8 +584,13 @@ class Chats extends REST_Controller
 		if ($last_msg_id == "")
 		{
 			$last_msg = $this->Model_Chats->get_num_latest_messages($chat_id,1);
-			$last_msg = $last_msg[0];
-			$last_msg_id = $last_msg->id;
+			if (count($last_msg) > 0)
+			{
+				$last_msg = $last_msg[0];
+				$last_msg_id = $last_msg->id;
+			} else {
+				$last_msg_id = 0;
+			}
 			echo "id: $last_msg_id" . PHP_EOL;
 			echo "event: ie_sucks\n";
 			echo "data: {\n";
