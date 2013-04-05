@@ -475,7 +475,7 @@ class Chats extends REST_Controller
 	 * NOTE: This operates in UTC time, effectively. Client should do some conversions before requesting
 	 *       if they expect results to be arranged like their local time zone.
 	 * chat_id - Chat ID to fetch from
-	 * num_messages - Number of messages to fetch (100 if unspecified)
+	 * start_epoch - UNIX epoch of start of the day from which to retrieve 24 hours worth of messages for.
 	 * returns - messages
 	 */
 	function fetch_day_get()
