@@ -109,15 +109,16 @@ class Chats extends REST_Controller
 	 */
 	public function flag_message_post()
 	{
-		if ($this->authenticated_as <= 0)
+		$reporter_id = $this->authenticated_as;
+		if ($reporter_id <= 0)
 		{
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
 			return;
 		}
+		
 		$this->load->model('Model_Chats');
 	
 		$message_id = $this->post('message_id');
-		$reporter_id = $this->authenticated_as;
 		$reason = $this->post('reason');
 		$time = time();
 	
