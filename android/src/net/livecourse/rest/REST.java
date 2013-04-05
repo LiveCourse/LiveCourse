@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.livecourse.android.ClassListFragment;
 import net.livecourse.android.MainActivity;
 import net.livecourse.android.QueryActivity;
 import net.livecourse.android.R;
@@ -288,13 +289,19 @@ public class REST extends AsyncTask <Void, Void, String>
 					mActivity.setTitle(REST.name);
 				break;
 			case GRAB_CHATS:
-				mActivity.getSupportLoaderManager().initLoader(1, null, (LoaderCallbacks<Cursor>) mFragment);
+				mActivity.getSupportLoaderManager().restartLoader(1, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 			case JOIN_CHAT:
 				if(success)
 				{	
 					MainActivity.classListFragment.updateList();
-					mActivity.finish();
+					if(mActivity instanceof QueryActivity)
+						mActivity.finish();
+					else if(mFragment instanceof ClassListFragment)
+					{
+						((ClassListFragment)mFragment).QRJoinChat();
+						MainActivity.chatFragment.updateList();
+					}
 				}
 				else
 				{
@@ -306,6 +313,7 @@ public class REST extends AsyncTask <Void, Void, String>
 				mActivity.getSupportLoaderManager().restartLoader(2, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 			case SEND:
+				
 				break;
 			case ANDROID_ADD:
 				Intent mainIntent = new Intent(mActivity, MainActivity.class);
@@ -785,7 +793,7 @@ public class REST extends AsyncTask <Void, Void, String>
 					
 				case 401:
 					this.success = false;
-					result = "Fetching Chats Messages Failed";
+					//result = "Fetching Chats Messages Failed";
 					break;
 			}
 		}
