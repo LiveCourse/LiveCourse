@@ -1,5 +1,7 @@
 package net.livecourse.android;
 
+import java.util.Date;
+
 import net.livecourse.utility.ChatMessageViewHolder;
 import android.content.Context;
 import android.database.Cursor;
@@ -40,10 +42,12 @@ public class ChatCursorAdapter extends CursorAdapter
 	{
 		ChatMessageViewHolder v = (ChatMessageViewHolder) view.getTag();
 		
-		String name = cursor.getString(cursor.getColumnIndexOrThrow("display_name"));
-		String time = cursor.getString(cursor.getColumnIndexOrThrow("send_time")) + "\t";
-		String message = cursor.getString(cursor.getColumnIndexOrThrow("message_string"));
+		String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (Long.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("send_time")))*1000));
 		
+		String name = cursor.getString(cursor.getColumnIndexOrThrow("display_name"));
+		String time = date + "\t";
+		String message = cursor.getString(cursor.getColumnIndexOrThrow("message_string"));
+				
 		v.displayName.setText(name);
 		v.time.setText(time);
 		v.message.setText(message);
