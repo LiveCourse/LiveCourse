@@ -489,4 +489,134 @@ class Users extends REST_Controller
 		}
 		return;
 	}
+	
+	/**
+	 *Ignores a user, making sure any future messages are not displayed for the user.
+	 *ignore_id = ID of the user to be ignored.
+	 *Returns 200 on success, 404 on failure to find the user to be ignored, 401 if not logged in
+	 *and 403 if no ID is supplied.
+	 */
+	function ignore_user_post()
+	{
+		
+		$this->load->model('Model_Users');
+		$this->load->model('Model_Auth');
+		
+		$user_id = $this->authenticated_as;
+		
+		if ($this->authenticated_as <= 0)
+		{
+			
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		
+		}
+		
+		$ignore_id = $this->post('ignore_id');
+		
+		if (!$ignore_id)
+		{
+			
+			$this->response($this->rest_error(array("No ignore id supplied!")),403);
+			return;
+		
+		}
+		
+		$ignore_user = $this->Model_Users->fetch_user_by_id($ignore_id);
+		
+		if (!$ignore_user)
+		{
+			
+			$this->response($this->rest_error(array("User to ignore does not exist!")),404);
+			return;
+			
+		}
+		
+		$ignored = $this->Model_Users->check_if_ignored($user_id, $ignore_id);
+		
+		if($ignored)
+		{
+			
+			$this->response($this->rest_error(array("User is already ignored!")),403);
+			
+		}
+		
+		$ignore = $this->Model_Users->ignore_user($user_id, $ignore_id);
+		
+		if ($ignore)
+		{
+			
+			$this->response(NULL, 200);
+			
+		}
+		else
+		{
+			
+			$this->response($this->rest_error(array("Ignore user failed!")),404);
+			
+		}
+		
+		return;
+	}
+	
+	/**
+	 *Checks to see if the user has ignored a specific user
+	 *ignored_id - ID of the user to check against
+	 *Returns 200 on success, 404 on failure to find the user to be ignored, 401 if not logged in
+	 *and 403 if no ID is supplied.
+	 */
+	function check_if_ignored_post()
+	{
+		
+		$this->load->model('Model_Users');
+		$this->load->model('Model_Auth');
+		
+		$user_id = $this->authenticated_as;
+		
+		if ($this->authenticated_as <= 0)
+		{
+			
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		
+		}
+		
+		$ignore_id = $this->post('ignore_id');
+		
+		if (!$ignore_id)
+		{
+			
+			$this->response($this->rest_error(array("No ignore id supplied!")),403);
+			return;
+		
+		}
+		
+		$ignore_user = $this->Model_Users->fetch_user_by_id($ignore_id);
+		
+		if (!$ignore_user)
+		{
+			
+			$this->response($this->rest_error(array("User to ignore does not exist!")),404);
+			return;
+			
+		}
+		
+		$ignored = $this->Model_Users->check_if_ignored($user_id, $ignore_id);
+		
+		if($ignored)
+		{
+			
+			$this->response(NULL, 200);
+			
+		}
+		else
+		{
+			
+			$this->response($this->rest_error(array("User is not ignored!")),404);
+			
+		}
+		
+		return;
+	}
+	
 }

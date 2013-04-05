@@ -288,5 +288,49 @@ class Model_Users extends CI_Model {
 			return true;
 		}*/
 	}
+	
+	/**
+	 *Ignores a user
+	 *user_id - ID of the user who is ignoring
+	 *ignore_id - ID of the user being ignored
+	 *returns TRUE on success, FALSE on failure
+	 */
+	function ignore_user($user_id, $ignore_id)
+	{
+		
+		$data = array(
+			'user_id' => $user_id,
+			'ignore_id' => $ignore_id,
+		);
+		
+		return $this->db->insert('lc_users_ignored', $data);
+		
+	}
+	
+	/**
+	 *Checks to see if a user has been ignored by another
+	 *user_id - ID of the user who is ignoring
+	 *ignore_id - ID of the user being ignored
+	 *returns TRUE on success, FALSE on failure
+	 */
+	function check_if_ignored($user_id, $ignore_id)
+	{
+		
+		$data = array(
+			'user_id' => $user_id,
+			'ignore_id' => $ignore_id,
+		);
+		
+		$existing = $this->db
+				->where('user_id', $user_id)
+				->where('ignore_id', $ignore_id)
+				->from('lc_users_ignored')
+				->get();
+				
+		if($existing->num_rows >= 1)
+			return true;
+		
+		return false;
+	}
 
 }
