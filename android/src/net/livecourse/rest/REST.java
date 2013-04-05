@@ -201,7 +201,7 @@ public class REST extends AsyncTask <Void, Void, String>
 			case ANDROID_ADD:
 				REST.email = args0;
 				REST.name = args1;
-				Rest.regId = args2;
+				REST.regId = args2;
 				//reg_id
 				break;
 		}
