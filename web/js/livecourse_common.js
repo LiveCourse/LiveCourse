@@ -232,10 +232,10 @@ function window_onfocus()
 	call_api("users/focus","POST",{},
 		function(data)
 		{
-			
+		
 		},
 		function(xhr,status)
 		{
-			
+		
 		});
 }

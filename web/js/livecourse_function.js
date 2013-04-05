@@ -110,7 +110,25 @@ function login_submit()
 function init_ui()
 {
 	update_chat_list();
-	setInterval(function() {update_participant_list();},15000);
+	setInterval(function() {update_participant_list();},10000);
+	setInterval(function() {update_focus();},10000); //Check if we're focused and update the server.
+}
+
+function update_focus()
+{
+	if ($('body').hasClass("visible"))
+	{
+		//Update focus
+		call_api("users/focus","POST",{},
+			function(data)
+			{
+			
+			},
+			function(xhr,status)
+			{
+			
+			});
+	}
 }
 
 /**
@@ -429,7 +447,7 @@ function update_participant_list()
 				
 				//Update online status.
 				$("#UserList #"+data[i].id).removeClass("online").removeClass("idle");
-				if (data[i].time_lastfocus > epoch - 60) //Focused closer than 60 secs ago? Online.
+				if (data[i].time_lastfocus > epoch - 30) //Focused closer than 30 secs ago? Online.
 				{
 					$("#UserList #"+data[i].id).addClass("online");
 				} else if (data[i].time_lastrequest > epoch - 60) //Client connected closer than 60 secs ago? Idle.
@@ -446,6 +464,12 @@ function update_participant_list()
 					});
 				}
 			});
+			
+			//Sort it.
+			//We come first!
+			var li = $("#UserList ul.me");
+			li.detach();
+			$("#UserList").prepend(li);
 		},
 		function (xhr, status)
 		{
