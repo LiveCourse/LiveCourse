@@ -113,7 +113,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255) "
 											+ ")";
 		
-		String CREATE_TABLE_PARTICIPANTS  = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
+		String CREATE_TABLE_PARTICIPANTS  = "CREATE TABLE " 			+ TABLE_PARTICIPANTS 	+ "( "
 											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
 											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
 											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255), "
@@ -339,7 +339,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		/**
 		 * Recreate tables
 		 */
-		String CREATE_TABLE_PARTICIPANTS  = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
+		String CREATE_TABLE_PARTICIPANTS  = "CREATE TABLE " 			+ TABLE_PARTICIPANTS 	+ "( "
 											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
 											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
 											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255), "
