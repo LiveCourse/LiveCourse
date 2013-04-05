@@ -302,15 +302,25 @@ class Model_Chats extends CI_Model {
 	/**
 	 *Get all of the users subscribed to a chat room
 	 *chat_id - ID of the chat to get participants
+	 *user_id - User ID to determine which users are ignored.
 	 *returns an array of users that are subscribed, 0 on first failure, null on second.
 	 */
-	function get_participants($chat_id)
+	 /*
+	 
+	 SELECT lc_users.id,lc_users.display_name,lc_users.jointime,lc_users.color_preference,lc_users.time_lastfocus,lc_users.time_lastrequest, (lc_users_ignored.ignore_id IS NOT NULL) AS ignored FROM `lc_chat_participants`
+JOIN `lc_users` on lc_users.id = lc_chat_participants.user_id
+LEFT OUTER JOIN `lc_users_ignored` on lc_users_ignored.ignore_id = lc_chat_participants.user_id AND lc_users_ignored.user_id=22
+WHERE lc_chat_participants.chat_id = 1
+
+*/
+	function get_participants($chat_id,$user_id = -1)
 	{
 		$users = $this->db
-				->select('lc_users.id,lc_users.display_name,lc_users.email,lc_users.time_lastfocus,lc_users.time_lastrequest')
-				->where('chat_id', $chat_id)
+				->select('lc_users.id, lc_users.display_name, lc_users.jointime, lc_users.email, lc_users.time_lastfocus, lc_users.time_lastrequest, (lc_users_ignored.ignore_id IS NOT NULL) AS ignored')
 				->from('lc_chat_participants')
 				->join('lc_users','lc_users.id = lc_chat_participants.user_id')
+				->join('lc_users_ignored','lc_users_ignored.ignore_id = lc_chat_participants.user_id AND lc_users_ignored.user_id=' . $user_id,'left outer')
+				->where('lc_chat_participants.chat_id', $chat_id)
 				->get()
 				->result();
 		

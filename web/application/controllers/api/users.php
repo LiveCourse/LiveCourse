@@ -498,7 +498,6 @@ class Users extends REST_Controller
 	 */
 	function ignore_user_post()
 	{
-		
 		$this->load->model('Model_Users');
 		$this->load->model('Model_Auth');
 		
@@ -506,56 +505,39 @@ class Users extends REST_Controller
 		
 		if ($this->authenticated_as <= 0)
 		{
-			
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
 			return;
-		
 		}
 		
 		$ignore_id = $this->post('ignore_id');
 		
 		if (!$ignore_id)
 		{
-			
 			$this->response($this->rest_error(array("No ignore id supplied!")),403);
 			return;
-		
 		}
-		
 		$ignore_user = $this->Model_Users->fetch_user_by_id($ignore_id);
-		
 		if (!$ignore_user)
 		{
-			
 			$this->response($this->rest_error(array("User to ignore does not exist!")),404);
 			return;
-			
 		}
-		
 		$ignored = $this->Model_Users->check_if_ignored($user_id, $ignore_id);
-		
 		if($ignored)
 		{
-			
 			$this->response($this->rest_error(array("User is already ignored!")),403);
-			
 		}
 		
 		$ignore = $this->Model_Users->ignore_user($user_id, $ignore_id);
 		
 		if ($ignore)
 		{
-			
 			$this->response(NULL, 200);
-			
 		}
 		else
 		{
-			
 			$this->response($this->rest_error(array("Ignore user failed!")),404);
-			
 		}
-		
 		return;
 	}
 	
@@ -575,45 +557,29 @@ class Users extends REST_Controller
 		
 		if ($this->authenticated_as <= 0)
 		{
-			
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
 			return;
-		
 		}
-		
 		$ignore_id = $this->post('ignore_id');
-		
 		if (!$ignore_id)
 		{
-			
 			$this->response($this->rest_error(array("No ignore id supplied!")),403);
 			return;
-		
 		}
-		
 		$ignore_user = $this->Model_Users->fetch_user_by_id($ignore_id);
-		
 		if (!$ignore_user)
 		{
-			
 			$this->response($this->rest_error(array("User to ignore does not exist!")),404);
-			return;
-			
+			return;	
 		}
-		
 		$ignored = $this->Model_Users->check_if_ignored($user_id, $ignore_id);
-		
 		if($ignored)
 		{
-			
 			$this->response(NULL, 200);
-			
 		}
 		else
 		{
-			
 			$this->response($this->rest_error(array("User is not ignored!")),404);
-			
 		}
 		
 		return;
