@@ -31,7 +31,7 @@ class Users extends REST_Controller
 		{
 			$users = $this->Model_Users->fetch_user_by_id($user_id);
 			if (count($users) > 0)
-				$this->response($users);
+				$this->response($users, 200);
 			else
 				$this->response($this->rest_error(array("The user id provided is invalid.")),404);
 		}
