@@ -97,7 +97,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		{
 			case AUTH_AND_VERIFY:
 				REST.email = email;
-				REST.passwordToken = password;
+				REST.passwordToken = this.toSha1(password);
 				break;
 			case CLASS_QUERY:
 				REST.query = query;
@@ -359,7 +359,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	private String verify(String password)
 	{
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
-		String shaHead = this.toSha1(REST.token+this.toSha1(password)+"auth/verify");
+		String shaHead = this.toSha1(REST.token + REST.passwordToken + "auth/verify");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
@@ -414,7 +414,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
 		
 		System.out.println("Get Class List - token: "+REST.token+" password: " + REST.passwordToken);
-		String shaHead = this.toSha1(token+this.toSha1(REST.passwordToken)+"chats/search");
+		String shaHead = this.toSha1(token + REST.passwordToken + "chats/search");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
@@ -496,7 +496,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
 		
 		System.out.println("Get Class List - token: "+REST.token+" password: " + REST.passwordToken);
-		String shaHead = this.toSha1(REST.token+this.toSha1(REST.passwordToken)+"chats");
+		String shaHead = this.toSha1(REST.token + REST.passwordToken + "chats");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
@@ -578,7 +578,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	private String joinChat(String roomId)
 	{
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
-		String shaHead = this.toSha1(REST.token+this.toSha1(REST.passwordToken)+"chats/join");
+		String shaHead = this.toSha1(REST.token + REST.passwordToken + "chats/join");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		
@@ -642,7 +642,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
 		
 		//System.out.println("Get Class List - token: "+REST.token+" password: " + REST.password);
-		String shaHead = this.toSha1(REST.token+this.toSha1(REST.passwordToken)+"chats/fetch_recent");
+		String shaHead = this.toSha1(REST.token + REST.passwordToken + "chats/fetch_recent");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
@@ -710,7 +710,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	
 	private String sendMessage(String chatId, String message)
 	{
-		String shaHead = this.toSha1(REST.token+this.toSha1(REST.passwordToken)+"chats/send");
+		String shaHead = this.toSha1(REST.token + REST.passwordToken + "chats/send");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		
@@ -773,7 +773,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	 */
 	private String changeName(String name)
 	{
-		String shaHead = this.toSha1(REST.token+REST.passwordToken+"users/change_display_name");
+		String shaHead = this.toSha1(REST.token + REST.passwordToken + "users/change_display_name");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		
