@@ -358,6 +358,41 @@ function prefs_show()
 }
 
 /**
+ * Shows a dialog with another user's profile information.
+ */
+function user_profile_show(user_id)
+{
+	//Run API query...
+	call_api("users","GET",{id: user_id},
+		function (data) {
+			var user_data = data[0];
+			call_api("chats","GET",{user_id: user_id},
+				function (class_data) {
+					var dialog = dialog_clone(user_data.display_name,"#dialog_profile",true,true);
+					// dialog_addbutton(dialog,"Submit",login_submit,false); //This button'd look better under the actual form.
+					for (i in class_data)
+					{
+						dialog.find("#class_list ul").append('<li>'+class_data[i].name+'</li>');
+					}
+					
+					dialog_show(dialog);
+				},
+				function (xhr, status)
+				{
+					var errdialog = dialog_new("Error Fetching Classes","An error occurred while attempting to fetch this user's classes.",true,true);
+					errdialog.find(".DialogContainer").addClass("error");
+					dialog_show(errdialog);
+				});
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Fetching User","An error occurred while attempting to fetch this user's information.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+		});
+}
+
+/**
  * Joins the logged in user to the specified class
  */
 function class_join(class_idstring,success_callback,error_callback)
@@ -470,6 +505,12 @@ function update_participant_list()
 			var li = $("#UserList .me");
 			li.detach();
 			$("#UserList").prepend(li);
+			
+			//Link it!
+			$("#UserList li").unbind('click');
+			$("#UserList li").click(function() {
+				user_profile_show($(this).attr('id'));
+			});
 		},
 		function (xhr, status)
 		{

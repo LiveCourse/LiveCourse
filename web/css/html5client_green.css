@@ -118,11 +118,12 @@ button:active {
   padding: 8px 8px 8px 46px;
   color: #2e7e3b;
   font-size: 16px;
-  cursor: default;
+  cursor: pointer;
 }
 #UserList li:hover {
   background-color: #2e7e3b;
   color: #b8e5bf;
+  border-color: #b8e5bf;
 }
 #UserList li.selected {
   background-color: #b8e5bf;
@@ -467,4 +468,25 @@ button:active {
 }
 .DialogMessage a {
   display: inline;
+}
+#dialog_profile #user_icon {
+  background-color: #b8e5bf;
+  padding: 32px;
+  margin-top: 24px;
+  height: 322px;
+  float: left;
+}
+#dialog_profile #user_icon img {
+  max-width: 400px;
+  max-height: 322px;
+}
+#dialog_profile #class_list {
+  float: left;
+  margin-left: 32px;
+  margin-top: 32px;
+}
+#dialog_profile #class_list h2 {
+  font-family: 'cicle';
+  font-size: 40px;
+  margin: 0;
 }

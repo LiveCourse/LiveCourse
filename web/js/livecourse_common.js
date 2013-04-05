@@ -61,6 +61,8 @@ function dialog_clone(header,targetSelector,showCloseButton,doNotOpen)
 {
 	var dialog = dialog_new(header,'<div style="text-align:center;">Loading . . .</div>',showCloseButton,true);
 	dialog.find(".DialogMessage").html($(targetSelector).html());
+	dialog.find(".DialogMessage").attr('id',$(targetSelector).attr('id'));
+	Cufon.replace('#dialog_profile #class_list h2');
 	if (typeof doNotOpen == "undefined" || doNotOpen == false)
 	{
 		dialog_show(dialog);

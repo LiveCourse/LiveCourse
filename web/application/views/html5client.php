@@ -229,5 +229,17 @@
 				<li value="5" style="background-color:#7e2e7e;"></li>
 			</ul>
 		</div>
+		
+		<!-- User profile dialog -->
+		<div id="dialog_profile" style="display:none;">
+			<div id="user_icon">
+				<img src="img/user_icon.png" alt="User Photo" />
+			</div>
+			<div id="class_list">
+				<h2>Classes</h2>
+				<ul>
+				</ul>
+			</div>
+		</div>
 	</body>
 </html>
