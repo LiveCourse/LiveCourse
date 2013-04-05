@@ -264,7 +264,7 @@ class Users extends REST_Controller
 		//Get POST variables...
 		$name 		= $this->post('name');
 		$email 		= $this->post('email');
-		$reg_id 	= $this->post('regId');
+		$reg_id 	= $this->post('reg_id');
 
 
 		//Check error conditions:
