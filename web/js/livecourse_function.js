@@ -383,6 +383,7 @@ function user_profile_show(user_id)
 									ignorebutton.prop('disabled',true); //disable the form
 									ignorebutton.html("Ignored");
 									ignored_users.push(user_data.id);
+									$("#UserList #"+user_data.id).addClass("ignored");
 								},
 								function (xhr, status) {
 									var errdialog = dialog_new("Error Ignoring User","An error occurred while attempting to ignore this user.",true,true);
