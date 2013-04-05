@@ -29,12 +29,6 @@ import com.actionbarsherlock.view.MenuItem;
 public class ParticipantsFragment extends SherlockFragment implements OnItemLongClickListener,ActionMode.Callback, LoaderCallbacks<Cursor>
 {
 	private static final String KEY_CONTENT = "TestFragment:Content";
-	
-	/**
-	 * This is used to add the other tabs once a class is selected
-	 */
-	//Not currently used
-	//private TabsFragmentAdapter tabsAdapter;
 
 	/**
 	 * The XML views
@@ -42,10 +36,6 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	private View participantsLayout;
 	private ListView participantsListView;
 	private ParticipantsAdapter adapter;
-	
-	/**
-	 * Temporary list of classes used, will be changed later
-	 */
 
     public static ParticipantsFragment newInstance(String content, TabsFragmentAdapter tabsAdapater) 
     {
