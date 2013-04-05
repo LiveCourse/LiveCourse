@@ -724,7 +724,7 @@ class Chats extends REST_Controller
 			return;
 		}
 		$users = null;
-		$users = $this->Model_Chats->get_participants($chat_id);
+		$users = $this->Model_Chats->get_participants($chat_id,$user_id);
 		
 		if(!$users)
 		{
