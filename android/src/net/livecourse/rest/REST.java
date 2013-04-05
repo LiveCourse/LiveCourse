@@ -248,6 +248,9 @@ public class REST extends AsyncTask <Void, Void, String>
 			case SEND:
 				this.sendMessage(REST.chatId,this.message);
 				break;
+			case ANDROID_ADD:
+				this.androidAdd(REST.regId);
+				break;
 		}
 		return result;
 	}
@@ -263,7 +266,7 @@ public class REST extends AsyncTask <Void, Void, String>
 				{
 			        //mainIntent.putExtra("token", REST.token);
 			        //mainIntent.putExtra("password", REST.password);
-					new REST(this.mActivity,this.mFragment,MainActivity.SENDER_ID,null,REST.ANDROID_ADD);
+					new REST(this.mActivity,this.mFragment,MainActivity.SENDER_ID,null,REST.ANDROID_ADD).execute();
 					
 					System.out.println(results);
 				}
@@ -418,7 +421,7 @@ public class REST extends AsyncTask <Void, Void, String>
 			return e.getLocalizedMessage();
 		}
 		
-		//System.out.println("Verify result: " + result+"\n");
+		System.out.println("Verify result: " + result+"\n");
 		return result;
 	}
 	
