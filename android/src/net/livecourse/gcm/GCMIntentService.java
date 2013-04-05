@@ -1,5 +1,6 @@
-package net.livecourse.android;
+package net.livecourse.gcm;
  
+import net.livecourse.android.MainActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
