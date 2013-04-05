@@ -3,7 +3,7 @@ package net.livecourse.android;
 import java.util.ArrayList;
 import java.util.Arrays;
 import net.livecourse.android.R;
-
+import net.livecourse.rest.REST;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,10 +20,9 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	private ListView historyListView;
 	
 	/**
-	 * This is the adapter used for the history list.
-	 * It is incomplete.
+	 * This is the same adapter used for the chat message list.
 	 */
-	//private ChatListAdapter<String> adapter;
+	private ChatCursorAdapter adapter;
 	
 	/**
 	 * Temporary list used to populate the history list
@@ -51,10 +50,13 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 		/**
 		 * Adds the adapter to the list and sends the temporary list to it
 		 */
-		//adapter = new ChatListAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1,history);
-		//historyListView.setAdapter(adapter);
+		adapter = new ChatCursorAdapter(getBaseContext(), null, 0);
+		historyListView.setAdapter(adapter);
 		
 		historyListView.setOnItemLongClickListener(this);
+		
+		//new REST(this.getSherlockActivity(),this,null,null,null,null,null,MainActivity.currentChatId,sendMessageEditTextView.getText().toString(),REST.SEND).execute();
+	
 	}
 
 	@Override

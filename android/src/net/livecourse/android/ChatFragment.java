@@ -1,7 +1,5 @@
 package net.livecourse.android;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import net.livecourse.android.R;
 import net.livecourse.database.ChatMessagesLoader;
 import net.livecourse.rest.REST;
@@ -48,16 +46,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	
 	/**
 	 * This is the adapter used for the message list.
-	 * It is incomplete.
 	 */
-	//private ChatListAdapter<String> adapter;
 	private ChatCursorAdapter adapter;
-
-	/**
-	 * Temporary list used to populate the message list
-	 */
-	String[] array = {"Brandon","is","amazing","d","e","f","g"}; 
-	ArrayList<String> messages;
 	
 	public static ChatFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
 	{
@@ -89,12 +79,6 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		this.setMenuVisibility(false);
 		
 		/**
-		 * Initialize the temporary list
-		 */
-		messages = new ArrayList<String>();
-		messages.addAll(Arrays.asList(array));
-		
-		/**
 		 * Connects the views to their XML equivalent
 		 */
 		chatLayout = inflater.inflate(R.layout.chat_layout, container, false);
@@ -105,7 +89,6 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		/**
 		 * Adds the adapter to the list and sends the temporary list to it
 		 */
-		//adapter = new ChatListAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,messages);
 		adapter = new ChatCursorAdapter(this.getSherlockActivity(),null,0);
 		messageListView.setAdapter(adapter);
 		

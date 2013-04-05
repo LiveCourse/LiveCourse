@@ -13,6 +13,7 @@ import net.livecourse.android.QueryActivity;
 import net.livecourse.android.R;
 import net.livecourse.database.Chatroom;
 import net.livecourse.database.ChatMessage;
+import net.livecourse.database.Participant;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -59,6 +60,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	public static final int 			FETCH_RECENT		= 5;
 	public static final int 			SEND				= 6;
 	public static final int				ANDROID_ADD			= 7;
+	public static final int				PARTICIPANTS		= 8;
 	
 	/**
 	 * Variables saved for use
@@ -121,6 +123,10 @@ public class REST extends AsyncTask <Void, Void, String>
 			case SEND:
 				this.message = message;
 				REST.chatId = chatId;
+				break;
+			case PARTICIPANTS:
+				REST.chatId = chatId;
+				break;
 		}
 	}
 	
@@ -157,6 +163,9 @@ public class REST extends AsyncTask <Void, Void, String>
 	 * 		args0 = email
 	 * 		args1 = 
 	 * 		args2 = regId
+	 * 
+	 * For PARTICIPANTS
+	 * 		args0 = chatId
 	 * 
 	 * @param a The SherlockFragmentActivity
 	 * @param f The SherlockFragment
@@ -202,7 +211,9 @@ public class REST extends AsyncTask <Void, Void, String>
 				REST.email = args0;
 				REST.name = args1;
 				REST.regId = args2;
-				//reg_id
+				break;
+			case PARTICIPANTS:
+				REST.chatId = args0;
 				break;
 		}
 	}
@@ -249,6 +260,9 @@ public class REST extends AsyncTask <Void, Void, String>
 				break;
 			case SEND:
 				this.sendMessage(REST.chatId,this.message);
+				break;
+			case PARTICIPANTS:
+				this.fetchParticipants(REST.chatId);
 				break;
 		}
 		return result;
@@ -307,6 +321,8 @@ public class REST extends AsyncTask <Void, Void, String>
 				mActivity.getSupportLoaderManager().restartLoader(2, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 			case SEND:
+				break;
+			case PARTICIPANTS:
 				break;
 		}
 	}
@@ -717,6 +733,91 @@ public class REST extends AsyncTask <Void, Void, String>
 		}
 		
 		System.out.println("Join Chat Result: " + result+"\n");
+		return result;
+	}
+	
+	private String fetchParticipants(String chatId)
+	{
+		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
+		
+		//System.out.println("Get Class List - token: "+REST.token+" password: " + REST.password);
+		String shaHead = this.toSha1(REST.token + REST.passwordToken + "chats/get_participants");
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpContext localContext = new BasicHttpContext();
+		
+		Uri b = Uri.parse("http://livecourse.net/index.php/api/chats/get_participants").buildUpon()
+			.appendQueryParameter("chat_id", REST.chatId)
+			.build();		
+		
+		HttpGet httpGet = new HttpGet(b.toString());
+		System.out.println("shaHead:"+shaHead);
+		httpGet.addHeader("Auth", "LiveCourseAuth token="+REST.token+" auth="+shaHead);
+		
+		System.out.println(httpGet.getURI().toString());
+		String result = null;
+		
+		try 
+		{
+			HttpResponse response = httpClient.execute(httpGet, localContext);
+			HttpEntity entity = response.getEntity();
+			result = getASCIIContentFromEntity(entity);
+			
+			switch(response.getStatusLine().getStatusCode())
+			{
+				case 200:
+			        JSONArray parse = new JSONArray(result.trim());
+			        System.out.println("Length of JSONArray: " +parse.length());
+			        //MainActivity.getAppDb().recreateClassEnroll();
+			        
+			        Participant participant = new Participant();
+			        
+			        for(int j = 0;j<parse.length();j++)
+			        {
+			        	JSONObject ob = parse.getJSONObject(j);
+			        	
+			        	//System.out.println("JSONObject @: "+j+" = "+ob.toString());
+			        	
+			        	participant.setChatId(ob.getString("id"));
+			        	participant.setEmail(ob.getString("email"));
+			        	participant.setDisplayName(ob.getString("display_name"));
+			        	participant.setTime_lastfocus(ob.getString("time_lastfocus"));
+			        	participant.setTime_lastrequest(ob.getString("time_lastrequest"));
+			        	
+			        	MainActivity.getAppDb().addParticipant(participant);
+			        	//System.out.println(message.toString());
+			        }
+			        
+					this.success = true;
+					break;
+					
+				case 401:
+					this.success = false;
+					result = "Unauthorized Access";
+					break;
+					
+				case 403:
+					this.success = false;
+					result = "Unspecified Chat ID";
+					break;
+					
+				case 404:
+					this.success = false;
+					result = "No Users/Chat Room Does Not Exist";
+					break;
+					
+				case 500:
+					this.success = false;
+					result = "Server Error";
+					break;
+			}
+		}
+		catch (Exception e) 
+		{
+			return e.getLocalizedMessage();
+		}
+		
+		System.out.println("Get Participants Result: " + result+"\n");
 		return result;
 	}
 	

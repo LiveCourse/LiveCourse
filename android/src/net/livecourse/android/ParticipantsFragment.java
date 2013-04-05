@@ -3,6 +3,8 @@ package net.livecourse.android;
 import java.util.ArrayList;
 import java.util.Arrays;
 import net.livecourse.android.R;
+import net.livecourse.database.DatabaseHandler;
+import net.livecourse.rest.REST;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,26 +36,31 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	 */
 	private View participantsLayout;
 	private ListView participantsListView;
-	private ClassListAdapter adapter;
+	private ParticipantsAdapter adapter;
+
+	/**
+	 * Database
+	 */
+	private static DatabaseHandler partDb;
 	
 	/**
 	 * Temporary list of classes used, will be changed later
 	 */
-	String[] array = {
-	        "Darren",
-	        "Hayden",
-	        "Lars",
-	        "Jermey",
-	        "Lee",
-	        "Brandon",
-	        "Android",
-	        "Google",
-	        "Person A",
-	        "Person B",
-	        "Jim",
-	        "Bob"
-		};
-	ArrayList<String> participants;
+//	String[] array = {
+//	        "Darren",
+//	        "Hayden",
+//	        "Lars",
+//	        "Jermey",
+//	        "Lee",
+//	        "Brandon",
+//	        "Android",
+//	        "Google",
+//	        "Person A",
+//	        "Person B",
+//	        "Jim",
+//	        "Bob"
+//		};
+//	ArrayList<String> participants;
 
     public static ParticipantsFragment newInstance(String content, TabsFragmentAdapter tabsAdapater) 
     {
@@ -71,6 +78,11 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mContent = savedInstanceState.getString(KEY_CONTENT);
         }
+        
+        /**
+         * Init database
+         */
+        partDb = new DatabaseHandler(this.getSherlockActivity());
     }
 
     @Override
@@ -79,23 +91,25 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
     	/**
 		 * Initialize the temporary list
 		 */
-		participants = new ArrayList<String>();
-		participants.addAll(Arrays.asList(array));
+		 //participants = new ArrayList<String>();
+		 //participants.addAll(Arrays.asList(array));
 		
 		/**
-		 * Conencts the list to the XML
+		 * Connects the list to the XML
 		 */
 		participantsLayout = inflater.inflate(R.layout.classlist_layout, container, false);
 		participantsListView = (ListView) participantsLayout.findViewById(R.id.class_list_view);
     	
     	
     	/** 
-    	 * Create the adapter and set it to the list and populate it
-    	 * **/
-        adapter = new ClassListAdapter(inflater.getContext(), android.R.layout.simple_list_item_1,participants);
+    	 * Create the adapter and populate the view
+    	 */
+        adapter = new ParticipantsAdapter(inflater.getContext(), null, 0);
         participantsListView.setAdapter(adapter);
         
         participantsListView.setOnItemLongClickListener(this);
+        
+		new REST(this.getSherlockActivity(),this,null,null,null,null,null,MainActivity.currentChatId,null,REST.PARTICIPANTS).execute();
         
         return participantsLayout;
     }
@@ -165,4 +179,13 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public static DatabaseHandler getDb() {
+		return partDb;
+	}
+
+	public static void setAppDb(DatabaseHandler partDb) {
+		ParticipantsFragment.partDb = partDb;
+	}
+	
 }
