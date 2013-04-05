@@ -493,7 +493,7 @@ function update_chat_list()
 /**
  * Update participant list for current room
  */
-function update_participant_list()
+function update_participant_list(callback)
 {
 	//Do nothing if we have no selected room.
 	if (current_chat_room.length <= 0)
@@ -555,6 +555,12 @@ function update_participant_list()
 			$("#UserList li").click(function() {
 				user_profile_show($(this).attr('id'));
 			});
+			
+			//Callback.
+			if (typeof callback != "undefined")
+			{
+				callback();
+			}
 		},
 		function (xhr, status)
 		{
@@ -599,11 +605,8 @@ function switch_chat_room(room)
 			clear_notifications();
 			//Clear out history...
 			$("#HistoryMessages ul").html(''); // Empty it
-			//Load recent chat...
-			update_participant_list();
-			
-			setTimeout(function() {load_recent_chat_contents();},250);
-			//Load participants...
+			//Load recent chat... set loading chat contents as callback (we need participants first)
+			update_participant_list(function() {load_recent_chat_contents();});
 			
 			progress_indicator_hide(switch_ind);
 		},
