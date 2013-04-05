@@ -1,12 +1,15 @@
 package net.livecourse.database;
 
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * This class is responsible for the managing the SQLite Database that the LiveCourse Android App uses.
+ * 
+ * @author Darren Cheng
+ */
 public class DatabaseHandler extends SQLiteOpenHelper
 {
 	private static final int DATABASE_VERSION = 18;
@@ -45,8 +48,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	private static final String KEY_CLASS_DOW_SUNDAY 		= "dow_sunday";
 	
 	/**
-	 * For chats
-	 * @param context
+	 * Fields used for the message object
 	 */
 	private static final String KEY_CHAT_ID					= "chat_id";
 	private static final String KEY_CHAT_SEND_TIME			= "send_time";
@@ -54,11 +56,23 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	private static final String KEY_CHAT_EMAIL				= "email";
 	private static final String KEY_CHAT_DISPLAY_NAME		= "display_name";
 	
+	
+	/**
+	 * The constructor of the database, pass it the context.
+	 * 
+	 * @param context The context
+	 */
 	public DatabaseHandler(Context context)
 	{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
+	
 	@Override
+	/**
+	 * Creates all the tables in the database.
+	 * 
+	 * @param db The SQLiteDatabase to be created
+	 */
 	public void onCreate(SQLiteDatabase db) {
 		/**
 		 * Creates the class query table
@@ -92,11 +106,20 @@ public class DatabaseHandler extends SQLiteOpenHelper
 											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
 											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255) "
 											+ ")";
+		
         db.execSQL(CREATE_TABLE_CLASS_QUERY);
         db.execSQL(CREATE_TABLE_CHAT_MESSAGES);
-		
 	}
+
 	@Override
+	/**
+	 * This method resets the tables and the SQL database if it detects an upgraded version,
+	 * you can set the version with the database version number.
+	 * 
+	 * @param db The SQLiteDatabase
+	 * @param oldVersion The old version number of the database
+	 * @param newVersion The new version number of the database
+	 */
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
 	{
 		/**
@@ -111,6 +134,11 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		onCreate(db);
 	}
 	
+	/**
+	 * Adds a Chatroom object to the TABLE_CLASS_ENROLL table.
+	 * 
+	 * @param a The chatroom to be added
+	 */
 	public void addClassEnroll(Chatroom a)
 	{
 		/**
@@ -143,11 +171,15 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		/**
 		 * Insert the row into the table and the close the connection to the DB
 		 */
-		//db.insert(TABLE_CLASS_ENROLL, null, values);
 		db.insertWithOnConflict(TABLE_CLASS_ENROLL, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		db.close();
 	}
 	
+	/**
+	 * Adds a Message object to the TABLE_CHAT_MESSAGES table.
+	 * 
+	 * @param a The message to be added
+	 */
 	public void addChatMessage(ChatMessage a)
 	{
 		/**
@@ -164,7 +196,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		values.put(KEY_CHAT_MESSAGE_STRING,		a.getMessageString());
 		values.put(KEY_CHAT_EMAIL, 				a.getEmail());
 		values.put(KEY_CHAT_DISPLAY_NAME,		a.getDisplayName());
-		//System.out.println("Adding message with id: " + a.getChatId());
 		
 		/**
 		 * Insert the row into the table and the close the connection to the DB
@@ -172,68 +203,10 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		db.insertWithOnConflict(TABLE_CHAT_MESSAGES, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		db.close();
 	}
-	/**
-	 * TODO: NOT IMPLEMENTED MIGHT NOT BE USED
-	 * @param id
-	 * @return
-	 */
-	public Chatroom getClassEnroll(int id)
-	{
-		//SQLiteDatabase db = this.getReadableDatabase();
-		
-		//Cursor cursor = db.query(TABLE_CLASS_QUERY, columns, selection, selectionArgs, groupBy, having, orderBy);
-
-		/*
-		 * SQLiteDatabase db = this.getReadableDatabase();
- 
-		    Cursor cursor = db.query(TABLE_CONTACTS, new String[] { KEY_ID,KEY_NAME, KEY_PH_NO }, KEY_ID + "=?",new String[] { String.valueOf(id) }, null, null, null, null);
-		    if (cursor != null)
-		        cursor.moveToFirst();
-		 
-		    Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),
-		            cursor.getString(1), cursor.getString(2));
-		    // return contact
-		    return contact;
-		 */
-		return null;
-	}
 	
 	/**
-	 * TODO: NOT IMPLEMENTED MIGHT NOT BE USED
-	 * @return
+	 * This method recreates the table TABLE_CLASS_ENROLL.
 	 */
-	public List<Chatroom> getAllClassEnroll()
-	{
-		return null;
-	}
-	
-	/**
-	 * TODO: NOT IMPLEMENTED MIGHT NOT BE USED
-	 * @return
-	 */
-	public int getClassEnrollCount()
-	{
-		return 0;
-	}
-	
-	/**
-	 * TODO: NOT IMPLEMENTED MIGHT NOT BE USED
-	 * @param a
-	 * @return
-	 */
-	public int updateClassEnroll(Chatroom a)
-	{
-		return 0;
-	}
-	/**
-	 * TODO: NOT IMPLEMENTED MIGHT NOT BE USED
-	 * @param a
-	 */
-	public void deleteClassEnroll(Chatroom a)
-	{
-		
-	}
-
 	public void recreateClassEnroll()
 	{
 		System.out.println("Attempting to recreate table: " + TABLE_CLASS_ENROLL);
@@ -274,6 +247,9 @@ public class DatabaseHandler extends SQLiteOpenHelper
         db.execSQL(CREATE_TABLE_CLASS_QUERY);	
 	}
 	
+	/**
+	 * This method recreates the table TABLE_CHATE_MESSAGES.
+	 */
 	public void recreateChatMessages()
 	{
 		System.out.println("Attempting to recreate table: " + TABLE_CHAT_MESSAGES);
@@ -300,6 +276,11 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		db.execSQL(CREATE_TABLE_CHAT_MESSAGES);
 	}
 	
+	/**
+	 * This method returns the SQLiteDatabase.
+	 * 
+	 * @return The SQLiteDatabase
+	 */
 	public SQLiteDatabase getDatabase()
 	{
 		return this.getReadableDatabase();
