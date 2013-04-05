@@ -2,6 +2,7 @@ package net.livecourse.android;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.*;
+import com.google.android.gcm.GCMRegistrar;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 import net.livecourse.android.R;
@@ -10,6 +11,7 @@ import net.livecourse.database.DatabaseHandler;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.widget.Toast;
 /**
  * 
@@ -80,6 +82,22 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         mAdapter.setActivity(this);
         
         mIndicator.setOnPageChangeListener(this);
+        
+        /**
+         * GCM Code
+         */
+		GCMRegistrar.checkDevice(this);
+		GCMRegistrar.checkManifest(this);
+		final String regId = GCMRegistrar.getRegistrationId(this);
+		
+		if (regId.equals("")) 
+		{
+		  //GCMRegistrar.register(this, SENDER_ID);
+		} 
+		else 
+		{
+		 // Log.v(TAG, "Already registered");
+		}
     }
 	
 	@Override

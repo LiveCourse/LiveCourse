@@ -44,40 +44,41 @@ import android.widget.Toast;
 public class REST extends AsyncTask <Void, Void, String> 
 {
 	/**
-	 * Variables saved for use
+	 * Max number of messages that the REST API call FETCH_RECENT would get
 	 */
-	private int commandType;
-	
-	public static String email;
-	public static String name;
-	public static String password;
-	public static String query;
-	public static String token;
-	public static String chatId;
-	private boolean success;
-	
-	public static Chatroom[] roomList;
-	
+	public static final String 			MAX_MESSAGE_SIZE = "20";
+
 	/**
 	 * Flags for type of command
 	 */
-	public static final int AUTH_AND_VERIFY 	= 0;
-	public static final int CLASS_QUERY 		= 1;
-	public static final int CHANGE_NAME 		= 2;
-	public static final int GRAB_CHATS			= 3;
-	public static final int JOIN_CHAT			= 4;
-	public static final int FETCH_RECENT		= 5;
-	public static final int SEND				= 6;
+	public static final int 			AUTH_AND_VERIFY 	= 0;
+	public static final int 			CLASS_QUERY 		= 1;
+	public static final int 			CHANGE_NAME 		= 2;
+	public static final int 			GRAB_CHATS			= 3;
+	public static final int 			JOIN_CHAT			= 4;
+	public static final int 			FETCH_RECENT		= 5;
+	public static final int 			SEND				= 6;
 	
-	public static final String MAX_MESSAGE_SIZE = "20";
+	/**
+	 * Variables saved for use
+	 */
+	public static Chatroom[] 			roomList;
+	public static String 				email;
+	public static String 				name;
+	public static String 				passwordToken;
+	public static String 				query;
+	public static String 				token;
+	public static String 				chatId;
 	
+	private int 						commandType;
+	private boolean 					success;
 	
 	/**
 	 * Activity is passed through so that REST can make changes to the UI and such
 	 */
-	private SherlockFragmentActivity mActivity;
-	private SherlockFragment mFragment;
-	private String message;
+	private SherlockFragmentActivity 	mActivity;
+	private SherlockFragment			mFragment;
+	private String 						message;
 	
 	/**
 	 * The constructor used REST, all unused args will be set to null
@@ -96,7 +97,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		{
 			case AUTH_AND_VERIFY:
 				REST.email = email;
-				REST.password = password;
+				REST.passwordToken = password;
 				break;
 			case CLASS_QUERY:
 				REST.query = query;
@@ -122,47 +123,97 @@ public class REST extends AsyncTask <Void, Void, String>
 	}
 	
 	/**
-	 * This is the new constructor used for REST.  it will be more clean and stuff
-	 * @param a
-	 * @param f
-	 * @param args0
-	 * @param args1
-	 * @param command
+	 * This is the new constructor used for REST.
+	 * 
+	 * Should always pass the current activity and/or the current fragment as well as the command type.
+	 * The command types and their respective arguments are listed as follows:
+	 * 
+	 * For AUTH_AND_VERIFY:
+	 * 		args0 = email
+	 * 		args1 = password
+	 * 
+	 * For CLASS_QUERY
+	 * 		args0 = query
+	 * 		args1 = null
+	 * 
+	 * For CHANGE_NAME
+	 * 		args0 = name
+	 * 
+	 * For GRAB_CHATS
+	 * 		no arguments needed
+	 * 
+	 * For JOIN_CHAT
+	 * 		args0 = chatId
+	 * 
+	 * For FETCH_RECENT
+	 * 		args0 = chatId
+	 * 
+	 * For SEND
+	 * 		args0 = chatId
+	 * 		args1 = message
+	 * 
+	 * @param a The SherlockFragmentActivity
+	 * @param f The SherlockFragment
+	 * @param args0 The first argument
+	 * @param args1 The second argument
+	 * @param command The type of REST API command call
 	 */
 	public REST(SherlockFragmentActivity a, SherlockFragment f, String args0, String args1, int command)
 	{
-	
-	}
-	
-	protected String getASCIIContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException 
-	{
-		InputStream in = entity.getContent();
-		StringBuffer out = new StringBuffer();
-		int n = 1;
-		while (n>0) 
-		{
-			byte[] b = new byte[4096];
-			n =  in.read(b);
-			if (n>0) 
-				out.append(new String(b, 0, n));
-		}
-		return out.toString();
-	}
-
-	@Override
-	protected String doInBackground(Void... params) 
-	{
-		String result = "No Command Executed\n";
-		System.out.println("do in background reached");
+		super();
+		
+		this.mActivity 		= a;
+		this.mFragment 		= f;
+		this.commandType 	= command;
+		this.success		= false;
+		
 		switch(commandType)
 		{
 			case AUTH_AND_VERIFY:
-				result = "Authentication Timeout";
+				REST.email = args0;
+				REST.passwordToken = this.toSha1(args1);
+				break;
+			case CLASS_QUERY:
+				REST.query = args0;
+				break;
+			case CHANGE_NAME:
+				REST.name = args0;
+				break;	
+			case GRAB_CHATS:
+				//No arguments needed
+				break;
+			case JOIN_CHAT:
+				REST.chatId = args0;
+				break;
+			case FETCH_RECENT:
+				REST.chatId = args0;
+				break;
+			case SEND:
+				REST.chatId = args0;
+				this.message = args1;
+				break;
+		}
+	}
+
+	/**
+	 * This method is processed in the background tasks, and is used to call the REST API.
+	 * 
+	 * @param params
+	 * @return The result of the REST API call as a string.
+	 */
+	@Override
+	protected String doInBackground(Void... params) 
+	{
+		String result = "";
+
+		switch(commandType)
+		{
+			case AUTH_AND_VERIFY:
 				REST.token = this.auth(REST.email);
 				if(success)
 				{
 					this.success = false;
-					result = this.verify(REST.password);
+					result = this.verify(REST.passwordToken);
 				}
 				break;
 			case CLASS_QUERY:
@@ -362,8 +413,8 @@ public class REST extends AsyncTask <Void, Void, String>
 	{
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
 		
-		System.out.println("Get Class List - token: "+REST.token+" password: " + REST.password);
-		String shaHead = this.toSha1(token+this.toSha1(REST.password)+"chats/search");
+		System.out.println("Get Class List - token: "+REST.token+" password: " + REST.passwordToken);
+		String shaHead = this.toSha1(token+this.toSha1(REST.passwordToken)+"chats/search");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
@@ -444,8 +495,8 @@ public class REST extends AsyncTask <Void, Void, String>
 	{
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
 		
-		System.out.println("Get Class List - token: "+REST.token+" password: " + REST.password);
-		String shaHead = this.toSha1(REST.token+this.toSha1(REST.password)+"chats");
+		System.out.println("Get Class List - token: "+REST.token+" password: " + REST.passwordToken);
+		String shaHead = this.toSha1(REST.token+this.toSha1(REST.passwordToken)+"chats");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
@@ -527,7 +578,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	private String joinChat(String roomId)
 	{
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
-		String shaHead = this.toSha1(REST.token+this.toSha1(REST.password)+"chats/join");
+		String shaHead = this.toSha1(REST.token+this.toSha1(REST.passwordToken)+"chats/join");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		
@@ -591,7 +642,7 @@ public class REST extends AsyncTask <Void, Void, String>
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
 		
 		//System.out.println("Get Class List - token: "+REST.token+" password: " + REST.password);
-		String shaHead = this.toSha1(REST.token+this.toSha1(REST.password)+"chats/fetch_recent");
+		String shaHead = this.toSha1(REST.token+this.toSha1(REST.passwordToken)+"chats/fetch_recent");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
@@ -659,7 +710,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	
 	private String sendMessage(String chatId, String message)
 	{
-		String shaHead = this.toSha1(REST.token+this.toSha1(REST.password)+"chats/send");
+		String shaHead = this.toSha1(REST.token+this.toSha1(REST.passwordToken)+"chats/send");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		
@@ -722,7 +773,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	 */
 	private String changeName(String name)
 	{
-		String shaHead = this.toSha1(REST.token+this.toSha1(REST.password)+"users/change_display_name");
+		String shaHead = this.toSha1(REST.token+this.toSha1(REST.passwordToken)+"users/change_display_name");
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		
@@ -804,5 +855,32 @@ public class REST extends AsyncTask <Void, Void, String>
         }
         
 		return buffer.toString();
+	}
+	
+	/**
+	 * Grabs the String content from an HttpEntity
+	 * 
+	 * @param entity
+	 * @return The String in the entity
+	 * @throws IllegalStateException
+	 * @throws IOException
+	 */
+	protected String getASCIIContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException 
+	{
+		InputStream in = entity.getContent();
+		StringBuffer out = new StringBuffer();
+		
+		int n = 1;
+		while (n>0) 
+		{
+			byte[] b = new byte[4096];
+			n =  in.read(b);
+			if (n>0) 
+			{
+				out.append(new String(b, 0, n));
+			}
+		}
+		
+		return out.toString();
 	}
 }
