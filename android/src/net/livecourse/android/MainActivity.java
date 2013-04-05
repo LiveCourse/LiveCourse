@@ -21,6 +21,9 @@ import android.widget.Toast;
  */
 public class MainActivity extends SherlockFragmentActivity implements OnPageChangeListener
 {
+	public static String SENDER_ID = "584781219532";
+	private String TAG = "** pushAndroidActivity **";
+	
 	/**
 	 * Some globals
 	 */
@@ -88,15 +91,16 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
          */
 		GCMRegistrar.checkDevice(this);
 		GCMRegistrar.checkManifest(this);
+		
 		final String regId = GCMRegistrar.getRegistrationId(this);
 		
 		if (regId.equals("")) 
 		{
-		  //GCMRegistrar.register(this, SENDER_ID);
+			GCMRegistrar.register(this, SENDER_ID);
 		} 
 		else 
 		{
-		 // Log.v(TAG, "Already registered");
+			Log.v(TAG, "Already registered");
 		}
     }
 	
@@ -127,6 +131,14 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		
 		return super.onOptionsItemSelected(item);
 	}
+	
+	/*
+	@Override
+	protected void onPause() 
+	{
+		super.onPause();
+		GCMRegistrar.unregister(this);
+	}*/
 
 	@Override
 	public void onPageScrollStateChanged(int arg0) {
