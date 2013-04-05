@@ -467,7 +467,7 @@ function update_participant_list()
 			
 			//Sort it.
 			//We come first!
-			var li = $("#UserList ul.me");
+			var li = $("#UserList .me");
 			li.detach();
 			$("#UserList").prepend(li);
 		},
