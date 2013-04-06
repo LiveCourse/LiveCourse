@@ -119,6 +119,9 @@ a.buttonLink:hover {
   margin: 0 8px;
   opacity: 0.7;
 }
+#AuxiliaryButtons li a img {
+  border: none;
+}
 #AuxiliaryButtons li:hover {
   opacity: 0.9;
 }
