@@ -1,14 +1,22 @@
 package net.livecourse.android;
 
-import net.livecourse.android.R;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import net.livecourse.R;
+import net.livecourse.database.ChatMessage;
 import net.livecourse.database.ChatMessagesLoader;
-import net.livecourse.rest.REST;
+import net.livecourse.rest.OnRestCalled;
+import net.livecourse.rest.Restful;
+import net.livecourse.utility.Globals;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,8 +33,9 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ChatFragment extends SherlockFragment implements OnClickListener, OnItemLongClickListener, ActionMode.Callback, LoaderCallbacks<Cursor>
+public class ChatFragment extends SherlockFragment implements OnClickListener, OnItemLongClickListener, ActionMode.Callback, LoaderCallbacks<Cursor>, OnRestCalled
 {
+	private final String TAG = " == Chat Fragment == ";
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
 	
@@ -58,11 +67,12 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	private String mContent = "???";
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) 
+	{
 		super.onCreate(savedInstanceState);
 
-		if ((savedInstanceState != null)
-				&& savedInstanceState.containsKey(KEY_CONTENT)) {
+		if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) 
+		{
 			mContent = savedInstanceState.getString(KEY_CONTENT);
 		}
 	}
@@ -70,13 +80,13 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-		MainActivity.chatFragment = this;
+		Globals.chatFragment = this;
 		/**
 		 * Settings for the fragment
 		 * Allows adding stuff for the options menu
 		 */
 		this.setHasOptionsMenu(true);
-		this.setMenuVisibility(false);
+		this.setMenuVisibility(true);
 		
 		/**
 		 * Connects the views to their XML equivalent
@@ -103,7 +113,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(Bundle outState) 
+	{
 		super.onSaveInstanceState(outState);
 		outState.putString(KEY_CONTENT, mContent);
 	}
@@ -163,8 +174,9 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 				 * Update the list and sends update the adapter, then change
 				 * EditText back to blank
 				 */
-				//messages.add(sendMessageEditTextView.getText().toString());
-				new REST(this.getSherlockActivity(),this,null,null,null,null,null,MainActivity.currentChatId,sendMessageEditTextView.getText().toString(),REST.SEND).execute();
+				
+				Globals.message = sendMessageEditTextView.getText().toString();
+				new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId, Globals.message}, 2, this);
 				
 		        adapter.notifyDataSetChanged();
 				sendMessageEditTextView.setText("");
@@ -189,8 +201,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	 * in google docs.
 	 */
 	@Override
-	public boolean onActionItemClicked(ActionMode mode,
-			MenuItem item) {
+	public boolean onActionItemClicked(ActionMode mode, MenuItem item) 
+	{
 		// TODO Auto-generated method stub
 		
 		return false;
@@ -221,7 +233,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	 * Runs when the contextual action mode gets invalidated
 	 */
 	@Override
-	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+	public boolean onPrepareActionMode(ActionMode mode, Menu menu) 
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -229,7 +242,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) 
 	{
-		return new ChatMessagesLoader(this.getSherlockActivity(), MainActivity.getAppDb());
+		return new ChatMessagesLoader(this.getSherlockActivity(), Globals.appDb);
 	}
 
 	@Override
@@ -247,13 +260,66 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		
 	}
 	public void updateList()
-	{
-		
-		new REST(this.getSherlockActivity(),this,null,null,null,null,null,REST.chatId,null,REST.FETCH_RECENT).execute();
+	{		
+		Globals.appDb.recreateChatMessages();
+		new Restful(Restful.GET_RECENT_MESSAGES_PATH,Restful.GET, new String[]{"chat_id", "num_messages"}, new String[]{Globals.chatId, Restful.MAX_MESSAGE_SIZE}, 2, this);
 	}
-	public void clearList()
+
+	@Override
+	public void onRestHandleResponseSuccess(String restCall, String response) 
 	{
-		adapter.swapCursor(null);
+		JSONArray parse;
+		JSONObject ob;
+		
+		if(restCall.equals(Restful.GET_RECENT_MESSAGES_PATH))
+		{
+			try 
+			{
+				parse = new JSONArray(response);
+				
+				for(int x = 0;x<parse.length();x++)
+		        {
+					ChatMessage message = new ChatMessage();
+		        	ob = parse.getJSONObject(x);
+		        			        	
+		        	message.setChatId(ob.getString("id"));
+		        	message.setSendTime(ob.getString("send_time"));
+		        	message.setMessageString(ob.getString("message_string"));
+		        	message.setEmail(ob.getString("email"));
+		        	message.setDisplayName(ob.getString("display_name"));
+		        	
+		        	Globals.appDb.addChatMessage(message);        	
+		        }
+			} 
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
+			}	
+		}
+		else if(restCall.equals(Restful.SEND_MESSAGE_PATH))
+		{
+			
+		}
+	}
+
+	@Override
+	public void onRestPostExecutionSuccess(String restCall, String result) 
+	{
+		if(restCall.equals(Restful.GET_RECENT_MESSAGES_PATH))
+		{
+			Globals.mainActivity.getSupportLoaderManager().restartLoader(2, null, this);
+		}
+		else if(restCall.equals(Restful.SEND_MESSAGE_PATH))
+		{
+			
+		}
+	}
+
+	@Override
+	public void onRestPostExecutionFailed(String restCall, int code, String result) 
+	{
+		Log.d(this.TAG, "Rest call: " + restCall + "failed with status code: " + code);
+		Log.d(this.TAG,"Result from server is:\n" + result);
 	}
 
 }

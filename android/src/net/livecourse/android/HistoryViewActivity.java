@@ -1,25 +1,25 @@
 package net.livecourse.android;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import net.livecourse.android.R;
+import net.livecourse.R;
 import net.livecourse.database.ParticipantsLoader;
+import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.REST;
+import net.livecourse.utility.Globals;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
 
-public class HistoryViewActivity extends SherlockFragmentActivity implements OnItemLongClickListener, LoaderCallbacks<Cursor>
+public class HistoryViewActivity extends SherlockFragmentActivity implements OnItemLongClickListener, LoaderCallbacks<Cursor>, OnRestCalled
 {
+	private final String TAG = " == History View Activity == ";
 	/**
 	 * View used for the history list
 	 */
@@ -30,11 +30,6 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	 */
 	private ChatCursorAdapter adapter;
 	
-	/**
-	 * Temporary list used to populate the history list
-	 */
-	//String[] array = {"this","is","the","history","e","f","g"}; 
-	//ArrayList<String> history;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -46,12 +41,6 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
          * Connects the view to the XML
          */
         historyListView = (ListView) findViewById(R.id.history_list_view);
-        
-        /**
-		 * Initialize the temporary list
-		 */
-		//history = new ArrayList<String>();
-		//history.addAll(Arrays.asList(array));
 		
 		/**
 		 * Adds the adapter to the list and sends the temporary list to it
@@ -61,21 +50,19 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 		
 		historyListView.setOnItemLongClickListener(this);
 		
-		//new REST(this,null,MainActivity.currentChatId,null/* start_epoch */,REST.HISTORY).execute();
-	
+		this.updateList();
 	}
 
 	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
-			long arg3) {
-		// TODO Auto-generated method stub
+	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
+	{
 		return false;
 	}
 	
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1)
 	{
-		return new ParticipantsLoader(this, MainActivity.getAppDb());
+		return new ParticipantsLoader(this, Globals.appDb);
 	}
 
 	@Override
@@ -93,10 +80,32 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	}
 	public void updateList()
 	{
-		new REST(this,null,MainActivity.currentChatId,null/*epoch*/,REST.HISTORY).execute();
+		//TODO: Change this to the new Restful call
+		new REST(this,null,Globals.chatId,null/*epoch*/,REST.HISTORY).execute();
 	}
 	public void clearList()
 	{
 		adapter.swapCursor(null);
+	}
+
+	@Override
+	public void onRestHandleResponseSuccess(String restCall, String response) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestPostExecutionSuccess(String restCall, String result) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestPostExecutionFailed(String restCall, int code, String result) 
+	{
+		Log.d(this.TAG, "Rest call: " + restCall + "failed with status code: " + code);
+		Log.d(this.TAG,"Result from server is:\n" + result);		
 	}
 }

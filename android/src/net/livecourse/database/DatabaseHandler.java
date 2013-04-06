@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * This class is responsible for the managing the SQLite Database that the LiveCourse Android App uses.
@@ -12,6 +13,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DatabaseHandler extends SQLiteOpenHelper
 {
+	private final String TAG = " == DatabaseHandler == ";
+	
 	private static final int DATABASE_VERSION = 19;
 	
 	/**
@@ -188,8 +191,11 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		/**
 		 * Insert the row into the table and the close the connection to the DB
 		 */
-		db.insertWithOnConflict(TABLE_CLASS_ENROLL, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+		
+		long row = db.insertWithOnConflict(TABLE_CLASS_ENROLL, null, values, SQLiteDatabase.CONFLICT_IGNORE);
 		db.close();
+		
+		Log.d(this.TAG, "Added Chatroom to row " + row + " with name: " + a.getName());
 	}
 	
 	/**
@@ -217,8 +223,10 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		/**
 		 * Insert the row into the table and the close the connection to the DB
 		 */
-		db.insertWithOnConflict(TABLE_CHAT_MESSAGES, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+		long row = db.insertWithOnConflict(TABLE_CHAT_MESSAGES, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		db.close();
+		
+		Log.d(this.TAG, "Added Chat Message to row " + row + " with message: " + a.getMessageString());
 	}
 	
 	/**
@@ -246,8 +254,10 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		/**
 		 * Insert the row into the table and the close the connection to the DB
 		 */
-		db.insertWithOnConflict(TABLE_PARTICIPANTS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+		long row = db.insertWithOnConflict(TABLE_PARTICIPANTS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		db.close();
+		
+		Log.d(this.TAG, "Added Participant to row " + row + " with name: " + a.getDisplayName());
 	}
 	
 	/**
@@ -255,7 +265,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void recreateClassEnroll()
 	{
-		System.out.println("Attempting to recreate table: " + TABLE_CLASS_ENROLL);
+		//System.out.println("Attempting to recreate table: " + TABLE_CLASS_ENROLL);
 		SQLiteDatabase db = this.getWritableDatabase();
 		db = this.getDatabase();
 
@@ -291,6 +301,9 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	                						+ KEY_CLASS_DOW_SUNDAY		+ " tinyint(1) "
 	                						+ ")";
         db.execSQL(CREATE_TABLE_CLASS_QUERY);	
+        db.close();
+        
+        Log.d(this.TAG, "Recreated TABLE_CLASS_ENROLL");
 	}
 	
 	/**
@@ -298,7 +311,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void recreateChatMessages()
 	{
-		System.out.println("Attempting to recreate table: " + TABLE_CHAT_MESSAGES);
+		//System.out.println("Attempting to recreate table: " + TABLE_CHAT_MESSAGES);
 		SQLiteDatabase db = this.getWritableDatabase();
 		db = this.getDatabase();
 
@@ -320,6 +333,10 @@ public class DatabaseHandler extends SQLiteOpenHelper
 											+ ")";
 		
 		db.execSQL(CREATE_TABLE_CHAT_MESSAGES);
+		db.close();
+		
+        Log.d(this.TAG, "Recreated TABLE_CHAT_MESSAGES");
+
 	}
 	
 	/**
@@ -327,7 +344,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void recreateParticipants()
 	{
-		System.out.println("Attempting to recreate table: " + TABLE_PARTICIPANTS);
+		//System.out.println("Attempting to recreate table: " + TABLE_PARTICIPANTS);
 		SQLiteDatabase db = this.getWritableDatabase();
 		db = this.getDatabase();
 
@@ -349,6 +366,9 @@ public class DatabaseHandler extends SQLiteOpenHelper
 											+ ")";
 		
 		db.execSQL(CREATE_TABLE_PARTICIPANTS);
+		db.close();
+		
+        Log.d(this.TAG, "Recreated TABLE_PARTICIPANTS");
 	}
 	
 	/**

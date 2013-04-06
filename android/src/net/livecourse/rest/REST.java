@@ -11,10 +11,11 @@ import java.util.List;
 import net.livecourse.android.ClassListFragment;
 import net.livecourse.android.MainActivity;
 import net.livecourse.android.QueryActivity;
-import net.livecourse.android.R;
+import net.livecourse.R;
 import net.livecourse.database.Chatroom;
 import net.livecourse.database.ChatMessage;
 import net.livecourse.database.Participant;
+import net.livecourse.utility.Globals;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -295,7 +296,7 @@ public class REST extends AsyncTask <Void, Void, String>
 				{
 			        //mainIntent.putExtra("token", REST.token);
 			        //mainIntent.putExtra("password", REST.password);
-					new REST(this.mActivity,this.mFragment,MainActivity.SENDER_ID,null,REST.ANDROID_ADD).execute();
+					new REST(this.mActivity,this.mFragment,REST.regId,null,REST.ANDROID_ADD).execute();
 					
 					System.out.println(results);
 				}
@@ -322,13 +323,13 @@ public class REST extends AsyncTask <Void, Void, String>
 			case JOIN_CHAT:
 				if(success)
 				{	
-					MainActivity.classListFragment.updateList();
+					Globals.classListFragment.updateList();
 					if(mActivity instanceof QueryActivity)
 						mActivity.finish();
 					else if(mFragment instanceof ClassListFragment)
 					{
-						((ClassListFragment)mFragment).QRJoinChat();
-						MainActivity.chatFragment.updateList();
+						//((ClassListFragment)mFragment).QRJoinChat();
+						Globals.chatFragment.updateList();
 					}
 				}
 				else
@@ -338,7 +339,7 @@ public class REST extends AsyncTask <Void, Void, String>
 				}
 				break;
 			case FETCH_RECENT:
-				mActivity.getSupportLoaderManager().restartLoader(2, null, (LoaderCallbacks<Cursor>) mFragment);
+				//mActivity.getSupportLoaderManager().restartLoader(2, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 			case SEND:
 				
@@ -348,10 +349,10 @@ public class REST extends AsyncTask <Void, Void, String>
 				mActivity.startActivity(mainIntent);	
 				break;
 			case PARTICIPANTS:
-				mActivity.getSupportLoaderManager().restartLoader(3, null, (LoaderCallbacks<Cursor>) mFragment);
+				//mActivity.getSupportLoaderManager().restartLoader(3, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 			case HISTORY:
-				mActivity.getSupportLoaderManager().restartLoader(4, null, (LoaderCallbacks<Cursor>) mFragment);
+				//mActivity.getSupportLoaderManager().restartLoader(4, null, (LoaderCallbacks<Cursor>) mFragment);
 				break;
 		}
 	}
@@ -470,6 +471,7 @@ public class REST extends AsyncTask <Void, Void, String>
 	private String androidAdd(String regId)
 	{
 		//Auth:LiveCourseAuth token=OCZPcM55aSKdywZy auth=83851042dcf898927a79b0c040addd8e69023e65
+		System.out.println("The Reg ID: "+ REST.regId);
 		String shaHead = this.toSha1(REST.token + REST.passwordToken + "users/android_add");
 		
 		HttpClient httpClient = new DefaultHttpClient();
@@ -484,7 +486,7 @@ public class REST extends AsyncTask <Void, Void, String>
 			
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 			nameValuePairs.add(new BasicNameValuePair("email", REST.email));
-			nameValuePairs.add(new BasicNameValuePair("display_name", REST.name));
+			nameValuePairs.add(new BasicNameValuePair("name", REST.name));
 			nameValuePairs.add(new BasicNameValuePair("reg_id", regId));
 			
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -530,7 +532,7 @@ public class REST extends AsyncTask <Void, Void, String>
 			return e.getLocalizedMessage();
 		}
 		
-		System.out.println("Join Chat Result: " + result+"\n");
+		System.out.println("Android Add Result: " + result+"\n");
 		return result;
 	}
 	/**
@@ -685,7 +687,7 @@ public class REST extends AsyncTask <Void, Void, String>
 			        	roomList[j].setDowSaturday(ob.getString(	"dow_saturday"));
 			        	roomList[j].setDowSunday(ob.getString(		"dow_sunday"));
 			        	
-			        	MainActivity.getAppDb().addClassEnroll(roomList[j]);
+			        	Globals.appDb.addClassEnroll(roomList[j]);
 			        	System.out.println(roomList[j].toString());
 			        }
 					
@@ -818,7 +820,7 @@ public class REST extends AsyncTask <Void, Void, String>
 			        	message.setEmail(ob.getString("email"));
 			        	message.setDisplayName(ob.getString("display_name"));
 			        	
-			        	MainActivity.getAppDb().addChatMessage(message);
+			        	Globals.appDb.addChatMessage(message);
 			        	//System.out.println(message.toString());
 			        }
 			        
@@ -887,7 +889,7 @@ public class REST extends AsyncTask <Void, Void, String>
 			        	participant.setTime_lastfocus(ob.getString("time_lastfocus"));
 			        	participant.setTime_lastrequest(ob.getString("time_lastrequest"));
 			        	
-			        	MainActivity.getAppDb().addParticipant(participant);
+			        	Globals.appDb.addParticipant(participant);
 			        	//System.out.println(participant.toString());
 			        }
 			        
@@ -970,7 +972,7 @@ public class REST extends AsyncTask <Void, Void, String>
 			        	message.setEmail(ob.getString("email"));
 			        	message.setDisplayName(ob.getString("display_name"));
 			        	
-			        	MainActivity.getAppDb().addChatMessage(message);
+			        	Globals.appDb.addChatMessage(message);
 			        }
 			        
 					this.success = true;

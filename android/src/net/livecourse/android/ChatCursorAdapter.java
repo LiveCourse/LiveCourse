@@ -2,6 +2,7 @@ package net.livecourse.android;
 
 import java.util.Date;
 
+import net.livecourse.R;
 import net.livecourse.utility.ChatMessageViewHolder;
 import android.content.Context;
 import android.database.Cursor;

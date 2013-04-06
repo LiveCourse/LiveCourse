@@ -1,5 +1,6 @@
 package net.livecourse.android;
 
+import net.livecourse.R;
 import net.livecourse.utility.Utility;
 import net.livecourse.utility.ChatroomViewHolder;
 import android.content.Context;
@@ -39,8 +40,8 @@ public class ClassListCursorAdapter extends CursorAdapter
 	{
 		ChatroomViewHolder v = (ChatroomViewHolder) view.getTag();
 		
-		String name = "\t" + cursor.getString(cursor.getColumnIndexOrThrow("name"));
-		String time = "\t\t";
+		String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+		String time = "";
 		if(cursor.getString(cursor.getColumnIndexOrThrow("dow_monday")).equals("1"))
 			time += "M";
 		if(cursor.getString(cursor.getColumnIndexOrThrow("dow_tuesday")).equals("1"))
