@@ -5,8 +5,10 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     
+    <!-- 	General Purpose Strings -->
+    <string name="no_results">No Results</string>
     
-    <!-- EditUserInfo Activity Strings -->
+    <!-- 	EditUserInfo Activity Strings -->
     <string name="pref_user_profile">User Profile</string>
     <string name="pref_user_name">Set username</string>
     <string name="pref_user_name_summary">Set your username</string>

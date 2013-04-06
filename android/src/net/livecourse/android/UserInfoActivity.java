@@ -4,9 +4,14 @@ import java.util.Arrays;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Display;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,7 +22,6 @@ import com.actionbarsherlock.view.MenuItem;
 
 import net.livecourse.R;
 import net.livecourse.rest.OnRestCalled;
-import net.livecourse.rest.REST;
 import net.livecourse.rest.Restful;
 
 public class UserInfoActivity extends SherlockFragmentActivity implements OnRestCalled
@@ -26,7 +30,8 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 	
 	int check = 0;
 	private static final int RESULT_SETTINGS = 1;
-	private ListView userinfoView;
+	private ListView userInfoView;
+	private ImageView profilePic;
 	private UserInfoAdapter adapter;
 	
 	/**
@@ -63,14 +68,27 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 		 * Conencts the list to the XML
 		 */
 		//userinfoLayout = inflater.inflate(R.layout.classlist_layout, container, false);
-		userinfoView = (ListView) this.findViewById(R.id.message_list_view);
-    	
-    	
+		userInfoView = (ListView) this.findViewById(R.id.userinfo_list_view);
+		profilePic = (ImageView) getLayoutInflater().inflate(R.layout.userinfo_header_layout,null);
+		
+		
+		Bitmap bmp=BitmapFactory.decodeResource(getResources(), R.drawable.me);
+		
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int dwidth = size.x;
+		int dheight = size.y;
+		
+		Bitmap resizedbitmap=Bitmap.createBitmap(bmp,0,0, dwidth, dheight/4);
+		profilePic.setImageBitmap(resizedbitmap);
+		
+		userInfoView.addHeaderView(profilePic);
     	/** 
     	 * Create the adapter and set it to the list and populate it
     	 * **/
         adapter = new UserInfoAdapter(this, android.R.layout.simple_list_item_1, participants);
-        userinfoView.setAdapter(adapter);        
+        userInfoView.setAdapter(adapter);        
 	}
 	
 	 
@@ -139,17 +157,13 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
+	
 	@Override
 	public void onRestPostExecutionSuccess(String restCall, String result) 
 	{
 		// TODO Auto-generated method stub
 		
 	}
-
-
 
 	@Override
 	public void onRestPostExecutionFailed(String restCall, int code, String result) 

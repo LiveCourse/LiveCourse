@@ -19,7 +19,7 @@
     	android:layout_height="match_parent"
     	android:gravity="center_horizontal"
     	android:textSize="15sp"
-    	android:text="\nNo Results" 
+    	android:text="@string/no_results" 
     	android:visibility="gone"/>
     
 </LinearLayout>
