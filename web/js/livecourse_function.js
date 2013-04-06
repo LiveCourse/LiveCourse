@@ -358,6 +358,18 @@ function prefs_show()
 }
 
 /**
+ * Shows a dialog to the user explaining about the project.
+ */
+function info_show()
+{
+	var dialog = dialog_clone("About LiveCourse","#dialog_info",true,true);
+	Cufon.replace("#dialog_info div.pane h2");
+	dialog_show(dialog, function() { //Show it!
+		
+	}); 
+}
+
+/**
  * Shows a dialog with another user's profile information.
  */
 function user_profile_show(user_id)
