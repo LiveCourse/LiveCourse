@@ -3,7 +3,6 @@ package net.livecourse.android;
 import net.livecourse.R;
 import net.livecourse.database.ParticipantsLoader;
 import net.livecourse.rest.OnRestCalled;
-import net.livecourse.rest.REST;
 import net.livecourse.utility.Globals;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -81,7 +80,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	public void updateList()
 	{
 		//TODO: Change this to the new Restful call
-		new REST(this,null,Globals.chatId,null/*epoch*/,REST.HISTORY).execute();
+		//new REST(this,null,Globals.chatId,null/*epoch*/,REST.HISTORY).execute();
 	}
 	public void clearList()
 	{
