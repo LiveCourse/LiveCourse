@@ -1,6 +1,6 @@
 package net.livecourse.android;
 
-import net.livecourse.utility.ChatMessageViewHolder;
+import net.livecourse.R;
 import net.livecourse.utility.ParticipantViewHolder;
 import android.content.Context;
 import android.database.Cursor;
@@ -41,7 +41,7 @@ public class ParticipantsAdapter extends CursorAdapter
 	 */
 	public View newView(Context context, Cursor cursor, ViewGroup parent) 
 	{
-		View view = LayoutInflater.from(mContext).inflate(R.layout.participants_layout, parent, false);
+		View view = LayoutInflater.from(mContext).inflate(R.layout.participants_item_layout, parent, false);
 		
 		ParticipantViewHolder v = new ParticipantViewHolder();
 		

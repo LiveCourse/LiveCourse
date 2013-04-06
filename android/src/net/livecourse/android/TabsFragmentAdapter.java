@@ -39,7 +39,9 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
     }
 
 	/**
-	 * The following code switches the fragment the user is on based on the tab selection
+	 * Calls fragment to be pre-rendered
+	 * 
+	 * DO NOT CALL THIS METHOD
 	 */
     @Override
     public Fragment getItem(int position) {
@@ -60,27 +62,32 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
     }
 
     @Override
-    public int getCount() {
+    public int getCount() 
+    {
         return mCount;
     }
 
     @Override
-    public CharSequence getPageTitle(int position) {
+    public CharSequence getPageTitle(int position) 
+    {
       return this.CONTENT[position % CONTENT.length];
     }
     
-    public void setCount(int count) {
+    public void setCount(int count) 
+    {
         if (count > 0 && count <= 10) {
             mCount = count;
             notifyDataSetChanged();
         }
     }
 
-	public ViewPager getPager() {
+	public ViewPager getPager() 
+	{
 		return mPager;
 	}
 
-	public void setPager(ViewPager mPager) {
+	public void setPager(ViewPager mPager) 
+	{
 		this.mPager = mPager;
 	}
 
@@ -94,11 +101,13 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
 		this.mIndicator = mIndicator;
 	}
 
-	public MainActivity getActivity() {
+	public MainActivity getActivity() 
+	{
 		return mActivity;
 	}
 
-	public void setActivity(MainActivity mActivity) {
+	public void setActivity(MainActivity mActivity) 
+	{
 		this.mActivity = mActivity;
 	}
 }

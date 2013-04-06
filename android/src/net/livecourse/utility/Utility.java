@@ -1,7 +1,13 @@
 package net.livecourse.utility;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.http.HttpEntity;
 
 /**
  * This is the ultities class that focuses on ultity based methods as well as
@@ -41,7 +47,7 @@ public class Utility {
 	 */
 	public static boolean isPasswordValid(String password)
 	{
-		if(password.length() >= 8 && password.length() <= 20)
+		if(password.length() >= 6 && password.length() <= 20)
 			return true;
 		return false;
 	}
@@ -76,5 +82,66 @@ public class Utility {
 		if(time%60 == 0)
 			return time/60 + ":" + time%60+"0";
 		return time/60 + ":" + time%60;
+	}
+	
+	/**
+	 * Converts string into SHA-1 hash
+	 * @param input
+	 * @return
+	 * @throws NoSuchAlgorithmException 
+	 */
+	public static String convertStringToSha1(String input)
+	{
+		String cpyInput = input;
+		MessageDigest md = null;
+		try 
+		{
+			md = MessageDigest.getInstance("SHA-1");
+		} 
+		catch (NoSuchAlgorithmException e) 
+		{
+			e.printStackTrace();
+		}
+        md.update(cpyInput.getBytes());
+        
+        byte byteData[] = md.digest();
+        
+        /**
+         * Convert from byte to hex
+         */
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) 
+        {
+        	buffer.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        
+		return buffer.toString();
+	}
+	
+	/**
+	 * Grabs the String content from an HttpEntity
+	 * 
+	 * @param entity
+	 * @return The String in the entity
+	 * @throws IllegalStateException
+	 * @throws IOException
+	 */
+	public static String getASCIIContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException 
+	{
+		InputStream in = entity.getContent();
+		StringBuffer out = new StringBuffer();
+		
+		int n = 1;
+		while (n>0) 
+		{
+			byte[] b = new byte[4096];
+			n =  in.read(b);
+			if (n>0) 
+			{
+				out.append(new String(b, 0, n));
+			}
+		}
+		
+		return out.toString();
 	}
 }

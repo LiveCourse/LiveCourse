@@ -1,18 +1,22 @@
 package net.livecourse.android;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import net.livecourse.android.R;
-import net.livecourse.database.ChatMessagesLoader;
-import net.livecourse.database.DatabaseHandler;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import net.livecourse.R;
+import net.livecourse.database.Participant;
 import net.livecourse.database.ParticipantsLoader;
-import net.livecourse.rest.REST;
+import net.livecourse.rest.OnRestCalled;
+import net.livecourse.rest.Restful;
+import net.livecourse.utility.Globals;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +30,9 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ParticipantsFragment extends SherlockFragment implements OnItemLongClickListener,ActionMode.Callback, LoaderCallbacks<Cursor>
+public class ParticipantsFragment extends SherlockFragment implements OnItemLongClickListener,ActionMode.Callback, LoaderCallbacks<Cursor>, OnRestCalled
 {
+	private final String TAG = " == Participants Fragment == ";
 	private static final String KEY_CONTENT = "TestFragment:Content";
 
 	/**
@@ -50,7 +55,8 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
     {
         super.onCreate(savedInstanceState);
 
-        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
+        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) 
+        {
             mContent = savedInstanceState.getString(KEY_CONTENT);
         }
     }
@@ -58,17 +64,13 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
     {
-    	/**
-		 * Initialize the temporary list
-		 */
-		 //participants = new ArrayList<String>();
-		 //participants.addAll(Arrays.asList(array));
+    	Globals.participantsFragment = this;
 		
 		/**
 		 * Connects the list to the XML
 		 */
-		participantsLayout = inflater.inflate(R.layout.classlist_layout, container, false);
-		participantsListView = (ListView) participantsLayout.findViewById(R.id.class_list_view);
+		participantsLayout = inflater.inflate(R.layout.participants_layout, container, false);
+		participantsListView = (ListView) participantsLayout.findViewById(R.id.participants_list_view);
     	
     	
     	/** 
@@ -79,13 +81,14 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
         
         participantsListView.setOnItemLongClickListener(this);
         
-		new REST(this.getSherlockActivity(),this,MainActivity.currentChatId,null,REST.PARTICIPANTS).execute();
+        this.updateList();
         
         return participantsLayout;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) 
+    {
         super.onSaveInstanceState(outState);
         outState.putString(KEY_CONTENT, mContent);
     }
@@ -153,7 +156,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1)
 	{
-		return new ParticipantsLoader(this.getSherlockActivity(), MainActivity.getAppDb());
+		return new ParticipantsLoader(this.getSherlockActivity(), Globals.appDb);
 	}
 
 	@Override
@@ -161,7 +164,6 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	{
 		adapter.notifyDataSetChanged();
 		adapter.swapCursor(cursor);
-		this.participantsListView.setStackFromBottom(true);
 	}
 
 	@Override
@@ -171,11 +173,59 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	}
 	public void updateList()
 	{
-		new REST(this.getSherlockActivity(),this,MainActivity.currentChatId,null,REST.PARTICIPANTS).execute();
+		Globals.appDb.recreateParticipants();
+		new Restful(Restful.GET_PARTICIPANTS_PATH, Restful.GET, new String[]{"id"}, new String[]{Globals.chatId}, 1, this);
 	}
 	public void clearList()
 	{
 		adapter.swapCursor(null);
+	}
+
+	@Override
+	public void onRestHandleResponseSuccess(String restCall, String response) 
+	{
+		JSONArray parse;
+		JSONObject ob;
+		
+		try 
+		{
+			parse = new JSONArray(response);
+			
+			for(int x = 0; x < parse.length(); x++)
+			{
+				Participant participant = new Participant();
+				ob = parse.getJSONObject(x);
+				
+				participant.setChatId(ob.getString("id"));
+	        	participant.setEmail(ob.getString("email"));
+	        	participant.setDisplayName(ob.getString("display_name"));
+	        	participant.setTime_lastfocus(ob.getString("time_lastfocus"));
+	        	participant.setTime_lastrequest(ob.getString("time_lastrequest"));
+	        	
+	        	Globals.appDb.addParticipant(participant);
+			}
+		} 
+		catch (JSONException e) 
+		{
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void onRestPostExecutionSuccess(String restCall, String result) 
+	{
+		if(restCall.equals(Restful.GET_PARTICIPANTS_PATH))
+		{
+			this.getSherlockActivity().getSupportLoaderManager().restartLoader(3, null, this);
+		}
+	}
+
+	@Override
+	public void onRestPostExecutionFailed(String restCall, int code, String result) 
+	{
+		Log.d(this.TAG, "Rest call: " + restCall + "failed with status code: " + code);
+		Log.d(this.TAG,"Result from server is:\n" + result);		
 	}
 	
 }
