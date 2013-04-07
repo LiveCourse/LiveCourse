@@ -10,6 +10,7 @@ import net.livecourse.database.ParticipantsLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
+import net.livecourse.utility.ParticipantViewHolder;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
@@ -32,7 +34,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ParticipantsFragment extends SherlockFragment implements OnItemLongClickListener,ActionMode.Callback, LoaderCallbacks<Cursor>, OnRestCalled
+public class ParticipantsFragment extends SherlockFragment implements OnItemLongClickListener,ActionMode.Callback, LoaderCallbacks<Cursor>, OnRestCalled, OnItemClickListener
 {
 	private final String TAG = " == Participants Fragment == ";
 	private static final String KEY_CONTENT = "TestFragment:Content";
@@ -40,9 +42,10 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	/**
 	 * The XML views
 	 */
+	private View clickedView;
 	private View participantsLayout;
 	private ListView participantsListView;
-	private ParticipantsAdapter adapter;
+	private ParticipantsCursorAdapter adapter;
 
     public static ParticipantsFragment newInstance(String content, TabsFragmentAdapter tabsAdapater) 
     {
@@ -67,7 +70,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
     {
     	Globals.participantsFragment = this;
-		
+		Globals.appDb.recreateParticipants();
 		/**
 		 * Connects the list to the XML
 		 */
@@ -78,7 +81,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
     	/** 
     	 * Create the adapter and populate the view
     	 */
-        adapter = new ParticipantsAdapter(inflater.getContext(), null, 0);
+        adapter = new ParticipantsCursorAdapter(inflater.getContext(), null, 0);
         participantsListView.setAdapter(adapter);
         
         participantsListView.setOnItemLongClickListener(this);
@@ -92,14 +95,25 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
         super.onSaveInstanceState(outState);
         outState.putString(KEY_CONTENT, mContent);
     }
+    
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
+	{
+		if(parent == this.participantsListView)
+		{
+			this.startUserInfo(view);
+		}
+	}
+	
 
 	/**
 	 * Handles long click on item in the list view, currently starts action
 	 * menu
 	 */
 	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) 
 	{
+		this.clickedView = view;
 		this.getSherlockActivity().startActionMode(this);
 		return true;
 	}
@@ -110,14 +124,12 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	 * in google docs.
 	 */
 	@Override
-	public boolean onActionItemClicked(ActionMode mode,
-			MenuItem item) {
+	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 
 		switch(item.getItemId())
 		{
 			case R.id.participants_fragment_participants_details_menu_item:
-				Intent userInfoIntent = new Intent(this.getSherlockActivity(),UserInfoActivity.class);
-				startActivity(userInfoIntent);
+				this.startUserInfo(clickedView);
 				break;
 		}
 		return false;
@@ -171,11 +183,21 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	{
 		adapter.swapCursor(null);
 	}
+	
+	public void startUserInfo(View v)
+	{
+		Intent userInfoIntent = new Intent(this.getSherlockActivity(),UserInfoActivity.class);
+		userInfoIntent.putExtra("userId", ((ParticipantViewHolder) v.getTag()).userId);
+		
+		this.getSherlockActivity().startActivity(userInfoIntent);
+	}
+	
 	public void updateList()
 	{
 		Globals.appDb.recreateParticipants();
 		new Restful(Restful.GET_PARTICIPANTS_PATH, Restful.GET, new String[]{"id"}, new String[]{Globals.chatId}, 1, this);
 	}
+	
 	public void clearList()
 	{
 		adapter.swapCursor(null);
@@ -198,7 +220,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 				db = Globals.appDb.getWritableDatabase();
 				statement = db.compileStatement(
 						"INSERT INTO " 	+ DatabaseHandler.TABLE_PARTICIPANTS + 
-							" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
+							" ( " 		+ DatabaseHandler.KEY_PART_USER_ID + 
 							", " 		+ DatabaseHandler.KEY_CHAT_DISPLAY_NAME + 
 							", " 		+ DatabaseHandler.KEY_CHAT_EMAIL + 
 							", " 		+ DatabaseHandler.KEY_PART_TIME_LASTFOCUS + 
@@ -248,5 +270,6 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 		Log.d(this.TAG, "Rest call: " + restCall + "failed with status code: " + code);
 		Log.d(this.TAG,"Result from server is:\n" + result);		
 	}
-	
+
+
 }

@@ -168,9 +168,9 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) 
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	{
-		if(adapter == this.classListView)
+		if(parent == this.classListView)
 		{
 			this.switchToChat(((ChatroomViewHolder)view.getTag()).idString, ((ChatroomViewHolder)view.getTag()).className.getText().toString());
 		}

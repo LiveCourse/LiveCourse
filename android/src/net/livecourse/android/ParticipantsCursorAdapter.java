@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class ParticipantsAdapter extends CursorAdapter
+public class ParticipantsCursorAdapter extends CursorAdapter
 {
 	/**
 	 * The context
@@ -25,7 +25,7 @@ public class ParticipantsAdapter extends CursorAdapter
 	 * @param c			The cursor used to populate the view
 	 * @param flags		The mode for the adapter
 	 */
-	public ParticipantsAdapter(Context context, Cursor c, int flags) 
+	public ParticipantsCursorAdapter(Context context, Cursor c, int flags) 
 	{
 		super(context, c, flags);
 		mContext = context;
@@ -67,6 +67,7 @@ public class ParticipantsAdapter extends CursorAdapter
 		String name = cursor.getString(cursor.getColumnIndexOrThrow("display_name"));
 				
 		v.displayName.setText(name);
+		v.userId = cursor.getString(cursor.getColumnIndexOrThrow("user_id"));
 
 		view.setTag(v);
 	}

@@ -15,7 +15,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 {
 	private final String TAG = " == DatabaseHandler == ";
 	
-	private static final int DATABASE_VERSION = 20;
+	private static final int DATABASE_VERSION = 24;
 	
 	/**
 	 * Database name
@@ -63,6 +63,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	/**
 	 * Fields used for the participant object
 	 */
+	public static final String KEY_PART_USER_ID				= "user_id";
 	public static final String KEY_PART_TIME_LASTFOCUS		= "time_lastfocus";
 	public static final String KEY_PART_TIME_LASTREQUEST	= "time_lastrequest";
 	
@@ -118,7 +119,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		
 		String CREATE_TABLE_PARTICIPANTS  = "CREATE TABLE " 			+ TABLE_PARTICIPANTS 	+ "( "
 											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
+											+ KEY_PART_USER_ID			+ " int(11) UNIQUE, "
 											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255), "
 											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
 											+ KEY_PART_TIME_LASTFOCUS	+ " int(11), "
@@ -152,6 +153,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		 * Recreate tables
 		 */
 		onCreate(db);
+		
+		Log.d(this.TAG, "Recreated all database tables");
 	}
 	
 	/**
@@ -273,7 +276,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		 * Put all the values in
 		 */
 		ContentValues values = new ContentValues();
-		values.put(KEY_CHAT_ID,					a.getChatId());
+		values.put(KEY_PART_USER_ID,			a.getChatId());
 		values.put(KEY_CHAT_DISPLAY_NAME,		a.getDisplayName());
 		values.put(KEY_CHAT_EMAIL, 				a.getEmail());
 		values.put(KEY_PART_TIME_LASTFOCUS, 	a.getTime_lastfocus());
@@ -386,7 +389,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		 */
 		String CREATE_TABLE_PARTICIPANTS  = "CREATE TABLE " 			+ TABLE_PARTICIPANTS 	+ "( "
 											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
+											+ KEY_PART_USER_ID			+ " int(11) UNIQUE, "
 											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255), "
 											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
 											+ KEY_PART_TIME_LASTFOCUS	+ " int(11), "

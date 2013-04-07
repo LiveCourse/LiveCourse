@@ -82,6 +82,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	{
 		switch(item.getItemId())
 		{
+			case R.id.main_options_menu_settings:
+				Intent settings = new Intent(this, EditUserInfoActivity.class);
+	            //startActivityForResult(i, RESULT_SETTINGS);
+	            startActivity(settings);
+				break;
 			case R.id.item1:
 				Toast.makeText(this, "Menu item 1 tapped", Toast.LENGTH_SHORT).show();
 				break;
