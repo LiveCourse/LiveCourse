@@ -132,6 +132,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		 * Currently just sets the options menu on off
 		 */
 		Log.d(this.TAG, "OnPageSelected entered with position: " + position);
+		
+		if(Globals.mode != null)
+			Globals.mode.finish();
+				
 		switch(position)
 		{
 			case 0:

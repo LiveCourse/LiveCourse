@@ -24,6 +24,22 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+/**
+ * This class is responsible for sending and receiving the HttpGet or HttpPost requests.  This class
+ * will create either a HttpGet or HttpPost object and sends it at our server and then receive it, all
+ * done on a background thread.  It will then call the OnRestCalled callback class to do or finish up tasks.
+ * All classes that call this class should implement OnRestCalled in order to use it's methods.  There are
+ * three methods that OnRestCalled implements, which are documented in the OnRestCalled interface.  In short
+ * there is one method that runs only if the return from the server is successful and performs actions in 
+ * the same background thread, one method that handles the results of the call if they were successful, and
+ * one method that handles the results of the call if it failed.  There may be a fourth method added later on
+ * that handles setup before the going into the background thread.
+ * 
+ * This class is mostly completed and should not be touched.  If something breaks, it would generally be your
+ * code, not this class.
+ * 
+ * @author Darren Cheng
+ */
 public class Restful extends AsyncTask <Void, Void, String> 
 {
 	private final String			TAG							= " == Restful == ";
@@ -292,12 +308,4 @@ public class Restful extends AsyncTask <Void, Void, String>
 	{
 		return response.getStatusLine().getStatusCode();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 }

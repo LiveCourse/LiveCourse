@@ -1,5 +1,11 @@
 package net.livecourse.rest;
 
+/**
+ * This is the interface used to interface the Restful class and other classes that call the
+ * Restful class.
+ * 
+ * @author Darren
+ */
 public interface OnRestCalled 
 {
 	/**

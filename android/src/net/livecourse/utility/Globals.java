@@ -1,5 +1,7 @@
 package net.livecourse.utility;
 
+import com.actionbarsherlock.view.ActionMode;
+
 import net.livecourse.android.ChatFragment;
 import net.livecourse.android.ClassListFragment;
 import net.livecourse.android.MainActivity;
@@ -31,6 +33,7 @@ public class Globals
      * The loader numbers
      */
     public static final int CLASS_LIST_LOADER = 1;
+    
 	
 	/**
 	 * Variables saved that is used globally
@@ -48,5 +51,7 @@ public class Globals
 	public static String				startEpoch;
 	public static String				message;
 	public static String				chatName;
+	
+	public static ActionMode			mode;
 }
 

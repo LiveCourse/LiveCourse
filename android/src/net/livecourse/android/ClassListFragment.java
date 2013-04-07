@@ -183,7 +183,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
 	{
-		this.getSherlockActivity().startActionMode(this);
+		Globals.mode = this.getSherlockActivity().startActionMode(this);
 		
 		return true;
 	}

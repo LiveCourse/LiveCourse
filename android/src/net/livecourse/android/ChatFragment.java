@@ -197,7 +197,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
 	{
-		this.getSherlockActivity().startActionMode(this);
+		Globals.mode = this.getSherlockActivity().startActionMode(this);
+		
 		return true;
 	}
 
@@ -222,6 +223,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	{
 		MenuInflater inflater = mode.getMenuInflater();
 	    inflater.inflate(R.menu.chat_action_menu, menu);
+	    
 	    
 		return true;
 	}

@@ -114,7 +114,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) 
 	{
 		this.clickedView = view;
-		this.getSherlockActivity().startActionMode(this);
+		Globals.mode = this.getSherlockActivity().startActionMode(this);
 		return true;
 	}
 
