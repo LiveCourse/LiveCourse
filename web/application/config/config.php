@@ -366,7 +366,7 @@ $config['proxy_ips'] = '';
 | This is used by Google and the server to send push notifications to the
 | android devices.
 */
-$config['api_key'] = 'AIzaSyABodKWBL4SkAf2MxCQwPlIX1ek0bYzF3I';
+$config['api_key'] = 'AIzaSyBHWu7AK7qWvp7few48FyH6Nw52uC2oM_A';
 
 
 /* End of file config.php */

@@ -433,7 +433,54 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("You must provide a message.")),403);
 			return;
 		}
-
+		
+		//$message = "You have received a message in one of your chats!";
+		
+		$users = $this->Model_Users->fetch_all_android_user();
+		if (count($users) > 0)
+		{
+			$registration_ids = null;
+			foreach ($users as $user)
+			{
+				$registration_ids[] = $user->gcm_regid;
+			}
+			$url = 'https://android.googleapis.com/gcm/send';
+		
+			$fields = array(
+			    'registration_ids' => $registration_ids,
+			    'data' => array("message" => $message,)
+			);
+			
+			$headers = array(
+			    'Authorization: key=' . $this->config->item('api_key'),
+			    'Content-Type: application/json'
+			);
+			// Open connection
+			$ch = curl_init();
+			
+			// Set the url, number of POST vars, POST data
+			curl_setopt($ch, CURLOPT_URL, $url);
+			
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			
+			// Disabling SSL Certificate support temporarly
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+			
+			// Execute post
+			$result = curl_exec($ch);
+			
+			// Close connection
+			curl_close($ch);
+			if(!$result)
+			{
+				$this->response($this->rest_error(array("Error sending push notifications!")),403);
+				return;
+			}
+		}
 		$this->Model_Chats->send_message($user_id,$chat_id,$message);
 		$this->response(NULL,201); //Success
 	}
@@ -744,7 +791,7 @@ class Chats extends REST_Controller
 	/**
 	 *Sends a push notification to GCM
 	 *returns TRUE if successful, FALSE if failed.
-	 */
+	 
 	function push_notification_post()
 	{
 		$this->load->model('Model_Users');
@@ -814,6 +861,6 @@ class Chats extends REST_Controller
 			}
 		}
 		return;
-	}
+	}*/
 
 }
