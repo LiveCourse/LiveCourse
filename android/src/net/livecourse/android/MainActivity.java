@@ -2,13 +2,11 @@ package net.livecourse.android;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.*;
-import com.google.android.gcm.GCMRegistrar;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
-import net.livecourse.android.R;
+import net.livecourse.R;
 import net.livecourse.database.DatabaseHandler;
+import net.livecourse.utility.Globals;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,38 +22,16 @@ import android.widget.Toast;
  */
 public class MainActivity extends SherlockFragmentActivity implements OnPageChangeListener
 {
-	public static String SENDER_ID = "584781219532";
-	private String TAG = "** pushAndroidActivity **";
-	
-	/**
-	 * Some globals
-	 */
-	public static String currentChatId;
-	
-	/**
-	 * REST stuff
-	 */
-	//private String token;
-	//private String password;
-	
-	/**
-	 * Database
-	 */
-	private static DatabaseHandler appDb;
+	private final String TAG = " == MainActivity == ";
+
+	public static final int VIEW_PAGE_LOAD_COUNT = 2;
 	
 	/**
 	 * Declares the required objects for the swipey tabs.
 	 */
     private TabsFragmentAdapter mAdapter;
-    private ViewPager mPager;
-    private PageIndicator mIndicator;
-    
-    /**
-     * Fragments
-     */
-    public static ClassListFragment classListFragment;
-    public static ChatFragment chatFragment;
-    public static ParticipantsFragment participantsFragment;
+    private ViewPager 			mPager;
+    private PageIndicator 		mIndicator;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -63,49 +39,33 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        //this.setToken(this.getIntent().getStringExtra("token"));
-        //this.setPassword(this.getIntent().getStringExtra("password"));
+        Globals.mainActivity = this;
+        
         /**
          * Init database
          */
-        appDb = new DatabaseHandler(this.getApplicationContext());
-        appDb.recreateClassEnroll();
+        Globals.appDb = new DatabaseHandler(this.getApplicationContext());
+        Globals.appDb.recreateClassEnroll();
 
         /**
-         * The following code initializes the tabs.
+         * The following code initializes the tabs and sets up the tabs adapter and
+         * the view pager indicator
          */
-        mAdapter = new TabsFragmentAdapter(getSupportFragmentManager());
         mPager = (ViewPager)findViewById(R.id.pager);
-        mPager.setAdapter(mAdapter);
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
-        mIndicator.setViewPager(mPager);
+        mAdapter = new TabsFragmentAdapter(this.getSupportFragmentManager());
         
-        /**
-         * Sends stuff through to the adapter so we can handle it at the fragment levels
-         * Pretty sure there is a better way to do this
-         */
+        mPager.setOffscreenPageLimit(MainActivity.VIEW_PAGE_LOAD_COUNT);
+        mPager.setAdapter(mAdapter);
+        
+        mIndicator.setViewPager(mPager);
+        mIndicator.setOnPageChangeListener(this);
+
         mAdapter.setIndicator(mIndicator);
         mAdapter.setPager(mPager);
         mAdapter.setActivity(this);
         
-        mIndicator.setOnPageChangeListener(this);
         
-        /**
-         * GCM Code
-         */
-		GCMRegistrar.checkDevice(this);
-		GCMRegistrar.checkManifest(this);
-		
-		final String regId = GCMRegistrar.getRegistrationId(this);
-		
-		if (regId.equals("")) 
-		{
-			GCMRegistrar.register(this, SENDER_ID);
-		} 
-		else 
-		{
-			Log.v(TAG, "Already registered");
-		}
     }
 	
 	@Override
@@ -122,6 +82,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	{
 		switch(item.getItemId())
 		{
+			case R.id.main_options_menu_settings:
+				Intent settings = new Intent(this, EditUserInfoActivity.class);
+	            //startActivityForResult(i, RESULT_SETTINGS);
+	            startActivity(settings);
+				break;
 			case R.id.item1:
 				Toast.makeText(this, "Menu item 1 tapped", Toast.LENGTH_SHORT).show();
 				break;
@@ -166,6 +131,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		/**
 		 * Currently just sets the options menu on off
 		 */
+		Log.d(this.TAG, "OnPageSelected entered with position: " + position);
+		
+		if(Globals.mode != null)
+			Globals.mode.finish();
+				
 		switch(position)
 		{
 			case 0:
@@ -183,25 +153,22 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		}		
 	}
 
-	public TabsFragmentAdapter getTabsAdapter() {
+	public TabsFragmentAdapter getTabsAdapter() 
+	{
 		return mAdapter;
 	}
 
-	public void setTabsAdapter(TabsFragmentAdapter mAdapter) {
+	public void setTabsAdapter(TabsFragmentAdapter mAdapter) 
+	{
 		this.mAdapter = mAdapter;
 	}
-
-	public static DatabaseHandler getAppDb() {
-		return appDb;
-	}
-
-	public static void setAppDb(DatabaseHandler appDb) {
-		MainActivity.appDb = appDb;
-	}
 	
 	
-	public void onActivityResult(int request, int result, Intent i) 
+	public void onActivityResult(int request, int result, Intent data) 
 	{
-		classListFragment.onActivityResult(request, result, i);
+		/**
+		 * Forwards the QR Code result
+		 */
+		mAdapter.getItem(0).onActivityResult(request, result, data);
 	}
 }

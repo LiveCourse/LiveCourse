@@ -1,14 +1,25 @@
 package net.livecourse.android;
 
-import net.livecourse.android.R;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import net.livecourse.R;
 import net.livecourse.database.ChatMessagesLoader;
-import net.livecourse.rest.REST;
+import net.livecourse.database.DatabaseHandler;
+import net.livecourse.rest.OnRestCalled;
+import net.livecourse.rest.Restful;
+import net.livecourse.utility.Globals;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,8 +36,12 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ChatFragment extends SherlockFragment implements OnClickListener, OnItemLongClickListener, ActionMode.Callback, LoaderCallbacks<Cursor>
+public class ChatFragment extends SherlockFragment implements OnClickListener, OnItemLongClickListener, ActionMode.Callback, LoaderCallbacks<Cursor>, OnRestCalled
 {
+	private final String TAG = " == Chat Fragment == ";
+	
+	public Handler mHandler = new Handler();
+	public Restful restful;
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
 	
@@ -58,11 +73,12 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	private String mContent = "???";
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) 
+	{
 		super.onCreate(savedInstanceState);
 
-		if ((savedInstanceState != null)
-				&& savedInstanceState.containsKey(KEY_CONTENT)) {
+		if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) 
+		{
 			mContent = savedInstanceState.getString(KEY_CONTENT);
 		}
 	}
@@ -70,13 +86,13 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-		MainActivity.chatFragment = this;
+		Globals.chatFragment = this;
 		/**
 		 * Settings for the fragment
 		 * Allows adding stuff for the options menu
 		 */
 		this.setHasOptionsMenu(true);
-		this.setMenuVisibility(false);
+		this.setMenuVisibility(true);
 		
 		/**
 		 * Connects the views to their XML equivalent
@@ -103,7 +119,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(Bundle outState) 
+	{
 		super.onSaveInstanceState(outState);
 		outState.putString(KEY_CONTENT, mContent);
 	}
@@ -163,8 +180,9 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 				 * Update the list and sends update the adapter, then change
 				 * EditText back to blank
 				 */
-				//messages.add(sendMessageEditTextView.getText().toString());
-				new REST(this.getSherlockActivity(),this,null,null,null,null,null,MainActivity.currentChatId,sendMessageEditTextView.getText().toString(),REST.SEND).execute();
+				
+				Globals.message = sendMessageEditTextView.getText().toString();
+				new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId, Globals.message}, 2, this);
 				
 		        adapter.notifyDataSetChanged();
 				sendMessageEditTextView.setText("");
@@ -179,7 +197,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
 	{
-		this.getSherlockActivity().startActionMode(this);
+		Globals.mode = this.getSherlockActivity().startActionMode(this);
+		
 		return true;
 	}
 
@@ -189,8 +208,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	 * in google docs.
 	 */
 	@Override
-	public boolean onActionItemClicked(ActionMode mode,
-			MenuItem item) {
+	public boolean onActionItemClicked(ActionMode mode, MenuItem item) 
+	{
 		// TODO Auto-generated method stub
 		
 		return false;
@@ -204,6 +223,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	{
 		MenuInflater inflater = mode.getMenuInflater();
 	    inflater.inflate(R.menu.chat_action_menu, menu);
+	    
 	    
 		return true;
 	}
@@ -221,7 +241,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	 * Runs when the contextual action mode gets invalidated
 	 */
 	@Override
-	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+	public boolean onPrepareActionMode(ActionMode mode, Menu menu) 
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -229,15 +250,19 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) 
 	{
-		return new ChatMessagesLoader(this.getSherlockActivity(), MainActivity.getAppDb());
+		return new ChatMessagesLoader(this.getSherlockActivity(), Globals.appDb);
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) 
 	{
+		long startTime = System.currentTimeMillis();
+		
 		adapter.notifyDataSetChanged();
 		adapter.swapCursor(cursor);
 		this.messageListView.setStackFromBottom(true);
+		
+		Log.d(this.TAG, "Messages stored into listview in " + (System.currentTimeMillis() - startTime) + "ms");
 	}
 
 	@Override
@@ -247,13 +272,107 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		
 	}
 	public void updateList()
-	{
+	{		
+		Globals.appDb.recreateChatMessages();
+		restful = new Restful(Restful.GET_RECENT_MESSAGES_PATH,Restful.GET, new String[]{"chat_id", "num_messages"}, new String[]{Globals.chatId, Restful.MAX_MESSAGE_SIZE}, 2, this);
 		
-		new REST(this.getSherlockActivity(),this,null,null,null,null,null,REST.chatId,null,REST.FETCH_RECENT).execute();
 	}
-	public void clearList()
+	
+	public Runnable refreshList = new Runnable()
 	{
-		adapter.swapCursor(null);
+		public void run()
+		{
+			if(restful != null && !restful.cancel(true))
+			{
+				restful.cancel(true);
+			}
+			Globals.chatFragment.updateList();
+			mHandler.postDelayed(refreshList, 1500);
+		}
+	};
+
+	@Override
+	public void onRestHandleResponseSuccess(String restCall, String response) 
+	{		
+		long startTime = System.currentTimeMillis();
+
+		JSONArray parse = null;
+		JSONObject ob = null;
+		
+		if(restCall.equals(Restful.GET_RECENT_MESSAGES_PATH))
+		{
+			SQLiteDatabase db = null;
+			SQLiteStatement statement = null;
+			try 
+			{
+				parse = new JSONArray(response);
+				db = Globals.appDb.getWritableDatabase();
+				statement = db.compileStatement(
+						"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
+							" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
+							", "		+ DatabaseHandler.KEY_CHAT_USER_ID +
+							", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
+							", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
+							", " 		+ DatabaseHandler.KEY_CHAT_EMAIL + 
+							", " 		+ DatabaseHandler.KEY_CHAT_DISPLAY_NAME + 
+							") VALUES (?, ?, ?, ?, ?, ?)");
+
+				db.beginTransaction();
+				for(int x = 0;x<parse.length();x++)
+		        {
+		        	ob = parse.getJSONObject(x);
+		   		        	
+		        	//statement.clearBindings();
+		        	
+		        	statement.bindString(1, ob.getString("id"));
+		        	statement.bindString(2, ob.getString("user_id"));
+		        	statement.bindString(3, ob.getString("send_time"));
+		        	statement.bindString(4, ob.getString("message_string"));
+		        	statement.bindString(5, ob.getString("email"));
+		        	statement.bindString(6, ob.getString("display_name"));
+		        	
+		        	statement.execute();
+		        }
+				db.setTransactionSuccessful();	
+			} 
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
+			}	
+			finally
+			{
+				db.endTransaction();
+
+			}
+			statement.close();
+			db.close();
+			
+			Log.d(this.TAG, parse.length() + " messages stored in database in " + (System.currentTimeMillis() - startTime) + "ms");
+		}
+		else if(restCall.equals(Restful.SEND_MESSAGE_PATH))
+		{
+			
+		}
+	}
+
+	@Override
+	public void onRestPostExecutionSuccess(String restCall, String result) 
+	{
+		if(restCall.equals(Restful.GET_RECENT_MESSAGES_PATH))
+		{
+			Globals.mainActivity.getSupportLoaderManager().restartLoader(2, null, this);
+		}
+		else if(restCall.equals(Restful.SEND_MESSAGE_PATH))
+		{
+			
+		}
+	}
+
+	@Override
+	public void onRestPostExecutionFailed(String restCall, int code, String result) 
+	{
+		Log.d(this.TAG, "Rest call: " + restCall + "failed with status code: " + code);
+		Log.d(this.TAG,"Result from server is:\n" + result);
 	}
 
 }

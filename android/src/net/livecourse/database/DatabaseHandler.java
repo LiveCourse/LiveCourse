@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * This class is responsible for the managing the SQLite Database that the LiveCourse Android App uses.
@@ -12,7 +13,9 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DatabaseHandler extends SQLiteOpenHelper
 {
-	private static final int DATABASE_VERSION = 19;
+	private final String TAG = " == DatabaseHandler == ";
+	
+	private static final int DATABASE_VERSION = 25;
 	
 	/**
 	 * Database name
@@ -29,39 +32,41 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	/**
 	 * Fields used for the classroom object
 	 */
-	private static final String KEY_ID						= "_id";
-	private static final String KEY_CLASS_ID_STRING 		= "id_string";
-	private static final String KEY_CLASS_SUBJECT_ID 		= "subject_id";
-	private static final String KEY_CLASS_COURSE_NUMBER 	= "course_number";
-	private static final String KEY_CLASS_NAME 				= "name";
-	private static final String KEY_CLASS_INSTITUTION_ID 	= "institution_id";
-	private static final String KEY_CLASS_ROOM_ID 			= "room_id";
-	private static final String KEY_CLASS_START_TIME 		= "start_time";
-	private static final String KEY_CLASS_END_TIME 			= "end_time";
-	private static final String KEY_CLASS_START_DATE 		= "start_date";
-	private static final String KEY_CLASS_END_DATE 			= "end_date";
-	private static final String KEY_CLASS_DOW_MONDAY 		= "dow_monday";
-	private static final String KEY_CLASS_DOW_TUESDAY 		= "dow_tuesday";
-	private static final String KEY_CLASS_DOW_WEDNESDAY 	= "dow_wednesday";
-	private static final String KEY_CLASS_DOW_THURSDAY 		= "dow_thursday";
-	private static final String KEY_CLASS_DOW_FRIDAY 		= "dow_friday";
-	private static final String KEY_CLASS_DOW_SATURDAY 		= "dow_saturday";
-	private static final String KEY_CLASS_DOW_SUNDAY 		= "dow_sunday";
+	public static final String KEY_ID						= "_id";
+	public static final String KEY_CLASS_ID_STRING 			= "id_string";
+	public static final String KEY_CLASS_SUBJECT_ID 		= "subject_id";
+	public static final String KEY_CLASS_COURSE_NUMBER 		= "course_number";
+	public static final String KEY_CLASS_NAME 				= "name";
+	public static final String KEY_CLASS_INSTITUTION_ID 	= "institution_id";
+	public static final String KEY_CLASS_ROOM_ID 			= "room_id";
+	public static final String KEY_CLASS_START_TIME 		= "start_time";
+	public static final String KEY_CLASS_END_TIME 			= "end_time";
+	public static final String KEY_CLASS_START_DATE 		= "start_date";
+	public static final String KEY_CLASS_END_DATE 			= "end_date";
+	public static final String KEY_CLASS_DOW_MONDAY 		= "dow_monday";
+	public static final String KEY_CLASS_DOW_TUESDAY 		= "dow_tuesday";
+	public static final String KEY_CLASS_DOW_WEDNESDAY 		= "dow_wednesday";
+	public static final String KEY_CLASS_DOW_THURSDAY 		= "dow_thursday";
+	public static final String KEY_CLASS_DOW_FRIDAY 		= "dow_friday";
+	public static final String KEY_CLASS_DOW_SATURDAY 		= "dow_saturday";
+	public static final String KEY_CLASS_DOW_SUNDAY 		= "dow_sunday";
 	
 	/**
 	 * Fields used for the message object
 	 */
-	private static final String KEY_CHAT_ID					= "chat_id";
-	private static final String KEY_CHAT_SEND_TIME			= "send_time";
-	private static final String KEY_CHAT_MESSAGE_STRING		= "message_string";
-	private static final String KEY_CHAT_EMAIL				= "email";
-	private static final String KEY_CHAT_DISPLAY_NAME		= "display_name";
+	public static final String KEY_CHAT_ID					= "chat_id";
+	public static final String KEY_CHAT_USER_ID				= "user_id";
+	public static final String KEY_CHAT_SEND_TIME			= "send_time";
+	public static final String KEY_CHAT_MESSAGE_STRING		= "message_string";
+	public static final String KEY_CHAT_EMAIL				= "email";
+	public static final String KEY_CHAT_DISPLAY_NAME		= "display_name";
 	
 	/**
 	 * Fields used for the participant object
 	 */
-	private static final String KEY_PART_TIME_LASTFOCUS		= "time_lastfocus";
-	private static final String KEY_PART_TIME_LASTREQUEST	= "time_lastrequest";
+	public static final String KEY_PART_USER_ID				= "user_id";
+	public static final String KEY_PART_TIME_LASTFOCUS		= "time_lastfocus";
+	public static final String KEY_PART_TIME_LASTREQUEST	= "time_lastrequest";
 	
 	/**
 	 * The constructor of the database, pass it the context.
@@ -106,16 +111,17 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		
 		String CREATE_TABLE_CHAT_MESSAGES = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
 											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+											+ KEY_CHAT_USER_ID			+ " int(11),"
 											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
 											+ KEY_CHAT_SEND_TIME		+ " int(11), "
 											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
 											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
-											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255) "
+											+ KEY_CHAT_DISPLAY_NAME 	+ " varchar(255) "
 											+ ")";
 		
 		String CREATE_TABLE_PARTICIPANTS  = "CREATE TABLE " 			+ TABLE_PARTICIPANTS 	+ "( "
 											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
+											+ KEY_PART_USER_ID			+ " int(11) UNIQUE, "
 											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255), "
 											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
 											+ KEY_PART_TIME_LASTFOCUS	+ " int(11), "
@@ -149,6 +155,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		 * Recreate tables
 		 */
 		onCreate(db);
+		
+		Log.d(this.TAG, "Recreated all database tables");
 	}
 	
 	/**
@@ -188,8 +196,11 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		/**
 		 * Insert the row into the table and the close the connection to the DB
 		 */
-		db.insertWithOnConflict(TABLE_CLASS_ENROLL, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+		
+		long row = db.insertWithOnConflict(TABLE_CLASS_ENROLL, null, values, SQLiteDatabase.CONFLICT_IGNORE);
 		db.close();
+		
+		Log.d(this.TAG, "Added Chatroom to row " + row + " with name: " + a.getName());
 	}
 	
 	/**
@@ -219,6 +230,36 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		 */
 		db.insertWithOnConflict(TABLE_CHAT_MESSAGES, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		db.close();
+		
+		//Log.d(this.TAG, "Added Chat Message to row " + row + " with message: " + a.getMessageString());
+	}
+	
+	/**
+	 * Does the same as the normal addChatMessages but does not open a
+	 * SQL transaction.  You need to open it in the calling method, can be used for
+	 * bulk add
+	 * 
+	 * @param a The message
+	 * @param db The database
+	 */
+	public void addChatMessageWithoutSQL(ChatMessage a, SQLiteDatabase db)
+	{	
+		/**
+		 * Put all the values in
+		 */
+		ContentValues values = new ContentValues();
+		values.put(KEY_CHAT_ID,					a.getChatId());
+		values.put(KEY_CHAT_SEND_TIME,			a.getSendTime());
+		values.put(KEY_CHAT_MESSAGE_STRING,		a.getMessageString());
+		values.put(KEY_CHAT_EMAIL, 				a.getEmail());
+		values.put(KEY_CHAT_DISPLAY_NAME,		a.getDisplayName());
+		
+		/**
+		 * Insert the row into the table and the close the connection to the DB
+		 */
+		db.insertWithOnConflict(TABLE_CHAT_MESSAGES, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+		
+		//Log.d(this.TAG, "Added Chat Message to row " + row + " with message: " + a.getMessageString());
 	}
 	
 	/**
@@ -237,7 +278,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		 * Put all the values in
 		 */
 		ContentValues values = new ContentValues();
-		values.put(KEY_CHAT_ID,					a.getChatId());
+		values.put(KEY_PART_USER_ID,			a.getChatId());
 		values.put(KEY_CHAT_DISPLAY_NAME,		a.getDisplayName());
 		values.put(KEY_CHAT_EMAIL, 				a.getEmail());
 		values.put(KEY_PART_TIME_LASTFOCUS, 	a.getTime_lastfocus());
@@ -248,6 +289,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		 */
 		db.insertWithOnConflict(TABLE_PARTICIPANTS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		db.close();
+		
+		//Log.d(this.TAG, "Added Participant to row " + row + " with name: " + a.getDisplayName());
 	}
 	
 	/**
@@ -255,7 +298,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void recreateClassEnroll()
 	{
-		System.out.println("Attempting to recreate table: " + TABLE_CLASS_ENROLL);
+		//System.out.println("Attempting to recreate table: " + TABLE_CLASS_ENROLL);
 		SQLiteDatabase db = this.getWritableDatabase();
 		db = this.getDatabase();
 
@@ -291,6 +334,9 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	                						+ KEY_CLASS_DOW_SUNDAY		+ " tinyint(1) "
 	                						+ ")";
         db.execSQL(CREATE_TABLE_CLASS_QUERY);	
+        db.close();
+        
+        Log.d(this.TAG, "Recreated TABLE_CLASS_ENROLL");
 	}
 	
 	/**
@@ -298,7 +344,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void recreateChatMessages()
 	{
-		System.out.println("Attempting to recreate table: " + TABLE_CHAT_MESSAGES);
+		//System.out.println("Attempting to recreate table: " + TABLE_CHAT_MESSAGES);
 		SQLiteDatabase db = this.getWritableDatabase();
 		db = this.getDatabase();
 
@@ -313,6 +359,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		String CREATE_TABLE_CHAT_MESSAGES = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
 											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
 											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
+											+ KEY_CHAT_USER_ID				+ " int(11),"
 											+ KEY_CHAT_SEND_TIME		+ " int(11), "
 											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
 											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
@@ -320,6 +367,10 @@ public class DatabaseHandler extends SQLiteOpenHelper
 											+ ")";
 		
 		db.execSQL(CREATE_TABLE_CHAT_MESSAGES);
+		db.close();
+		
+        Log.d(this.TAG, "Recreated TABLE_CHAT_MESSAGES");
+
 	}
 	
 	/**
@@ -327,7 +378,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void recreateParticipants()
 	{
-		System.out.println("Attempting to recreate table: " + TABLE_PARTICIPANTS);
+		//System.out.println("Attempting to recreate table: " + TABLE_PARTICIPANTS);
 		SQLiteDatabase db = this.getWritableDatabase();
 		db = this.getDatabase();
 
@@ -341,7 +392,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		 */
 		String CREATE_TABLE_PARTICIPANTS  = "CREATE TABLE " 			+ TABLE_PARTICIPANTS 	+ "( "
 											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
+											+ KEY_PART_USER_ID			+ " int(11) UNIQUE, "
 											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255), "
 											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
 											+ KEY_PART_TIME_LASTFOCUS	+ " int(11), "
@@ -349,6 +400,9 @@ public class DatabaseHandler extends SQLiteOpenHelper
 											+ ")";
 		
 		db.execSQL(CREATE_TABLE_PARTICIPANTS);
+		db.close();
+		
+        Log.d(this.TAG, "Recreated TABLE_PARTICIPANTS");
 	}
 	
 	/**

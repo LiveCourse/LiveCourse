@@ -3,6 +3,7 @@ package net.livecourse.android;
 import java.util.ArrayList;
 
 import net.livecourse.database.Chatroom;
+import net.livecourse.R;
 import net.livecourse.utility.Utility;
 import net.livecourse.utility.ChatroomViewHolder;
 import android.content.Context;
@@ -44,11 +45,11 @@ public class ClassQueryArrayAdapter extends ArrayAdapter<Chatroom>
             
             if (v.className != null) 
             {
-            	v.className.setText("\t" + item.getName());
+            	v.className.setText(item.getName());
             }
             if(v.classTime != null)
             {
-            	String temp = "\t\t";
+            	String temp = "";
             	
             	if(item.getDowMonday().equals("1"))
             		temp += "M";

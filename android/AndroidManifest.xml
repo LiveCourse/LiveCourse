@@ -1,35 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="net.livecourse.android"
+	package="net.livecourse"
 	android:versionCode="1"
 	android:versionName="1.0" >
 	
 	<uses-sdk
 		android:minSdkVersion="8"
-		android:targetSdkVersion="14" />
+		android:targetSdkVersion="17" />
 	
 	<permission 
-		android:name="net.livecourse.android.permission.C2D_MESSAGE" 
+		android:name="net.livecourse.permission.C2D_MESSAGE" 
 		android:protectionLevel="signature" />
 	
-	<uses-permission android:name="net.livecourse.android.permission.C2D_MESSAGE" />
+	<uses-permission android:name="net.livecourse.permission.C2D_MESSAGE" />
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	
-	<!-- Creates a custom permission so only this app can receive its messages. -->
-	<permission
-        android:name="net.livecourse.andoird.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-	
-	<!-- GCM requires a Google account. -->
-	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-	
-	<!-- Keeps the processor from sleeping when a message is received. -->
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	
-	<uses-permission android:name="net.livecourse.android.permission.C2D_MESSAGE" />
-     
+	<uses-permission android:name="android.permission.WAKE_LOCK" />   
 	<!-- This app has permission to register and receive data message. -->
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      
@@ -62,7 +48,7 @@
 			android:theme="@style/Theme.Sherlock.Light" >
 			<meta-data 
 				android:name="android.app.default_searchable"
-				android:value=".QueryActivity" />
+				android:value="net.livecourse.android.QueryActivity" />
 		</activity>
 		
 		<activity
@@ -110,7 +96,7 @@
 		</activity>
 			    
 		<receiver
-			android:name="com.google.android.gcm.GCMBroadcastReceiver"
+			android:name="net.livecourse.gcm.GCMReceiver"
 			android:permission="com.google.android.c2dm.permission.SEND" >
 			<intent-filter>
 				<action android:name="com.google.android.c2dm.intent.RECEIVE" />

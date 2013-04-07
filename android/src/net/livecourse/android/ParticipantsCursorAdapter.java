@@ -1,6 +1,6 @@
 package net.livecourse.android;
 
-import net.livecourse.utility.ChatMessageViewHolder;
+import net.livecourse.R;
 import net.livecourse.utility.ParticipantViewHolder;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class ParticipantsAdapter extends CursorAdapter
+public class ParticipantsCursorAdapter extends CursorAdapter
 {
 	/**
 	 * The context
@@ -25,7 +25,7 @@ public class ParticipantsAdapter extends CursorAdapter
 	 * @param c			The cursor used to populate the view
 	 * @param flags		The mode for the adapter
 	 */
-	public ParticipantsAdapter(Context context, Cursor c, int flags) 
+	public ParticipantsCursorAdapter(Context context, Cursor c, int flags) 
 	{
 		super(context, c, flags);
 		mContext = context;
@@ -41,7 +41,7 @@ public class ParticipantsAdapter extends CursorAdapter
 	 */
 	public View newView(Context context, Cursor cursor, ViewGroup parent) 
 	{
-		View view = LayoutInflater.from(mContext).inflate(R.layout.participants_layout, parent, false);
+		View view = LayoutInflater.from(mContext).inflate(R.layout.participants_item_layout, parent, false);
 		
 		ParticipantViewHolder v = new ParticipantViewHolder();
 		
@@ -67,6 +67,7 @@ public class ParticipantsAdapter extends CursorAdapter
 		String name = cursor.getString(cursor.getColumnIndexOrThrow("display_name"));
 				
 		v.displayName.setText(name);
+		v.userId = cursor.getString(cursor.getColumnIndexOrThrow("user_id"));
 
 		view.setTag(v);
 	}

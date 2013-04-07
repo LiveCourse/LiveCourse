@@ -1,6 +1,6 @@
 package net.livecourse.gcm;
  
-import net.livecourse.android.MainActivity;
+import net.livecourse.utility.Globals;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -12,10 +12,10 @@ public class GCMIntentService extends GCMBaseIntentService
 	 
 	public GCMIntentService() 
 	{
-		super(MainActivity.SENDER_ID);
+		super(Globals.SENDER_ID);
 	}
 	 
-	private static final String TAG = "===GCMIntentService===";
+	private static final String TAG = " == GCMIntentService == ";
 	 
 	 
 	@Override
@@ -33,7 +33,7 @@ public class GCMIntentService extends GCMBaseIntentService
 	@Override
 	protected void onMessage(Context arg0, Intent arg1) 
 	{
-		Log.i(TAG, "new message= ");
+		Log.d(TAG, "new message= ");
 	}
 	 
 	@Override

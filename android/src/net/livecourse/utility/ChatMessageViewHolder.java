@@ -8,4 +8,5 @@ public class ChatMessageViewHolder
 	public TextView message;
 	public TextView time;
 	public String messageId;
+	public String userId;
 }

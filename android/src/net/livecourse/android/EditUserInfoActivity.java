@@ -2,6 +2,9 @@ package net.livecourse.android;
 
 import android.os.Bundle;
 
+import net.livecourse.R;
+
+
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
 public class EditUserInfoActivity extends SherlockPreferenceActivity

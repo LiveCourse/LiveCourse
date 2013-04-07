@@ -5,8 +5,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     
+    <!-- 	General Purpose Strings -->
+    <string name="no_results">No Results</string>
     
-    <!-- EditUserInfo Activity Strings -->
+    <!-- 	EditUserInfo Activity Strings -->
+    <string name="user_profile_picture">User Profile Picture</string>
     <string name="pref_user_profile">User Profile</string>
     <string name="pref_user_name">Set username</string>
     <string name="pref_user_name_summary">Set your username</string>
@@ -15,6 +18,7 @@
     <string name="pref_user_password_summary">Set new password</string>
     
     <!-- Options Menu Strings -->
+	<string name="main_options_menu_settings">Settings</string>
     <string name="options_menu_title">Test 1</string>
     <string name="options_sub_menu_1">Sub Menu 1</string>
     <string name="options_sub_menu_2">Sub Menu 2</string>

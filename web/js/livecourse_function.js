@@ -358,6 +358,18 @@ function prefs_show()
 }
 
 /**
+ * Shows a dialog to the user explaining about the project.
+ */
+function info_show()
+{
+	var dialog = dialog_clone("About LiveCourse","#dialog_info",true,true);
+	Cufon.replace("#dialog_info div.pane h2");
+	dialog_show(dialog, function() { //Show it!
+		
+	}); 
+}
+
+/**
  * Shows a dialog with another user's profile information.
  */
 function user_profile_show(user_id)
@@ -585,6 +597,7 @@ function switch_chat_room(room)
 {
 	var switch_ind = progress_indicator_show();
 	last_message_id = 0;
+	last_sender = -1;
 	$.cookie("lc_last_msg", last_message_id); //Set last message id
 	call_api("chats/info","GET",{id: room},
 		function (data) {
@@ -834,9 +847,16 @@ function post_message(message,scroll,area)
 	if (date.toDateString() != currentDate.toDateString())
 		var timestamp = (('0'+(date.getMonth()+1)).slice(-2))+"/"+(('0'+(date.getDate()+1)).slice(-2))+"/"+date.getFullYear()+" @ ";
 	timestamp += (('0'+date.getHours()).slice(-2))+":"+(('0'+date.getMinutes()).slice(-2))+":"+(('0'+date.getSeconds()).slice(-2));
-
-	$(area+" ul").append('<li><div class="author">'+message.display_name+'</div><div class="timestamp">'+timestamp+'</div><div class="messageContainer"><div class="message">'+escapeHtml(message.message_string).parseURL()+'</div></div><div style="clear:both;"></div></li>');
+	var append_html = '<li>';
+	if (message.user_id != last_sender)
+	{
+		append_html += '<div class="author">'+message.display_name+'</div>';
+	}
+	append_html += '<div class="messageContainer"><div class="timestamp">'+timestamp+'</div><div class="message">'+escapeHtml(message.message_string).parseURL()+'</div></div><div style="clear:both;"></div></li>';
+	
+	$(area+" ul").append(append_html);
 	last_message_id = message.id;
+	last_sender = message.user_id;
 	$.cookie("lc_last_msg", last_message_id); //Set last message id
 	$(area).mCustomScrollbar("update");
 	if (scroll)
