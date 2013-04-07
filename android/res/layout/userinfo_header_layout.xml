@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="20dp" 
     android:adjustViewBounds="true"
-	android:src="@drawable/me" >
+	android:src="@drawable/me" 
+	android:contentDescription="@string/user_profile_picture" >
 
 </ImageView>

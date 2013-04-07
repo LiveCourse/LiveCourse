@@ -15,7 +15,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 {
 	private final String TAG = " == DatabaseHandler == ";
 	
-	private static final int DATABASE_VERSION = 19;
+	private static final int DATABASE_VERSION = 20;
 	
 	/**
 	 * Database name
@@ -32,33 +32,33 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	/**
 	 * Fields used for the classroom object
 	 */
-	private static final String KEY_ID						= "_id";
-	private static final String KEY_CLASS_ID_STRING 		= "id_string";
-	private static final String KEY_CLASS_SUBJECT_ID 		= "subject_id";
-	private static final String KEY_CLASS_COURSE_NUMBER 	= "course_number";
-	private static final String KEY_CLASS_NAME 				= "name";
-	private static final String KEY_CLASS_INSTITUTION_ID 	= "institution_id";
-	private static final String KEY_CLASS_ROOM_ID 			= "room_id";
-	private static final String KEY_CLASS_START_TIME 		= "start_time";
-	private static final String KEY_CLASS_END_TIME 			= "end_time";
-	private static final String KEY_CLASS_START_DATE 		= "start_date";
-	private static final String KEY_CLASS_END_DATE 			= "end_date";
-	private static final String KEY_CLASS_DOW_MONDAY 		= "dow_monday";
-	private static final String KEY_CLASS_DOW_TUESDAY 		= "dow_tuesday";
-	private static final String KEY_CLASS_DOW_WEDNESDAY 	= "dow_wednesday";
-	private static final String KEY_CLASS_DOW_THURSDAY 		= "dow_thursday";
-	private static final String KEY_CLASS_DOW_FRIDAY 		= "dow_friday";
-	private static final String KEY_CLASS_DOW_SATURDAY 		= "dow_saturday";
-	private static final String KEY_CLASS_DOW_SUNDAY 		= "dow_sunday";
+	public static final String KEY_ID						= "_id";
+	public static final String KEY_CLASS_ID_STRING 			= "id_string";
+	public static final String KEY_CLASS_SUBJECT_ID 		= "subject_id";
+	public static final String KEY_CLASS_COURSE_NUMBER 		= "course_number";
+	public static final String KEY_CLASS_NAME 				= "name";
+	public static final String KEY_CLASS_INSTITUTION_ID 	= "institution_id";
+	public static final String KEY_CLASS_ROOM_ID 			= "room_id";
+	public static final String KEY_CLASS_START_TIME 		= "start_time";
+	public static final String KEY_CLASS_END_TIME 			= "end_time";
+	public static final String KEY_CLASS_START_DATE 		= "start_date";
+	public static final String KEY_CLASS_END_DATE 			= "end_date";
+	public static final String KEY_CLASS_DOW_MONDAY 		= "dow_monday";
+	public static final String KEY_CLASS_DOW_TUESDAY 		= "dow_tuesday";
+	public static final String KEY_CLASS_DOW_WEDNESDAY 		= "dow_wednesday";
+	public static final String KEY_CLASS_DOW_THURSDAY 		= "dow_thursday";
+	public static final String KEY_CLASS_DOW_FRIDAY 		= "dow_friday";
+	public static final String KEY_CLASS_DOW_SATURDAY 		= "dow_saturday";
+	public static final String KEY_CLASS_DOW_SUNDAY 		= "dow_sunday";
 	
 	/**
 	 * Fields used for the message object
 	 */
-	private static final String KEY_CHAT_ID					= "chat_id";
-	private static final String KEY_CHAT_SEND_TIME			= "send_time";
-	private static final String KEY_CHAT_MESSAGE_STRING		= "message_string";
-	private static final String KEY_CHAT_EMAIL				= "email";
-	private static final String KEY_CHAT_DISPLAY_NAME		= "display_name";
+	public static final String KEY_CHAT_ID					= "chat_id";
+	public static final String KEY_CHAT_SEND_TIME			= "send_time";
+	public static final String KEY_CHAT_MESSAGE_STRING		= "message_string";
+	public static final String KEY_CHAT_EMAIL				= "email";
+	public static final String KEY_CHAT_DISPLAY_NAME		= "display_name";
 	
 	/**
 	 * Fields used for the participant object
@@ -113,7 +113,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 											+ KEY_CHAT_SEND_TIME		+ " int(11), "
 											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
 											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
-											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255) "
+											+ KEY_CHAT_DISPLAY_NAME 	+ " varchar(255) "
 											+ ")";
 		
 		String CREATE_TABLE_PARTICIPANTS  = "CREATE TABLE " 			+ TABLE_PARTICIPANTS 	+ "( "
@@ -223,10 +223,38 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		/**
 		 * Insert the row into the table and the close the connection to the DB
 		 */
-		long row = db.insertWithOnConflict(TABLE_CHAT_MESSAGES, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+		db.insertWithOnConflict(TABLE_CHAT_MESSAGES, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		db.close();
 		
-		Log.d(this.TAG, "Added Chat Message to row " + row + " with message: " + a.getMessageString());
+		//Log.d(this.TAG, "Added Chat Message to row " + row + " with message: " + a.getMessageString());
+	}
+	
+	/**
+	 * Does the same as the normal addChatMessages but does not open a
+	 * SQL transaction.  You need to open it in the calling method, can be used for
+	 * bulk add
+	 * 
+	 * @param a The message
+	 * @param db The database
+	 */
+	public void addChatMessageWithoutSQL(ChatMessage a, SQLiteDatabase db)
+	{	
+		/**
+		 * Put all the values in
+		 */
+		ContentValues values = new ContentValues();
+		values.put(KEY_CHAT_ID,					a.getChatId());
+		values.put(KEY_CHAT_SEND_TIME,			a.getSendTime());
+		values.put(KEY_CHAT_MESSAGE_STRING,		a.getMessageString());
+		values.put(KEY_CHAT_EMAIL, 				a.getEmail());
+		values.put(KEY_CHAT_DISPLAY_NAME,		a.getDisplayName());
+		
+		/**
+		 * Insert the row into the table and the close the connection to the DB
+		 */
+		db.insertWithOnConflict(TABLE_CHAT_MESSAGES, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+		
+		//Log.d(this.TAG, "Added Chat Message to row " + row + " with message: " + a.getMessageString());
 	}
 	
 	/**
@@ -254,10 +282,10 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		/**
 		 * Insert the row into the table and the close the connection to the DB
 		 */
-		long row = db.insertWithOnConflict(TABLE_PARTICIPANTS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+		db.insertWithOnConflict(TABLE_PARTICIPANTS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		db.close();
 		
-		Log.d(this.TAG, "Added Participant to row " + row + " with name: " + a.getDisplayName());
+		//Log.d(this.TAG, "Added Participant to row " + row + " with name: " + a.getDisplayName());
 	}
 	
 	/**

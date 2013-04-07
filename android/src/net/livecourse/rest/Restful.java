@@ -210,7 +210,9 @@ public class Restful extends AsyncTask <Void, Void, String>
 		HttpResponse response = null;
 		try 
 		{
+			long startTime = System.currentTimeMillis();
 			response = httpClient.execute(httpGet, localContext);
+			Log.d(this.TAG, "Executed HttpGet request for " + path + " in " + (System.currentTimeMillis() - startTime) + "ms");
 		} 
 		catch (ClientProtocolException e) 
 		{

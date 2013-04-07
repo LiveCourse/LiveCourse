@@ -33,7 +33,7 @@ public class GCMIntentService extends GCMBaseIntentService
 	@Override
 	protected void onMessage(Context arg0, Intent arg1) 
 	{
-		Log.i(TAG, "new message= ");
+		Log.d(TAG, "new message= ");
 	}
 	 
 	@Override

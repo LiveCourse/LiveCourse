@@ -127,6 +127,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
          * If this device is already registered it will use the previous
          * ID instead.
          */
+		
 		GCMRegistrar.checkDevice(this);
 		GCMRegistrar.checkManifest(this);
 		

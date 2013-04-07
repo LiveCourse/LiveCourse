@@ -80,9 +80,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
         participantsListView.setAdapter(adapter);
         
         participantsListView.setOnItemLongClickListener(this);
-        
-        this.updateList();
-        
+                
         return participantsLayout;
     }
 

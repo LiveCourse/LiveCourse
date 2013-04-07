@@ -3,6 +3,7 @@ package net.livecourse.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class ChatMessagesLoader extends SimpleCursorLoader
 {
@@ -17,9 +18,12 @@ public class ChatMessagesLoader extends SimpleCursorLoader
 	 @Override
      public Cursor loadInBackground() 
 	 {
-             SQLiteDatabase db = dbHandler.getReadableDatabase();
-             Cursor cursor = db.query(DatabaseHandler.TABLE_CHAT_MESSAGES, null, null, null, null, null, null);
-             return cursor;
+		 long startTime = System.currentTimeMillis();
+		 
+         SQLiteDatabase db = dbHandler.getReadableDatabase();         
+         Cursor cursor = db.query(DatabaseHandler.TABLE_CHAT_MESSAGES, null, null, null, null, null, null);
+         Log.d(" == Chat Message Loader == ", "Loaded from database in " + (System.currentTimeMillis() - startTime) + "ms");
+         return cursor;
      }
 
 }
