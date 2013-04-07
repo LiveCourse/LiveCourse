@@ -83,6 +83,7 @@ public class ChatCursorAdapter extends CursorAdapter
 		v.message.setText(message);
 		
 		v.messageId = cursor.getString(cursor.getColumnIndexOrThrow("chat_id"));
+		v.userId = cursor.getString(cursor.getColumnIndexOrThrow("chat_id"));
 
 		view.setTag(v);
 	}

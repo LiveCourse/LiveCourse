@@ -15,7 +15,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 {
 	private final String TAG = " == DatabaseHandler == ";
 	
-	private static final int DATABASE_VERSION = 24;
+	private static final int DATABASE_VERSION = 25;
 	
 	/**
 	 * Database name
@@ -55,6 +55,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 * Fields used for the message object
 	 */
 	public static final String KEY_CHAT_ID					= "chat_id";
+	public static final String KEY_CHAT_USER_ID				= "user_id";
 	public static final String KEY_CHAT_SEND_TIME			= "send_time";
 	public static final String KEY_CHAT_MESSAGE_STRING		= "message_string";
 	public static final String KEY_CHAT_EMAIL				= "email";
@@ -110,6 +111,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		
 		String CREATE_TABLE_CHAT_MESSAGES = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
 											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+											+ KEY_CHAT_USER_ID			+ " int(11),"
 											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
 											+ KEY_CHAT_SEND_TIME		+ " int(11), "
 											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
@@ -357,6 +359,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		String CREATE_TABLE_CHAT_MESSAGES = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
 											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
 											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
+											+ KEY_CHAT_USER_ID				+ " int(11),"
 											+ KEY_CHAT_SEND_TIME		+ " int(11), "
 											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
 											+ KEY_CHAT_EMAIL 			+ " varchar(255), "

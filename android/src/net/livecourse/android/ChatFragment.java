@@ -16,6 +16,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -38,6 +39,9 @@ import com.actionbarsherlock.view.MenuItem;
 public class ChatFragment extends SherlockFragment implements OnClickListener, OnItemLongClickListener, ActionMode.Callback, LoaderCallbacks<Cursor>, OnRestCalled
 {
 	private final String TAG = " == Chat Fragment == ";
+	
+	public Handler mHandler = new Handler();
+	public Restful restful;
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
 	
@@ -268,8 +272,22 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	public void updateList()
 	{		
 		Globals.appDb.recreateChatMessages();
-		new Restful(Restful.GET_RECENT_MESSAGES_PATH,Restful.GET, new String[]{"chat_id", "num_messages"}, new String[]{Globals.chatId, Restful.MAX_MESSAGE_SIZE}, 2, this);
+		restful = new Restful(Restful.GET_RECENT_MESSAGES_PATH,Restful.GET, new String[]{"chat_id", "num_messages"}, new String[]{Globals.chatId, Restful.MAX_MESSAGE_SIZE}, 2, this);
+		
 	}
+	
+	public Runnable refreshList = new Runnable()
+	{
+		public void run()
+		{
+			if(restful != null && !restful.cancel(true))
+			{
+				restful.cancel(true);
+			}
+			Globals.chatFragment.updateList();
+			mHandler.postDelayed(refreshList, 1500);
+		}
+	};
 
 	@Override
 	public void onRestHandleResponseSuccess(String restCall, String response) 
@@ -290,11 +308,12 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 				statement = db.compileStatement(
 						"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
 							" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
+							", "		+ DatabaseHandler.KEY_CHAT_USER_ID +
 							", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
 							", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
 							", " 		+ DatabaseHandler.KEY_CHAT_EMAIL + 
 							", " 		+ DatabaseHandler.KEY_CHAT_DISPLAY_NAME + 
-							") VALUES (?, ?, ?, ?, ?)");
+							") VALUES (?, ?, ?, ?, ?, ?)");
 
 				db.beginTransaction();
 				for(int x = 0;x<parse.length();x++)
@@ -304,10 +323,11 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		        	//statement.clearBindings();
 		        	
 		        	statement.bindString(1, ob.getString("id"));
-		        	statement.bindString(2, ob.getString("send_time"));
-		        	statement.bindString(3, ob.getString("message_string"));
-		        	statement.bindString(4, ob.getString("email"));
-		        	statement.bindString(5, ob.getString("display_name"));
+		        	statement.bindString(2, ob.getString("user_id"));
+		        	statement.bindString(3, ob.getString("send_time"));
+		        	statement.bindString(4, ob.getString("message_string"));
+		        	statement.bindString(5, ob.getString("email"));
+		        	statement.bindString(6, ob.getString("display_name"));
 		        	
 		        	statement.execute();
 		        }
