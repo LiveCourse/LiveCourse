@@ -279,18 +279,23 @@ a.buttonLink:hover {
 }
 #ChatFrame #ChatMessages ul li .messageContainer,
 #ChatFrame #HistoryMessages ul li .messageContainer {
-  float: left;
+  overflow: hidden;
+  /* Makes #outer contain its floated children */
+
   width: 100%;
+  /* float:left; */
+
+  /* width:100%; */
+
 }
 #ChatFrame #ChatMessages ul li .message,
 #ChatFrame #HistoryMessages ul li .message {
-  float: left;
+  overflow: hidden;
   margin-left: 16px;
   padding-right: 56px;
 }
 #ChatFrame #ChatMessages ul li .timestamp,
 #ChatFrame #HistoryMessages ul li .timestamp {
-  width: 30%;
   font-size: 12px;
   color: #555;
   float: right;
@@ -299,10 +304,11 @@ a.buttonLink:hover {
 }
 #ChatFrame #ChatMessages ul li .author,
 #ChatFrame #HistoryMessages ul li .author {
-  width: 50%;
+  width: 100%;
   float: left;
   font-size: 14px;
   font-weight: bold;
+  margin-top: 16px;
   color: #2e587e;
 }
 #ComposeFrame {
