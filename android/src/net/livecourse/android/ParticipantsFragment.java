@@ -5,7 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import net.livecourse.R;
-import net.livecourse.database.Participant;
+import net.livecourse.database.DatabaseHandler;
 import net.livecourse.database.ParticipantsLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
@@ -13,6 +13,8 @@ import net.livecourse.utility.Globals;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -185,29 +187,50 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 		JSONArray parse;
 		JSONObject ob;
 		
-		try 
+		if(restCall.equals(Restful.GET_PARTICIPANTS_PATH))
 		{
-			parse = new JSONArray(response);
+			SQLiteDatabase db = null;
+			SQLiteStatement statement = null;
 			
-			for(int x = 0; x < parse.length(); x++)
+			try 
 			{
-				Participant participant = new Participant();
-				ob = parse.getJSONObject(x);
+				parse = new JSONArray(response);
+				db = Globals.appDb.getWritableDatabase();
+				statement = db.compileStatement(
+						"INSERT INTO " 	+ DatabaseHandler.TABLE_PARTICIPANTS + 
+							" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
+							", " 		+ DatabaseHandler.KEY_CHAT_DISPLAY_NAME + 
+							", " 		+ DatabaseHandler.KEY_CHAT_EMAIL + 
+							", " 		+ DatabaseHandler.KEY_PART_TIME_LASTFOCUS + 
+							", " 		+ DatabaseHandler.KEY_PART_TIME_LASTREQUEST + 
+							") VALUES (?, ?, ?, ?, ?)");
 				
-				participant.setChatId(ob.getString("id"));
-	        	participant.setEmail(ob.getString("email"));
-	        	participant.setDisplayName(ob.getString("display_name"));
-	        	participant.setTime_lastfocus(ob.getString("time_lastfocus"));
-	        	participant.setTime_lastrequest(ob.getString("time_lastrequest"));
-	        	
-	        	Globals.appDb.addParticipant(participant);
+				db.beginTransaction();
+				for(int x = 0; x < parse.length(); x++)
+				{
+					ob = parse.getJSONObject(x);
+					
+					statement.bindString(1, ob.getString("id"));
+					statement.bindString(2, ob.getString("display_name"));
+					statement.bindString(3, ob.getString("email"));
+					statement.bindString(4, ob.getString("time_lastfocus"));
+					statement.bindString(5, ob.getString("time_lastrequest"));
+					
+					statement.execute();
+				}
+				db.setTransactionSuccessful();
+			} 
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
 			}
-		} 
-		catch (JSONException e) 
-		{
-			e.printStackTrace();
+			finally
+			{
+				db.endTransaction();
+			}
+			statement.close();
+			db.close();
 		}
-		
 	}
 
 	@Override

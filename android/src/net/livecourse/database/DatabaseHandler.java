@@ -63,8 +63,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	/**
 	 * Fields used for the participant object
 	 */
-	private static final String KEY_PART_TIME_LASTFOCUS		= "time_lastfocus";
-	private static final String KEY_PART_TIME_LASTREQUEST	= "time_lastrequest";
+	public static final String KEY_PART_TIME_LASTFOCUS		= "time_lastfocus";
+	public static final String KEY_PART_TIME_LASTREQUEST	= "time_lastrequest";
 	
 	/**
 	 * The constructor of the database, pass it the context.

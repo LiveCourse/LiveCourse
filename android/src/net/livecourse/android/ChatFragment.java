@@ -299,11 +299,9 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 				db.beginTransaction();
 				for(int x = 0;x<parse.length();x++)
 		        {
-		        	//long start = System.currentTimeMillis();
-
 		        	ob = parse.getJSONObject(x);
 		   		        	
-		        	statement.clearBindings();
+		        	//statement.clearBindings();
 		        	
 		        	statement.bindString(1, ob.getString("id"));
 		        	statement.bindString(2, ob.getString("send_time"));
@@ -312,7 +310,6 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		        	statement.bindString(5, ob.getString("display_name"));
 		        	
 		        	statement.execute();
-		        	//Log.d(this.TAG, "Completed INSERT in " + (System.currentTimeMillis() - start) + "ms");        	
 		        }
 				db.setTransactionSuccessful();	
 			} 
