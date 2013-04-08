@@ -165,14 +165,7 @@ class Model_Users extends CI_Model {
 				->get()
 				->result();
 				
-		if ($droid_user && count($droid_user) == 1)
-		{
-			return $droid_user;
-		}
-		else
-		{
-			return FALSE;
-		}
+		return $droid_user;
 	}
 	
 	/**
@@ -187,14 +180,7 @@ class Model_Users extends CI_Model {
 				->get()
 				->result();
 				
-		if (count($droid_users) > 0)
-		{
-			return $droid_users;
-		}
-		else
-		{
-			return FALSE;
-		}
+		return $droid_users;
 	}
 	
 	/**
@@ -205,24 +191,17 @@ class Model_Users extends CI_Model {
 	 *gcm_regid - Registration ID of the device
 	 *returns inserted information if successful, otherwise null/false.
 	 */
-	function add_android_user($user_id, $email, $name, $gcm_regid)
+	function add_android_user($user_id, $email, $name, $gcm_regid, $jointime = "")
 	{
+		if($jointime == "") $jointime = time();
 		$data = array(
 			'user_id' => $user_id,
 			'gcm_regid' => $gcm_regid,
-			'created_at' => time(),
+			'created_at' => $jointime,
 		);
 		
-		$this->db->insert('lc_gcm_users', $data);
+		return $this->db->insert('lc_gcm_users', $data);
 		
-		if ($this->db->affected_rows() > 0)
-		{
-			return $data;
-		}
-		else
-		{
-			return false;
-		}
 	}
 	
 	/**
@@ -238,8 +217,8 @@ class Model_Users extends CI_Model {
 				'user_id' => $user_id,
 				'gcm_regid' => $reg_id,
 				);
-		$this->db->delete('lc_gcm_users', $data);
-		return $this->db->affected_rows();
+		return $this->db->delete('lc_gcm_users', $data);
+		
 	}
 	
 	/**
@@ -256,14 +235,6 @@ class Model_Users extends CI_Model {
 		);
 		$this->db->where('id',$user_id);
 		return $this->db->update('lc_users', $data);
-		/*if($this->db->affected_rows() <= 0)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}*/
 	}
 	
 	/**
@@ -280,14 +251,6 @@ class Model_Users extends CI_Model {
 		);
 		$this->db->where('id',$user_id);
 		return $this->db->update('lc_users', $data);
-		/*if($this->db->affected_rows() <= 0)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}*/
 	}
 	
 	/**

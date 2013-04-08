@@ -82,6 +82,7 @@ function login_submit()
 					$.cookie("lc_auth_pass", auth_pass); //Set authentication cookies
 					current_user_id = data.authentication.user_id;
 					switch_ui_color(data.user.color_preference,false);
+					user_data = data.user;
 					init_ui();
 					progress_indicator_hide(indicator);
 					dialog_close($(_this).parents(".DialogOverlay").first());
@@ -109,6 +110,12 @@ function login_submit()
  */
 function init_ui()
 {
+	$("#TopBar div.userInfo").html(user_data.display_name+'<img src="img/user_icon_sm.png" alt="'+user_data.name+'">');
+	$("#TopBar div.userInfo").unbind('click');
+	$("#TopBar div.userInfo").click(function() {
+		user_profile_show(user_data.id);
+	});
+	Cufon.refresh();
 	update_chat_list();
 	setInterval(function() {update_participant_list();},10000);
 	setInterval(function() {update_focus();},10000); //Check if we're focused and update the server.
@@ -470,6 +477,36 @@ function class_join(class_idstring,success_callback,error_callback)
 }
 
 /**
+ * Shows course selector UI
+ */
+function toggle_course_selector()
+{
+	if ($("#CourseSelector").css('display') == "none")
+	{
+		var top_pos = $("#CourseSelector").css('top');
+		var top_tmp = parseInt($('#CourseSelector').css('height'), 10)*-1;
+		var padding = parseInt($('#CourseSelector').css('padding-top'), 10);
+		$("#CourseSelector").css('top',top_tmp);
+		$("#CourseSelector").show();
+		$("#CourseSelector").animate({"top":top_pos},250, "easeOutQuint", null);
+	} else {
+		$("#CourseSelector").fadeOut(125);
+	}
+}
+
+/**
+ * Shows the participants list
+ */
+function show_participant_list()
+{
+	var pos = $("#SideBar").css('left');
+	var tmp = parseInt($('#SideBar').css('width'), 10)*-1;
+	$("#SideBar").css('left',tmp);
+	$("#SideBar").show();
+	$("#SideBar").animate({"left":pos},250, "easeOutQuint", null);
+}
+
+/**
  * Update chat room list
  */
 function update_chat_list()
@@ -490,7 +527,13 @@ function update_chat_list()
 					listitem.slideDown();
 					listitem.click(function() {
 						switch_chat_room($(this).attr('id'));
+						toggle_course_selector();
 					});
+				}
+				//Switch to the first one if we have no room selected yet.
+				if (current_chat_room.length <= 0)
+				{
+					switch_chat_room(data[0].id_string);
 				}
 			}
 			progress_indicator_hide(upd_ind);
@@ -602,10 +645,15 @@ function switch_chat_room(room)
 	call_api("chats/info","GET",{id: room},
 		function (data) {
 			// Set global variable
+			if ($("#SideBar").css('display') == "none")
+			{
+				show_participant_list();
+			}
 			current_chat_room = room;
 			// Set selected class icon
 			$("#CourseList li").removeClass("selected");
 			$("#CourseList #"+room).addClass("selected");
+			/*
 			$("#ChatFrame h1").css('overflow','hidden');
 			if ($("#ChatFrame h1").height() > 0)
 				$("#ChatFrame h1").height($("#ChatFrame h1").height());
@@ -623,6 +671,9 @@ function switch_chat_room(room)
 				});
 				$("#ChatFrame #ChatFrameHeader #ChatHeaderMenu").fadeIn();
 			});
+			*/
+			$("#TopBar div.classTitle span").html(data.name);
+			Cufon.refresh(); //Reload font
 			//Clear notifications...
 			clear_notifications();
 			//Clear out history...

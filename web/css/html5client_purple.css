@@ -37,23 +37,80 @@ button:active {
   right: 0px;
   height: 20px;
   z-index: 9999;
-  background-image: url("../img/progressbar.gif");
+  background-image: url("../img/progressbar_white.gif");
 }
-#LeftSideBar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 256px;
+#TopBar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 64px;
+  padding: 0 18px;
   background-color: #7e2e7e;
-  text-align: center;
+  z-index: 1;
 }
-#LeftSideBar h1 {
-  text-align: center;
-  font-family: 'cicle';
-  font-size: 48px;
+#TopBar img.logo {
+  padding: 8px;
+  float: left;
+}
+#TopBar div.classTitle {
+  padding: 8px 8px 8px 24px;
+  font-family: 'cicle', sans-serif;
+  font-size: 42px;
   color: #fff;
-  margin: 0.4em 0;
+  float: left;
+  cursor: pointer;
+}
+#TopBar div.classTitle img {
+  padding-left: 6px;
+  vertical-align: middle;
+}
+#TopBar div.userInfo {
+  padding: 18px 0;
+  font-family: 'cicle', sans-serif;
+  font-size: 26px;
+  color: #e5b8e5;
+  float: right;
+  cursor: pointer;
+}
+#TopBar div.userInfo:hover {
+  color: #fff;
+}
+#TopBar div.userInfo img {
+  padding-left: 12px;
+  padding-right: 16px;
+  vertical-align: middle;
+}
+#TopBar ul.options {
+  list-style-type: none;
+  padding: 0;
+  float: right;
+  width: 20px;
+  margin: 10px 2px;
+}
+#TopBar ul.options a {
+  opacity: 1.0;
+}
+#TopBar ul.options a:hover {
+  opacity: 0.4;
+}
+#TopBar ul.options a img {
+  border: 0;
+}
+#CourseSelector {
+  display: none;
+  position: absolute;
+  background-color: #7e2e7e;
+  top: 64px;
+  left: 82px;
+  width: 260px;
+  min-height: 60px;
+  max-height: 320px;
+  text-align: center;
+  padding: 2px 2px 12px 2px;
+  overflow-y: auto;
+  /* padding-top:32px; */
+
 }
 #CourseList {
   list-style-type: none;
@@ -123,13 +180,15 @@ a.buttonLink:hover {
 #AuxiliaryButtons li:hover {
   opacity: 0.9;
 }
-#RightSideBar {
+#SideBar {
+  display: none;
   position: fixed;
-  right: 0;
+  left: 0;
   top: 0;
   bottom: 0;
   width: 256px;
   background-color: #e5b8e5;
+  overflow-y: auto;
 }
 #RightSideBar h1 {
   text-align: left;
@@ -177,7 +236,7 @@ a.buttonLink:hover {
 #ChatFrame {
   position: fixed;
   left: 256px;
-  right: 256px;
+  right: 0px;
   top: 0;
   bottom: 64px;
 }
@@ -311,7 +370,7 @@ a.buttonLink:hover {
 }
 #ComposeFrame {
   position: fixed;
-  right: 256px;
+  right: 0px;
   left: 256px;
   bottom: 4px;
   height: 64px;

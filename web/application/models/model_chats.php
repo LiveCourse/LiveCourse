@@ -204,8 +204,9 @@ class Model_Chats extends CI_Model {
 	 *time - time message was reported
 	 *returns - NULL or FALSE if failed.
 	 */
-	function flag_message($message_id,$reporter_id,$reason,$time)
+	function flag_message($message_id,$reporter_id,$reason,$time = "")
 	{
+		if($time == "") $time = time();
 		$data = array(
 			'message_id'=>$message_id,
 			'reporter_id'=>$reporter_id,

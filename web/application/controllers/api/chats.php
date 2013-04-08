@@ -440,7 +440,7 @@ class Chats extends REST_Controller
 		}
 		//Sending push notifications to the android users who are subscribed to this chat
 		$users = $this->Model_Users->fetch_all_subscribed_android_user($chat_id); 
-
+		
 		if (count($users) > 0)
 		{
 			$registration_ids = null;
@@ -481,9 +481,10 @@ class Chats extends REST_Controller
 			curl_close($ch);
 			if(!$result)
 			{
-				$this->response($result);
+				$this->response($this->rest_error(array("Could not send android messages!")), 404);
 				return;
 			}
+			
 		}
 		$this->Model_Chats->send_message($user_id,$chat_id,$message);
 		$this->response(NULL,201); //Success
@@ -792,79 +793,5 @@ class Chats extends REST_Controller
 		
 		$this->response($users,200);
 	}
-	/**
-	 *Sends a push notification to GCM
-	 *returns TRUE if successful, FALSE if failed.
-	 
-	function push_notification_post()
-	{
-		$this->load->model('Model_Users');
-		$this->load->model('Model_Auth');
-		
-		//Check to see if they are authenticated
-		$user_id = $this->authenticated_as;
-
-		if ($this->authenticated_as <= 0)
-		{
-			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
-			return;
-		}
-		
-		$message = "You have received a message in one of your chats!";
-		
-		$users = $this->Model_Users->fetch_all_android_user();
-		if(count($users) <= 0)
-		{
-			$this->response($this->rest_error(array("No Android users registered!")),404);
-		}
-		else
-		{
-			$registration_ids = null;
-			foreach ($users as $user)
-			{
-				$registration_ids[] = $user['gcm_regid'];
-			}
-			$url = 'https://android.googleapis.com/gcm/send';
-		
-			$fields = array(
-			    'registration_ids' => $registration_ids,
-			    'data' => $message,
-			);
-			
-			$headers = array(
-			    'Authorization: key=' . $this->config->item('api_key'),
-			    'Content-Type: application/json'
-			);
-			// Open connection
-			$ch = curl_init();
-			
-			// Set the url, number of POST vars, POST data
-			curl_setopt($ch, CURLOPT_URL, $url);
-			
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			
-			// Disabling SSL Certificate support temporarly
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			
-			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-			
-			// Execute post
-			$result = curl_exec($ch);
-			
-			// Close connection
-			curl_close($ch);
-			if($result)
-			{
-				$this->response($result, 200);
-			}
-			else
-			{
-				$this->response($this->rest_error(array("Error sending push notifications!")),403);
-			}
-		}
-		return;
-	}*/
 
 }
