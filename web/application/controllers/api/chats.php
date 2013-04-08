@@ -443,8 +443,20 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("You must provide a message.")),403);
 			return;
 		}
+		
+		$message_data = $this->Model_Chats->send_message($user_id,$chat_id,$message);
+		
+		if(!$message_data)
+		{
+			$this->response($this->rest_errror(array("ERROR adding the message!")), 403);
+			return;
+		}
+		
 		//Sending push notifications to the android users who are subscribed to this chat
 		$users = $this->Model_Users->fetch_all_subscribed_android_user($chat_id); 
+		$time = time();
+		
+		$message_id = $this->db->insert_id();
 		
 		if (count($users) > 0)
 		{
@@ -457,7 +469,11 @@ class Chats extends REST_Controller
 		
 			$fields = array(
 			    'registration_ids' => $registration_ids,
-			    'data' => array("message" => $message,)
+			    'data' => array('id' => $message_id,
+			    		'chat_id' => $chat_id,
+			    		'send_time' => $time,
+			    		'message_string' => $message,
+			    		'user_id' => $user_id,)
 			);
 			
 			$headers = array(
@@ -491,8 +507,7 @@ class Chats extends REST_Controller
 			}
 			
 		}
-		$this->Model_Chats->send_message($user_id,$chat_id,$message);
-		$this->response(NULL,201); //Success
+		$this->response(null,200); //Success
 	}
 
 	/**
