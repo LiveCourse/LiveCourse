@@ -51,7 +51,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
          * Init database
          */
         Globals.appDb = new DatabaseHandler(this.getApplicationContext());
-        Globals.appDb.recreateClassEnroll();
+        //Globals.appDb.recreateClassEnroll();
 
         /**
          * The following code initializes the tabs and sets up the tabs adapter and

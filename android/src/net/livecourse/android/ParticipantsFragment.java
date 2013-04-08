@@ -131,7 +131,10 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 			case R.id.participants_fragment_participants_details_menu_item:
 				this.startUserInfo(clickedView);
 				break;
-		}
+			case R.id.participants_fragment_ignore_participant_chat_messages_menu_item:
+				new Restful(Restful.IGNORE_USER_PATH, Restful.POST, new String[]{"ignore_id"}, new String[]{((ParticipantViewHolder)this.clickedView.getTag()).userId}, 1, this);
+				break;
+		}	
 		return false;
 	}
 
@@ -253,6 +256,10 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 			statement.close();
 			db.close();
 		}
+		else if(restCall.equals(Restful.IGNORE_USER_PATH))
+		{
+			
+		}
 	}
 
 	@Override
@@ -262,6 +269,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 		{
 			this.getSherlockActivity().getSupportLoaderManager().restartLoader(3, null, this);
 		}
+		
 	}
 
 	@Override

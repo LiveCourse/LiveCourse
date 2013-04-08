@@ -15,7 +15,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 {
 	private final String TAG = " == DatabaseHandler == ";
 	
-	private static final int DATABASE_VERSION = 32 ;
+	private static final int DATABASE_VERSION = 32;
 	
 	/**
 	 * Database name

@@ -639,9 +639,9 @@ function update_participant_list(callback)
 function switch_chat_room(room)
 {
 	var switch_ind = progress_indicator_show();
-	last_message_id = 0;
-	last_sender = -1;
-	$.cookie("lc_last_msg", last_message_id); //Set last message id
+	$("#ChatMessages").attr('last_message_id',0);
+	$("#ChatMessages").attr('last_sender',-1);
+	$.cookie("lc_last_msg", $("#ChatMessages").attr('last_message_id')); //Set last message id
 	call_api("chats/info","GET",{id: room},
 		function (data) {
 			// Set global variable
@@ -698,8 +698,8 @@ function switch_chat_room(room)
 function select_chat_tab()
 {
 	// Set buttons to proper selection
-	$("#ChatFrame #ChatFrameHeader #ChatHeaderMenu li").removeClass("selected");
-	$("#chat_button").addClass("selected");
+	$("#TopBar .switcher li").removeClass("selected");
+	$("#switcher_chat").addClass("selected");
 	Cufon.refresh();
 	// Fade out other panes if they're here.
 	$("#ChatFrame #HistoryDateSelect").fadeOut(300);
@@ -717,16 +717,17 @@ function select_chat_tab()
 function select_history_tab()
 {
 	// Set buttons to proper selection
-	$("#ChatFrame #ChatFrameHeader #ChatHeaderMenu li").removeClass("selected");
-	$("#history_button").addClass("selected");
+	$("#TopBar .switcher li").removeClass("selected");
+	$("#switcher_cal").addClass("selected");
 	Cufon.refresh();
 	// Fade out other panes if they're here.
 	$("#ChatFrame #ChatMessages").fadeOut(300,function() {
 		$("#ChatFrame #HistoryMessages").fadeIn(300, function() {
 			$("#ChatFrame #HistoryDateSelect").css('opacity',0);
-			$("#ChatFrame #HistoryDateSelect").css('top','100px');
+			var oldtop = parseInt($("#ChatFrame #HistoryDateSelect").css('top'),10);
+			$("#ChatFrame #HistoryDateSelect").css('top',(oldtop-30)+'px');
 			$("#ChatFrame #HistoryDateSelect").css('display','block');
-			$("#ChatFrame #HistoryDateSelect").animate({"top":'124px',"opacity":1},300, "easeOutBack", function() {
+			$("#ChatFrame #HistoryDateSelect").animate({"top":(oldtop+'px'),"opacity":1},300, "easeOutBack", function() {
 				$( "#ChatFrame #HistoryDateSelect input" ).datepicker("show");
 				$( "#ChatFrame #HistoryDateSelect input" ).datepicker("widget").position({
 					my: "center top",
@@ -735,7 +736,7 @@ function select_history_tab()
 				});
 			});
 			$("#ChatFrame #HistoryDateSelect").html('<input type="text" style="display:none;" /><a href="javascript:;">Select a Date</a>');
-			$( "#ChatFrame #HistoryDateSelect input" ).datepicker({ onSelect: function(dp) {
+			$( "#ChatFrame #HistoryDateSelect input" ).datepicker({ maxDate: new Date, onSelect: function(dp) {
 				$( "#ChatFrame #HistoryDateSelect a" ).html($(this).val());
 				var start_epoch = ($(this).datepicker('getDate')).getTime() / 1000;
 				load_history(start_epoch);
@@ -765,13 +766,21 @@ function load_history(start_epoch)
 	var load_ind = progress_indicator_show();
 	call_api("chats/fetch_day","GET",{chat_id: current_chat_room, start_epoch: start_epoch},
 		function (data) {
-			$("#HistoryMessages ul").html(''); // Empty it
-			for (i in data)
+			if (data.length > 0)
 			{
-				post_message(data[i],false,"#HistoryMessages");
+				$("#HistoryMessages ul").html(''); // Empty it
+				$("#HistoryMessages").attr('last_message_id',0);
+				$("#HistoryMessages").attr('last_sender',-1);
+				for (i in data)
+				{
+					post_message(data[i],false,"#HistoryMessages");
+				}
+				$("#HistoryMessages").mCustomScrollbar("update");
+				$("#HistoryMessages").mCustomScrollbar("scrollTo","top",{scrollInertia:1000}); //scroll to top
+			} else {
+				$("#HistoryMessages ul").html('<li><h2>There is no data for the selected date.</h2></li>'); 
+				Cufon.refresh();
 			}
-			$("#HistoryMessages").mCustomScrollbar("update");
-			$("#HistoryMessages").mCustomScrollbar("scrollTo","top",{scrollInertia:1000}); //scroll to top
 			progress_indicator_hide(load_ind);
 		},
 		function (xhr, status)
@@ -927,16 +936,18 @@ function post_message(message,scroll,area)
 		var timestamp = (('0'+(date.getMonth()+1)).slice(-2))+"/"+(('0'+(date.getDate()+1)).slice(-2))+"/"+date.getFullYear()+" @ ";
 	timestamp += (('0'+date.getHours()).slice(-2))+":"+(('0'+date.getMinutes()).slice(-2))+":"+(('0'+date.getSeconds()).slice(-2));
 	var append_html = '<li>';
-	if (message.user_id != last_sender)
+	if (message.user_id != $(area).attr('last_sender'))
 	{
 		append_html += '<div class="author">'+message.display_name+'</div>';
 	}
 	append_html += '<div class="messageContainer"><div class="timestamp">'+timestamp+'<a class="flag" href="javascript:;" onclick="show_flag_message('+message.id+');"><img src="img/icon_flag.png" alt="Flag"></a></div><div class="message">'+escapeHtml(message.message_string).parseURL()+'</div></div><div style="clear:both;"></div></li>';
 	
 	$(area+" ul").append(append_html);
-	last_message_id = message.id;
-	last_sender = message.user_id;
-	$.cookie("lc_last_msg", last_message_id); //Set last message id
+	$(area).attr('last_message_id',message.id);
+	$(area).attr('last_sender',message.user_id);
+	/* last_message_id = message.id; */
+	/* last_sender = message.user_id; */
+	$.cookie("lc_last_msg", $(area).attr('last_message_id')); //Set last message id
 	$(area).mCustomScrollbar("update");
 	if (scroll)
 		$(area).mCustomScrollbar("scrollTo","bottom",{scrollInertia:1000}); //scroll to bottom

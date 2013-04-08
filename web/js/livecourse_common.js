@@ -16,6 +16,7 @@ var last_message_id;
 var waiting_notifications = 0;
 
 var last_sender = -1;
+var last_sender_history = -1;
 
 var ui_colors=["","red","brown","green","cyan","purple"];
 

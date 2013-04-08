@@ -52,6 +52,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 	{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
+        
                 
         /**
          * Links to the XML
@@ -127,6 +128,8 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
          * If this device is already registered it will use the previous
          * ID instead.
          */
+		//GCMRegistrar.unregister(this);
+
 		
 		GCMRegistrar.checkDevice(this);
 		GCMRegistrar.checkManifest(this);

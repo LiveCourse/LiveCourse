@@ -21,7 +21,7 @@
 		<script src="<?php echo(base_url("js/livecourse_function.js")); ?>"></script>
 		
 		<script type="text/javascript">
-			Cufon.replace('#TopBar div.classTitle, #LeftSideBar h1,#RightSideBar h1,#ChatFrame h1,.DialogContainer h1,.DialogMessage .status_message,#joinroom_results ul li .name');
+			Cufon.replace('#TopBar div.classTitle, #LeftSideBar h1,#RightSideBar h1,#ChatFrame h1,.DialogContainer h1,.DialogMessage .status_message,#joinroom_results ul li .name,#ChatFrame #HistoryMessages h2');
 			Cufon.replace('#TopBar div.userInfo, #ChatFrame #ChatFrameHeader #ChatHeaderMenu li a, a.buttonLink',{
 				hover: true
 			});
@@ -88,6 +88,10 @@
 		<div id="TopBar">
 			<img src="img/logo_48.png" alt="LiveCourse" class="logo">
 			<div class="classTitle"><span>Class List</span><img src="img/arrow_dropdown.png" alt="Selector"></div>
+			<ul class="switcher">
+				<li id="switcher_chat" class="selected"><a href="javascript:;" onclick="select_chat_tab();"><img src="img/icon_chat.png" alt="Chat"></a></li>
+				<li id="switcher_cal"><a href="javascript:;" onclick="select_history_tab();"><img src="img/icon_cal.png" alt="History"></a></li>
+			</ul>
 			<ul class="options">
 				<li><a href="javascript:;" onclick="prefs_show();"><img src="img/icon_gear_20.png" alt="Preferences"></a></li>
 				<li><a href="javascript:;" onclick="info_show();"><img src="img/icon_info_20.png" alt="Information"></a></li>
@@ -108,10 +112,10 @@
 				</ul>
 				<div style="clear:both;"></div>
 			</div>
+			-->
 			<div id="HistoryDateSelect">
 				This is a test date.
 			</div>
-			-->
 			<div id="ChatMessages" class="nano">
 				<ul>
 				</ul>
@@ -221,7 +225,8 @@
 				<h2>Artwork</h2>
 				HTML5 interface design and implementation by Hayden McAfee<br><br>
 				<a href="http://thenounproject.com/noun/gear/#icon-No2789" target="_blank">Gear</a> designed by <a href="http://thenounproject.com/somerandomdude" target="_blank">P.J. Onori</a> from The Noun Project<br>
-				<a href="http://thenounproject.com/noun/user/#icon-No2281" target="_blank">User</a> designed by <a href="http://thenounproject.com/elordin" target="_blank">Thomas Weber</a> from The Noun Project
+				<a href="http://thenounproject.com/noun/user/#icon-No2281" target="_blank">User</a> designed by <a href="http://thenounproject.com/elordin" target="_blank">Thomas Weber</a> from The Noun Project<br>
+				<a href="http://thenounproject.com/noun/speech-bubble/#icon-No11297" target="_blank">Speech Bubble</a> designed by <a href="http://thenounproject.com/jorishoogendoorn" target="_blank">Joris Hoogendoorn</a> from The Noun Project
 			</div>
 		</div>
 		

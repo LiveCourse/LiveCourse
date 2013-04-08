@@ -100,6 +100,33 @@ input[type="submit"]:active,button:active
 	padding-right:16px;
 	vertical-align:middle;
 }
+
+#TopBar ul.switcher
+{
+	list-style-type:none;
+	padding:0;
+	float:left;
+	height:32px;
+	margin:28px 2px 0px 20px;
+}
+
+#TopBar ul.switcher li
+{
+	float:left;
+	margin:0 12px;
+	opacity:0.2;
+}
+
+#TopBar ul.switcher li:hover
+{
+	opacity:0.8;
+}
+
+#TopBar ul.switcher li.selected
+{
+	opacity:1.0;
+}
+
 #TopBar ul.options
 {
 	list-style-type:none;
@@ -269,7 +296,7 @@ a.buttonLink:hover
 
 #UserList li
 {
-	padding:8px 8px 8px 46px;
+	padding:8px 8px 8px 40px;
 	color:@color_primary;
 	font-size:16px;
 	cursor:pointer;
@@ -290,19 +317,16 @@ a.buttonLink:hover
 #UserList li.me
 {
 	font-weight:bold;
-	font-size:16px;
 }
 
 #UserList li.online
 {
-	border-left:6px solid @color_primary;
-	padding-left:40px;
+	border-right:6px solid @color_primary;
 }
 
 #UserList li.idle
 {
-	border-left:2px solid @color_primary;
-	padding-left:40px;
+	border-right:2px solid @color_primary;
 }
 
 #UserList li.ignored
@@ -350,11 +374,20 @@ a.buttonLink:hover
 	display:none;
 }
 
+#ChatFrame #HistoryMessages h2
+{
+	margin-top:64px;
+	font-family:'cicle',sans-serif;
+	text-align:center;
+	font-size:32px;
+	color:@color_secondary;
+}
+
 #ChatFrame #HistoryDateSelect
 {
 	position:absolute;
 	z-index:1;
-	top:124px;
+	top:70px;
 	left:0px;
 	right:0px;
 	height:32px;
@@ -403,7 +436,7 @@ a.buttonLink:hover
 {
 	overflow: hidden; /* Makes #outer contain its floated children */
 	width: 100%;
-	/* float:left; */
+	float:left; 
 	/* width:100%; */
 }
 
