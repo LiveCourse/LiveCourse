@@ -97,6 +97,7 @@
 		</div>
 		
 		<div id="ChatFrame">
+			<!--
 			<div id="ChatFrameHeader">
 				<h1></h1>
 				<ul id="ChatHeaderMenu">
@@ -110,6 +111,7 @@
 			<div id="HistoryDateSelect">
 				This is a test date.
 			</div>
+			-->
 			<div id="ChatMessages" class="nano">
 				<ul>
 				</ul>

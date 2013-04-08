@@ -250,43 +250,13 @@ a.buttonLink:hover {
   white-space: nowrap;
   overflow: hidden;
 }
-#ChatFrame #ChatFrameHeader {
-  position: relative;
-  background-image: url(../img/gray_opacity_90.png);
-  z-index: 10;
-  /* height:128px; */
-
-}
-#ChatFrame #ChatFrameHeader #ChatHeaderMenu {
-  margin-left: 36px;
-  list-style-type: none;
-  padding: 0;
-  text-align: left;
-  display: none;
-}
-#ChatFrame #ChatFrameHeader #ChatHeaderMenu li a {
-  display: block;
-  float: left;
-  font-family: 'cicle', sans-serif;
-  font-size: 28px;
-  padding: 0px 56px 0px 0px;
-  opacity: 0.3;
-  color: #000;
-}
-#ChatFrame #ChatFrameHeader #ChatHeaderMenu li.selected a {
-  color: #7e2e2e;
-  opacity: 1.0;
-}
-#ChatFrame #ChatFrameHeader #ChatHeaderMenu li a:hover {
-  opacity: 1.0;
-}
 /* TODO: On-resize, set top to the (dynamic) height of the chatframeheader. */
 #ChatFrame #ChatMessages,
 #ChatFrame #HistoryMessages {
   position: absolute;
   z-index: 0;
-  top: 124px;
-  left: 36px;
+  top: 70px;
+  left: 24px;
   right: 12px;
   bottom: 12px;
   overflow-y: hidden;
