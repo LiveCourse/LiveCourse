@@ -222,7 +222,7 @@ a.buttonLink:hover {
   text-align: left;
 }
 #UserList li {
-  padding: 8px 8px 8px 46px;
+  padding: 8px 8px 8px 40px;
   color: #2e7e3b;
   font-size: 16px;
   cursor: pointer;
@@ -237,15 +237,12 @@ a.buttonLink:hover {
 }
 #UserList li.me {
   font-weight: bold;
-  font-size: 16px;
 }
 #UserList li.online {
-  border-left: 6px solid #2e7e3b;
-  padding-left: 40px;
+  border-right: 6px solid #2e7e3b;
 }
 #UserList li.idle {
-  border-left: 2px solid #2e7e3b;
-  padding-left: 40px;
+  border-right: 2px solid #2e7e3b;
 }
 #UserList li.ignored {
   text-decoration: line-through;
