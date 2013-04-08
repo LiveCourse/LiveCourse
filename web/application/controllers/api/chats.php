@@ -133,8 +133,17 @@ class Chats extends REST_Controller
 					$this->Model_Chats->remove_message($message_id);
 				}
 			}
+			else
+			{
+			$this->response($this->rest_error(array("Only messages that exist my be deleted.")),403);
+			return;
+			}
 		}
+		else
+		{
+		$this->response($this->rest_error(array("You have already reported this message.")),403);
 		return;
+		}
 	}
 	
 	/**
