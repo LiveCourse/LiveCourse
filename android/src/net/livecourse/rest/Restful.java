@@ -26,9 +26,9 @@ import android.util.Log;
 
 /**
  * This class is responsible for sending and receiving the HttpGet or HttpPost requests.  This class
- * will create either a HttpGet or HttpPost object and sends it at our server and then receive it, all
+ * will create either a HttpGet or HttpPost object and sends it to our server and then receive it, all
  * done on a background thread.  It will then call the OnRestCalled callback class to do or finish up tasks.
- * All classes that call this class should implement OnRestCalled in order to use it's methods.  There are
+ * All classes that call this class should implement OnRestCalled in order to use its methods.  There are
  * three methods that OnRestCalled implements, which are documented in the OnRestCalled interface.  In short
  * there is one method that runs only if the return from the server is successful and performs actions in 
  * the same background thread, one method that handles the results of the call if they were successful, and
@@ -74,6 +74,7 @@ public class Restful extends AsyncTask <Void, Void, String>
 	public static final String		UPDATE_USER_STATUS_PATH		= "users/focus";
 	public static final String		REGISTER_ANDROID_USER_PATH	= "users/android_add";
 	public static final String		CHANGE_DISPLAY_NAME_PATH	= "users/change_display_name";
+	public static final String		FETCH_DAY					= "chats/fetch_day";
 	
 	/**
 	 * Private variables used by Restful
