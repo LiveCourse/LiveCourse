@@ -267,6 +267,50 @@ class Model_Chats extends CI_Model {
 		
 		return $this->db->insert('lc_chats', $chat_info);
 	}
+	/**
+	 *Checks to see if a user has already reported a message
+	 *reporter_id - the ID number of the reporter in question
+	 *message_id - the ID number of the message in question
+	 *returns true if the reporter has reported this message, false if it hasnt
+	 */
+	function check_reporter($reporter_id, $message_id){
+		
+		$count = $this->db->where('reporter_id',$reporter_id)
+								->where('message_id',$message_id)
+								->get('lc_chat_messages_flagged')
+								->result();
+		
+		if(count($count)>=1)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	
+	}
+	
+	/**
+	 *Checks to see if a message exists
+	 *message_id - the ID number of the message to be checked
+	 *returns true if the message exists, or false if it doesnt
+	 */
+	function check_message($message_id)
+	{
+		$count = $this->db->where('id',$message_id)
+								->get('lc_chat_messages')
+								->result();
+				
+		if(count($count)>=1)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
 	/**
 	 *Checks the flagged status of a message
@@ -277,8 +321,7 @@ class Model_Chats extends CI_Model {
 
 	function check_flagged($message_id)
 	{
-		$count = $this->db
-				->where('message_id',$message_id)
+		$count = $this->db->where('message_id',$message_id)
 				->get('lc_chat_messages_flagged')
 				->result();
 		

@@ -109,6 +109,7 @@ class Chats extends REST_Controller
 	 */
 	public function flag_message_post()
 	{
+		
 		$reporter_id = $this->authenticated_as;
 		if ($reporter_id <= 0)
 		{
@@ -121,14 +122,18 @@ class Chats extends REST_Controller
 		$message_id = $this->post('message_id');
 		$reason = $this->post('reason');
 		$time = time();
-	
-		$this->Model_Chats->flag_message($message_id,$reporter_id,$reason,$time);
 		
-		
-		if($this->Model_Chats->check_flagged($message_id)>=5){
-			$this->Model_Chats->remove_message($message_id);
+		if($this->Model_Chats->check_reporter($reporter_id,$message_id)==false)
+		{		
+			if($this->Model_Chats->check_message($message_id)==true)
+			{
+				$this->Model_Chats->flag_message($message_id,$reporter_id,$reason,$time);		
+				if($this->Model_Chats->check_flagged($message_id)>=5)
+				{
+					$this->Model_Chats->remove_message($message_id);
+				}
+			}
 		}
-		
 		return;
 	}
 	
