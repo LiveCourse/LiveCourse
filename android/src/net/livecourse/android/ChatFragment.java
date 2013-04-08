@@ -40,7 +40,6 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 {
 	private final String TAG = " == Chat Fragment == ";
 	
-	public Handler mHandler = new Handler();
 	public Restful restful;
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
@@ -278,18 +277,11 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		
 	}
 	
-	public Runnable refreshList = new Runnable()
+	public void updateListNoRRecreate()
 	{
-		public void run()
-		{
-			if(restful != null && !restful.cancel(true))
-			{
-				restful.cancel(true);
-			}
-			Globals.chatFragment.updateList();
-			mHandler.postDelayed(refreshList, 1500);
-		}
-	};
+		Globals.mainActivity.getSupportLoaderManager().restartLoader(2, null, this);
+	}
+
 
 	@Override
 	public void onRestHandleResponseSuccess(String restCall, String response) 

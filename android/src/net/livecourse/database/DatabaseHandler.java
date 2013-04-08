@@ -15,7 +15,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 {
 	private final String TAG = " == DatabaseHandler == ";
 	
-	private static final int DATABASE_VERSION = 25;
+	private static final int DATABASE_VERSION = 28;
 	
 	/**
 	 * Database name
@@ -359,7 +359,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		String CREATE_TABLE_CHAT_MESSAGES = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
 											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
 											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
-											+ KEY_CHAT_USER_ID				+ " int(11),"
+											+ KEY_CHAT_USER_ID			+ " int(11),"
 											+ KEY_CHAT_SEND_TIME		+ " int(11), "
 											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
 											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
