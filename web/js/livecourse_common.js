@@ -9,6 +9,7 @@ var auth_pass = ""; // Global variable for storing the user's SHA1 encrypted pas
 if (typeof($.cookie("lc_auth_pass")) != "undefined") //Fetch the value from cookie if it exists
 	auth_pass = $.cookie("lc_auth_pass");
 var current_user_id = -1;
+var user_data;
 
 var current_chat_room = ""; //Global variable for storing the current chat room.
 var last_message_id;
