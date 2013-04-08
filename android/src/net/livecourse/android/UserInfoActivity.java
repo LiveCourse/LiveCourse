@@ -79,6 +79,8 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
         new Restful(Restful.GET_USER_PATH, Restful.GET, new String[]{"id"}, new String[]{this.userId}, 1, this);
         
         
+        
+        
         /**
 		 * Initialize the temporary list
 		 */
@@ -164,22 +166,6 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 		return super.onOptionsItemSelected(item);
 	}
 	
-	/*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
- 
-        switch (requestCode) {
-        case RESULT_SETTINGS:
-            //showUserSettings();
-            break;
- 
-        }
- 
-    }*/
-	
-
-
-
 	@Override
 	public void onRestHandleResponseSuccess(String restCall, String response) 
 	{
@@ -229,7 +215,7 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 			}
 			
 		}
-		else if(restCall.equals(Restful.SEARCH_FOR_CHAT_PATH))
+		else if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
 		{
 			
 			try 
@@ -278,11 +264,19 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 		if(restCall.equals(Restful.GET_USER_PATH))
 		{
 			this.setTitle(this.displayName);
+			new Restful(Restful.GET_SUBSCRIBED_CHATS_PATH,Restful.GET, new String[]{"id"}, new String[]{this.userId}, 1, this);
 		}
 		else if(restCall.equals(Restful.CHANGE_DISPLAY_NAME_PATH));
 		{
 			this.setTitle(this.displayName);
-		}		
+		}
+		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
+		{
+			this.adapter.clear();
+        	this.adapter.addAll(this.emptyAList);
+        	this.adapter.notifyDataSetChanged();
+        	
+		}
 	}
 
 	@Override
