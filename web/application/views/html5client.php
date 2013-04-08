@@ -161,6 +161,7 @@
 		
 		<!-- Log-in dialog -->
 		<div id="dialog_login" style="display:none;">
+			<img class="logo_large" src="img/logo_large.png" alt="LiveCourse">
 			<form id="form_login" class="large_form">
 				<input name="email" type="email" placeholder="E-Mail Address" /><br>
 				<input name="password" type="password" placeholder="Password" /><br><br>

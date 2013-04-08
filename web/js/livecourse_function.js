@@ -12,7 +12,7 @@ function login_show(allow_close)
 {
 	if (typeof showCloseButton == "undefined")
 		allow_close = false;
-	var dialog = dialog_clone("Log In","#dialog_login",allow_close,true);
+	var dialog = dialog_clone("Welcome To LiveCourse","#dialog_login",allow_close,true);
 	// dialog_addbutton(dialog,"Submit",login_submit,false); //This button'd look better under the actual form.
 	dialog.find("form").submit(login_submit); //Bind form submission to submit function
 	dialog.find("button.register").click(function() { //Bind registration button to show registration dialog
