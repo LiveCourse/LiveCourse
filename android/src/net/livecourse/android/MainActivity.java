@@ -2,14 +2,19 @@ package net.livecourse.android;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.*;
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 import net.livecourse.R;
 import net.livecourse.database.DatabaseHandler;
+import net.livecourse.rest.OnRestCalled;
+import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
@@ -20,10 +25,11 @@ import android.widget.Toast;
  * The tabs are implemented through another fragment and that fragments adapter. 
  * 
  */
-public class MainActivity extends SherlockFragmentActivity implements OnPageChangeListener
+public class MainActivity extends SherlockFragmentActivity implements OnPageChangeListener, OnRestCalled
 {
 	private final String TAG = " == MainActivity == ";
 
+	private static final int RESULT_SETTINGS = 1;
 	public static final int VIEW_PAGE_LOAD_COUNT = 2;
 	
 	/**
@@ -84,8 +90,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		{
 			case R.id.main_options_menu_settings:
 				Intent settings = new Intent(this, EditUserInfoActivity.class);
-	            //startActivityForResult(i, RESULT_SETTINGS);
-	            startActivity(settings);
+	            startActivityForResult(settings, RESULT_SETTINGS);
 				break;
 			case R.id.item1:
 				Toast.makeText(this, "Menu item 1 tapped", Toast.LENGTH_SHORT).show();
@@ -101,6 +106,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		return super.onOptionsItemSelected(item);
 	}
 	
+
 	/*
 	@Override
 	protected void onPause() 
@@ -163,12 +169,56 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		this.mAdapter = mAdapter;
 	}
 	
+	private void showUserSettings() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+ 
+        StringBuilder builder = new StringBuilder();
+ 
+        builder.append("" + sharedPrefs.getString("prefUsername", "NULL"));
+
+        System.out.println(builder.toString());
+        
+        Log.d(this.TAG, "The username: " + builder.toString());
+        new Restful(Restful.CHANGE_DISPLAY_NAME_PATH, Restful.POST,new String[]{"name"}, new String[]{builder.toString()}, 1, this);
+    }
+
 	
 	public void onActivityResult(int request, int result, Intent data) 
 	{
 		/**
 		 * Forwards the QR Code result
 		 */
-		mAdapter.getItem(0).onActivityResult(request, result, data);
+		switch(request)
+		{
+			
+			case IntentIntegrator.REQUEST_CODE:
+				Globals.classListFragment.onActivityResult(request, result, data);
+				break;
+			case RESULT_SETTINGS:
+				showUserSettings();
+	            break;
+		}		
+		
 	}
+
+	@Override
+	public void onRestHandleResponseSuccess(String restCall, String response) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestPostExecutionSuccess(String restCall, String result) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestPostExecutionFailed(String restCall, int code,
+			String result) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 }

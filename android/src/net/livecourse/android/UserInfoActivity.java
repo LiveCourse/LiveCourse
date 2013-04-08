@@ -25,8 +25,10 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import net.livecourse.R;
+import net.livecourse.database.Chatroom;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
+import net.livecourse.utility.Globals;
 
 public class UserInfoActivity extends SherlockFragmentActivity implements OnRestCalled
 {
@@ -44,10 +46,11 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 	private String userId;
 	private String email;
 	private String displayName;
+	private ArrayList<Chatroom> emptyAList;
 	/**
 	 * Temporary list of classes used, will be changed later
 	 */
-	String[] array = {
+	/*String[] array = {
 	        "Systems Programmin A",
 	        "Foods",
 	        "Intro To Pants",
@@ -60,23 +63,27 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 	        "Star Trek and Religion",
 	        "The Art of Warcraft: A Closer Look at the Virtual World Phenomenon"
 		};
-	ArrayList<String> participants;
+	ArrayList<String> participants;*/
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
 	{
         this.userId = this.getIntent().getStringExtra("userId");
+        Log.d(this.TAG, "The current user id: " + this.getIntent().getStringExtra("userId"));
+        //this.setTitle();
+        
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.userinfo_layout);
         
         new Restful(Restful.GET_USER_PATH, Restful.GET, new String[]{"id"}, new String[]{this.userId}, 1, this);
         
+        
         /**
 		 * Initialize the temporary list
 		 */
-		participants = new ArrayList<String>();
-		participants.addAll(Arrays.asList(array));
+		//participants = new ArrayList<String>();
+		//pparticipants.addAll(Arrays.asList(array));
 		
 		/**
 		 * Conencts the list to the XML
@@ -122,8 +129,12 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
     	/** 
     	 * Create the adapter and set it to the list and populate it
     	 * **/
-        adapter = new UserInfoAdapter(this, android.R.layout.simple_list_item_1, participants);
-        userInfoView.setAdapter(adapter);        
+        //adapter = new UserInfoAdapter(this, android.R.layout.simple_list_item_1, participants);
+		emptyAList = new ArrayList<Chatroom>(10);
+        adapter = new UserInfoAdapter(this,R.layout.classlist_item_layout, emptyAList);
+        
+		
+		userInfoView.setAdapter(adapter);        
 	}
 	
 	 
@@ -153,49 +164,51 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 		return super.onOptionsItemSelected(item);
 	}
 	
-	@Override
+	/*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
  
         switch (requestCode) {
         case RESULT_SETTINGS:
-            showUserSettings();
+            //showUserSettings();
             break;
  
         }
  
-    }
+    }*/
 	
-	private void showUserSettings() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
- 
-        StringBuilder builder = new StringBuilder();
- 
-        builder.append("" + sharedPrefs.getString("prefUsername", "NULL"));
-
-        //TextView settingsTextView = (TextView) findViewById(R.id.edit_Text);
- 
-        //settingsTextView.setText(builder.toString());
-        //this.setTitle(builder.toString());
-        System.out.println(builder.toString());
-        
-        Log.d(this.TAG, "The username: " + builder.toString());
-        new Restful(Restful.CHANGE_DISPLAY_NAME_PATH, Restful.POST,new String[]{"name"}, new String[]{builder.toString()}, 1, this);
-    }
 
 
 
 	@Override
 	public void onRestHandleResponseSuccess(String restCall, String response) 
 	{
+		JSONArray parse = null;
+		JSONObject ob = null;
+		
 		if(restCall.equals(Restful.GET_USER_PATH))
 		{
-			
+			try 
+			{
+				parse = new JSONArray(response);
+				
+				for(int x = 0; x < parse.length(); x++)
+				{
+					ob = parse.getJSONObject(x);
+					
+					this.email = ob.getString("email");
+					this.displayName = ob.getString("display_name");
+				}
+				
+			} 
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
+			}
 		}
-		else if(restCall.equals(Restful.CHANGE_DISPLAY_NAME_PATH));
+		else if(restCall.equals(Restful.CHANGE_DISPLAY_NAME_PATH))
 		{
-			JSONArray parse = null;
-			JSONObject ob = null;
+
 			
 			try 
 			{
@@ -216,6 +229,47 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 			}
 			
 		}
+		else if(restCall.equals(Restful.SEARCH_FOR_CHAT_PATH))
+		{
+			
+			try 
+			{
+				parse = new JSONArray(response);
+				this.emptyAList = new ArrayList<Chatroom>(parse.length());
+				
+				for(int x = 0; x < parse.length(); x++)
+				{
+					Chatroom room = new Chatroom();
+					ob = parse.getJSONObject(x);
+					
+		        	room.setIdString(ob.getString(		"id_string"));
+	            	room.setSubjectId(ob.getString(		"subject_id"));
+	            	room.setCourseNumber(ob.getString(	"course_number"));
+	            	room.setName(ob.getString(			"name"));
+	            	room.setStartTime(ob.getString(		"start_time"));	            	
+		        	room.setInstitutionId(ob.getString(	"institution_id"));
+		        	room.setRoomId(ob.getString(		"room_id"));
+		        	room.setStartTime(ob.getString(		"start_time"));
+		        	room.setEndTime(ob.getString(		"end_time"));
+		        	room.setStartDate(ob.getString(		"start_date"));
+		        	room.setEndDate(ob.getString(		"end_date"));
+		        	room.setDowMonday(ob.getString(		"dow_monday"));
+		        	room.setDowTuesday(ob.getString(	"dow_tuesday"));
+		        	room.setDowWednesday(ob.getString(	"dow_wednesday"));
+		        	room.setDowThursday(ob.getString(	"dow_thursday"));
+		        	room.setDowFriday(ob.getString(		"dow_friday"));
+		        	room.setDowSaturday(ob.getString(	"dow_saturday"));
+		        	room.setDowSunday(ob.getString(		"dow_sunday"));
+		        	
+		        	this.emptyAList.add(room);
+					Log.d(this.TAG, "Added Chatroom " + room.getName() + " to query array list");
+				}
+			}
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override
@@ -227,7 +281,7 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 		}
 		else if(restCall.equals(Restful.CHANGE_DISPLAY_NAME_PATH));
 		{
-			
+			this.setTitle(this.displayName);
 		}		
 	}
 

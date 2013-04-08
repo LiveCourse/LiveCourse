@@ -287,7 +287,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 				restful.cancel(true);
 			}
 			Globals.chatFragment.updateList();
-			mHandler.postDelayed(refreshList, 1500);
+			//mHandler.postDelayed(refreshList, 2000);
 		}
 	};
 
