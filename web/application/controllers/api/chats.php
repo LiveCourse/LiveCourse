@@ -483,7 +483,7 @@ class Chats extends REST_Controller
 			$fields = array(
 			    'registration_ids' => $registration_ids,
 			    'data' => array('message_id' => $message_id,
-			    		'chat_id' => $chat_id,
+			    		'chat_id' => $chat_id_string,
 			    		'send_time' => $time,
 			    		'message_string' => $message,
 			    		'user_id' => $user_id,
