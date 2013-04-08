@@ -194,7 +194,7 @@ function escapeHtml(text) {
  * String prototype for parsing URLs out of messages and converting them to <a href ...
  */
 String.prototype.parseURL = function() {
-	return this.replace(/[A-Za-z]+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&~\?\/.=]+/g, function(url) {
+	return this.replace(/[A-Za-z]+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:;%&~\?\/.=]+/g, function(url) {
 		//return url.link(url);
 		return "<a target='_blank' href='"+url+"'>"+url+"</a>";
 	});
