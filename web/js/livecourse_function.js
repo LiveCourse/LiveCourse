@@ -875,6 +875,34 @@ function load_recent_chat_contents()
 }
 
 /**
+ * Flags a message
+ */
+function show_flag_message(message_id)
+{
+	var dialog = dialog_clone("Flag a Message","#dialog_flag",true,true);
+	dialog.find("input[name=message_id]").val(message_id);
+	dialog.find("form").submit(flag_message_submit);
+	dialog_show(dialog);
+}
+
+function flag_message_submit()
+{
+	var _this = this;
+	call_api("chats/flag_message","POST",$(this).serialize(),
+		function (data) {
+			dialog_close($(_this).parents(".DialogOverlay").first());
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Flagging Message","An error occurred while attempting to flag your message.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+			progress_indicator_hide(load_ind);
+		});
+	return false;
+}
+
+/**
  * Posts the specified message object in the chat messages frame for user view.
  */
 function post_message(message,scroll,area)
@@ -903,7 +931,7 @@ function post_message(message,scroll,area)
 	{
 		append_html += '<div class="author">'+message.display_name+'</div>';
 	}
-	append_html += '<div class="messageContainer"><div class="timestamp">'+timestamp+'</div><div class="message">'+escapeHtml(message.message_string).parseURL()+'</div></div><div style="clear:both;"></div></li>';
+	append_html += '<div class="messageContainer"><div class="timestamp">'+timestamp+'<a class="flag" href="javascript:;" onclick="show_flag_message('+message.id+');"><img src="img/icon_flag.png" alt="Flag"></a></div><div class="message">'+escapeHtml(message.message_string).parseURL()+'</div></div><div style="clear:both;"></div></li>';
 	
 	$(area+" ul").append(append_html);
 	last_message_id = message.id;
