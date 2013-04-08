@@ -433,10 +433,9 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("You must provide a message.")),403);
 			return;
 		}
-		
-		//$message = "You have received a message in one of your chats!";
-		
-		$users = $this->Model_Users->fetch_all_android_user();
+		//Sending push notifications to the android users who are subscribed to this chat
+		$users = $this->Model_Users->fetch_all_subscribed_android_user($chat_id); 
+
 		if (count($users) > 0)
 		{
 			$registration_ids = null;
@@ -477,7 +476,7 @@ class Chats extends REST_Controller
 			curl_close($ch);
 			if(!$result)
 			{
-				$this->response($this->rest_error(array("Error sending push notifications!")),403);
+				$this->response($result);
 				return;
 			}
 		}

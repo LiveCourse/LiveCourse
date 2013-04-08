@@ -343,5 +343,21 @@ class Model_Users extends CI_Model {
 		
 		return false;
 	}
+	
+	/**
+	*This function will grab all of the android devices that are subscribed to the given chat
+	*chat_id - ID, numerical, of the chat that we want android users notified of
+	*returns the array of people who are registered with an android device to this chat
+	*/
+	function fetch_all_subscribed_android_user($chat_id)
+	{
+		$users = $this->db
+				->select('lc_gcm_users.user_id, lc_gcm_users.gcm_regid')
+				->from('lc_gcm_users')
+				->join('lc_chat_participants', 'lc_chat_participants.user_id = lc_gcm_users.user_id AND lc_chat_participants.chat_id = ' . $chat_id )
+				->get()
+				->result();
+		return $users;
+	}
 
 }
