@@ -475,8 +475,9 @@ a.buttonLink:hover {
   border-color: #7e2e7e;
   color: #7e2e7e;
 }
-.large_form input.invalid {
-  border-bottom: 3px solid #e54545;
+.large_form input.invalid,
+.large_form input.invalid:active {
+  border-bottom: 3px solid #e54545 !important;
   /* #e5b8b8 */
 
 }
