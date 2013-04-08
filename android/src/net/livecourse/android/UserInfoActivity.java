@@ -50,20 +50,6 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 	/**
 	 * Temporary list of classes used, will be changed later
 	 */
-	/*String[] array = {
-	        "Systems Programmin A",
-	        "Foods",
-	        "Intro To Pants",
-	        "Female Anatomy",
-	        "Elvish, the language of \"Lord of the Rings\"",
-	        "European Witchcraft",
-	        "Age of Piracy",
-	        "The Amazing World of Bubbles",
-	        "The Strategy of Starcraft",
-	        "Star Trek and Religion",
-	        "The Art of Warcraft: A Closer Look at the Virtual World Phenomenon"
-		};
-	ArrayList<String> participants;*/
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -77,15 +63,6 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
         setContentView(R.layout.userinfo_layout);
         
         new Restful(Restful.GET_USER_PATH, Restful.GET, new String[]{"id"}, new String[]{this.userId}, 1, this);
-        
-        
-        
-        
-        /**
-		 * Initialize the temporary list
-		 */
-		//participants = new ArrayList<String>();
-		//pparticipants.addAll(Arrays.asList(array));
 		
 		/**
 		 * Conencts the list to the XML
@@ -131,7 +108,6 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
     	/** 
     	 * Create the adapter and set it to the list and populate it
     	 * **/
-        //adapter = new UserInfoAdapter(this, android.R.layout.simple_list_item_1, participants);
 		emptyAList = new ArrayList<Chatroom>(10);
         adapter = new UserInfoAdapter(this,R.layout.classlist_item_layout, emptyAList);
         

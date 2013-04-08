@@ -464,16 +464,11 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	{
 		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
 		{
-			if(this.getSherlockActivity() == null)
-				Log.w(this.TAG, "ACTIVITY IS NULL");
-			if(this.getSherlockActivity().getSupportLoaderManager()==null)
-				Log.w(this.TAG, "LOADER MANAGER IS NULL");
-			this.getSherlockActivity()
-			.getSupportLoaderManager()
-			.restartLoader(1, null, this);	
+			this.getSherlockActivity().getSupportLoaderManager().restartLoader(1, null, this);	
+			
 			if(this.updateListCalledByQR)
 			{
-				this.switchToChat(Globals.chatId, Globals.chatName);
+				//this.switchToChat(Globals.chatId, Globals.chatName);
 				this.updateListCalledByQR = false;
 			}
 			

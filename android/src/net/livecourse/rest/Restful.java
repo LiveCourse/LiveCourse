@@ -73,6 +73,8 @@ public class Restful extends AsyncTask <Void, Void, String>
 	public static final String		UPDATE_COLOR_PREF_PATH		= "users/update_color";
 	public static final String		UPDATE_USER_STATUS_PATH		= "users/focus";
 	public static final String		REGISTER_ANDROID_USER_PATH	= "users/android_add";
+	public static final String		IGNORE_USER_PATH			= "users/ignore_user";
+	public static final String		UNIGNORE_USER_PATH			= "users/unignore_user";
 	public static final String		CHANGE_DISPLAY_NAME_PATH	= "users/change_display_name";
 	public static final String		FETCH_DAY					= "chats/fetch_day";
 	
