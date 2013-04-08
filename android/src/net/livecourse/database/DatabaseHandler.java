@@ -28,6 +28,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	public static final String TABLE_CLASS_ENROLL 			= "classEnroll";
 	public static final String TABLE_CHAT_MESSAGES			= "chatMessages";
 	public static final String TABLE_PARTICIPANTS			= "participants";
+	public static final String TABLE_HISTORY				= "history";
 	
 	/**
 	 * Fields used for the classroom object
@@ -127,10 +128,21 @@ public class DatabaseHandler extends SQLiteOpenHelper
 											+ KEY_PART_TIME_LASTFOCUS	+ " int(11), "
 											+ KEY_PART_TIME_LASTREQUEST + " int(11) "
 											+ ")";
-		
+
+		String CREATE_TABLE_HISTORY		  = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
+											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+											+ KEY_CHAT_USER_ID			+ " int(11),"
+											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
+											+ KEY_CHAT_SEND_TIME		+ " int(11), "
+											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
+											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
+											+ KEY_CHAT_DISPLAY_NAME 	+ " varchar(255) "
+											+ ")";
+											
         db.execSQL(CREATE_TABLE_CLASS_QUERY);
         db.execSQL(CREATE_TABLE_CHAT_MESSAGES);
         db.execSQL(CREATE_TABLE_PARTICIPANTS);
+        db.execSQL(CREATE_TABLE_HISTORY);
 	}
 
 	@Override
@@ -150,6 +162,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASS_ENROLL);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHAT_MESSAGES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY);
 		
 		/**
 		 * Recreate tables
@@ -291,6 +304,37 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		db.close();
 		
 		//Log.d(this.TAG, "Added Participant to row " + row + " with name: " + a.getDisplayName());
+	}
+	
+	/**
+	 * Adds a Message object to the TABLE_HISTORY table.
+	 * 
+	 * @param a The message to be added
+	 */
+	public void addMessageHistory(ChatMessage a)
+	{
+		/**
+		 * Grab the DB
+		 */
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		/**
+		 * Put all the values in
+		 */
+		ContentValues values = new ContentValues();
+		values.put(KEY_CHAT_ID,					a.getChatId());
+		values.put(KEY_CHAT_SEND_TIME,			a.getSendTime());
+		values.put(KEY_CHAT_MESSAGE_STRING,		a.getMessageString());
+		values.put(KEY_CHAT_EMAIL, 				a.getEmail());
+		values.put(KEY_CHAT_DISPLAY_NAME,		a.getDisplayName());
+		
+		/**
+		 * Insert the row into the table and the close the connection to the DB
+		 */
+		db.insertWithOnConflict(TABLE_HISTORY, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+		db.close();
+		
+		//Log.d(this.TAG, "Added Chat Message to row " + row + " with message: " + a.getMessageString());
 	}
 	
 	/**
