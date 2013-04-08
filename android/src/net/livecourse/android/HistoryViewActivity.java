@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import net.livecourse.R;
 import net.livecourse.database.DatabaseHandler;
+import net.livecourse.database.HistoryListLoader;
 import net.livecourse.database.ParticipantsLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
@@ -69,7 +70,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1)
 	{
-		return new ParticipantsLoader(this, Globals.appDb);
+		return new HistoryListLoader(this, Globals.appDb);
 	}
 
 	@Override
@@ -88,7 +89,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	public void updateList()
 	{
 		//TODO: Change this to the new Restful call
-		new Restful("chats/fetch_day",0,new String[] {"chat_id","start_epoch"},new String[] {"sproga","1365307201000"},2,this);
+		new Restful("chats/fetch_day",0,new String[] {"chat_id","start_epoch"},new String[] {"sproga","1365307201"},2,this);
 	}
 	public void clearList()
 	{
@@ -98,6 +99,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	@Override
 	public void onRestHandleResponseSuccess(String restCall, String response) 
 	{
+		Log.d(this.TAG, "Result: " + response);
 		/**
 		 * Used to parse the response into String objects
 		 */
@@ -169,7 +171,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	{
 		if(restCall.equals(Restful.FETCH_DAY))
 		{
-			this.getSupportLoaderManager().restartLoader(1, null, this);
+			this.getSupportLoaderManager().restartLoader(4, null, this);
 		}
 	}
 
