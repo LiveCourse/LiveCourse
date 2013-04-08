@@ -92,7 +92,7 @@
 				<li><a href="javascript:;" onclick="prefs_show();"><img src="img/icon_gear_20.png" alt="Preferences"></a></li>
 				<li><a href="javascript:;" onclick="info_show();"><img src="img/icon_info_20.png" alt="Information"></a></li>
 			</ul>
-			<div class="userInfo">Hayden McAfee<img src="img/user_icon_sm.png" alt="Hayden McAfee"></div>
+			<div class="userInfo"><img src="img/user_icon_sm.png" alt=""></div>
 			
 		</div>
 		
