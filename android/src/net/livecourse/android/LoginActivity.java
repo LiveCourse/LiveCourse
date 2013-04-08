@@ -52,6 +52,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 	{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
+        
                 
         /**
          * Links to the XML
