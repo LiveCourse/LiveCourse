@@ -707,6 +707,7 @@ class Chats extends REST_Controller
 				echo "id: $msg->id" . PHP_EOL;
 				echo "data: {\n";
 				foreach($msg as $key => $value) {
+					$value = str_replace('\\','\\\\',$value);
 					$value = str_replace('"','\\"',$value);
 					echo "data: \"$key\": \"$value\",\n";
 				}
