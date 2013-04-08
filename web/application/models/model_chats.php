@@ -269,6 +269,52 @@ class Model_Chats extends CI_Model {
 	}
 	
 	/**
+	 *Checks the flagged status of a message
+	 *If the message has been flagged more than 5 times, remove it
+	 *message_id - the ID number of the message to be checked
+	 *returns the count of messages in flagged_messages
+	 */
+
+	function check_flagged($message_id)
+	{
+		$count = $this->db
+				->where('message_id',$message_id)
+				->get('lc_chat_messages_flagged')
+				->result();
+		
+		return count($count);	
+	}	
+	
+	/**
+	 *Removes a message from a chat room
+	 *message_id - the ID number of the message to be removed
+	 *returns true if successful, false if failed
+	 */
+	function remove_message($message_id)
+	{
+		$count = $this->db->count_all('lc_chat_messages');
+		
+		$this->db
+			->where('id',$message_id)
+			->from('lc_chat_messages')
+			->delete();
+	
+		$this->db
+			->where('message_id',$message_id)
+			->from('lc_chat_messages_flagged')
+			->delete();
+
+		if($count - $this->db->count_all('lc_chat_messages')<=0)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	/**
 	 *Remove a chat from the database, make sure to clear any participants.
 	 *chat_id - the ID number of the chat room to be removed
 	 *returns true if successful, false if failed
