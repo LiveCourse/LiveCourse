@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `lc_chat_participants` (
 CREATE TABLE IF NOT EXISTS `lc_gcm_users` (
   `user_id` int(11) NOT NULL COMMENT 'ID of the user who registered the device',
   `gcm_regid` text,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` int(11)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
