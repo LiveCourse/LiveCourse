@@ -123,7 +123,12 @@ class Chats extends REST_Controller
 		$time = time();
 	
 		$this->Model_Chats->flag_message($message_id,$reporter_id,$reason,$time);
-	
+		
+		
+		if($this->Model_Chats->check_flagged($message_id)>=5){
+			$this->Model_Chats->remove_message($message_id);
+		}
+		
 		return;
 	}
 	
