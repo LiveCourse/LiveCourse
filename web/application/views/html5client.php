@@ -236,5 +236,15 @@
 				</ul>
 			</div>
 		</div>
+		
+		<!-- Flag message dialog -->
+		<div id="dialog_flag" style="display:none;">
+			<form id="form_flag" class="large_form">
+				<input name="message_id" type="hidden" />
+				<input name="reason" type="text" placeholder="Reason" style="width:80%;margin:0 auto;" />
+				<br>
+				<input type="submit" value="Flag Message" />
+			</form>
+		</div>
 	</body>
 </html>
