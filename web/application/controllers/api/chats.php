@@ -465,6 +465,8 @@ class Chats extends REST_Controller
 		$users = $this->Model_Users->fetch_all_subscribed_android_user($chat_id); 
 		$time = time();
 		
+		$user_info = $this->Model_Users->fetch_user_by_id($user_id);
+		
 		$message_id = $this->db->insert_id();
 		
 		if (count($users) > 0)
@@ -482,7 +484,9 @@ class Chats extends REST_Controller
 			    		'chat_id' => $chat_id,
 			    		'send_time' => $time,
 			    		'message_string' => $message,
-			    		'user_id' => $user_id,)
+			    		'user_id' => $user_id,
+			    		'email' => $user_info[0]->email,
+			    		'display_name' => $user_info[0]->display_name,)
 			);
 			
 			$headers = array(
@@ -516,7 +520,7 @@ class Chats extends REST_Controller
 			}
 			
 		}
-		$this->response(null,200); //Success
+		$this->response(null,201); //Success
 	}
 
 	/**
