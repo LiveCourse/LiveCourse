@@ -461,13 +461,15 @@ class Chats extends REST_Controller
 			return;
 		}
 		
+		$message_id = $this->db->insert_id();
+		
 		//Sending push notifications to the android users who are subscribed to this chat
 		$users = $this->Model_Users->fetch_all_subscribed_android_user($chat_id); 
 		$time = time();
 		
 		$user_info = $this->Model_Users->fetch_user_by_id($user_id);
 		
-		$message_id = $this->db->insert_id();
+		
 		
 		if (count($users) > 0)
 		{
@@ -480,7 +482,7 @@ class Chats extends REST_Controller
 		
 			$fields = array(
 			    'registration_ids' => $registration_ids,
-			    'data' => array('id' => $message_id,
+			    'data' => array('message_id' => $message_id,
 			    		'chat_id' => $chat_id,
 			    		'send_time' => $time,
 			    		'message_string' => $message,
