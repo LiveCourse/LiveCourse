@@ -133,8 +133,17 @@ class Chats extends REST_Controller
 					$this->Model_Chats->remove_message($message_id);
 				}
 			}
+			else
+			{
+			$this->response($this->rest_error(array("Only messages that exist my be deleted.")),403);
+			return;
+			}
 		}
+		else
+		{
+		$this->response($this->rest_error(array("You have already reported this message.")),403);
 		return;
+		}
 	}
 	
 	/**
@@ -443,8 +452,24 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("You must provide a message.")),403);
 			return;
 		}
+		
+		$message_data = $this->Model_Chats->send_message($user_id,$chat_id,$message);
+		
+		if(!$message_data)
+		{
+			$this->response($this->rest_errror(array("ERROR adding the message!")), 403);
+			return;
+		}
+		
+		$message_id = $this->db->insert_id();
+		
 		//Sending push notifications to the android users who are subscribed to this chat
 		$users = $this->Model_Users->fetch_all_subscribed_android_user($chat_id); 
+		$time = time();
+		
+		$user_info = $this->Model_Users->fetch_user_by_id($user_id);
+		
+		
 		
 		if (count($users) > 0)
 		{
@@ -457,7 +482,13 @@ class Chats extends REST_Controller
 		
 			$fields = array(
 			    'registration_ids' => $registration_ids,
-			    'data' => array("message" => $message,)
+			    'data' => array('message_id' => $message_id,
+			    		'chat_id' => $chat_id_string,
+			    		'send_time' => $time,
+			    		'message_string' => $message,
+			    		'user_id' => $user_id,
+			    		'email' => $user_info[0]->email,
+			    		'display_name' => $user_info[0]->display_name,)
 			);
 			
 			$headers = array(
@@ -491,8 +522,7 @@ class Chats extends REST_Controller
 			}
 			
 		}
-		$this->Model_Chats->send_message($user_id,$chat_id,$message);
-		$this->response(NULL,201); //Success
+		$this->response(null,201); //Success
 	}
 
 	/**
@@ -677,6 +707,7 @@ class Chats extends REST_Controller
 				echo "id: $msg->id" . PHP_EOL;
 				echo "data: {\n";
 				foreach($msg as $key => $value) {
+					$value = str_replace('\\','\\\\',$value);
 					$value = str_replace('"','\\"',$value);
 					echo "data: \"$key\": \"$value\",\n";
 				}

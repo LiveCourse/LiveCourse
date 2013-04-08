@@ -325,8 +325,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		/**
 		 * Call to grab the chat messages from the server and populate them
 		 */
-		//Globals.chatFragment.updateList();
-		Globals.chatFragment.mHandler.post(Globals.chatFragment.refreshList);
+		Globals.chatFragment.updateList();
 		Globals.participantsFragment.updateList();
 		
 		/**
