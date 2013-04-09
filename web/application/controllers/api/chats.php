@@ -183,14 +183,11 @@ class Chats extends REST_Controller
 		}
 
 		//Verify that the user hasn't already subscribed to this chat room.
-		$already_joined = $this->Model_Chats->get_subscribed_chats($user_id);
-		foreach ($already_joined as $joined_chats)
+		$already_joined = $this->Model_Chats->is_user_subscribed($user_id,$chat_id);
+		if($already_joined)
 		{
-			if ($joined_chats->id == $chat_id)
-			{
-				$this->response($this->rest_error(array("You have already joined that chat.")),403);
-				return;
-			}
+			$this->response($this->rest_error(array("You have already joined that chat.")),403);
+			return;
 		}
 
 		$this->Model_Chats->join_chat_by_id($user_id,$chat_id);
@@ -393,9 +390,9 @@ class Chats extends REST_Controller
 		}
 
 		//Well, all that error checking done, lets unsubscribe the user.
-		$remove = $this->Model_Chats->unsubscribe_user($chat_id,$user_id);
+		$remove = $this->Model_Chats->leave_chat_by_id($chat_id,$user_id);
 		
-		if (!$remove)
+		if ($remove)
 		{
 			$this->response('User successfully removed!',200);
 			return;
@@ -899,7 +896,7 @@ class Chats extends REST_Controller
 		
 		//Check to make sure the requesting user has permissions
 		$admin_user = $this->Model_Chats->check_user_permissions($chat_id, $user_id);
-		
+		//print_r($admin_user[0]->permissions);
 		if (!$admin_user[0]->permissions)
 		{
 			$this->response($this->rest_error(array("You do not have the proper permissions to do that!")), 401);

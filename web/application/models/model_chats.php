@@ -223,7 +223,7 @@ class Model_Chats extends CI_Model {
 	 *user_id - User who is to be removed
 	 *returns - 1 if successful, 0 if not.
 	 */
-	function unsubscribe_user($chat_id,$user_id)
+	function leave_chat_by_id($chat_id,$user_id)
 	{
 		$count = $this->db->count_all('lc_chat_participants');
 		$this->db
