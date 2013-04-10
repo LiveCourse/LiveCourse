@@ -3,11 +3,15 @@ package net.livecourse.gcm;
 import net.livecourse.R;
 import net.livecourse.database.DatabaseHandler;
 import net.livecourse.utility.Globals;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
  
@@ -49,15 +53,27 @@ public class GCMIntentService extends GCMBaseIntentService
 		if(!intent.getStringExtra("chat_id").equals(Globals.chatId))
 			return;
 		
-		NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(Globals.mainActivity)
-			.setSmallIcon(R.drawable.airplaneblue)
-			.setContentTitle(intent.getStringExtra("display_name"))
-			.setContentText(intent.getStringExtra("message_string"));
 		
-		NotificationManager mNotificationManager =
-			    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			// mId allows you to update the notification later on.
-			mNotificationManager.notify(71237, notBuilder.build());
+		Bitmap notPic = BitmapFactory.decodeResource(context.getResources(),R.drawable.paperairplanewhite);
+		//Resources res = Globals.mainActivity.getResources();
+		//int height = (int) res.getDimension(android.R.dimen.notification_large_icon_height);
+		//int width = (int) res.getDimension(android.R.dimen.notification_large_icon_width);
+		notPic = Bitmap.createScaledBitmap(notPic, 48, 48, false); 
+		
+		
+		NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(Globals.mainActivity)
+			.setSmallIcon(R.drawable.paperairplanewhite)
+			.setLargeIcon(notPic)
+			.setContentTitle(intent.getStringExtra("display_name"))
+			.setContentText(intent.getStringExtra("message_string"))
+			.setVibrate(new long[]{100,500});
+		
+
+		
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		
+		mNotificationManager.notify(71237, notBuilder.build());
+
 			
 		SQLiteDatabase db = Globals.appDb.getWritableDatabase();
 		SQLiteStatement statement = db.compileStatement(

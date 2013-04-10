@@ -61,6 +61,11 @@ public class Globals
 	
 	public static ActionMode			mode;
 	
+	/**
+	 * UI Colors
+	 */
+	public static final String			BLUE					= "#2e587e";
+	
 	
 }
 

@@ -13,11 +13,15 @@ import net.livecourse.utility.Globals;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 /**
  * 
@@ -44,6 +48,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        this.changeActionBarColor(Globals.BLUE);
         
         Globals.mainActivity = this;
         
@@ -106,6 +112,18 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		return super.onOptionsItemSelected(item);
 	}
 	
+	public void changeActionBarColor(String hexColor)
+	{
+		this.getSupportActionBar().setBackgroundDrawable(
+        		new ColorDrawable(Color.parseColor(hexColor)));
+        int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");    
+        if ( 0 == titleId ) 
+                titleId = com.actionbarsherlock.R.id.abs__action_bar_title;
+        this.getSupportActionBar().setIcon(R.drawable.paperairplanewhite);
+        
+        TextView yourTextView = (TextView)findViewById(titleId);
+        yourTextView.setTextColor(Color.WHITE);
+	}
 
 	/*
 	@Override

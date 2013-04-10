@@ -7,6 +7,7 @@ import net.livecourse.utility.ChatMessageViewHolder;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,7 @@ public class ChatCursorAdapter extends CursorAdapter
 		v.displayName.setText(name);
 		v.time.setText(time);
 		v.message.setText(message);
+		//Linkify.addLinks(v.message, Linkify.WEB_URLS);
 		
 		v.messageId = cursor.getString(cursor.getColumnIndexOrThrow("chat_id"));
 		v.userId = cursor.getString(cursor.getColumnIndexOrThrow("chat_id"));
