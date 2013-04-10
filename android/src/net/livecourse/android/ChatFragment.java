@@ -1,20 +1,13 @@
 package net.livecourse.android;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import net.livecourse.R;
 import net.livecourse.database.ChatMessagesLoader;
-import net.livecourse.database.DatabaseHandler;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -286,60 +279,10 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	@Override
 	public void onRestHandleResponseSuccess(String restCall, String response) 
 	{		
-		long startTime = System.currentTimeMillis();
-
-		JSONArray parse = null;
-		JSONObject ob = null;
 		
 		if(restCall.equals(Restful.GET_RECENT_MESSAGES_PATH))
 		{
-			SQLiteDatabase db = null;
-			SQLiteStatement statement = null;
-			try 
-			{
-				parse = new JSONArray(response);
-				db = Globals.appDb.getWritableDatabase();
-				statement = db.compileStatement(
-						"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
-							" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
-							", "		+ DatabaseHandler.KEY_CHAT_USER_ID +
-							", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
-							", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
-							", " 		+ DatabaseHandler.KEY_CHAT_EMAIL + 
-							", " 		+ DatabaseHandler.KEY_CHAT_DISPLAY_NAME + 
-							") VALUES (?, ?, ?, ?, ?, ?)");
-
-				db.beginTransaction();
-				for(int x = 0;x<parse.length();x++)
-		        {
-		        	ob = parse.getJSONObject(x);
-		   		        	
-		        	//statement.clearBindings();
-		        	
-		        	statement.bindString(1, ob.getString("id"));
-		        	statement.bindString(2, ob.getString("user_id"));
-		        	statement.bindString(3, ob.getString("send_time"));
-		        	statement.bindString(4, ob.getString("message_string"));
-		        	statement.bindString(5, ob.getString("email"));
-		        	statement.bindString(6, ob.getString("display_name"));
-		        	
-		        	statement.execute();
-		        }
-				db.setTransactionSuccessful();	
-			} 
-			catch (JSONException e) 
-			{
-				e.printStackTrace();
-			}	
-			finally
-			{
-				db.endTransaction();
-
-			}
-			statement.close();
-			db.close();
-			
-			Log.d(this.TAG, parse.length() + " messages stored in database in " + (System.currentTimeMillis() - startTime) + "ms");
+			Globals.appDb.addChatMessagesFromJSON(false, response);
 		}
 		else if(restCall.equals(Restful.SEND_MESSAGE_PATH))
 		{
