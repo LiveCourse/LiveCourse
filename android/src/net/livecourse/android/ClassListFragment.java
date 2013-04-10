@@ -344,7 +344,76 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	{		
 		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
 		{
+<<<<<<< HEAD
+			SQLiteDatabase db = null;
+			SQLiteStatement statement = null;
+			try 
+			{
+				parse = new JSONArray(response);
+				db = Globals.appDb.getWritableDatabase();
+				statement = db.compileStatement(
+						"INSERT INTO " 	+ DatabaseHandler.TABLE_CLASS_ENROLL +
+							" ( " 		+ DatabaseHandler.KEY_CLASS_ID_STRING 		+
+							", "		+ DatabaseHandler.KEY_CLASS_SUBJECT_ID 		+
+							", "		+ DatabaseHandler.KEY_CLASS_COURSE_NUMBER 	+
+							", "		+ DatabaseHandler.KEY_CLASS_NAME 			+
+							", "		+ DatabaseHandler.KEY_CLASS_INSTITUTION_ID 	+
+							", "		+ DatabaseHandler.KEY_CLASS_ROOM_ID 		+ 	
+							", "		+ DatabaseHandler.KEY_CLASS_START_TIME 		+
+							", "		+ DatabaseHandler.KEY_CLASS_END_TIME 		+	
+							", "		+ DatabaseHandler.KEY_CLASS_START_DATE 		+
+							", "		+ DatabaseHandler.KEY_CLASS_END_DATE 		+
+							", "		+ DatabaseHandler.KEY_CLASS_DOW_MONDAY 		+
+							", "		+ DatabaseHandler.KEY_CLASS_DOW_TUESDAY 	+	
+							", "		+ DatabaseHandler.KEY_CLASS_DOW_WEDNESDAY 	+
+							", "		+ DatabaseHandler.KEY_CLASS_DOW_THURSDAY 	+
+							", "		+ DatabaseHandler.KEY_CLASS_DOW_FRIDAY 		+
+							", "		+ DatabaseHandler.KEY_CLASS_DOW_SATURDAY 	+	
+							", "		+ DatabaseHandler.KEY_CLASS_DOW_SUNDAY		+
+							") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				
+				db.beginTransaction();
+				for(int x = 0; x < parse.length(); x++)
+				{
+					ob = parse.getJSONObject(x);
+					
+					statement.clearBindings();
+					
+					statement.bindString(1,  ob.getString(	"id_string"));
+					statement.bindString(2,  ob.getString(	"subject_id"));
+					statement.bindString(3,  ob.getString(	"course_number"));
+					statement.bindString(4,  ob.getString(	"name"));
+					statement.bindString(5,  ob.getString(	"institution_id"));
+					statement.bindString(6,  ob.getString(	"room_id"));
+					statement.bindString(7,  ob.getString(	"start_time"));
+					statement.bindString(8,  ob.getString(	"end_time"));
+					statement.bindString(9,  ob.getString(	"start_date"));
+					statement.bindString(10, ob.getString(	"end_date"));
+					statement.bindString(11, ob.getString(	"dow_monday"));
+					statement.bindString(12, ob.getString(	"dow_tuesday"));
+					statement.bindString(13, ob.getString(	"dow_wednesday"));
+					statement.bindString(14, ob.getString(	"dow_thursday"));
+					statement.bindString(15, ob.getString(	"dow_friday"));
+					statement.bindString(16, ob.getString(	"dow_saturday"));
+					statement.bindString(17, ob.getString(	"dow_sunday"));
+					
+					statement.execute();
+				}
+				db.setTransactionSuccessful();
+			} 
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				db.endTransaction();
+			}
+			statement.close();
+			db.close();
+=======
 			Globals.appDb.addClassesFromJSON(false, response);
+>>>>>>> branch 'master' of https://hayden.visualstudio.com/DefaultCollection/_git/LiveCourse
 		}
 		else if(restCall.equals(Restful.JOIN_CHAT_PATH))
 		{
@@ -369,6 +438,10 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	{
 		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
 		{
+<<<<<<< HEAD
+			this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.CLASS_LIST_LOADER, null, this);	
+			
+=======
 			if(this.getSherlockActivity() == null)
 				Log.w(this.TAG, "ACTIVITY IS NULL");
 			if(this.getSherlockActivity().getSupportLoaderManager()==null)
@@ -376,6 +449,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			this.getSherlockActivity()
 			.getSupportLoaderManager()
 			.restartLoader(1, null, this);	
+>>>>>>> branch 'master' of https://hayden.visualstudio.com/DefaultCollection/_git/LiveCourse
 			if(this.updateListCalledByQR)
 			{
 				this.switchToChat(Globals.chatId, Globals.chatName);

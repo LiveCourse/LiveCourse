@@ -17,6 +17,13 @@ public class Globals
 	public static final String SENDER_ID = "584781219532";
 	
 	/**
+	 * The loaders
+	 */
+	public static final int				CLASSLIST_LOADER	= 1;
+	public static final int				CHAT_LOADER			= 2;
+	public static final int				PARTICIPANT_LOADER 	= 3;
+	
+	/**
 	 * Database
 	 */
 	public static DatabaseHandler appDb;
@@ -53,5 +60,7 @@ public class Globals
 	public static String				chatName;
 	
 	public static ActionMode			mode;
+	
+	
 }
 

@@ -273,7 +273,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	
 	public void updateListNoRRecreate()
 	{
-		Globals.mainActivity.getSupportLoaderManager().restartLoader(2, null, this);
+		Globals.mainActivity.getSupportLoaderManager().restartLoader(Globals.CHAT_LOADER, null, this);
 	}
 
 	@Override
