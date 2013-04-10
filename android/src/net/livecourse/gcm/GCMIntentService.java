@@ -51,27 +51,22 @@ public class GCMIntentService extends GCMBaseIntentService
 		if(!intent.getStringExtra("chat_id").equals(Globals.chatId))
 			return;
 		
-		
-		Bitmap notPic = BitmapFactory.decodeResource(context.getResources(),R.drawable.paperairplanewhite);
-		//Resources res = Globals.mainActivity.getResources();
-		//int height = (int) res.getDimension(android.R.dimen.notification_large_icon_height);
-		//int width = (int) res.getDimension(android.R.dimen.notification_large_icon_width);
-		notPic = Bitmap.createScaledBitmap(notPic, 48, 48, false); 
-		
-		
-		NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(Globals.mainActivity)
-			.setSmallIcon(R.drawable.paperairplanewhite)
-			.setLargeIcon(notPic)
-			.setContentTitle(intent.getStringExtra("display_name"))
-			.setContentText(intent.getStringExtra("message_string"))
-			.setVibrate(new long[]{100,500});
-		
-
-		
-		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		
-		mNotificationManager.notify(71237, notBuilder.build());
-
+		if(!intent.getStringExtra("user_id").equals(Globals.userId))
+		{
+			Bitmap notPic = BitmapFactory.decodeResource(context.getResources(),R.drawable.paperairplanewhite);
+			//Resources res = Globals.mainActivity.getResources();
+			//int height = (int) res.getDimension(android.R.dimen.notification_large_icon_height);
+			//int width = (int) res.getDimension(android.R.dimen.notification_large_icon_width);
+			notPic = Bitmap.createScaledBitmap(notPic, 48, 48, false); 
+			NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(Globals.mainActivity)
+				.setSmallIcon(R.drawable.paperairplanewhite)
+				.setLargeIcon(notPic)
+				.setContentTitle(intent.getStringExtra("display_name"))
+				.setContentText(intent.getStringExtra("message_string"))
+				.setVibrate(new long[]{100,500});
+			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+			mNotificationManager.notify(71237, notBuilder.build());
+		}
 			
 		SQLiteDatabase db = Globals.appDb.getWritableDatabase();
 		SQLiteStatement statement = db.compileStatement(
