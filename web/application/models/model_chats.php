@@ -223,7 +223,7 @@ class Model_Chats extends CI_Model {
 	 *user_id - User who is to be removed
 	 *returns - 1 if successful, 0 if not.
 	 */
-	function unsubscribe_user($chat_id,$user_id)
+	function leave_chat_by_id($chat_id,$user_id)
 	{
 		$count = $this->db->count_all('lc_chat_participants');
 		$this->db
@@ -415,5 +415,37 @@ WHERE lc_chat_participants.chat_id = 1
 				->result();
 		
 		return $users;
+	}
+	
+	/**
+	*Alters a user administrative permissions
+	*chat_id - ID of the chatroom in which they are to receive permissions
+	*user_id - ID of the user who will be elevated
+	*permissions - The desired state of permissions, 1 being admin, 0 being standard user
+	*Returns TRUE on success or FALSE/NULL on failure
+	*/
+	function change_user_permissions($chat_id,$user_id,$permissions)
+	{
+		return $this->db
+			->where('chat_id', $chat_id)
+			->where('user_id', $user_id)
+			->update('lc_chat_participants', array('permissions' => $permissions));
+	}
+	
+	/**
+	*Checks the user's current permissions
+	*chat_id - ID of the chat in which to check for permissions
+	*user_id - ID of the user whose permissions we're looking up
+	*Returns TRUE(1) if admin, FALSE(0) if not.
+	*/
+	function check_user_permissions($chat_id, $user_id)
+	{
+		return $this->db
+			->select('permissions')
+			->where('chat_id', $chat_id)
+			->where('user_id', $user_id)
+			->from('lc_chat_participants')
+			->get()
+			->result();
 	}
 }

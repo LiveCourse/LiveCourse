@@ -1,9 +1,11 @@
 package net.livecourse.android;
 
 import net.livecourse.R;
+import net.livecourse.utility.Globals;
 import net.livecourse.utility.ParticipantViewHolder;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +70,12 @@ public class ParticipantsCursorAdapter extends CursorAdapter
 				
 		v.displayName.setText(name);
 		v.userId = cursor.getString(cursor.getColumnIndexOrThrow("user_id"));
-
+		
+		v.displayName.setTypeface(null, Typeface.NORMAL);
+		if(v.userId.equals(Globals.userId))
+		{
+			v.displayName.setTypeface(null, Typeface.BOLD);
+		}
 		view.setTag(v);
 	}
 }

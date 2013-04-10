@@ -1,18 +1,14 @@
 package net.livecourse.android;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.widget.ImageView;
@@ -28,22 +24,21 @@ import net.livecourse.R;
 import net.livecourse.database.Chatroom;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
-import net.livecourse.utility.Globals;
 
 public class UserInfoActivity extends SherlockFragmentActivity implements OnRestCalled
 {
 	private final String TAG = " == User Info Activity == ";
 	
 	int check = 0;
-	private static final int RESULT_SETTINGS = 1;
 	private ListView userInfoView;
 	private ImageView profilePic;
-	private UserInfoAdapter adapter;
+	private UserInfoArrayAdapter adapter;
 	
 	/**
 	 * These are the variables for the user for for this activity
 	 */
 	private String userId;
+	@SuppressWarnings("unused")
 	private String email;
 	private String displayName;
 	private ArrayList<Chatroom> emptyAList;
@@ -109,7 +104,7 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
     	 * Create the adapter and set it to the list and populate it
     	 * **/
 		emptyAList = new ArrayList<Chatroom>(10);
-        adapter = new UserInfoAdapter(this,R.layout.classlist_item_layout, emptyAList);
+        adapter = new UserInfoArrayAdapter(this,R.layout.classlist_item_layout, emptyAList);
         
 		
 		userInfoView.setAdapter(adapter);        

@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import net.livecourse.R;
 import net.livecourse.database.DatabaseHandler;
 import net.livecourse.database.HistoryListLoader;
-import net.livecourse.database.ParticipantsLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
@@ -125,11 +124,11 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 				statement = db.compileStatement(
 						"INSERT INTO " 	+ DatabaseHandler.TABLE_HISTORY + 
 							" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
-							", "		+ DatabaseHandler.KEY_CHAT_USER_ID +
+							", "		+ DatabaseHandler.KEY_USER_ID +
 							", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
 							", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
-							", " 		+ DatabaseHandler.KEY_CHAT_EMAIL + 
-							", " 		+ DatabaseHandler.KEY_CHAT_DISPLAY_NAME + 
+							", " 		+ DatabaseHandler.KEY_USER_EMAIL + 
+							", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
 							") VALUES (?, ?, ?, ?, ?, ?)");
 
 				db.beginTransaction();

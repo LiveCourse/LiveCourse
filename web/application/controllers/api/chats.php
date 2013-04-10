@@ -156,7 +156,7 @@ class Chats extends REST_Controller
 		$this->load->model('Model_Auth');
 
 		$chat_id_string = $this->post('id');
-
+		
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -183,14 +183,11 @@ class Chats extends REST_Controller
 		}
 
 		//Verify that the user hasn't already subscribed to this chat room.
-		$already_joined = $this->Model_Chats->get_subscribed_chats($user_id);
-		foreach ($already_joined as $joined_chats)
+		$already_joined = $this->Model_Chats->is_user_subscribed($user_id,$chat_id);
+		if($already_joined)
 		{
-			if ($joined_chats->id == $chat_id)
-			{
-				$this->response($this->rest_error(array("You have already joined that chat.")),403);
-				return;
-			}
+			$this->response($this->rest_error(array("You have already joined that chat.")),403);
+			return;
 		}
 
 		$this->Model_Chats->join_chat_by_id($user_id,$chat_id);
@@ -393,9 +390,9 @@ class Chats extends REST_Controller
 		}
 
 		//Well, all that error checking done, lets unsubscribe the user.
-		$remove = $this->Model_Chats->unsubscribe_user($chat_id,$user_id);
+		$remove = $this->Model_Chats->leave_chat_by_id($chat_id,$user_id);
 		
-		if (!$remove)
+		if ($remove)
 		{
 			$this->response('User successfully removed!',200);
 			return;
@@ -829,5 +826,214 @@ class Chats extends REST_Controller
 		
 		$this->response($users,200);
 	}
+	
+	/**
+	*This function grants a user administrative permissions in a specific chat room.
+	*chat_id_string - The Unique String associated with the chat room
+	*user_id - ID of the user who is to be given administrative permissions
+	*Returns 200 if successful, 401 if not logged in, 401 if the requesting user isn't an admin,
+	*400 if the chat id or user id isn't proper or supplied, and 404 if the user or chat doesn't exist,
+	*400 if the user isn't subscribed to the chat.
+	*and finally a 409 if the user is already an admin
+	*/
+	function promote_user_post()
+	{
+		$this->load->model('Model_Chats');
+		$this->load->model('Model_Users');
+		
+		$chat_id_string = $this->post('chat_id');
+		$target_id = $this->post('user_id');
+		
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
 
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
+			return;
+		}
+		
+		//Make sure they gave us a proper target
+		if ($target_id == NULL || $target_id <= 0)
+		{
+			$this->response($this->rest_error(array("User ID not supplied!")), 400);
+			return;
+		}
+		
+		//Make sure the target is a user
+		$target_user = $this->Model_Users->fetch_user_by_id($target_id);
+		
+		if (count($target_user) <= 0)
+		{
+			$this->response($this->rest_error(array("The target user does not exist!")), 404);
+			return;
+		}
+		
+		//Make sure we requested a chat ID
+		if (strlen($chat_id_string) <= 0)
+		{
+			$this->response($this->rest_error(array("No chat ID was specified.")), 400);
+			return;
+		}
+
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+
+		if ($chat_id < 0)
+		{
+			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
+			return;
+		}
+		
+		//Make sure the target is subscribed to the specified chat room
+		$target_in_chat = $this->Model_Chats->is_user_subscribed($target_id, $chat_id);
+		
+		if (!$target_in_chat)
+		{
+			$this->response($this->rest_error(array("The target User ID is not subscribed to this chat room!")), 404);
+			return;
+		}
+		
+		//Check to make sure the requesting user has permissions
+		$admin_user = $this->Model_Chats->check_user_permissions($chat_id, $user_id);
+		//print_r($admin_user[0]->permissions);
+		if (!$admin_user[0]->permissions)
+		{
+			$this->response($this->rest_error(array("You do not have the proper permissions to do that!")), 401);
+			return;
+		}
+		
+		//After extensive checking, we can update the users permissions.		
+		$update_user = $this->Model_Chats->change_user_permissions($chat_id, $target_id, 1);
+		if ($update_user)
+		{
+			$this->response(NULL, 200);
+			return;
+		}
+		else
+		{
+			$this->response($this->rest_error(array("The server encountered an error while processing your request!")),500);
+			return;
+		}
+	}
+	
+	/**
+	*This function removes a user's administrative permissions in a specific chat room.
+	*chat_id_string - The Unique String associated with the chat room
+	*user_id - ID of the user who is to lose administrative permissions
+	*Returns 200 if successful, 401 if not logged in, 401 if the requesting user isn't an admin,
+	*400 if the chat id or user id isn't proper or supplied, and 404 if the user or chat doesn't exist,
+	*and 400 if the user isn't subscribed to the chat. 500 only on the rare possibility the server couldn't proceed.
+	*/
+	function demote_user_post()
+	{
+		$this->load->model('Model_Chats');
+		$this->load->model('Model_Users');
+		
+		$chat_id_string = $this->post('chat_id');
+		$target_id = $this->post('user_id');
+		
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+		
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
+			return;
+		}
+		
+		//Make sure they gave us a proper target
+		if ($target_id == NULL || $target_id <= 0)
+		{
+			$this->response($this->rest_error(array("User ID not supplied!")), 400);
+			return;
+		}
+		
+		//Make sure the target is a user
+		$target_user = $this->Model_Users->fetch_user_by_id($target_id);
+		
+		if (count($target_user) <= 0)
+		{
+			$this->response($this->rest_error(array("The target user does not exist!")), 404);
+			return;
+		}
+		
+		//Make sure we requested a chat ID
+		if (strlen($chat_id_string) <= 0)
+		{
+			$this->response($this->rest_error(array("No chat ID was specified.")), 400);
+			return;
+		}
+
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+
+		if ($chat_id < 0)
+		{
+			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
+			return;
+		}
+		
+		//Make sure the target is subscribed to the specified chat room
+		$target_in_chat = $this->Model_Chats->is_user_subscribed($target_id, $chat_id);
+		
+		if (!$target_in_chat)
+		{
+			$this->response($this->rest_error(array("The target User ID is not subscribed to this chat room!")), 404);
+			return;
+		}
+		
+		//Check to make sure the requesting user has permissions
+		$admin_user = $this->Model_Chats->check_user_permissions($chat_id, $user_id);
+		
+		if (!$admin_user[0]->permissions)
+		{
+			$this->response($this->rest_error(array("You do not have the proper permissions to do that!")), 401);
+			return;
+		}
+		
+		//After extensive checking, we can update the users permissions.		
+		$update_user = $this->Model_Chats->change_user_permissions($chat_id, $target_id, 0);
+		if ($update_user)
+		{
+			$this->response(NULL, 200);
+			return;
+		}
+		else
+		{
+			$this->response($this->rest_error(array("The server encountered an error while processing your request!")),500);
+			return;
+		}
+	}
+	/**
+	*This function will generate a QR code and return the URL to be embedded as an image.
+	*id - ID of the chat to join
+	*returns a URL and 200 on success, 400 if no chat id provided, 404 on chat not existing,
+	*401 if not logged in, 500 if error on processing.
+	*/
+	function generate_qr_get()
+	{
+		$this->load->model('Model_Chats');
+		
+		$chat_id_string = $this->get('id');
+		
+		//Make sure we requested a chat ID
+		if (strlen($chat_id_string) <= 0)
+		{
+			$this->response($this->rest_error(array("No chat ID was specified.")), 400);
+			return;
+		}
+
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+
+		if ($chat_id < 0)
+		{
+			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
+			return;
+		}
+		
+		$url = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=livecourse.net/join/" . $chat_id_string;
+		header("Location: " . $url);
+	}
 }
