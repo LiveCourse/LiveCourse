@@ -309,7 +309,7 @@ class Users extends REST_Controller
 			return;
 		}
 		
-		//check to see the device isn't already registered
+		//check to see the device is already registered
 		if ($this->Model_Users->fetch_android_user($user_id, $dev_id))
 		{
 			$this->Model_Users->remove_android($user_id, $dev_id);
@@ -353,7 +353,7 @@ class Users extends REST_Controller
 
 		//Check error conditions:
 		//must have a valid registration id
-		if (strlen($dev_id) <= 0)
+		if (strlen($dev_id) <= 0 || strlen($dev_id) > 16)
 		{
 			$this->response($this->rest_error(array("Invalid Device ID.")),403);
 			return;
