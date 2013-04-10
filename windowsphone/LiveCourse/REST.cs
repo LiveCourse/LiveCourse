@@ -51,7 +51,7 @@ namespace LiveCourse
             variables = myVariables;
         }
 
-        public void call(RestSuccess successDelegate, RestFailure failureDelegate)
+        public async void call(RestSuccess successDelegate, RestFailure failureDelegate)
         {
             var client = new RestClient("http://livecourse.net/api/"); //Initialize REST
 

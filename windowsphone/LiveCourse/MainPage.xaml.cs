@@ -61,7 +61,7 @@ namespace LiveCourse
             }
         }
 
-        public void rest_updateChatRoomList_success(System.Net.HttpStatusCode code, dynamic data)
+        public async void rest_updateChatRoomList_success(System.Net.HttpStatusCode code, dynamic data)
         {
             using (ChatRoomDataContext context = new ChatRoomDataContext(Con_String))
             {
@@ -101,7 +101,7 @@ namespace LiveCourse
             progress_chatlist.IsVisible = false;
         }
 
-        public void rest_updateChatRoomList_failure(System.Net.HttpStatusCode code, dynamic data)
+        public async void rest_updateChatRoomList_failure(System.Net.HttpStatusCode code, dynamic data)
         {
             MessageBox.Show("Error updating chat list!");
         }
@@ -124,7 +124,20 @@ namespace LiveCourse
 
         private void chat_room_listing_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            //MyChatRoom room = ((sender as LongListSelector).SelectedItem as MyChatRoom);
+            //NavigationService.Navigate(new Uri("/Chat.xaml?id=", UriKind.Relative));
+            
+        }
 
+        private void list_chatrooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
+
+        private void list_chatrooms_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            MyChatRoom room = ((list_chatrooms as LongListSelector).SelectedItem as MyChatRoom);
+            NavigationService.Navigate(new Uri("/Chat.xaml?id=" + room.C_ID_String, UriKind.Relative));
+            App.currentRoom = room;
         }
     }
 }

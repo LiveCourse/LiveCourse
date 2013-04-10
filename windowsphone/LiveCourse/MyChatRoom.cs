@@ -8,7 +8,7 @@ using System.Data.Linq.Mapping;
 namespace LiveCourse
 {
     [Table]
-    class MyChatRoom
+    public class MyChatRoom
     {
         [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity")]
         public int C_ID

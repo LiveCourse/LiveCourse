@@ -45,7 +45,7 @@ namespace LiveCourse
             auth.call(auth_success, auth_failure);
         }
 
-        public void auth_success(System.Net.HttpStatusCode code, dynamic data)
+        public async void auth_success(System.Net.HttpStatusCode code, dynamic data)
         {
             progress.IsVisible = false;
             REST.auth_token = data.authentication.token;
@@ -55,7 +55,7 @@ namespace LiveCourse
             verify.call(verify_success, verify_failure);
         }
 
-        public void auth_failure(System.Net.HttpStatusCode code, dynamic data)
+        public async void auth_failure(System.Net.HttpStatusCode code, dynamic data)
         {
             progress.IsVisible = false;
             if (code == HttpStatusCode.NotFound)
@@ -69,7 +69,7 @@ namespace LiveCourse
             button_register.IsEnabled = true;
         }
 
-        public void verify_success(System.Net.HttpStatusCode code, dynamic data)
+        public async void verify_success(System.Net.HttpStatusCode code, dynamic data)
         {
             progress.IsVisible = false;
             //Enable form
@@ -80,7 +80,7 @@ namespace LiveCourse
             NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
         }
 
-        public void verify_failure(System.Net.HttpStatusCode code, dynamic data)
+        public async void verify_failure(System.Net.HttpStatusCode code, dynamic data)
         {
             progress.IsVisible = false;
             if (code == HttpStatusCode.Unauthorized)
