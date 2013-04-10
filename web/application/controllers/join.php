@@ -10,17 +10,20 @@ class Join extends CI_Controller
 	{
 		$android = strpos($_SERVER['HTTP_USER_AGENT'], 'Android');
 		$windows = strpos($_SERVER['HTTP_USER_AGENT'], 'Windows Phone 8');
-		if($android)
+		if ($android)
 		{
 			//Place holders
 			header('Location: http://google.com');
 		}
-		if($windows)
+		else if ($windows)
 		{
 			//Place holders
 			header("Location: http://windowsphone.com");
 		}
-		header("Location: http://livecourse.net");
+		else
+		{
+			header("Location: http://livecourse.net");
+		}
 		
 	}
 }
