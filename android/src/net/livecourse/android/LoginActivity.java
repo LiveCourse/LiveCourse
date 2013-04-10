@@ -57,6 +57,8 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
         
+        //View view = this.getWindow().getDecorView();
+        //view.setBackgroundColor(Color.parseColor(Globals.HEX_BLUE));
                 
         /**
          * Links to the XML

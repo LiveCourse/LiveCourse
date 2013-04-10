@@ -94,7 +94,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		switch(item.getItemId())
 		{
 			case R.id.main_options_menu_settings:
-				Intent settings = new Intent(this, EditUserInfoActivity.class);
+				Intent settings = new Intent(this, SettingsActivity.class);
 	            startActivityForResult(settings, RESULT_SETTINGS);
 				break;
 			case R.id.item1:
