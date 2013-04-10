@@ -386,47 +386,25 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 					
 					statement.clearBindings();
 					
-					statement.bindString(1,  ob.getString(		"id_string"));
-					statement.bindString(2,  ob.getString(		"subject_id"));
+					statement.bindString(1,  ob.getString(	"id_string"));
+					statement.bindString(2,  ob.getString(	"subject_id"));
 					statement.bindString(3,  ob.getString(	"course_number"));
-					statement.bindString(4,  ob.getString(			"name"));
+					statement.bindString(4,  ob.getString(	"name"));
 					statement.bindString(5,  ob.getString(	"institution_id"));
-					statement.bindString(6,  ob.getString(		"room_id"));
-					statement.bindString(7,  ob.getString(		"start_time"));
-					statement.bindString(8,  ob.getString(		"end_time"));
-					statement.bindString(9, ob.getString(		"start_date"));
-					statement.bindString(10, ob.getString(		"end_date"));
-					statement.bindString(11, ob.getString(		"dow_monday"));
+					statement.bindString(6,  ob.getString(	"room_id"));
+					statement.bindString(7,  ob.getString(	"start_time"));
+					statement.bindString(8,  ob.getString(	"end_time"));
+					statement.bindString(9,  ob.getString(	"start_date"));
+					statement.bindString(10, ob.getString(	"end_date"));
+					statement.bindString(11, ob.getString(	"dow_monday"));
 					statement.bindString(12, ob.getString(	"dow_tuesday"));
 					statement.bindString(13, ob.getString(	"dow_wednesday"));
 					statement.bindString(14, ob.getString(	"dow_thursday"));
-					statement.bindString(15, ob.getString(		"dow_friday"));
+					statement.bindString(15, ob.getString(	"dow_friday"));
 					statement.bindString(16, ob.getString(	"dow_saturday"));
-					statement.bindString(17, ob.getString(		"dow_sunday"));
+					statement.bindString(17, ob.getString(	"dow_sunday"));
 					
 					statement.execute();
-					/*
-					room.setIdString(ob.getString(		"id_string"));
-					room.setSubjectId(ob.getString(		"subject_id"));
-					room.setCourseNumber(ob.getString(	"course_number"));
-					room.setName(ob.getString(			"name"));
-					room.setStartTime(ob.getString(		"start_time"));	            	
-					room.setInstitutionId(ob.getString(	"institution_id"));
-					room.setRoomId(ob.getString(		"room_id"));
-					room.setStartTime(ob.getString(		"start_time"));
-					room.setEndTime(ob.getString(		"end_time"));
-					room.setStartDate(ob.getString(		"start_date"));
-					room.setEndDate(ob.getString(		"end_date"));
-					room.setDowMonday(ob.getString(		"dow_monday"));
-					room.setDowTuesday(ob.getString(	"dow_tuesday"));
-					room.setDowWednesday(ob.getString(	"dow_wednesday"));
-					room.setDowThursday(ob.getString(	"dow_thursday"));
-					room.setDowFriday(ob.getString(		"dow_friday"));
-					room.setDowSaturday(ob.getString(	"dow_saturday"));
-					room.setDowSunday(ob.getString(		"dow_sunday"));
-					
-					Globals.appDb.addClassEnroll(room);					
-					*/
 				}
 				db.setTransactionSuccessful();
 			} 
@@ -464,7 +442,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	{
 		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
 		{
-			this.getSherlockActivity().getSupportLoaderManager().restartLoader(1, null, this);	
+			this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.CLASS_LIST_LOADER, null, this);	
 			
 			if(this.updateListCalledByQR)
 			{
