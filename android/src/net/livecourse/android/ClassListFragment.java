@@ -343,7 +343,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	public void onRestHandleResponseSuccess(String restCall, String response) 
 	{		
 		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
-		{
+		{	
 			Globals.appDb.addClassesFromJSON(false, response);
 		}
 		else if(restCall.equals(Restful.JOIN_CHAT_PATH))
@@ -369,13 +369,8 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	{
 		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
 		{
-			if(this.getSherlockActivity() == null)
-				Log.w(this.TAG, "ACTIVITY IS NULL");
-			if(this.getSherlockActivity().getSupportLoaderManager()==null)
-				Log.w(this.TAG, "LOADER MANAGER IS NULL");
-			this.getSherlockActivity()
-			.getSupportLoaderManager()
-			.restartLoader(1, null, this);	
+			this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.CLASS_LIST_LOADER, null, this);	
+
 			if(this.updateListCalledByQR)
 			{
 				this.switchToChat(Globals.chatId, Globals.chatName);
@@ -406,5 +401,17 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		{
 			
 		}
+	}
+
+	@Override
+	public void preRestExecute(String restCall) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestCancelled(String restCall, String result) {
+		// TODO Auto-generated method stub
+		
 	}
 }

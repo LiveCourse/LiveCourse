@@ -278,6 +278,7 @@ class Users extends REST_Controller
 		$name 		= $this->post('name');
 		$email 		= $this->post('email');
 		$reg_id 	= $this->post('reg_id');
+		$dev_id		= $this->post('device_id');
 
 
 		//Check error conditions:
@@ -301,17 +302,22 @@ class Users extends REST_Controller
 			$this->response($this->rest_error(array("Invalid Registration ID.")),403);
 			return;
 		}
-
-		//check to see the device isn't already registered
-		if($this->Model_Users->fetch_android_user($user_id, $reg_id))
+		
+		if (strlen($dev_id) <= 0)
 		{
-			$this->response($this->rest_error(array("That device is already registered!")),409);
+			$this->response($this->rest_error(array("Device ID not provided!")), 403);
 			return;
 		}
+		
+		//check to see the device is already registered
+		if ($this->Model_Users->fetch_android_user($user_id, $dev_id))
+		{
+			$this->Model_Users->remove_android($user_id, $dev_id);
+		}
 
-		$result = $this->Model_Users->add_android_user($user_id,$email,$name,$reg_id);
+		$result = $this->Model_Users->add_android_user($user_id,$reg_id,$dev_id);
 
-		if($result)
+		if ($result)
 		{
 			$this->response($result, array("Device successfully registered!"),200);
 		}
@@ -323,8 +329,8 @@ class Users extends REST_Controller
 	}
 
 	/**
-	 *Retrieves an android device by its registration ID
-	 *gcm_regid - registration ID of the device
+	 *Retrieves an android device by its Device ID
+	 *device_id - registration ID of the device
 	 *returns the related information of the user
 	 */
 	function android_retrieve_get()
@@ -342,18 +348,18 @@ class Users extends REST_Controller
 		}
 
 		//Get GET variables...
-		$reg_id 	= $this->get('reg_id');
+		$dev_id 	= $this->get('device_id');
 
 
 		//Check error conditions:
 		//must have a valid registration id
-		if (strlen($reg_id) <= 0)
+		if (strlen($dev_id) <= 0 || strlen($dev_id) > 16)
 		{
-			$this->response($this->rest_error(array("Invalid Registration ID.")),403);
+			$this->response($this->rest_error(array("Invalid Device ID.")),403);
 			return;
 		}
 
-		$data = $this->Model_Users->fetch_android_user($user_id, $reg_id);
+		$data = $this->Model_Users->fetch_android_user($user_id, $dev_id);
 
 		//check to see the device exists
 		if(!$data)
@@ -370,7 +376,7 @@ class Users extends REST_Controller
 	
 	/**
 	 * Removes an android user from the database.
-	 * reg_id - POST variable - registration id of the device to be removed.
+	 * device_id - POST variable - registration id of the device to be removed.
 	 * returns - device ID on successful removal.
 	 */
 	public function android_remove_post()
@@ -388,17 +394,17 @@ class Users extends REST_Controller
 		}
 
 		//Remove a user from the db
-		$reg_id = $this->post('reg_id');
+		$dev_id = $this->post('device_id');
 
 		//Check error conditions:
 		//must have a valid registration id
-		if (strlen($reg_id) <= 0)
+		if (strlen($dev_id) <= 0)
 		{
-			$this->response($this->rest_error(array("Invalid Registration ID.")),403);
+			$this->response($this->rest_error(array("Invalid Device ID.")),403);
 			return;
 		}
 
-		$count = $this->Model_Users->remove_android($user_id, $reg_id);
+		$count = $this->Model_Users->remove_android($user_id, $dev_id);
 
 		if ($count <= 0)
 		{

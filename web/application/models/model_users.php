@@ -152,14 +152,14 @@ class Model_Users extends CI_Model {
 	/**
 	 *Retrieves an android user from the gcm database
 	 *user_id - ID of the user
-	 *regid - Registration ID of the device
+	 *dev_id - Device ID of the device
 	 *returns the user(s) with the given credentials, else false.
 	 */
-	function fetch_android_user($user_id, $gcm_regid)
+	function fetch_android_user($user_id, $dev_id)
 	{
 		$droid_user = $this->db
 				->where('user_id', $user_id)
-				->where('gcm_regid', $gcm_regid)
+				->where('device_id', $dev_id)
 				->from('lc_gcm_users')
 				->join('lc_users','lc_users.id = lc_gcm_users.user_id')
 				->get()
@@ -191,13 +191,14 @@ class Model_Users extends CI_Model {
 	 *gcm_regid - Registration ID of the device
 	 *returns inserted information if successful, otherwise null/false.
 	 */
-	function add_android_user($user_id, $email, $name, $gcm_regid, $jointime = "")
+	function add_android_user($user_id, $gcm_regid,$dev_id, $jointime = "")
 	{
 		if($jointime == "") $jointime = time();
 		$data = array(
 			'user_id' => $user_id,
 			'gcm_regid' => $gcm_regid,
 			'created_at' => $jointime,
+			'device_id' => $dev_id,
 		);
 		
 		return $this->db->insert('lc_gcm_users', $data);
@@ -208,14 +209,14 @@ class Model_Users extends CI_Model {
 	 * Removes an android device from the database.
 	 * Should also remove ALL RELATED DATA
 	 * user_id - identification number of user
-	 * reg_id - identification string of the device
+	 * dev_id - unique identification string of the device
 	 * returns - number of rows effected
 	 */
-	function remove_android($user_id, $reg_id)
+	function remove_android($user_id, $dev_id)
 	{
 		$data = array(
 				'user_id' => $user_id,
-				'gcm_regid' => $reg_id,
+				'device_id' => $dev_id,
 				);
 		return $this->db->delete('lc_gcm_users', $data);
 		

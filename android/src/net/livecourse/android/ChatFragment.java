@@ -273,7 +273,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	
 	public void updateListNoRRecreate()
 	{
-		Globals.mainActivity.getSupportLoaderManager().restartLoader(2, null, this);
+		Globals.mainActivity.getSupportLoaderManager().restartLoader(Globals.CHAT_LOADER, null, this);
 	}
 
 	@Override
@@ -282,6 +282,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		
 		if(restCall.equals(Restful.GET_RECENT_MESSAGES_PATH))
 		{
+			Log.d(this.TAG, "OnRestHandlerResponse for path GET RECENT MESSAGES reached with response: " + response);
 			Globals.appDb.addChatMessagesFromJSON(false, response);
 		}
 		else if(restCall.equals(Restful.SEND_MESSAGE_PATH))
@@ -308,6 +309,18 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	{
 		Log.d(this.TAG, "Rest call: " + restCall + "failed with status code: " + code);
 		Log.d(this.TAG,"Result from server is:\n" + result);
+	}
+
+	@Override
+	public void preRestExecute(String restCall) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestCancelled(String restCall, String result) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -110,8 +110,6 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 		userInfoView.setAdapter(adapter);        
 	}
 	
-	 
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
@@ -255,5 +253,17 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 	{
 		Log.d(this.TAG, "Rest call: " + restCall + "failed with status code: " + code);
 		Log.d(this.TAG,"Result from server is:\n" + result);		
+	}
+
+	@Override
+	public void preRestExecute(String restCall) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestCancelled(String restCall, String result) {
+		// TODO Auto-generated method stub
+		
 	}
 }

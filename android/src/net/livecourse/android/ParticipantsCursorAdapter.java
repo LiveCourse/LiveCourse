@@ -72,7 +72,7 @@ public class ParticipantsCursorAdapter extends CursorAdapter
 		v.userId = cursor.getString(cursor.getColumnIndexOrThrow("user_id"));
 		
 		v.displayName.setTypeface(null, Typeface.NORMAL);
-		if(v.userId.equals(Globals.userId))
+		if(v.userId != null && v.userId.equals(Globals.userId))
 		{
 			v.displayName.setTypeface(null, Typeface.BOLD);
 		}

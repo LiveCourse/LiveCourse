@@ -40,7 +40,7 @@ import android.util.Log;
  * 
  * @author Darren Cheng
  */
-public class Restful extends AsyncTask <Void, Void, String> 
+public class Restful extends AsyncTask <Void, String, String> 
 {
 	private final String			TAG							= " == Restful == ";
 	/**
@@ -119,6 +119,12 @@ public class Restful extends AsyncTask <Void, Void, String>
 		
 		this.execute();
 	}
+	
+	@Override
+	protected void onPreExecute()
+	{
+		this.callback.preRestExecute(this.path);
+	}
 
 	@Override
 	protected String doInBackground(Void... params) 
@@ -186,10 +192,22 @@ public class Restful extends AsyncTask <Void, Void, String>
 		 * Either calls the success or failed callback method if the Rest call
 		 * is successful or not
 		 */
-		if(success)
-			callback.onRestPostExecutionSuccess(path, results);
+		if(this.success)
+			this.callback.onRestPostExecutionSuccess(this.path, results);
 		else
-			callback.onRestPostExecutionFailed(path, returnCode, results);
+			this.callback.onRestPostExecutionFailed(this.path, this.returnCode, results);
+	}
+	
+	@Override
+	protected void onProgressUpdate(String... progress)
+	{
+		
+	}
+	
+	@Override
+	protected void onCancelled(String results)
+	{
+		this.callback.onRestCancelled(this.path, results);
 	}
 	
 	/**
