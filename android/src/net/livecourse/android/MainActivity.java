@@ -51,7 +51,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
          * Init database
          */
         Globals.appDb = new DatabaseHandler(this.getApplicationContext());
-        Globals.appDb.recreateClassEnroll();
+        //Globals.appDb.recreateClassEnroll();
 
         /**
          * The following code initializes the tabs and sets up the tabs adapter and
@@ -216,6 +216,18 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	@Override
 	public void onRestPostExecutionFailed(String restCall, int code,
 			String result) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void preRestExecute(String restCall) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestCancelled(String restCall, String result) {
 		// TODO Auto-generated method stub
 		
 	}

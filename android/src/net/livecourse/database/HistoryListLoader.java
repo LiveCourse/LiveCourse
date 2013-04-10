@@ -18,7 +18,7 @@ public class HistoryListLoader extends SimpleCursorLoader
      public Cursor loadInBackground() 
 	 {
              SQLiteDatabase db = HistoryListdbHandler.getReadableDatabase();
-             Cursor cursor = db.query(DatabaseHandler.TABLE_CHAT_MESSAGES, null, null, null, null, null, null);
+             Cursor cursor = db.query(DatabaseHandler.TABLE_HISTORY, null, null, null, null, null, null);
              return cursor;
      }
 

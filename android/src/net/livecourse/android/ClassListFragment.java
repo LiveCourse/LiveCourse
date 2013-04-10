@@ -1,12 +1,10 @@
 package net.livecourse.android;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import net.livecourse.R;
 import net.livecourse.database.ClassEnrollLoader;
-import net.livecourse.database.DatabaseHandler;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.ChatroomViewHolder;
@@ -16,8 +14,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -257,7 +253,6 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		    	Log.e(this.TAG, "Incorrect QR code format!");
 		    	return;
 		    }
-		    
 	
 		    this.updateListCalledByQR = true;
 		    new Restful(Restful.JOIN_CHAT_PATH, Restful.POST, new String[]{"id"},new String[]{chatRoom}, 1, this);
@@ -346,12 +341,10 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 
 	@Override
 	public void onRestHandleResponseSuccess(String restCall, String response) 
-	{
-		JSONArray parse;
-		JSONObject ob;
-		
+	{		
 		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
 		{
+<<<<<<< HEAD
 			SQLiteDatabase db = null;
 			SQLiteStatement statement = null;
 			try 
@@ -418,6 +411,9 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			}
 			statement.close();
 			db.close();
+=======
+			Globals.appDb.addClassesFromJSON(false, response);
+>>>>>>> branch 'master' of https://hayden.visualstudio.com/DefaultCollection/_git/LiveCourse
 		}
 		else if(restCall.equals(Restful.JOIN_CHAT_PATH))
 		{
@@ -425,7 +421,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			{
 				try 
 				{
-					ob = new JSONObject(response);
+					JSONObject ob = new JSONObject(response);
 					Globals.chatId = ob.getString("id_string");
 					Globals.chatName = ob.getString("name");
 				} 
@@ -442,11 +438,21 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	{
 		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
 		{
+<<<<<<< HEAD
 			this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.CLASS_LIST_LOADER, null, this);	
 			
+=======
+			if(this.getSherlockActivity() == null)
+				Log.w(this.TAG, "ACTIVITY IS NULL");
+			if(this.getSherlockActivity().getSupportLoaderManager()==null)
+				Log.w(this.TAG, "LOADER MANAGER IS NULL");
+			this.getSherlockActivity()
+			.getSupportLoaderManager()
+			.restartLoader(1, null, this);	
+>>>>>>> branch 'master' of https://hayden.visualstudio.com/DefaultCollection/_git/LiveCourse
 			if(this.updateListCalledByQR)
 			{
-				//this.switchToChat(Globals.chatId, Globals.chatName);
+				this.switchToChat(Globals.chatId, Globals.chatName);
 				this.updateListCalledByQR = false;
 			}
 			
@@ -474,5 +480,17 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		{
 			
 		}
+	}
+
+	@Override
+	public void preRestExecute(String restCall) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestCancelled(String restCall, String result) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -6,19 +6,19 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class ParticipantsLoader extends SimpleCursorLoader
 {
-	private DatabaseHandler ParticipantsdbHandler;
+	private DatabaseHandler dbHandler;
 
 	public ParticipantsLoader(Context context, DatabaseHandler ParticipantsdbHandler) 
 	{
 		super(context);
-		this.ParticipantsdbHandler = ParticipantsdbHandler;
+		this.dbHandler = ParticipantsdbHandler;
 	}
 
 	 @Override
      public Cursor loadInBackground() 
 	 {
-             SQLiteDatabase db = ParticipantsdbHandler.getReadableDatabase();
-             Cursor cursor = db.query(DatabaseHandler.TABLE_PARTICIPANTS, null, null, null, null, null, null);
+             SQLiteDatabase db = dbHandler.getReadableDatabase();
+             Cursor cursor = dbHandler.queryAndFormatParticipants(db);
              return cursor;
      }
 
