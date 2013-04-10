@@ -49,7 +49,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        this.changeActionBarColor(Globals.BLUE);
+        this.changeActionBarColorBasedOnPref();
         
         Globals.mainActivity = this;
         
@@ -57,7 +57,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
          * Init database
          */
         Globals.appDb = new DatabaseHandler(this.getApplicationContext());
-        //Globals.appDb.recreateClassEnroll();
 
         /**
          * The following code initializes the tabs and sets up the tabs adapter and
@@ -112,13 +111,40 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		return super.onOptionsItemSelected(item);
 	}
 	
+	public void changeActionBarColorBasedOnPref()
+	{
+		switch(Integer.parseInt(Globals.colorPref))
+		{
+			case Globals.INDEX_BLUE:
+				changeActionBarColor(Globals.HEX_BLUE);
+				break;
+			case Globals.INDEX_RED:
+				changeActionBarColor(Globals.HEX_RED);
+				break;
+			case Globals.INDEX_BROWN:
+				changeActionBarColor(Globals.HEX_BROWN);
+				break;
+			case Globals.INDEX_GREEN:
+				changeActionBarColor(Globals.HEX_GREEN);
+				break;
+			case Globals.INDEX_CYAN:
+				changeActionBarColor(Globals.HEX_CYAN);
+				break;
+			case Globals.INDEX_PURPLE:
+				changeActionBarColor(Globals.HEX_PURPLE);
+				break;
+		}
+	}
+	
 	public void changeActionBarColor(String hexColor)
 	{
-		this.getSupportActionBar().setBackgroundDrawable(
-        		new ColorDrawable(Color.parseColor(hexColor)));
+		this.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(hexColor)));
         int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");    
+        
         if ( 0 == titleId ) 
-                titleId = com.actionbarsherlock.R.id.abs__action_bar_title;
+        {
+        	titleId = com.actionbarsherlock.R.id.abs__action_bar_title;
+        }
         this.getSupportActionBar().setIcon(R.drawable.paperairplanewhite);
         
         TextView yourTextView = (TextView)findViewById(titleId);
