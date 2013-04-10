@@ -9,6 +9,14 @@ package net.livecourse.rest;
 public interface OnRestCalled 
 {
 	/**
+	 * This method runs on the foreground thread and is called before the background task even start.
+	 * It's job to to take care of any command to be issued before starting the background task
+	 * 
+	 * @param restCall	The path of the call that the rest used, ex. "auth/verify"
+	 */
+	public void preRestExecute(String restCall);
+	
+	/**
 	 * This method runs in the background thread and will only be called if the Rest call returned 
 	 * a success.  This method is invoked after the rest of doInBackground is completed.  It 
 	 * handles the HttpResponse that gets returned back.  If the HttpResponse is null (failed 
@@ -37,4 +45,13 @@ public interface OnRestCalled
 	 * @param result	The result of the call
 	 */
 	public void onRestPostExecutionFailed(String restCall, int code, String result);
+	
+	/**
+	 * This method runs in the foreground thread after the Rest execution has been cancelled.
+	 * 
+	 * @param restCall	The path of the call that the Rest used, ex. "auth/verify"
+	 * @param result	The result of the call
+	 */
+	public void onRestCancelled(String restCall, String result);
+	
 }

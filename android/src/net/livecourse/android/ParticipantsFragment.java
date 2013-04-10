@@ -72,12 +72,13 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
     	
     	
     	/** 
-    	 * Create the adapter and populate the view
+    	 * Create the adapter and populate the view, set the
+    	 * OnItemLongClickListener
     	 */
         adapter = new ParticipantsCursorAdapter(inflater.getContext(), null, 0);
         participantsListView.setAdapter(adapter);
-        
         participantsListView.setOnItemLongClickListener(this);
+        participantsListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_DISABLED);
                 
         return participantsLayout;
     }
@@ -227,6 +228,18 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	{
 		Log.d(this.TAG, "Rest call: " + restCall + "failed with status code: " + code);
 		Log.d(this.TAG,"Result from server is:\n" + result);		
+	}
+
+	@Override
+	public void preRestExecute(String restCall) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestCancelled(String restCall, String result) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

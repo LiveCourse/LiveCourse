@@ -310,4 +310,16 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		Log.d(this.TAG,"Result from server is:\n" + result);
 	}
 
+	@Override
+	public void preRestExecute(String restCall) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestCancelled(String restCall, String result) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
