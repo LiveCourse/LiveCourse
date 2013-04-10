@@ -3,11 +3,9 @@ package net.livecourse.gcm;
 import net.livecourse.R;
 import net.livecourse.database.DatabaseHandler;
 import net.livecourse.utility.Globals;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
@@ -86,9 +84,7 @@ public class GCMIntentService extends GCMBaseIntentService
 					") VALUES (?, ?, ?, ?, ?)");
 
 		db.beginTransaction();
-   		        	
-    	//statement.clearBindings();
-    	
+   		        	    	
     	statement.bindString(1, intent.getStringExtra("message_id"));
     	statement.bindString(2, intent.getStringExtra("user_id"));
     	statement.bindString(3, intent.getStringExtra("send_time"));
@@ -103,7 +99,6 @@ public class GCMIntentService extends GCMBaseIntentService
 		statement.close();
 		db.close();
 		
-		//Globals.chatFragment.updateList();
 		Globals.chatFragment.updateListNoRRecreate();
 	}
 	 
