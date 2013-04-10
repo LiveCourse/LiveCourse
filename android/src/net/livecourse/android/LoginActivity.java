@@ -279,10 +279,12 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		 */
 		if(restCall.equals(Restful.AUTH_PATH))
 		{
+			this.changeAuthDialog("Verifying...");
 			new Restful(Restful.VERIFY_PATH, Restful.GET, null, null, 0, this);
 		}
 		else if(restCall.equals(Restful.VERIFY_PATH))
 		{
+			this.changeAuthDialog("Registering Android Device...");
 			new Restful(Restful.REGISTER_ANDROID_USER_PATH, Restful.POST, new String[]{"email","name","reg_id","device_id"}, new String[]{Globals.email,Globals.name,Globals.regId, Secure.getString(this.getContentResolver(),
                     Secure.ANDROID_ID)}, 4, this);
 		}
@@ -361,6 +363,10 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		this.progressDialog.setMessage("Authenticating...");
 		this.progressDialog.setTitle("Logging In");
 		this.progressDialog.show();
+	}
+	private void changeAuthDialog(String message)
+	{
+		this.progressDialog.setMessage(message);
 	}
 	private void stopAuthDialog()
 	{

@@ -23,6 +23,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 {
 	private final String TAG = " == DatabaseHandler == ";
 
+	private String message;
+
 	private static final int DATABASE_VERSION = 33;
 	
 	/**
@@ -160,7 +162,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		String CREATE_TABLE_CHAT_MESSAGES = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
 											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
 											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
-											+ KEY_USER_ID			+ " int(11),"
+											+ KEY_USER_ID				+ " int(11),"
 											+ KEY_CHAT_SEND_TIME		+ " int(11), "
 											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
 											+ KEY_USER_EMAIL 			+ " varchar(255), "
@@ -358,9 +360,14 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		SQLiteDatabase db = null;
 		SQLiteStatement statement = null;
 		
+		Log.d(this.TAG, "The message: " + messages);
+		
+		if(messages.equals(""))
+			return;
+		
 		try 
 		{
-			parse = new JSONArray(messages);
+			parse = new JSONArray(messages);	
 			db = this.getWritableDatabase();
 			statement = db.compileStatement(
 					"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
@@ -392,6 +399,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	        	statement.bindString(6, ob.getString("display_name"));
 	        	
 	        	statement.execute();
+	        	Log.d(this.TAG, "Message id: " + ob.getString("id") + " with message: "  + ob.getString("message_string"));
 	        }
 			db.setTransactionSuccessful();	
 		} 
@@ -474,29 +482,41 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		String[][] tempStorage = new String[cursor.getCount()][cursor.getColumnCount()];
         
 		cursor.moveToFirst();
-		for(int x = 1; x < cursor.getCount(); x++)
+		
+		if(cursor.getCount() == 1)
 		{
-			if(cursor.getString(1).equals(Globals.userId))
-			{
-				tempStorage[0][0] = cursor.getString(0);
-				tempStorage[0][1] = cursor.getString(1);
-				tempStorage[0][2] = cursor.getString(2);
-				tempStorage[0][3] = cursor.getString(3);
-				tempStorage[0][4] = cursor.getString(4);
-				tempStorage[0][5] = cursor.getString(5);
-				cursor.moveToNext();
-			}
-			
-			tempStorage[x][0] = cursor.getString(0);
-			tempStorage[x][1] = cursor.getString(1);
-			tempStorage[x][2] = cursor.getString(2);
-			tempStorage[x][3] = cursor.getString(3);
-			tempStorage[x][4] = cursor.getString(4);
+			tempStorage[0][0] = cursor.getString(0);
+			tempStorage[0][1] = cursor.getString(1);
+			tempStorage[0][2] = cursor.getString(2);
+			tempStorage[0][3] = cursor.getString(3);
+			tempStorage[0][4] = cursor.getString(4);
 			tempStorage[0][5] = cursor.getString(5);
-			
-			cursor.moveToNext();
-        }
-        
+		}
+		else
+		{
+			for(int x = 1; x < cursor.getCount(); x++)
+			{
+				if(cursor.getString(1).equals(Globals.userId))
+				{
+					tempStorage[0][0] = cursor.getString(0);
+					tempStorage[0][1] = cursor.getString(1);
+					tempStorage[0][2] = cursor.getString(2);
+					tempStorage[0][3] = cursor.getString(3);
+					tempStorage[0][4] = cursor.getString(4);
+					tempStorage[0][5] = cursor.getString(5);
+					cursor.moveToNext();
+				}
+				
+				tempStorage[x][0] = cursor.getString(0);
+				tempStorage[x][1] = cursor.getString(1);
+				tempStorage[x][2] = cursor.getString(2);
+				tempStorage[x][3] = cursor.getString(3);
+				tempStorage[x][4] = cursor.getString(4);
+				tempStorage[0][5] = cursor.getString(5);
+				
+				cursor.moveToNext();
+	        }
+		}
 		MatrixCursor returnCursor = new MatrixCursor(cursor.getColumnNames(), cursor.getCount());
 		
 		for(int x = 0; x < cursor.getCount(); x++)

@@ -282,6 +282,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		
 		if(restCall.equals(Restful.GET_RECENT_MESSAGES_PATH))
 		{
+			Log.d(this.TAG, "OnRestHandlerResponse for path GET RECENT MESSAGES reached with response: " + response);
 			Globals.appDb.addChatMessagesFromJSON(false, response);
 		}
 		else if(restCall.equals(Restful.SEND_MESSAGE_PATH))

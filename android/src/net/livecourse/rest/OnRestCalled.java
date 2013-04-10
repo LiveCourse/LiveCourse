@@ -45,7 +45,7 @@ public interface OnRestCalled
 	 * @param result	The result of the call
 	 */
 	public void onRestPostExecutionFailed(String restCall, int code, String result);
-	
+
 	/**
 	 * This method runs in the foreground thread after the Rest execution has been cancelled.
 	 * 

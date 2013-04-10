@@ -1,11 +1,14 @@
 package net.livecourse.gcm;
  
+import net.livecourse.R;
 import net.livecourse.database.DatabaseHandler;
 import net.livecourse.utility.Globals;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
  
 import com.google.android.gcm.GCMBaseIntentService;
@@ -45,6 +48,17 @@ public class GCMIntentService extends GCMBaseIntentService
 
 		if(!intent.getStringExtra("chat_id").equals(Globals.chatId))
 			return;
+		
+		NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(Globals.mainActivity)
+			.setSmallIcon(R.drawable.airplaneblue)
+			.setContentTitle(intent.getStringExtra("display_name"))
+			.setContentText(intent.getStringExtra("message_string"));
+		
+		NotificationManager mNotificationManager =
+			    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+			// mId allows you to update the notification later on.
+			mNotificationManager.notify(71237, notBuilder.build());
+			
 		SQLiteDatabase db = Globals.appDb.getWritableDatabase();
 		SQLiteStatement statement = db.compileStatement(
 				"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
