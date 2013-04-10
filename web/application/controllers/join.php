@@ -20,6 +20,7 @@ class Join extends CI_Controller
 			//Place holders
 			header("Location: http://windowsphone.com");
 		}
+		header("Location: http://livecourse.net");
 		
 	}
 }
