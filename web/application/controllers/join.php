@@ -1,6 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Join extends CI_Controller {
+class Join extends CI_Controller 
+{
+	public function _remap($method)
+	{
+		$this->index($method);
+	}
 	public function index($chat_id_string)
 	{
 		$android = strpos($_SERVER['HTTP_USER_AGENT'], 'Android');
