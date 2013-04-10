@@ -156,7 +156,7 @@ class Chats extends REST_Controller
 		$this->load->model('Model_Auth');
 
 		$chat_id_string = $this->post('id');
-
+		
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -1005,5 +1005,35 @@ class Chats extends REST_Controller
 			return;
 		}
 	}
+	/**
+	*This function will generate a QR code and return the URL to be embedded as an image.
+	*id - ID of the chat to join
+	*returns a URL and 200 on success, 400 if no chat id provided, 404 on chat not existing,
+	*401 if not logged in, 500 if error on processing.
+	*/
+	function generate_qr_get()
+	{
+		$this->load->model('Model_Chats');
+		
+		$chat_id_string = $this->get('id');
+		
+		//Make sure we requested a chat ID
+		if (strlen($chat_id_string) <= 0)
+		{
+			$this->response($this->rest_error(array("No chat ID was specified.")), 400);
+			return;
+		}
 
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+
+		if ($chat_id < 0)
+		{
+			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
+			return;
+		}
+		
+		$url = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=livecourse.net/join/" . $chat_id_string;
+		header("Location: " . $url);
+	}
 }
