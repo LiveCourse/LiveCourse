@@ -6,12 +6,14 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:LiveCourse"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True"
+    local:TiltEffect.IsTiltEnabled="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -30,11 +32,11 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
                 <TextBlock TextWrapping="Wrap" Text="E-Mail" />
-                <TextBox HorizontalAlignment="Center" Text="" VerticalAlignment="Top" Width="456" InputScope="EmailNameOrAddress"/>
+                <TextBox x:Name="input_login" HorizontalAlignment="Center" Text="" VerticalAlignment="Top" Width="456" InputScope="EmailNameOrAddress"/>
                 <TextBlock TextWrapping="Wrap" Text="Password" />
-                <PasswordBox Width="456" />
-                <Button Content="Log In"/>
-                <Button Content="Register"/>
+                <PasswordBox x:Name="input_password" Width="456" />
+                <Button x:Name="button_login" Content="Log In" Click="button_login_Click"/>
+                <Button x:Name="button_register" Content="Register"/>
             </StackPanel>
         </Grid>
     </Grid>

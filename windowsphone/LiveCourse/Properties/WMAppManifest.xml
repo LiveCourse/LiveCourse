@@ -6,7 +6,7 @@
     <Language code="en-US" />
   </Languages>
   <App xmlns="" ProductID="{dafece71-2712-40dd-92e1-5d3cc035aba9}" Title="LiveCourse" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Hayden McAfee" Description="A companion application for the LiveCourse.net collaborative studying web site." Publisher="LiveCourse" PublisherID="{eac023a0-1068-48fc-a0a0-5c07468937d0}">
-    <IconPath IsRelative="true" IsResource="false">logo_large.png</IconPath>
+    <IconPath IsRelative="true" IsResource="false">lc_icon_wp.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
       <Capability Name="ID_CAP_MEDIALIB_AUDIO" />
@@ -19,21 +19,26 @@
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="LiveCourseToken" TaskName="_default">
-        <TemplateFlip>
-          <SmallImageURI IsRelative="true" IsResource="false">logo_large.png</SmallImageURI>
+        <TemplateIconic>
+          <SmallImageURI IsRelative="true" IsResource="false">lc_icon_wp.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsRelative="true" IsResource="false">logo_large.png</BackgroundImageURI>
-          <Title>LiveCourse</Title>
-          <BackContent>
-          </BackContent>
-          <BackBackgroundImageURI>
-          </BackBackgroundImageURI>
-          <BackTitle>
-          </BackTitle>
-          <DeviceLockImageURI>
+          <IconImageURI IsRelative="true" IsResource="false">lc_icon_wp.png</IconImageURI>
+          <Title>
+          </Title>
+          <Message>
+          </Message>
+          <BackgroundColor>
+          </BackgroundColor>
+          <HasLarge>false</HasLarge>
+          <LargeContent1>
+          </LargeContent1>
+          <LargeContent2>
+          </LargeContent2>
+          <LargeContent3>
+          </LargeContent3>
+          <DeviceLockImageURI IsRelative="true" IsResource="false">
           </DeviceLockImageURI>
-          <HasLarge>False</HasLarge>
-        </TemplateFlip>
+        </TemplateIconic>
       </PrimaryToken>
     </Tokens>
     <ScreenResolutions>
