@@ -11,9 +11,11 @@ import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -41,6 +43,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 	private EditText loginEmailEditTextView; 
 	private EditText loginPasswordEditTextView;
 	private TextView errorTextView;
+	private ProgressDialog progressDialog;
     
 	/**
 	 * This ArrayList holds errors that occur when the user attempts to login
@@ -75,7 +78,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
          * These are used for easy login for testing
          */
         loginEmailEditTextView.setText("test1@test.com");
-        loginPasswordEditTextView.setText("123456789");
+        loginPasswordEditTextView.setText("123456789");  
 	}
 	
 	/**
@@ -191,6 +194,15 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		
 		startActivity(regIntent);
 	}
+	
+	@Override
+	public void preRestExecute(String restCall) 
+	{
+		if(restCall.equals(Restful.AUTH_PATH))
+		{
+			this.startAuthDialog();
+		}
+	}
 
 	@Override
 	public void onRestHandleResponseSuccess(String restCall, String response) 
@@ -271,10 +283,12 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		}
 		else if(restCall.equals(Restful.VERIFY_PATH))
 		{
-			new Restful(Restful.REGISTER_ANDROID_USER_PATH, Restful.POST, new String[]{"email","name","reg_id"}, new String[]{Globals.email,Globals.name,Globals.regId}, 3, this);
+			new Restful(Restful.REGISTER_ANDROID_USER_PATH, Restful.POST, new String[]{"email","name","reg_id","device_id"}, new String[]{Globals.email,Globals.name,Globals.regId, Secure.getString(this.getContentResolver(),
+                    Secure.ANDROID_ID)}, 4, this);
 		}
 		else if(restCall.equals(Restful.REGISTER_ANDROID_USER_PATH))
 		{
+			this.stopAuthDialog();
 			Intent mainIntent = new Intent(this, MainActivity.class);
 			this.startActivity(mainIntent);	
 		}
@@ -331,7 +345,29 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 			}
 		}
 		
+		this.stopAuthDialog();
 		this.showErrors();
+	}
+	
+	@Override
+	public void onRestCancelled(String restCall, String result) 
+	{
+		this.stopAuthDialog();
+	}
+	
+	private void startAuthDialog()
+	{
+		this.progressDialog = new ProgressDialog(this);
+		this.progressDialog.setMessage("Authenticating...");
+		this.progressDialog.setTitle("Logging In");
+		this.progressDialog.show();
+	}
+	private void stopAuthDialog()
+	{
+		if(this.progressDialog.isShowing())
+		{
+			this.progressDialog.dismiss();
+		}
 	}
 	
 	/**
@@ -349,4 +385,6 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		errorTextView.setTextColor(Color.RED);
 		errorTextView.setVisibility(View.VISIBLE);
 	}
+
+
 }

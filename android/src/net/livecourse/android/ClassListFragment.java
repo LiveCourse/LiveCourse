@@ -407,4 +407,16 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			
 		}
 	}
+
+	@Override
+	public void preRestExecute(String restCall) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestCancelled(String restCall, String result) {
+		// TODO Auto-generated method stub
+		
+	}
 }
