@@ -312,11 +312,10 @@ class Users extends REST_Controller
 		//check to see the device isn't already registered
 		if ($this->Model_Users->fetch_android_user($user_id, $dev_id))
 		{
-			$this->response($this->rest_error(array("That device is already registered!")),409);
-			return;
+			$this->Model_Users->remove_android($user_id, $dev_id);
 		}
 
-		$result = $this->Model_Users->add_android_user($user_id,$email,$name,$reg_id,$dev_id);
+		$result = $this->Model_Users->add_android_user($user_id,$reg_id,$dev_id);
 
 		if ($result)
 		{

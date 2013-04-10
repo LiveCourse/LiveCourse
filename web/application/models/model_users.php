@@ -191,7 +191,7 @@ class Model_Users extends CI_Model {
 	 *gcm_regid - Registration ID of the device
 	 *returns inserted information if successful, otherwise null/false.
 	 */
-	function add_android_user($user_id, $email, $name, $gcm_regid,$dev_id, $jointime = "")
+	function add_android_user($user_id, $gcm_regid,$dev_id, $jointime = "")
 	{
 		if($jointime == "") $jointime = time();
 		$data = array(
