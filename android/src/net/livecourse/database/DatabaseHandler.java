@@ -22,12 +22,8 @@ import android.util.Log;
 public class DatabaseHandler extends SQLiteOpenHelper
 {
 	private final String TAG = " == DatabaseHandler == ";
-	
-<<<<<<< HEAD
-	private static final int DATABASE_VERSION = 30;
-=======
+
 	private static final int DATABASE_VERSION = 33;
->>>>>>> branch 'master' of https://hayden.visualstudio.com/DefaultCollection/_git/LiveCourse
 	
 	/**
 	 * Database name
@@ -96,73 +92,12 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 * 
 	 * @param db The SQLiteDatabase to be created
 	 */
-<<<<<<< HEAD
-	public void onCreate(SQLiteDatabase db) {
-		/**
-		 * Creates the class query table
-		 */
-		String CREATE_TABLE_CLASS_QUERY = 	"CREATE TABLE " 			+ TABLE_CLASS_ENROLL 	+ "( "
-											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-	                						+ KEY_CLASS_ID_STRING 		+ " varchar(12) UNIQUE, "
-	                						+ KEY_CLASS_SUBJECT_ID 		+ " int(11), "
-	                						+ KEY_CLASS_COURSE_NUMBER 	+ " smallint(6), "
-	                						+ KEY_CLASS_NAME 			+ " varchar(100), "
-	                						+ KEY_CLASS_INSTITUTION_ID 	+ " int(11), "
-	                						+ KEY_CLASS_ROOM_ID 		+ " int(11), "	
-	                						+ KEY_CLASS_START_TIME 		+ " int(5), "
-	                						+ KEY_CLASS_END_TIME 		+ " int(5), "	
-	                						+ KEY_CLASS_START_DATE 		+ " date, "
-	                						+ KEY_CLASS_END_DATE 		+ " date, "	
-	                						+ KEY_CLASS_DOW_MONDAY 		+ " tinyint(1), "
-	                						+ KEY_CLASS_DOW_TUESDAY 	+ " tinyint(1), "	
-	                						+ KEY_CLASS_DOW_WEDNESDAY 	+ " tinyint(1), "
-	                						+ KEY_CLASS_DOW_THURSDAY 	+ " tinyint(1), "	
-	                						+ KEY_CLASS_DOW_FRIDAY 		+ " tinyint(1), "
-	                						+ KEY_CLASS_DOW_SATURDAY 	+ " tinyint(1), "	
-	                						+ KEY_CLASS_DOW_SUNDAY		+ " tinyint(1) "
-	                						+ ")";
-		
-		String CREATE_TABLE_CHAT_MESSAGES = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
-											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-											+ KEY_CHAT_USER_ID			+ " int(11),"
-											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
-											+ KEY_CHAT_SEND_TIME		+ " int(11), "
-											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
-											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
-											+ KEY_CHAT_DISPLAY_NAME 	+ " varchar(255) "
-											+ ")";
-		
-		String CREATE_TABLE_PARTICIPANTS  = "CREATE TABLE " 			+ TABLE_PARTICIPANTS 	+ "( "
-											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-											+ KEY_PART_USER_ID			+ " int(11) UNIQUE, "
-											+ KEY_CHAT_DISPLAY_NAME 	+ " int(255), "
-											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
-											+ KEY_PART_TIME_LASTFOCUS	+ " int(11), "
-											+ KEY_PART_TIME_LASTREQUEST + " int(11) "
-											+ ")";
-
-		String CREATE_TABLE_HISTORY		  = "CREATE TABLE " 			+ TABLE_HISTORY 	+ "( "
-											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-											+ KEY_CHAT_USER_ID			+ " int(11),"
-											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
-											+ KEY_CHAT_SEND_TIME		+ " int(11), "
-											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
-											+ KEY_CHAT_EMAIL 			+ " varchar(255), "
-											+ KEY_CHAT_DISPLAY_NAME 	+ " varchar(255) "
-											+ ")";
-											
-        db.execSQL(CREATE_TABLE_CLASS_QUERY);
-        db.execSQL(CREATE_TABLE_CHAT_MESSAGES);
-        db.execSQL(CREATE_TABLE_PARTICIPANTS);
-        db.execSQL(CREATE_TABLE_HISTORY);
-=======
 	public void onCreate(SQLiteDatabase db) 
 	{
 		this.createChatMessages(db);
 		this.createClassEnroll(db);
 		this.createParticipants(db);
 		this.createHistory(db);
->>>>>>> branch 'master' of https://hayden.visualstudio.com/DefaultCollection/_git/LiveCourse
 	}
 
 	@Override
