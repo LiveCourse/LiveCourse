@@ -1,12 +1,10 @@
 package net.livecourse.android;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import net.livecourse.R;
 import net.livecourse.database.ClassEnrollLoader;
-import net.livecourse.database.DatabaseHandler;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.ChatroomViewHolder;
@@ -16,8 +14,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -257,7 +253,6 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		    	Log.e(this.TAG, "Incorrect QR code format!");
 		    	return;
 		    }
-		    
 	
 		    this.updateListCalledByQR = true;
 		    new Restful(Restful.JOIN_CHAT_PATH, Restful.POST, new String[]{"id"},new String[]{chatRoom}, 1, this);
@@ -346,100 +341,10 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 
 	@Override
 	public void onRestHandleResponseSuccess(String restCall, String response) 
-	{
-		JSONArray parse;
-		JSONObject ob;
-		
+	{		
 		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
 		{
-			SQLiteDatabase db = null;
-			SQLiteStatement statement = null;
-			try 
-			{
-				parse = new JSONArray(response);
-				db = Globals.appDb.getWritableDatabase();
-				statement = db.compileStatement(
-						"INSERT INTO " 	+ DatabaseHandler.TABLE_CLASS_ENROLL +
-							" ( " 		+ DatabaseHandler.KEY_CLASS_ID_STRING 		+
-							", "		+ DatabaseHandler.KEY_CLASS_SUBJECT_ID 		+
-							", "		+ DatabaseHandler.KEY_CLASS_COURSE_NUMBER 	+
-							", "		+ DatabaseHandler.KEY_CLASS_NAME 			+
-							", "		+ DatabaseHandler.KEY_CLASS_INSTITUTION_ID 	+
-							", "		+ DatabaseHandler.KEY_CLASS_ROOM_ID 		+ 	
-							", "		+ DatabaseHandler.KEY_CLASS_START_TIME 		+
-							", "		+ DatabaseHandler.KEY_CLASS_END_TIME 		+	
-							", "		+ DatabaseHandler.KEY_CLASS_START_DATE 		+
-							", "		+ DatabaseHandler.KEY_CLASS_END_DATE 		+
-							", "		+ DatabaseHandler.KEY_CLASS_DOW_MONDAY 		+
-							", "		+ DatabaseHandler.KEY_CLASS_DOW_TUESDAY 	+	
-							", "		+ DatabaseHandler.KEY_CLASS_DOW_WEDNESDAY 	+
-							", "		+ DatabaseHandler.KEY_CLASS_DOW_THURSDAY 	+
-							", "		+ DatabaseHandler.KEY_CLASS_DOW_FRIDAY 		+
-							", "		+ DatabaseHandler.KEY_CLASS_DOW_SATURDAY 	+	
-							", "		+ DatabaseHandler.KEY_CLASS_DOW_SUNDAY		+
-							") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-				
-				db.beginTransaction();
-				for(int x = 0; x < parse.length(); x++)
-				{
-					ob = parse.getJSONObject(x);
-					
-					statement.clearBindings();
-					
-					statement.bindString(1,  ob.getString(		"id_string"));
-					statement.bindString(2,  ob.getString(		"subject_id"));
-					statement.bindString(3,  ob.getString(	"course_number"));
-					statement.bindString(4,  ob.getString(			"name"));
-					statement.bindString(5,  ob.getString(	"institution_id"));
-					statement.bindString(6,  ob.getString(		"room_id"));
-					statement.bindString(7,  ob.getString(		"start_time"));
-					statement.bindString(8,  ob.getString(		"end_time"));
-					statement.bindString(9, ob.getString(		"start_date"));
-					statement.bindString(10, ob.getString(		"end_date"));
-					statement.bindString(11, ob.getString(		"dow_monday"));
-					statement.bindString(12, ob.getString(	"dow_tuesday"));
-					statement.bindString(13, ob.getString(	"dow_wednesday"));
-					statement.bindString(14, ob.getString(	"dow_thursday"));
-					statement.bindString(15, ob.getString(		"dow_friday"));
-					statement.bindString(16, ob.getString(	"dow_saturday"));
-					statement.bindString(17, ob.getString(		"dow_sunday"));
-					
-					statement.execute();
-					/*
-					room.setIdString(ob.getString(		"id_string"));
-					room.setSubjectId(ob.getString(		"subject_id"));
-					room.setCourseNumber(ob.getString(	"course_number"));
-					room.setName(ob.getString(			"name"));
-					room.setStartTime(ob.getString(		"start_time"));	            	
-					room.setInstitutionId(ob.getString(	"institution_id"));
-					room.setRoomId(ob.getString(		"room_id"));
-					room.setStartTime(ob.getString(		"start_time"));
-					room.setEndTime(ob.getString(		"end_time"));
-					room.setStartDate(ob.getString(		"start_date"));
-					room.setEndDate(ob.getString(		"end_date"));
-					room.setDowMonday(ob.getString(		"dow_monday"));
-					room.setDowTuesday(ob.getString(	"dow_tuesday"));
-					room.setDowWednesday(ob.getString(	"dow_wednesday"));
-					room.setDowThursday(ob.getString(	"dow_thursday"));
-					room.setDowFriday(ob.getString(		"dow_friday"));
-					room.setDowSaturday(ob.getString(	"dow_saturday"));
-					room.setDowSunday(ob.getString(		"dow_sunday"));
-					
-					Globals.appDb.addClassEnroll(room);					
-					*/
-				}
-				db.setTransactionSuccessful();
-			} 
-			catch (JSONException e) 
-			{
-				e.printStackTrace();
-			}
-			finally
-			{
-				db.endTransaction();
-			}
-			statement.close();
-			db.close();
+			Globals.appDb.addClassesFromJSON(false, response);
 		}
 		else if(restCall.equals(Restful.JOIN_CHAT_PATH))
 		{
@@ -447,7 +352,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			{
 				try 
 				{
-					ob = new JSONObject(response);
+					JSONObject ob = new JSONObject(response);
 					Globals.chatId = ob.getString("id_string");
 					Globals.chatName = ob.getString("name");
 				} 

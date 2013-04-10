@@ -1,11 +1,6 @@
 package net.livecourse.gcm;
  
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import net.livecourse.database.DatabaseHandler;
-import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
 import android.content.Context;
 import android.content.Intent;
@@ -54,10 +49,10 @@ public class GCMIntentService extends GCMBaseIntentService
 		SQLiteStatement statement = db.compileStatement(
 				"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
 					" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
-					", "		+ DatabaseHandler.KEY_CHAT_USER_ID +
+					", "		+ DatabaseHandler.KEY_USER_ID +
 					", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
 					", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
-					", " 		+ DatabaseHandler.KEY_CHAT_DISPLAY_NAME + 
+					", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
 					") VALUES (?, ?, ?, ?, ?)");
 
 		db.beginTransaction();

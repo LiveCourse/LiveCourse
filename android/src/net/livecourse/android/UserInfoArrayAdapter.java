@@ -1,7 +1,6 @@
 package net.livecourse.android;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import net.livecourse.R;
 import net.livecourse.database.Chatroom;
@@ -15,12 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class UserInfoAdapter extends ArrayAdapter<Chatroom>
+public class UserInfoArrayAdapter extends ArrayAdapter<Chatroom>
 {
 	private ArrayList<Chatroom> items;
 	private Context context;
 	
-	public UserInfoAdapter(Context context, int textViewResourceId, ArrayList<Chatroom> items) 
+	public UserInfoArrayAdapter(Context context, int textViewResourceId, ArrayList<Chatroom> items) 
 	{
 		super(context, textViewResourceId, items);
         this.context = context;
