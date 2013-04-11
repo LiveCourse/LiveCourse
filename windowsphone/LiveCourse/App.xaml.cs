@@ -10,6 +10,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using LiveCourse.Resources;
 using LiveCourse.ViewModels;
+using System.IO.IsolatedStorage;
 
 namespace LiveCourse
 {
@@ -84,7 +85,24 @@ namespace LiveCourse
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            RootFrame.Navigate(new Uri("/LogIn.xaml", UriKind.Relative));
+            IsolatedStorageSettings appSettings = IsolatedStorageSettings.ApplicationSettings;
+            try
+            {
+                if (((string)appSettings["auth_token"]).Length > 0)
+                {
+                    REST.auth_pass = ((string)appSettings["auth_pass"]);
+                    REST.auth_token = ((string)appSettings["auth_token"]);
+                    RootFrame.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+                }
+                else
+                {
+                    RootFrame.Navigate(new Uri("/LogIn.xaml", UriKind.Relative));
+                }
+            }
+            catch (KeyNotFoundException exception)
+            {
+                RootFrame.Navigate(new Uri("/LogIn.xaml", UriKind.Relative));
+            }
         }
 
         // Code to execute when the application is activated (brought to foreground)

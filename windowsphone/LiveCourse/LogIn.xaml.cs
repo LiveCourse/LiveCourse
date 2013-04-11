@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.IO.IsolatedStorage;
 
 namespace LiveCourse
 {
@@ -45,7 +46,7 @@ namespace LiveCourse
             auth.call(auth_success, auth_failure);
         }
 
-        public async void auth_success(System.Net.HttpStatusCode code, dynamic data)
+        public void auth_success(System.Net.HttpStatusCode code, dynamic data)
         {
             progress.IsVisible = false;
             REST.auth_token = data.authentication.token;
@@ -55,7 +56,7 @@ namespace LiveCourse
             verify.call(verify_success, verify_failure);
         }
 
-        public async void auth_failure(System.Net.HttpStatusCode code, dynamic data)
+        public void auth_failure(System.Net.HttpStatusCode code, dynamic data)
         {
             progress.IsVisible = false;
             if (code == HttpStatusCode.NotFound)
@@ -69,8 +70,12 @@ namespace LiveCourse
             button_register.IsEnabled = true;
         }
 
-        public async void verify_success(System.Net.HttpStatusCode code, dynamic data)
+        public void verify_success(System.Net.HttpStatusCode code, dynamic data)
         {
+            //Save our credentials to isolated storage.
+            IsolatedStorageSettings.ApplicationSettings.Add("auth_pass", REST.auth_pass);
+            IsolatedStorageSettings.ApplicationSettings.Add("auth_token", REST.auth_token);
+
             progress.IsVisible = false;
             //Enable form
             input_login.IsEnabled = true;
@@ -80,7 +85,7 @@ namespace LiveCourse
             NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
         }
 
-        public async void verify_failure(System.Net.HttpStatusCode code, dynamic data)
+        public void verify_failure(System.Net.HttpStatusCode code, dynamic data)
         {
             progress.IsVisible = false;
             if (code == HttpStatusCode.Unauthorized)

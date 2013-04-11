@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.IO.IsolatedStorage;
 
 namespace LiveCourse
 {
@@ -138,6 +139,19 @@ namespace LiveCourse
             MyChatRoom room = ((list_chatrooms as LongListSelector).SelectedItem as MyChatRoom);
             NavigationService.Navigate(new Uri("/Chat.xaml?id=" + room.C_ID_String, UriKind.Relative));
             App.currentRoom = room;
+        }
+
+        private void Join_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SignOut_Click(object sender, EventArgs e)
+        {
+            IsolatedStorageSettings appSettings = IsolatedStorageSettings.ApplicationSettings;
+            appSettings.Remove("auth_pass");
+            appSettings.Remove("auth_token");
+            NavigationService.Navigate(new Uri("/LogIn.xaml", UriKind.Relative));
         }
     }
 }

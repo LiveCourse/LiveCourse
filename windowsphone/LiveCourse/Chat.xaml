@@ -57,9 +57,9 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--Pivot Control-->
-        <phone:Pivot x:Name="chatpage_pivot" Title="CLASS NAME">
+        <phone:Pivot x:Name="chatpage_pivot" Title="CLASS NAME" LoadingPivotItem="chatpage_pivot_LoadingPivotItem">
             <!--Pivot item one-->
-            <phone:PivotItem Header="chat">
+            <phone:PivotItem Header="chat" x:Name="pivot_chat">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -95,8 +95,25 @@
             </phone:PivotItem>
 
             <!--Pivot item two-->
-            <phone:PivotItem Header="participants">
-                <Grid/>
+            <phone:PivotItem Header="participants" x:Name="pivot_participants">
+                <Grid>
+                    <phone:LongListSelector x:Name="list_participants">
+                        <phone:LongListSelector.ItemTemplate>
+                            <DataTemplate>
+                                <ListBoxItem>
+                                    <StackPanel Orientation="Horizontal" Margin="12,2,0,4" Height="105" Width="432">
+                                        <!--Replace rectangle with image-->
+                                        <Border BorderThickness="1" Width="99" Height="99" BorderBrush="#FFFFC700" Background="#FFFFC700"/>
+                                        <StackPanel Width="311" Margin="8,-7,0,0">
+                                            <TextBlock Text="{Binding display_name}" TextWrapping="Wrap" Margin="10,0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                            <TextBlock Text="" TextWrapping="Wrap" Margin="10,-2,10,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </ListBoxItem>
+                            </DataTemplate>
+                        </phone:LongListSelector.ItemTemplate>
+                    </phone:LongListSelector>
+                </Grid>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>
