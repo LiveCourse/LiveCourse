@@ -7,6 +7,8 @@ import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import net.livecourse.R;
+import net.livecourse.rest.OnRestCalled;
+import net.livecourse.rest.Restful;
 
 /**
  * This class allows the user to register.
@@ -14,7 +16,7 @@ import net.livecourse.R;
  * @author Darren
  *
  */
-public class RegistrationActivity extends SherlockActivity implements OnClickListener
+public class RegistrationActivity extends SherlockActivity implements OnClickListener, OnRestCalled
 {
 	int check = 0;
 	EditText testText;
@@ -52,7 +54,38 @@ public class RegistrationActivity extends SherlockActivity implements OnClickLis
 	@Override
 	public void onClick(View v) 
 	{
+		new Restful(Restful.REGISTER_USER_PATH,Restful.GET, new String[]{"user_id"}, new String[]{this.userId}, 1, this);
 		
+	}
+
+	@Override
+	public void preRestExecute(String restCall) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestHandleResponseSuccess(String restCall, String response) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestPostExecutionSuccess(String restCall, String result) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestPostExecutionFailed(String restCall, int code,
+			String result) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRestCancelled(String restCall, String result) {
+		// TODO Auto-generated method stub
 		
 	}
 }
