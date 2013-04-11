@@ -16,18 +16,13 @@
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />   
-	<!-- This app has permission to register and receive data message. -->
-	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-     
-	<!-- Network State Permissions to detect Internet status -->
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-     
-	<!-- Permission to vibrate -->
+	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />     
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />     
 	<uses-permission android:name="android.permission.VIBRATE" />
 	
 	<application
 		android:allowBackup="true"
-		android:icon="@drawable/airplane"
+		android:icon="@drawable/paperairplanewhitebluebackground"
 		android:label="@string/app_name" 
 		android:theme="@style/Theme.Sherlock.Light" >
 		
@@ -35,7 +30,7 @@
 			android:name="net.livecourse.android.LoginActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait" 
-			android:theme="@style/Theme.Sherlock.Light" >
+			android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -56,14 +51,8 @@
 			android:name="net.livecourse.android.RegistrationActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait" 
-			android:theme="@style/Theme.Sherlock.Light">
-			<intent-filter>
-			    <action android:name="android.intent.action.MAIN" />
-	     
-			    <category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-		
+			android:theme="@style/Theme.Sherlock.Light" />
+					
 		<activity
 			android:name="net.livecourse.android.HistoryViewActivity"
 			android:label="@string/app_name"
@@ -77,7 +66,7 @@
 			android:theme="@style/Theme.Sherlock.Light" />
 		
 		<activity
-			android:name="net.livecourse.android.EditUserInfoActivity"
+			android:name="net.livecourse.android.SettingsActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait"
 			android:theme="@style/Theme.Sherlock.Light" />

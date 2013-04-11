@@ -556,6 +556,40 @@ class Chats extends REST_Controller
 	}
 	
 	/**
+	 * Retrieves all messages past a certain defined message id
+	 * chat_id - Chat ID to fetch from
+	 * msg_id - Message ID after which to grab
+	 * returns - messages
+	 */
+	function fetch_since_get()
+	{
+		$this->load->model('Model_Chats');
+		
+		$chat_id_string = $this->get('chat_id');
+		$msg_id = $this->get('msg_id');
+		
+		$num_messages = $this->get('num_messages');
+		
+		if (!isset($num_messages) || $num_messages == "")
+			$num_messages = 100;
+			
+		$user_id = $this->authenticated_as;
+
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		
+		//Check to make sure user is joined to this chat.
+		if (!$this->Model_Chats->is_user_subscribed($user_id,$chat_id))
+		{
+			$this->response($this->rest_error(array("You are not subscribed to this chat.")),401);
+			return;
+		}
+
+		$messages = $this->Model_Chats->get_messages_after_msg_id($chat_id,$msg_id);
+		$this->response($messages,200); //Success
+	}
+	
+	/**
 	 * Retrieves all messages from a given room between specified time and specified time + 24 hours.
 	 * NOTE: This operates in UTC time, effectively. Client should do some conversions before requesting
 	 *       if they expect results to be arranged like their local time zone.

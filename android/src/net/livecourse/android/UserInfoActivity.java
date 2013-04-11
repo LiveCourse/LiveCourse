@@ -57,6 +57,7 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
         super.onCreate(savedInstanceState);
         setContentView(R.layout.userinfo_layout);
         
+        Log.d(this.TAG, "ID1:" + this.userId);
         new Restful(Restful.GET_USER_PATH, Restful.GET, new String[]{"id"}, new String[]{this.userId}, 1, this);
 		
 		/**
@@ -233,7 +234,8 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 		if(restCall.equals(Restful.GET_USER_PATH))
 		{
 			this.setTitle(this.displayName);
-			new Restful(Restful.GET_SUBSCRIBED_CHATS_PATH,Restful.GET, new String[]{"id"}, new String[]{this.userId}, 1, this);
+			Log.d(this.TAG, "ID2:" + this.userId);
+			new Restful(Restful.GET_SUBSCRIBED_CHATS_PATH,Restful.GET, new String[]{"user_id"}, new String[]{this.userId}, 1, this);
 		}
 		else if(restCall.equals(Restful.CHANGE_DISPLAY_NAME_PATH));
 		{

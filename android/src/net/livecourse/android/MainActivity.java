@@ -13,11 +13,15 @@ import net.livecourse.utility.Globals;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 /**
  * 
@@ -45,13 +49,14 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+        this.changeActionBarColorBasedOnPref();
+        
         Globals.mainActivity = this;
         
         /**
          * Init database
          */
         Globals.appDb = new DatabaseHandler(this.getApplicationContext());
-        //Globals.appDb.recreateClassEnroll();
 
         /**
          * The following code initializes the tabs and sets up the tabs adapter and
@@ -89,7 +94,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		switch(item.getItemId())
 		{
 			case R.id.main_options_menu_settings:
-				Intent settings = new Intent(this, EditUserInfoActivity.class);
+				Intent settings = new Intent(this, SettingsActivity.class);
 	            startActivityForResult(settings, RESULT_SETTINGS);
 				break;
 			case R.id.item1:
@@ -106,6 +111,45 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		return super.onOptionsItemSelected(item);
 	}
 	
+	public void changeActionBarColorBasedOnPref()
+	{
+		switch(Integer.parseInt(Globals.colorPref))
+		{
+			case Globals.INDEX_BLUE:
+				changeActionBarColor(Globals.HEX_BLUE);
+				break;
+			case Globals.INDEX_RED:
+				changeActionBarColor(Globals.HEX_RED);
+				break;
+			case Globals.INDEX_BROWN:
+				changeActionBarColor(Globals.HEX_BROWN);
+				break;
+			case Globals.INDEX_GREEN:
+				changeActionBarColor(Globals.HEX_GREEN);
+				break;
+			case Globals.INDEX_CYAN:
+				changeActionBarColor(Globals.HEX_CYAN);
+				break;
+			case Globals.INDEX_PURPLE:
+				changeActionBarColor(Globals.HEX_PURPLE);
+				break;
+		}
+	}
+	
+	public void changeActionBarColor(String hexColor)
+	{
+		this.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(hexColor)));
+        int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");    
+        
+        if ( 0 == titleId ) 
+        {
+        	titleId = com.actionbarsherlock.R.id.abs__action_bar_title;
+        }
+        this.getSupportActionBar().setIcon(R.drawable.paperairplanewhite);
+        
+        TextView yourTextView = (TextView)findViewById(titleId);
+        yourTextView.setTextColor(Color.WHITE);
+	}
 
 	/*
 	@Override

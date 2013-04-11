@@ -19,9 +19,9 @@ public class Globals
 	/**
 	 * The loaders
 	 */
-	public static final int				CLASSLIST_LOADER	= 1;
-	public static final int				CHAT_LOADER			= 2;
-	public static final int				PARTICIPANT_LOADER 	= 3;
+	public static final int				CLASSLIST_LOADER		= 1;
+	public static final int				CHAT_LOADER				= 2;
+	public static final int				PARTICIPANT_LOADER 		= 3;
 	
 	/**
 	 * Database
@@ -39,7 +39,9 @@ public class Globals
     /**
      * The loader numbers
      */
-    public static final int CLASS_LIST_LOADER = 1;
+    public static final int CLASS_LIST_LOADER 					= 1;
+    public static final int CHAT_MESSAGES_LOADER 				= 2;
+    public static final int PARTICIPANTS_LOADER 				= 3;
     
 	
 	/**
@@ -61,6 +63,24 @@ public class Globals
 	
 	public static ActionMode			mode;
 	
+	/**
+	 * UI Colors
+	 */
+	public static final String			HEX_BLUE				= "#2e587e";
+	public static final String			HEX_RED					= "#7e2e2e";
+	public static final String			HEX_BROWN				= "#7e4f2e";
+	public static final String			HEX_GREEN				= "#2e7e3b";
+	public static final String			HEX_CYAN				= "#2e7e7e";
+	public static final String			HEX_PURPLE				= "#7e2e7e";
 	
+	/**
+	 * UI Color cases
+	 */
+	public static final int				INDEX_BLUE				= 0;
+	public static final int				INDEX_RED				= 1;
+	public static final int				INDEX_BROWN				= 2;
+	public static final int				INDEX_GREEN				= 3;
+	public static final int				INDEX_CYAN				= 4;
+	public static final int				INDEX_PURPLE			= 5;	
 }
 

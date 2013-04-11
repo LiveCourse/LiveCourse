@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Window;
 import com.google.android.gcm.GCMRegistrar;
 
 /**
@@ -56,7 +57,21 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
         
-                
+        GCMRegistrar.checkDevice(this);
+		GCMRegistrar.checkManifest(this);
+		
+		final String regId = GCMRegistrar.getRegistrationId(this);
+		
+		if (regId.equals("")) 
+		{
+			GCMRegistrar.register(this, Globals.SENDER_ID);
+		} 
+		else 
+		{
+			Globals.regId 			= regId;
+			Log.d(this.TAG, "GCMRegister failed, already registered");
+		}
+		                
         /**
          * Links to the XML
          */
@@ -131,23 +146,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
          * If this device is already registered it will use the previous
          * ID instead.
          */
-		//GCMRegistrar.unregister(this);
-
 		
-		GCMRegistrar.checkDevice(this);
-		GCMRegistrar.checkManifest(this);
-		
-		final String regId = GCMRegistrar.getRegistrationId(this);
-		
-		if (regId.equals("")) 
-		{
-			GCMRegistrar.register(this, Globals.SENDER_ID);
-			
-		} 
-		else 
-		{
-			Log.d(this.TAG, "GCMRegister failed, already registered");
-		}
 		
 		/**
 		 * Sends variables over to be stored in Global and starts the Rest
@@ -155,7 +154,6 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		 */
 		Globals.passwordToken 	= Utility.convertStringToSha1(loginPasswordEditTextView.getText().toString());
 		Globals.email 			= loginEmailEditTextView.getText().toString();
-		Globals.regId 			= regId;
 		
 		/**
 		 * Rest call for auth is called, this will start a chain of calls going from Authentication to Verify to
@@ -256,7 +254,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		}
 		else if(restCall.equals(Restful.REGISTER_ANDROID_USER_PATH))
 		{
-			
+
 		}
 	}
 
@@ -285,6 +283,11 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		else if(restCall.equals(Restful.VERIFY_PATH))
 		{
 			this.changeAuthDialog("Registering Android Device...");
+			
+			Log.d(this.TAG, "Current Reg ID: " + Globals.regId);
+			Log.d(this.TAG, "Current Device ID: " + Secure.getString(this.getContentResolver(),
+                    Secure.ANDROID_ID));
+			
 			new Restful(Restful.REGISTER_ANDROID_USER_PATH, Restful.POST, new String[]{"email","name","reg_id","device_id"}, new String[]{Globals.email,Globals.name,Globals.regId, Secure.getString(this.getContentResolver(),
                     Secure.ANDROID_ID)}, 4, this);
 		}

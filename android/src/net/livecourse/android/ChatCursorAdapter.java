@@ -81,6 +81,7 @@ public class ChatCursorAdapter extends CursorAdapter
 		v.displayName.setText(name);
 		v.time.setText(time);
 		v.message.setText(message);
+		//Linkify.addLinks(v.message, Linkify.WEB_URLS);
 		
 		v.messageId = cursor.getString(cursor.getColumnIndexOrThrow("chat_id"));
 		v.userId = cursor.getString(cursor.getColumnIndexOrThrow("chat_id"));
