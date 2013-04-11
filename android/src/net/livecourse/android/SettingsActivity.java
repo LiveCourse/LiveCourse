@@ -14,7 +14,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
     protected void onCreate(Bundle savedInstanceState) 
 	{
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.layout.edituserinfo_layout);
+        addPreferencesFromResource(R.layout.settings_layout);
         
 	}
 }
