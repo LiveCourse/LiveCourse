@@ -8,14 +8,32 @@
     <!-- 	General Purpose Strings -->
     <string name="no_results">No Results</string>
     
-    <!-- 	EditUserInfo Activity Strings -->
+    <!-- 	Settings Activity Strings -->
     <string name="user_profile_picture">User Profile Picture</string>
     <string name="pref_user_profile">User Profile</string>
     <string name="pref_user_name">Set username</string>
     <string name="pref_user_name_summary">Set your username</string>
-    <string name="pref_update_setting">Update Settings</string>
+    <string name="pref_notification_setting">Notification Settings</string>
     <string name="pref_user_password">Change password</string>
     <string name="pref_user_password_summary">Set new password</string>
+    <string name="pref_color_choice_title">Color</string>
+	<string name="pref_color_choice_summary">Color</string>
+    <string-array name="pref_color_choices">
+		<item>Blue</item>
+		<item>Red</item>
+		<item>Brown</item>
+		<item>Green</item>
+		<item>Cyan</item>
+		<item>Purple</item>
+    </string-array>
+    <string-array name="pref_color_choices_values">
+        <item>0</item> 
+        <item>1</item> 
+        <item>2</item> 
+        <item>3</item> 
+        <item>4</item> 
+        <item>5</item> 
+	</string-array>
     
     <!-- Options Menu Strings -->
 	<string name="main_options_menu_settings">Settings</string>

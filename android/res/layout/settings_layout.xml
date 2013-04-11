@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     
-	<PreferenceCategory android:title="@string/pref_user_profile" >
+	<PreferenceCategory 
+	    android:title="@string/pref_user_profile" >
+        
         <EditTextPreference
-                android:title="@string/pref_user_name"
-                android:summary="@string/pref_user_name_summary"
-                android:key="prefUsername"/>
-    </PreferenceCategory>
-     
-    <PreferenceCategory android:title="@string/pref_update_setting" >
-        <CheckBoxPreference
+            android:title="@string/pref_user_name"
+            android:summary="@string/pref_user_name_summary"
+            android:key="prefUsername"/>
+        
+		<CheckBoxPreference
             android:key="prefSendReport"
             android:summary="@string/pref_user_password"
-            android:title="@string/pref_user_password_summary" >
-        </CheckBoxPreference>
- 
+            android:title="@string/pref_user_password_summary" />
+        
+		<ListPreference
+	        android:title="@string/pref_color_choice_title"
+	        android:summary="@string/pref_color_choice_summary"
+	        android:dialogTitle="@string/pref_color_choice_title"
+	        android:entries="@array/pref_color_choices"
+	        android:entryValues="@array/pref_color_choices_values" />
+        
+    </PreferenceCategory>
+     
+    <PreferenceCategory 
+        android:title="@string/pref_notification_setting" >
     </PreferenceCategory>
  
 </PreferenceScreen>

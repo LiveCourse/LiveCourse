@@ -34,7 +34,7 @@ public class GCMIntentService extends GCMBaseIntentService
 		Globals.regId 			= registrationId;
 	}
 	 
-	@Override
+	@Override 
 	protected void onUnregistered(Context arg0, String arg1) 
 	{
 		Log.i(TAG, "unregistered = "+arg1);
