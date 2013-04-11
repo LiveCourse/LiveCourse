@@ -65,10 +65,10 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		if (regId.equals("")) 
 		{
 			GCMRegistrar.register(this, Globals.SENDER_ID);
-			Globals.regId 			= regId;
 		} 
 		else 
 		{
+			Globals.regId 			= regId;
 			Log.d(this.TAG, "GCMRegister failed, already registered");
 		}
 		                
