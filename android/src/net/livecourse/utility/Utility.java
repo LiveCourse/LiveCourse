@@ -7,7 +7,18 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.livecourse.R;
+
 import org.apache.http.HttpEntity;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+import android.app.ProgressDialog;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
+import android.widget.TextView;
 
 /**
  * This is the ultities class that focuses on ultity based methods as well as
@@ -16,7 +27,9 @@ import org.apache.http.HttpEntity;
  * @author Darren
  *
  */
-public class Utility {
+public class Utility 
+{
+	private static final String TAG = " == Utility == ";
 
 	/**
 	 * This method checks the email string to see if it is a valid email string.
@@ -143,5 +156,103 @@ public class Utility {
 		}
 		
 		return out.toString();
+	}
+	
+	/**
+	 * Used to start progress dialogs, the dialog must have been already created
+	 * 
+	 * @param progressDialog	The dialog to start
+	 * @param context			The context to start in
+	 * @param title				The title
+	 * @param message			The message
+	 */
+	public static void startDialog(ProgressDialog progressDialog, String title, String message)
+	{
+		progressDialog.setTitle(title);
+		progressDialog.setMessage(message);
+		progressDialog.show();
+	}
+	
+	/**
+	 * Used to change dialog text
+	 * 
+	 * @param progressDialog	The dialog to change
+	 * @param title				The title to change, setting it to null will not change it
+	 * @param message			The message to change, setting it to null will not change it
+	 */
+	public static void changeDialog(ProgressDialog progressDialog, String title, String message)
+	{
+		Log.d(Utility.TAG, "Dialog: " + progressDialog + " title: " + title + " message: " + message);
+		if(message != null)
+			progressDialog.setMessage(message);
+		if(title != null)
+			progressDialog.setTitle(title);
+	}
+	
+	/**
+	 * Used to close the dialog
+	 * 
+	 * @param progressDialog	The dialog to close
+	 */
+	public static void stopDialog(ProgressDialog progressDialog)
+	{
+		if(progressDialog.isShowing())
+		{
+			progressDialog.dismiss();
+		}
+	}
+	
+	/**
+	 * This method is used to hange the color of a specified activity based on the color in preferences
+	 * 
+	 * @param activity	The activity whose color is to be changed
+	 */
+	public static void changeActivityColorBasedOnPref(SherlockFragmentActivity activity)
+	{
+		switch(Integer.parseInt(Globals.colorPref))
+		{
+			case Globals.INDEX_BLUE:
+				Utility.changeActivityColor(activity, Globals.HEX_BLUE);
+				break;
+			case Globals.INDEX_RED:
+				Utility.changeActivityColor(activity,Globals.HEX_RED);
+				break;
+			case Globals.INDEX_BROWN:
+				Utility.changeActivityColor(activity,Globals.HEX_BROWN);
+				break;
+			case Globals.INDEX_GREEN:
+				Utility.changeActivityColor(activity,Globals.HEX_GREEN);
+				break;
+			case Globals.INDEX_CYAN:
+				Utility.changeActivityColor(activity,Globals.HEX_CYAN);
+				break;
+			case Globals.INDEX_PURPLE:
+				Utility.changeActivityColor(activity,Globals.HEX_PURPLE);
+				break;
+		}
+	}
+	
+	/**
+	 * This method is used to change a specified activity to a color in hex
+	 * 
+	 * @param activity	The activity whose color is to be changed
+	 * @param hexColor	The color in hex that the activity's color is going to change to
+	 */
+	public static void changeActivityColor(SherlockFragmentActivity activity, String hexColor)
+	{
+		Log.d(Utility.TAG, "The hex color: " + hexColor);
+		activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(hexColor)));
+		activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+		activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");    
+        
+        if ( titleId == 0 ) 
+        {
+        	titleId = com.actionbarsherlock.R.id.abs__action_bar_title;
+        }
+        activity.getSupportActionBar().setIcon(R.drawable.paperairplanewhite);
+        
+        TextView yourTextView = (TextView) activity.findViewById(titleId);
+        yourTextView.setTextColor(Color.WHITE);
 	}
 }

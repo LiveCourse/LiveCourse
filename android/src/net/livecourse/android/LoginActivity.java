@@ -22,7 +22,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Window;
 import com.google.android.gcm.GCMRegistrar;
 
 /**
@@ -56,6 +55,8 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 	{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
+        
+        progressDialog = new ProgressDialog(this);
         
         GCMRegistrar.checkDevice(this);
 		GCMRegistrar.checkManifest(this);
@@ -198,31 +199,15 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 	{
 		if(restCall.equals(Restful.AUTH_PATH))
 		{
-			this.startAuthDialog();
+			Utility.startDialog(progressDialog, "Logging In", "Authenticating...");
 		}
 	}
 
 	@Override
 	public void onRestHandleResponseSuccess(String restCall, String response) 
 	{
-		/**
-		 * Used to parse the response into String objects
-		 */
 		JSONObject parse = null;
 		
-		/**
-		 * This section of code is executed in the Rest background thread after grabbing
-		 * data from the Rest call to the server.
-		 * 
-		 * Does different actions based on the type of Rest call
-		 * 
-		 * If the call is to Authenticate, than it will grab the authentication token
-		 * and store it in Globals
-		 * 
-		 * If the call is to Verify, than it will grab user data and store it in Globals
-		 * 
-		 * If the call is to Android Add, then do nothing
-		 */
 		if(restCall.equals(Restful.AUTH_PATH))
 		{
 			try 
@@ -263,26 +248,14 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 	{
 		Log.d(this.TAG, "Rest call: " + restCall + " success!");
 		
-		/**
-		 * This section of code is executed in the UI thread after the Rest call 
-		 * is finished and returned a success (status code 200 - 299).
-		 * 
-		 * Does different actions based on the type of Rest call
-		 * 
-		 * If the call is to Authenticate, than it will launch the Verify Rest call
-		 * 
-		 * If the call is to Verify, than it will launch the Android Add Rest call
-		 * 
-		 * If the call is to Android Add, then it will launch the MainActivity
-		 */
 		if(restCall.equals(Restful.AUTH_PATH))
 		{
-			this.changeAuthDialog("Verifying...");
+			Utility.changeDialog(progressDialog, null,"Verifying...");
 			new Restful(Restful.VERIFY_PATH, Restful.GET, null, null, 0, this);
 		}
 		else if(restCall.equals(Restful.VERIFY_PATH))
 		{
-			this.changeAuthDialog("Registering Android Device...");
+			Utility.changeDialog(progressDialog, null,"Registering Android Device...");
 			
 			Log.d(this.TAG, "Current Reg ID: " + Globals.regId);
 			Log.d(this.TAG, "Current Device ID: " + Secure.getString(this.getContentResolver(),
@@ -293,7 +266,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		}
 		else if(restCall.equals(Restful.REGISTER_ANDROID_USER_PATH))
 		{
-			this.stopAuthDialog();
+			Utility.stopDialog(progressDialog);
 			Intent mainIntent = new Intent(this, MainActivity.class);
 			this.startActivity(mainIntent);	
 		}
@@ -304,23 +277,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 	{
 		Log.d(this.TAG, "Rest call: " + restCall + "failed with status code: " + code);
 		Log.d(this.TAG,"Result from server is:\n" + result);
-		
-		/**
-		 * This section of code is executed in the UI thread after the Rest call 
-		 * is finished and returned a failure.
-		 * 
-		 * Does different actions based on the type of Rest call
-		 * 
-		 * If the call is to Authenticate, than it will tell the user the email
-		 * input is incorrect
-		 * 
-		 * If the call is to Verify, than it will tell the user the password input
-		 * is incorrect
-		 * 
-		 * If the call is to Android Add, it will launch MainActivity if the status
-		 * code is 409 as that means that the registration id is already in the server,
-		 * otherwise it is a bug and needs to be checked.
-		 */
+
 		if(restCall.equals(Restful.AUTH_PATH))
 		{
 			switch(code)
@@ -350,33 +307,14 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 			}
 		}
 		
-		this.stopAuthDialog();
+		Utility.stopDialog(progressDialog);
 		this.showErrors();
 	}
 	
 	@Override
 	public void onRestCancelled(String restCall, String result) 
 	{
-		this.stopAuthDialog();
-	}
-	
-	private void startAuthDialog()
-	{
-		this.progressDialog = new ProgressDialog(this);
-		this.progressDialog.setMessage("Authenticating...");
-		this.progressDialog.setTitle("Logging In");
-		this.progressDialog.show();
-	}
-	private void changeAuthDialog(String message)
-	{
-		this.progressDialog.setMessage(message);
-	}
-	private void stopAuthDialog()
-	{
-		if(this.progressDialog.isShowing())
-		{
-			this.progressDialog.dismiss();
-		}
+		Utility.stopDialog(progressDialog);
 	}
 	
 	/**

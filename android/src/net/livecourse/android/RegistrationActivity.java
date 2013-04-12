@@ -54,7 +54,7 @@ public class RegistrationActivity extends SherlockActivity implements OnClickLis
 	@Override
 	public void onClick(View v) 
 	{
-		new Restful(Restful.REGISTER_USER_PATH,Restful.GET, new String[]{"user_id"}, new String[]{this.userId}, 1, this);
+		//new Restful(Restful.REGISTER_USER_PATH,Restful.GET, new String[]{"user_id"}, new String[]{this.userId}, 1, this);
 		
 	}
 
