@@ -237,7 +237,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASS_ENROLL);
 			this.createClassEnroll(db);
-			db.close();
 			
 	        Log.d(this.TAG, "Recreated TABLE_CLASS_ENROLL");
 		}
@@ -254,7 +253,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHAT_MESSAGES);
 			this.createChatMessages(db);
-			db.close();
 			
 	        Log.d(this.TAG, "Recreated TABLE_CHAT_MESSAGES");
 		}
@@ -271,7 +269,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS);
 			this.createParticipants(db);
-			db.close();
 			
 	        Log.d(this.TAG, "Recreated TABLE_PARTICIPANTS");
 		}
@@ -288,7 +285,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY);
 			this.createHistory(db);
-			db.close();
 			
 	        Log.d(this.TAG, "Recreated TABLE_HISTORY");
 		}
@@ -381,7 +377,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
 				db.endTransaction();
 			}
 			statement.close();
-			db.close();		
 		}
 	}
 	
@@ -453,7 +448,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	
 			}
 			statement.close();
-			db.close();
 		}
 	}
 	
@@ -491,7 +485,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			db.endTransaction();
 				
 			statement.close();
-			db.close();
 		}
 	}
 	
@@ -557,7 +550,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
 				db.endTransaction();
 			}
 			statement.close();
-			db.close();	
 		}
 	}
 	
@@ -623,7 +615,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	{
 		db.endTransaction();
 		statement.close();
-		db.close();
 	}
 	
 	/**
