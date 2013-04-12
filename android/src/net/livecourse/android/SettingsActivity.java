@@ -42,7 +42,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 		//Log.d("SettingsActivity", "The key: " + key + " value: " + sharedPreferences.getString(key, null));
 		Log.d("SettingsActivity", "The key: " + key);
 		
-		if(key.equals("pref_Color"))
+		if(key.equals("pref_color"))
 		{
 			this.tempChangeStorage = sharedPreferences.getString(key, null);
 			if(this.tempChangeStorage != null)
