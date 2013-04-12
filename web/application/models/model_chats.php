@@ -459,7 +459,7 @@ WHERE lc_chat_participants.chat_id = 1
 			'filename' => $filename,
 			'message_id' => $message_id,
 			'uploaded_at' => $time,
-		)
+		);
 		return $this->db->insert('lc_chat_files', $data);
 		
 	}

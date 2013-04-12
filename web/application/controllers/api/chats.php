@@ -1152,7 +1152,7 @@ class Chats extends REST_Controller
 		}
 		
 		//Look up the name of the file by the unique file ID
-		$fileinfo = $this-Model_Chats->get_file_info($file_id);
+		$fileinfo = $this->Model_Chats->get_file_info($file_id);
 		
 		$filename = $fileinfo->filename;
 		
@@ -1221,7 +1221,7 @@ class Chats extends REST_Controller
 		}
 		
 		//Look up the name of the file by the unique file ID
-		$filename = $this-Model_Chats->get_filename($file_id);
+		$filename = $this->Model_Chats->get_filename($file_id);
 		
 		//Make sure there was a specified file
 		if(strlen($filename) <= 0)
