@@ -433,6 +433,9 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		SQLiteDatabase db = null;
 		SQLiteStatement statement = null;
 		
+		if(participants.equals(""))
+			return;
+		
 		try 
 		{
 			parse = new JSONArray(participants);
