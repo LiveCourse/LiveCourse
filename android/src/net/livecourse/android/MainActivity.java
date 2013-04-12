@@ -8,14 +8,11 @@ import com.viewpagerindicator.TitlePageIndicator;
 import net.livecourse.R;
 import net.livecourse.database.DatabaseHandler;
 import net.livecourse.rest.OnRestCalled;
-import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
