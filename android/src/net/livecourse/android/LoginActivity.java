@@ -348,7 +348,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		{
 			switch(code)
 			{
-				case 409:
+				case 409: 
 					Intent mainIntent = new Intent(this, MainActivity.class);
 					this.startActivity(mainIntent);	
 					break;
