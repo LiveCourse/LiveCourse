@@ -50,7 +50,7 @@ public class Globals
 	public static Chatroom[] 			roomList;
 	public static String				userId;
 	public static String 				email;
-	public static String 				name;
+	public static String 				displayName;
 	public static String 				passwordToken;
 	public static String 				query;
 	public static String 				token;

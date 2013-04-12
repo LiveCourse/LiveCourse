@@ -170,20 +170,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		this.mAdapter = mAdapter;
 	}
 	
-	private void showUserSettings() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
- 
-        StringBuilder builder = new StringBuilder();
- 
-        builder.append("" + sharedPrefs.getString("prefUsername", "NULL"));
-
-        System.out.println(builder.toString());
-        
-        Log.d(this.TAG, "The username: " + builder.toString());
-        new Restful(Restful.CHANGE_DISPLAY_NAME_PATH, Restful.POST,new String[]{"name"}, new String[]{builder.toString()}, 1, this);
-    }
-
-	
 	public void onActivityResult(int request, int result, Intent data) 
 	{
 		/**
@@ -194,9 +180,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 			
 			case IntentIntegrator.REQUEST_CODE:
 				Globals.classListFragment.onActivityResult(request, result, data);
-				break;
-			case RESULT_SETTINGS:
-				this.showUserSettings();
 				break;
 		}		
 		

@@ -16,7 +16,9 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
 public class SettingsActivity extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener, OnRestCalled
 {
+	private final String TAG = " == Settings Activity ==";
 	private ProgressDialog progressDialog;
+	private String	tempChangeStorage;
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -38,15 +40,21 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) 
 	{
 		Log.d("SettingsActivity", "The key: " + key + " value: " + sharedPreferences.getString(key, null));
-		if(key.equals("prefColor"))
+		
+		if(key.equals("pref_Color"))
 		{
-			String curColor = sharedPreferences.getString(key, null);
-			if(curColor != null)
-			{
-				Globals.colorPref = curColor;
-				
-				new Restful(Restful.UPDATE_COLOR_PREF_PATH, Restful.POST,new String[]{"color"}, new String[]{Globals.colorPref}, 1, this);
-				
+			this.tempChangeStorage = sharedPreferences.getString(key, null);
+			if(this.tempChangeStorage != null)
+			{				
+				new Restful(Restful.UPDATE_COLOR_PREF_PATH, Restful.POST,new String[]{"color"}, new String[]{this.tempChangeStorage}, 1, this);
+			}
+		}
+		if(key.equals("pref_display_name"))
+		{
+			this.tempChangeStorage = sharedPreferences.getString(key, null);
+			if(this.tempChangeStorage != null)
+			{				
+		        new Restful(Restful.CHANGE_DISPLAY_NAME_PATH, Restful.POST,new String[]{"name"}, new String[]{this.tempChangeStorage}, 1, this);
 			}
 		}
 	}
@@ -74,6 +82,10 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 		{
 			Utility.startDialog(progressDialog, "Updating Preferences", "Updating Color...");
 		}
+		else if(restCall.equals(Restful.CHANGE_DISPLAY_NAME_PATH))
+		{
+			Utility.startDialog(progressDialog, "Updating Preferences", "Updating Name...");
+		}
 	}
 
 	@Override
@@ -88,10 +100,23 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 	{
 		if(restCall.equals(Restful.UPDATE_COLOR_PREF_PATH))
 		{
-			Utility.stopDialog(progressDialog);
+			if(this.tempChangeStorage != null)
+				Globals.colorPref = this.tempChangeStorage;
+			else
+				Log.e(this.TAG, "Variable TempChangeStorage is null at updating color");
+
 			Utility.changeActivityColorBasedOnPref(Globals.mainActivity, Globals.mainActivity.getSupportActionBar());
 			Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
 		}		
+		else if(restCall.equals(Restful.CHANGE_DISPLAY_NAME_PATH))
+		{
+			if(this.tempChangeStorage != null)
+				Globals.displayName = this.tempChangeStorage;
+			else
+				Log.e(this.TAG, "Variable TempChangeStorage is null at updating color");
+		}
+		
+		Utility.stopDialog(progressDialog);
 	}
 
 	@Override
@@ -99,8 +124,10 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 	{
 		if(restCall.equals(Restful.UPDATE_COLOR_PREF_PATH))
 		{
-			Utility.stopDialog(progressDialog);
+			
 		}		
+		
+		Utility.stopDialog(progressDialog);
 	}
 
 	@Override
@@ -108,7 +135,9 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 	{
 		if(restCall.equals(Restful.UPDATE_COLOR_PREF_PATH))
 		{
-			Utility.stopDialog(progressDialog);
-		}		
+			
+		}	
+		
+		Utility.stopDialog(progressDialog);
 	}
 }
