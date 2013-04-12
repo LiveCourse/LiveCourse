@@ -312,7 +312,7 @@ class Users extends REST_Controller
 		//check to see the device is already registered
 		if ($this->Model_Users->fetch_android_user_by_device($dev_id))
 		{
-			$this->Model_Users->remove_android($user_id, $dev_id);
+			$this->Model_Users->remove_android_by_device($dev_id);
 		}
 
 		$result = $this->Model_Users->add_android_user($user_id, $reg_id, $dev_id);

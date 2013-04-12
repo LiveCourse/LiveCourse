@@ -239,6 +239,22 @@ class Model_Users extends CI_Model {
 	}
 	
 	/**
+	 * Removes an android device from the database.
+	 * Should also remove ALL RELATED DATA
+	 * user_id - identification number of user
+	 * dev_id - unique identification string of the device
+	 * returns - number of rows effected
+	 */
+	function remove_android_by_device($dev_id)
+	{
+		$data = array(
+				'device_id' => $dev_id,
+				);
+		return $this->db->delete('lc_gcm_users', $data);
+		
+	}
+	
+	/**
 	 *Changes the user's password
 	 *user_id - the ID of the user whose password we are changing
 	 *password - SHA1 hash of the user's password
