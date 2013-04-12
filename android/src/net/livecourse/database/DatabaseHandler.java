@@ -78,6 +78,14 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	public static final String KEY_USER_TIME_LASTREQUEST	= "time_lastrequest";
 	
 	/**
+	 * used to lock down database access
+	 */
+	private final Object classListLock						= new Object();
+	private final Object chatLock							= new Object();	
+	private final Object particiantsLock					= new Object();
+	private final Object historyLock						= new Object();
+	
+	/**
 	 * The constructor of the database, pass it the context.
 	 * 
 	 * @param context The context
@@ -128,28 +136,31 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	private void createClassEnroll(SQLiteDatabase db)
 	{
-		String CREATE_TABLE_CLASS_QUERY = 	"CREATE TABLE " 			+ TABLE_CLASS_ENROLL 	+ "( "
-											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
-											+ KEY_CLASS_ID_STRING 		+ " varchar(12), "
-											+ KEY_CLASS_SUBJECT_ID 		+ " int(11), "
-											+ KEY_CLASS_COURSE_NUMBER 	+ " smallint(6), "
-											+ KEY_CLASS_NAME 			+ " varchar(100), "
-											+ KEY_CLASS_INSTITUTION_ID 	+ " int(11), "
-											+ KEY_CLASS_ROOM_ID 		+ " int(11), "	
-											+ KEY_CLASS_START_TIME 		+ " int(5), "
-											+ KEY_CLASS_END_TIME 		+ " int(5), "	
-											+ KEY_CLASS_START_DATE 		+ " date, "
-											+ KEY_CLASS_END_DATE 		+ " date, "	
-											+ KEY_CLASS_DOW_MONDAY 		+ " tinyint(1), "
-											+ KEY_CLASS_DOW_TUESDAY 	+ " tinyint(1), "	
-											+ KEY_CLASS_DOW_WEDNESDAY 	+ " tinyint(1), "
-											+ KEY_CLASS_DOW_THURSDAY 	+ " tinyint(1), "	
-											+ KEY_CLASS_DOW_FRIDAY 		+ " tinyint(1), "
-											+ KEY_CLASS_DOW_SATURDAY 	+ " tinyint(1), "	
-											+ KEY_CLASS_DOW_SUNDAY		+ " tinyint(1) "
-											+ ")";
-		
-		db.execSQL(CREATE_TABLE_CLASS_QUERY);	
+		synchronized(this.classListLock)
+		{
+			String CREATE_TABLE_CLASS_QUERY = 	"CREATE TABLE " 			+ TABLE_CLASS_ENROLL 	+ "( "
+												+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
+												+ KEY_CLASS_ID_STRING 		+ " varchar(12), "
+												+ KEY_CLASS_SUBJECT_ID 		+ " int(11), "
+												+ KEY_CLASS_COURSE_NUMBER 	+ " smallint(6), "
+												+ KEY_CLASS_NAME 			+ " varchar(100), "
+												+ KEY_CLASS_INSTITUTION_ID 	+ " int(11), "
+												+ KEY_CLASS_ROOM_ID 		+ " int(11), "	
+												+ KEY_CLASS_START_TIME 		+ " int(5), "
+												+ KEY_CLASS_END_TIME 		+ " int(5), "	
+												+ KEY_CLASS_START_DATE 		+ " date, "
+												+ KEY_CLASS_END_DATE 		+ " date, "	
+												+ KEY_CLASS_DOW_MONDAY 		+ " tinyint(1), "
+												+ KEY_CLASS_DOW_TUESDAY 	+ " tinyint(1), "	
+												+ KEY_CLASS_DOW_WEDNESDAY 	+ " tinyint(1), "
+												+ KEY_CLASS_DOW_THURSDAY 	+ " tinyint(1), "	
+												+ KEY_CLASS_DOW_FRIDAY 		+ " tinyint(1), "
+												+ KEY_CLASS_DOW_SATURDAY 	+ " tinyint(1), "	
+												+ KEY_CLASS_DOW_SUNDAY		+ " tinyint(1) "
+												+ ")";
+			
+			db.execSQL(CREATE_TABLE_CLASS_QUERY);	
+		}
 	}
 	
 	/**
@@ -158,17 +169,20 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	private void createChatMessages(SQLiteDatabase db)
 	{
-		String CREATE_TABLE_CHAT_MESSAGES = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
-											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-											+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
-											+ KEY_USER_ID				+ " int(11),"
-											+ KEY_CHAT_SEND_TIME		+ " int(11), "
-											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
-											+ KEY_USER_EMAIL 			+ " varchar(255), "
-											+ KEY_USER_DISPLAY_NAME 	+ " int(255) "
-											+ ")";
-
-		db.execSQL(CREATE_TABLE_CHAT_MESSAGES);
+		synchronized(this.chatLock)
+		{
+			String CREATE_TABLE_CHAT_MESSAGES = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
+												+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+												+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
+												+ KEY_USER_ID				+ " int(11),"
+												+ KEY_CHAT_SEND_TIME		+ " int(11), "
+												+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
+												+ KEY_USER_EMAIL 			+ " varchar(255), "
+												+ KEY_USER_DISPLAY_NAME 	+ " int(255) "
+												+ ")";
+	
+			db.execSQL(CREATE_TABLE_CHAT_MESSAGES);
+		}
 	}
 	
 	/**
@@ -177,16 +191,19 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	private void createParticipants(SQLiteDatabase db)
 	{
-		String CREATE_TABLE_PARTICIPANTS  = "CREATE TABLE " 			+ TABLE_PARTICIPANTS 	+ "( "
-											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-											+ KEY_USER_ID				+ " int(11) UNIQUE, "
-											+ KEY_USER_DISPLAY_NAME 	+ " int(255), "
-											+ KEY_USER_EMAIL 			+ " varchar(255), "
-											+ KEY_USER_TIME_LASTFOCUS	+ " int(11), "
-											+ KEY_USER_TIME_LASTREQUEST + " int(11) "
-											+ ")";
-		
-		db.execSQL(CREATE_TABLE_PARTICIPANTS);
+		synchronized(this.particiantsLock)
+		{
+			String CREATE_TABLE_PARTICIPANTS  = "CREATE TABLE " 			+ TABLE_PARTICIPANTS 	+ "( "
+												+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+												+ KEY_USER_ID				+ " int(11) UNIQUE, "
+												+ KEY_USER_DISPLAY_NAME 	+ " int(255), "
+												+ KEY_USER_EMAIL 			+ " varchar(255), "
+												+ KEY_USER_TIME_LASTFOCUS	+ " int(11), "
+												+ KEY_USER_TIME_LASTREQUEST + " int(11) "
+												+ ")";
+			
+			db.execSQL(CREATE_TABLE_PARTICIPANTS);
+		}
 	}
 	
 	/**
@@ -195,29 +212,35 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	private void createHistory(SQLiteDatabase db)
 	{
-		String CREATE_TABLE_HISTORY		  = "CREATE TABLE " 			+ TABLE_HISTORY 	+ "( "
-											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-											+ KEY_USER_ID				+ " int(11),"
-											+ KEY_CHAT_ID 				+ " int(11), "
-											+ KEY_CHAT_SEND_TIME		+ " int(11), "
-											+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
-											+ KEY_USER_EMAIL 			+ " varchar(255), "
-											+ KEY_USER_DISPLAY_NAME 	+ " varchar(255) "
-											+ ")";
-		db.execSQL(CREATE_TABLE_HISTORY);
+		synchronized(this.historyLock)
+		{
+			String CREATE_TABLE_HISTORY		  = "CREATE TABLE " 			+ TABLE_HISTORY 	+ "( "
+												+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+												+ KEY_USER_ID				+ " int(11),"
+												+ KEY_CHAT_ID 				+ " int(11), "
+												+ KEY_CHAT_SEND_TIME		+ " int(11), "
+												+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
+												+ KEY_USER_EMAIL 			+ " varchar(255), "
+												+ KEY_USER_DISPLAY_NAME 	+ " varchar(255) "
+												+ ")";
+			db.execSQL(CREATE_TABLE_HISTORY);
+		}
 	}
 	/**
 	 * This method recreates the table TABLE_CLASS_ENROLL.
 	 */
 	public void recreateClassEnroll()
 	{
-		SQLiteDatabase db = this.getWritableDatabase();
-		
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASS_ENROLL);
-		this.createClassEnroll(db);
-		db.close();
-		
-        Log.d(this.TAG, "Recreated TABLE_CLASS_ENROLL");
+		synchronized(this.classListLock)
+		{
+			SQLiteDatabase db = this.getWritableDatabase();
+			
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASS_ENROLL);
+			this.createClassEnroll(db);
+			db.close();
+			
+	        Log.d(this.TAG, "Recreated TABLE_CLASS_ENROLL");
+		}
 	}
 	
 	/**
@@ -225,13 +248,16 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void recreateChatMessages()
 	{
-		SQLiteDatabase db = this.getWritableDatabase();
-		
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHAT_MESSAGES);
-		this.createChatMessages(db);
-		db.close();
-		
-        Log.d(this.TAG, "Recreated TABLE_CHAT_MESSAGES");
+		synchronized(this.chatLock)
+		{
+			SQLiteDatabase db = this.getWritableDatabase();
+			
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHAT_MESSAGES);
+			this.createChatMessages(db);
+			db.close();
+			
+	        Log.d(this.TAG, "Recreated TABLE_CHAT_MESSAGES");
+		}
 	}
 	
 	/**
@@ -239,13 +265,16 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void recreateParticipants()
 	{
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS);
-		this.createParticipants(db);
-		db.close();
-		
-        Log.d(this.TAG, "Recreated TABLE_PARTICIPANTS");
+		synchronized(this.particiantsLock)
+		{
+			SQLiteDatabase db = this.getWritableDatabase();
+	
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS);
+			this.createParticipants(db);
+			db.close();
+			
+	        Log.d(this.TAG, "Recreated TABLE_PARTICIPANTS");
+		}
 	}
 	
 	/**
@@ -253,13 +282,16 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void recreateHistory()
 	{
-		SQLiteDatabase db = this.getWritableDatabase();
-		
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY);
-		this.createHistory(db);
-		db.close();
-		
-        Log.d(this.TAG, "Recreated TABLE_HISTORY");
+		synchronized(this.historyLock)
+		{
+			SQLiteDatabase db = this.getWritableDatabase();
+			
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY);
+			this.createHistory(db);
+			db.close();
+			
+	        Log.d(this.TAG, "Recreated TABLE_HISTORY");
+		}
 	}
 	
 	/**
@@ -270,84 +302,87 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void addClassesFromJSON(boolean cancel, String classes)
 	{
-		JSONArray parse = null;
-		JSONObject ob = null;
-		SQLiteDatabase db = null;
-		SQLiteStatement statement = null;
-
-		if(classes.equals(""))
-			return;
-		
-		try 
+		synchronized(this.classListLock)
 		{
-			parse = new JSONArray(classes);
+			JSONArray parse = null;
+			JSONObject ob = null;
+			SQLiteDatabase db = null;
+			SQLiteStatement statement = null;
+	
+			if(classes.equals(""))
+				return;
 			
-			db = this.getWritableDatabase();
-			statement = db.compileStatement(
-					"INSERT INTO " 	+ TABLE_CLASS_ENROLL +
-						" ( " 		+ KEY_CLASS_ID_STRING 		+
-						", "		+ KEY_CLASS_SUBJECT_ID 		+
-						", "		+ KEY_CLASS_COURSE_NUMBER 	+
-						", "		+ KEY_CLASS_NAME 			+
-						", "		+ KEY_CLASS_INSTITUTION_ID 	+
-						", "		+ KEY_CLASS_ROOM_ID 		+ 	
-						", "		+ KEY_CLASS_START_TIME 		+
-						", "		+ KEY_CLASS_END_TIME 		+	
-						", "		+ KEY_CLASS_START_DATE 		+
-						", "		+ KEY_CLASS_END_DATE 		+
-						", "		+ KEY_CLASS_DOW_MONDAY 		+
-						", "		+ KEY_CLASS_DOW_TUESDAY 	+	
-						", "		+ KEY_CLASS_DOW_WEDNESDAY 	+
-						", "		+ KEY_CLASS_DOW_THURSDAY 	+
-						", "		+ KEY_CLASS_DOW_FRIDAY 		+
-						", "		+ KEY_CLASS_DOW_SATURDAY 	+	
-						", "		+ KEY_CLASS_DOW_SUNDAY		+
-						") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			
-			db.beginTransaction();
-			for(int x = 0; x < parse.length(); x++)
+			try 
 			{
-				if(cancel)
+				parse = new JSONArray(classes);
+				
+				db = this.getWritableDatabase();
+				statement = db.compileStatement(
+						"INSERT INTO " 	+ TABLE_CLASS_ENROLL +
+							" ( " 		+ KEY_CLASS_ID_STRING 		+
+							", "		+ KEY_CLASS_SUBJECT_ID 		+
+							", "		+ KEY_CLASS_COURSE_NUMBER 	+
+							", "		+ KEY_CLASS_NAME 			+
+							", "		+ KEY_CLASS_INSTITUTION_ID 	+
+							", "		+ KEY_CLASS_ROOM_ID 		+ 	
+							", "		+ KEY_CLASS_START_TIME 		+
+							", "		+ KEY_CLASS_END_TIME 		+	
+							", "		+ KEY_CLASS_START_DATE 		+
+							", "		+ KEY_CLASS_END_DATE 		+
+							", "		+ KEY_CLASS_DOW_MONDAY 		+
+							", "		+ KEY_CLASS_DOW_TUESDAY 	+	
+							", "		+ KEY_CLASS_DOW_WEDNESDAY 	+
+							", "		+ KEY_CLASS_DOW_THURSDAY 	+
+							", "		+ KEY_CLASS_DOW_FRIDAY 		+
+							", "		+ KEY_CLASS_DOW_SATURDAY 	+	
+							", "		+ KEY_CLASS_DOW_SUNDAY		+
+							") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				
+				db.beginTransaction();
+				for(int x = 0; x < parse.length(); x++)
 				{
-					this.closeConnections(db, statement);
-					Log.d(this.TAG, "Connection canceled while adding classes from JSON");
-					return;
+					if(cancel)
+					{
+						this.closeConnections(db, statement);
+						Log.d(this.TAG, "Connection canceled while adding classes from JSON");
+						return;
+					}
+					
+					ob = parse.getJSONObject(x);
+					
+					statement.bindString(1,  ob.getString(	"id_string"		));
+					statement.bindString(2,  ob.getString(	"subject_id"	));
+					statement.bindString(3,  ob.getString(	"course_number"	));
+					statement.bindString(4,  ob.getString(	"name"			));
+					statement.bindString(5,  ob.getString(	"institution_id"));
+					statement.bindString(6,  ob.getString(	"room_id"		));
+					statement.bindString(7,  ob.getString(	"start_time"	));
+					statement.bindString(8,  ob.getString(	"end_time"		));
+					statement.bindString(9,  ob.getString(	"start_date"	));
+					statement.bindString(10, ob.getString(	"end_date"		));
+					statement.bindString(11, ob.getString(	"dow_monday"	));
+					statement.bindString(12, ob.getString(	"dow_tuesday"	));
+					statement.bindString(13, ob.getString(	"dow_wednesday"	));
+					statement.bindString(14, ob.getString(	"dow_thursday"	));
+					statement.bindString(15, ob.getString(	"dow_friday"	));
+					statement.bindString(16, ob.getString(	"dow_saturday"	));
+					statement.bindString(17, ob.getString(	"dow_sunday"	));
+					
+					statement.execute();
 				}
-				
-				ob = parse.getJSONObject(x);
-				
-				statement.bindString(1,  ob.getString(	"id_string"		));
-				statement.bindString(2,  ob.getString(	"subject_id"	));
-				statement.bindString(3,  ob.getString(	"course_number"	));
-				statement.bindString(4,  ob.getString(	"name"			));
-				statement.bindString(5,  ob.getString(	"institution_id"));
-				statement.bindString(6,  ob.getString(	"room_id"		));
-				statement.bindString(7,  ob.getString(	"start_time"	));
-				statement.bindString(8,  ob.getString(	"end_time"		));
-				statement.bindString(9,  ob.getString(	"start_date"	));
-				statement.bindString(10, ob.getString(	"end_date"		));
-				statement.bindString(11, ob.getString(	"dow_monday"	));
-				statement.bindString(12, ob.getString(	"dow_tuesday"	));
-				statement.bindString(13, ob.getString(	"dow_wednesday"	));
-				statement.bindString(14, ob.getString(	"dow_thursday"	));
-				statement.bindString(15, ob.getString(	"dow_friday"	));
-				statement.bindString(16, ob.getString(	"dow_saturday"	));
-				statement.bindString(17, ob.getString(	"dow_sunday"	));
-				
-				statement.execute();
+				db.setTransactionSuccessful();
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
 			}
-			db.setTransactionSuccessful();
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
+			finally
+			{
+				db.endTransaction();
+			}
+			statement.close();
+			db.close();		
 		}
-		finally
-		{
-			db.endTransaction();
-		}
-		statement.close();
-		db.close();		
 	}
 	
 	/**
@@ -358,65 +393,68 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void addChatMessagesFromJSON(boolean cancel, String messages)
 	{
-		JSONArray parse = null;
-		JSONObject ob = null;
-		SQLiteDatabase db = null;
-		SQLiteStatement statement = null;
-		
-		Log.d(this.TAG, "The message: " + messages);
-		
-		if(messages.equals(""))
-			return;
-		
-		try 
+		synchronized(this.chatLock)
 		{
-			parse = new JSONArray(messages);	
-			db = this.getWritableDatabase();
-			statement = db.compileStatement(
-					"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
-						" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
-						", "		+ DatabaseHandler.KEY_USER_ID +
-						", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
-						", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
-						", " 		+ DatabaseHandler.KEY_USER_EMAIL + 
-						", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
-						") VALUES (?, ?, ?, ?, ?, ?)");
-
-			db.beginTransaction();
-			for(int x = 0;x<parse.length();x++)
-	        {
-				if(cancel)
-				{
-					this.closeConnections(db, statement);
-					Log.d(this.TAG, "Connection canceled while adding messages from JSON");
-					return;
-				}
-				
-	        	ob = parse.getJSONObject(x);
-	   		    	        	
-	        	statement.bindString(1, ob.getString("id"));
-	        	statement.bindString(2, ob.getString("user_id"));
-	        	statement.bindString(3, ob.getString("send_time"));
-	        	statement.bindString(4, ob.getString("message_string"));
-	        	statement.bindString(5, ob.getString("email"));
-	        	statement.bindString(6, ob.getString("display_name"));
-	        	
-	        	statement.execute();
-	        	Log.d(this.TAG, "Message id: " + ob.getString("id") + " with message: "  + ob.getString("message_string"));
-	        }
-			db.setTransactionSuccessful();	
-		} 
-		catch (JSONException e) 
-		{
-			e.printStackTrace();
-		}	
-		finally
-		{
-			db.endTransaction();
-
+			JSONArray parse = null;
+			JSONObject ob = null;
+			SQLiteDatabase db = null;
+			SQLiteStatement statement = null;
+			
+			Log.d(this.TAG, "The message: " + messages);
+			
+			if(messages.equals(""))
+				return;
+			
+			try 
+			{
+				parse = new JSONArray(messages);	
+				db = this.getWritableDatabase();
+				statement = db.compileStatement(
+						"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
+							" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
+							", "		+ DatabaseHandler.KEY_USER_ID +
+							", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
+							", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
+							", " 		+ DatabaseHandler.KEY_USER_EMAIL + 
+							", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
+							") VALUES (?, ?, ?, ?, ?, ?)");
+	
+				db.beginTransaction();
+				for(int x = 0;x<parse.length();x++)
+		        {
+					if(cancel)
+					{
+						this.closeConnections(db, statement);
+						Log.d(this.TAG, "Connection canceled while adding messages from JSON");
+						return;
+					}
+					
+		        	ob = parse.getJSONObject(x);
+		   		    	        	
+		        	statement.bindString(1, ob.getString("id"));
+		        	statement.bindString(2, ob.getString("user_id"));
+		        	statement.bindString(3, ob.getString("send_time"));
+		        	statement.bindString(4, ob.getString("message_string"));
+		        	statement.bindString(5, ob.getString("email"));
+		        	statement.bindString(6, ob.getString("display_name"));
+		        	
+		        	statement.execute();
+		        	Log.d(this.TAG, "Message id: " + ob.getString("id") + " with message: "  + ob.getString("message_string"));
+		        }
+				db.setTransactionSuccessful();	
+			} 
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
+			}	
+			finally
+			{
+				db.endTransaction();
+	
+			}
+			statement.close();
+			db.close();
 		}
-		statement.close();
-		db.close();
 	}
 	
 	/**
@@ -427,31 +465,34 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void addChatMessageFromIntent(boolean cancel, Intent messages)
 	{
-		SQLiteDatabase db = Globals.appDb.getWritableDatabase();
-		SQLiteStatement statement = db.compileStatement(
-				"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
-					" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
-					", "		+ DatabaseHandler.KEY_USER_ID +
-					", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
-					", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
-					", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
-					") VALUES (?, ?, ?, ?, ?)");
-
-		db.beginTransaction();
-   		        	    	
-    	statement.bindString(1, messages.getStringExtra("message_id"));
-    	statement.bindString(2, messages.getStringExtra("user_id"));
-    	statement.bindString(3, messages.getStringExtra("send_time"));
-    	statement.bindString(4, messages.getStringExtra("message_string"));
-    	statement.bindString(5, messages.getStringExtra("display_name"));
-    	
-    	statement.execute();
-
-		db.setTransactionSuccessful();	
-		db.endTransaction();
-			
-		statement.close();
-		db.close();
+		synchronized(this.chatLock)
+		{
+			SQLiteDatabase db = Globals.appDb.getWritableDatabase();
+			SQLiteStatement statement = db.compileStatement(
+					"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
+						" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
+						", "		+ DatabaseHandler.KEY_USER_ID +
+						", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
+						", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
+						", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
+						") VALUES (?, ?, ?, ?, ?)");
+	
+			db.beginTransaction();
+	   		        	    	
+	    	statement.bindString(1, messages.getStringExtra("message_id"));
+	    	statement.bindString(2, messages.getStringExtra("user_id"));
+	    	statement.bindString(3, messages.getStringExtra("send_time"));
+	    	statement.bindString(4, messages.getStringExtra("message_string"));
+	    	statement.bindString(5, messages.getStringExtra("display_name"));
+	    	
+	    	statement.execute();
+	
+			db.setTransactionSuccessful();	
+			db.endTransaction();
+				
+			statement.close();
+			db.close();
+		}
 	}
 	
 	/**
@@ -462,59 +503,62 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void addParticipantsFromJSON(boolean cancel, String participants)
 	{
-		JSONArray parse = null;
-		JSONObject ob = null;
-		SQLiteDatabase db = null;
-		SQLiteStatement statement = null;
-		
-		if(participants.equals(""))
-			return;
-		
-		try 
+		synchronized(this.particiantsLock)
 		{
-			parse = new JSONArray(participants);
-			db = Globals.appDb.getWritableDatabase();
-			statement = db.compileStatement(
-					"INSERT INTO " 	+ DatabaseHandler.TABLE_PARTICIPANTS + 
-						" ( " 		+ DatabaseHandler.KEY_USER_ID + 
-						", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
-						", " 		+ DatabaseHandler.KEY_USER_EMAIL + 
-						", " 		+ DatabaseHandler.KEY_USER_TIME_LASTFOCUS + 
-						", " 		+ DatabaseHandler.KEY_USER_TIME_LASTREQUEST + 
-						") VALUES (?, ?, ?, ?, ?)");
+			JSONArray parse = null;
+			JSONObject ob = null;
+			SQLiteDatabase db = null;
+			SQLiteStatement statement = null;
 			
-			db.beginTransaction();
-			for(int x = 0; x < parse.length(); x++)
+			if(participants.equals(""))
+				return;
+			
+			try 
 			{
-				if(cancel)
+				parse = new JSONArray(participants);
+				db = Globals.appDb.getWritableDatabase();
+				statement = db.compileStatement(
+						"INSERT INTO " 	+ DatabaseHandler.TABLE_PARTICIPANTS + 
+							" ( " 		+ DatabaseHandler.KEY_USER_ID + 
+							", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
+							", " 		+ DatabaseHandler.KEY_USER_EMAIL + 
+							", " 		+ DatabaseHandler.KEY_USER_TIME_LASTFOCUS + 
+							", " 		+ DatabaseHandler.KEY_USER_TIME_LASTREQUEST + 
+							") VALUES (?, ?, ?, ?, ?)");
+				
+				db.beginTransaction();
+				for(int x = 0; x < parse.length(); x++)
 				{
-					this.closeConnections(db, statement);
-					Log.d(this.TAG, "Connection canceled while adding participants from JSON");
-					return;
+					if(cancel)
+					{
+						this.closeConnections(db, statement);
+						Log.d(this.TAG, "Connection canceled while adding participants from JSON");
+						return;
+					}
+					
+					ob = parse.getJSONObject(x);
+					
+					statement.bindString(1, ob.getString("id"));
+					statement.bindString(2, ob.getString("display_name"));
+					statement.bindString(3, ob.getString("email"));
+					statement.bindString(4, ob.getString("time_lastfocus"));
+					statement.bindString(5, ob.getString("time_lastrequest"));
+					
+					statement.execute();
 				}
-				
-				ob = parse.getJSONObject(x);
-				
-				statement.bindString(1, ob.getString("id"));
-				statement.bindString(2, ob.getString("display_name"));
-				statement.bindString(3, ob.getString("email"));
-				statement.bindString(4, ob.getString("time_lastfocus"));
-				statement.bindString(5, ob.getString("time_lastrequest"));
-				
-				statement.execute();
+				db.setTransactionSuccessful();
+			} 
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
 			}
-			db.setTransactionSuccessful();
-		} 
-		catch (JSONException e) 
-		{
-			e.printStackTrace();
+			finally
+			{
+				db.endTransaction();
+			}
+			statement.close();
+			db.close();	
 		}
-		finally
-		{
-			db.endTransaction();
-		}
-		statement.close();
-		db.close();		
 	}
 	
 	public Cursor queryAndFormatParticipants(SQLiteDatabase db)
