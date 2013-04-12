@@ -276,9 +276,13 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		SQLiteDatabase db = null;
 		SQLiteStatement statement = null;
 
+		if(classes.equals(""))
+			return;
+		
 		try 
 		{
 			parse = new JSONArray(classes);
+			
 			db = this.getWritableDatabase();
 			statement = db.compileStatement(
 					"INSERT INTO " 	+ TABLE_CLASS_ENROLL +
