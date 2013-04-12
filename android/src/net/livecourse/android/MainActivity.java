@@ -6,6 +6,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 import net.livecourse.R;
+import net.livecourse.database.Chatroom;
 import net.livecourse.database.DatabaseHandler;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.utility.Globals;
@@ -90,6 +91,25 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 			case R.id.main_options_menu_settings:
 				Intent settings = new Intent(this, SettingsActivity.class);
 	            startActivityForResult(settings, RESULT_SETTINGS);
+				break;
+			case R.id.main_options_logout:
+				Toast.makeText(this, "Logging Out", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(this, LoginActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				Globals.roomList = null;
+				Globals.userId = null;
+				Globals.email = null;
+				Globals.displayName = null;
+				Globals.passwordToken = null;
+				Globals.query = null;
+				Globals.token = null;
+				Globals.chatId = null;
+				Globals.regId = null;
+				Globals.colorPref = null;
+				Globals.startEpoch = null;
+				Globals.message = null;
+				Globals.chatName = null;
+				startActivity(intent);
 				break;
 			case R.id.item1:
 				Toast.makeText(this, "Menu item 1 tapped", Toast.LENGTH_SHORT).show();
