@@ -11,8 +11,9 @@ import net.livecourse.R;
 
 import org.apache.http.HttpEntity;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.app.ActionBar;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -207,27 +208,27 @@ public class Utility
 	 * 
 	 * @param activity	The activity whose color is to be changed
 	 */
-	public static void changeActivityColorBasedOnPref(SherlockFragmentActivity activity)
+	public static void changeActivityColorBasedOnPref(Activity activity, ActionBar actionBar)
 	{
 		switch(Integer.parseInt(Globals.colorPref))
 		{
 			case Globals.INDEX_BLUE:
-				Utility.changeActivityColor(activity, Globals.HEX_BLUE);
+				Utility.changeActivityColor(activity, actionBar, Globals.HEX_BLUE);
 				break;
 			case Globals.INDEX_RED:
-				Utility.changeActivityColor(activity,Globals.HEX_RED);
+				Utility.changeActivityColor(activity, actionBar,Globals.HEX_RED);
 				break;
 			case Globals.INDEX_BROWN:
-				Utility.changeActivityColor(activity,Globals.HEX_BROWN);
+				Utility.changeActivityColor(activity, actionBar,Globals.HEX_BROWN);
 				break;
 			case Globals.INDEX_GREEN:
-				Utility.changeActivityColor(activity,Globals.HEX_GREEN);
+				Utility.changeActivityColor(activity, actionBar,Globals.HEX_GREEN);
 				break;
 			case Globals.INDEX_CYAN:
-				Utility.changeActivityColor(activity,Globals.HEX_CYAN);
+				Utility.changeActivityColor(activity, actionBar,Globals.HEX_CYAN);
 				break;
 			case Globals.INDEX_PURPLE:
-				Utility.changeActivityColor(activity,Globals.HEX_PURPLE);
+				Utility.changeActivityColor(activity, actionBar,Globals.HEX_PURPLE);
 				break;
 		}
 	}
@@ -238,19 +239,19 @@ public class Utility
 	 * @param activity	The activity whose color is to be changed
 	 * @param hexColor	The color in hex that the activity's color is going to change to
 	 */
-	public static void changeActivityColor(SherlockFragmentActivity activity, String hexColor)
+	public static void changeActivityColor(Activity activity, ActionBar actionBar, String hexColor)
 	{
 		Log.d(Utility.TAG, "The hex color: " + hexColor);
-		activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(hexColor)));
-		activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-		activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+		actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(hexColor)));
+		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(true);
         int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");    
         
         if ( titleId == 0 ) 
         {
         	titleId = com.actionbarsherlock.R.id.abs__action_bar_title;
         }
-        activity.getSupportActionBar().setIcon(R.drawable.paperairplanewhite);
+        actionBar.setIcon(R.drawable.paperairplanewhite);
         
         TextView yourTextView = (TextView) activity.findViewById(titleId);
         yourTextView.setTextColor(Color.WHITE);

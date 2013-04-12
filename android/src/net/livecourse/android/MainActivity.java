@@ -46,7 +46,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        Utility.changeActivityColorBasedOnPref(this);
+        Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
         
         Globals.mainActivity = this;
         

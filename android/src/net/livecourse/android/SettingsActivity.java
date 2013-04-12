@@ -29,6 +29,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.layout.settings_layout);  
         
+        Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
+        
         progressDialog = new ProgressDialog(this);
 	}
 
@@ -87,7 +89,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 		if(restCall.equals(Restful.UPDATE_COLOR_PREF_PATH))
 		{
 			Utility.stopDialog(progressDialog);
-			Utility.changeActivityColorBasedOnPref(Globals.mainActivity);
+			Utility.changeActivityColorBasedOnPref(Globals.mainActivity, Globals.mainActivity.getSupportActionBar());
+			Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
 		}		
 	}
 
