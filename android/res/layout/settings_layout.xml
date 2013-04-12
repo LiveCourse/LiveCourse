@@ -5,9 +5,9 @@
 	    android:title="@string/pref_user_profile" >
         
         <EditTextPreference
+            android:key="pref_display_name"
             android:title="@string/pref_user_name"
-            android:summary="@string/pref_user_name_summary"
-            android:key="prefUsername"/>
+            android:summary="@string/pref_user_name_summary" />
         
 		<CheckBoxPreference
             android:key="prefSendReport"
@@ -15,6 +15,8 @@
             android:title="@string/pref_user_password_summary" />
         
 		<ListPreference
+		    android:key="pref_color"
+		    android:defaultValue="0"
 	        android:title="@string/pref_color_choice_title"
 	        android:summary="@string/pref_color_choice_summary"
 	        android:dialogTitle="@string/pref_color_choice_title"
@@ -25,6 +27,13 @@
      
     <PreferenceCategory 
         android:title="@string/pref_notification_setting" >
+		
+        <CheckBoxPreference
+            android:key="pref_vibration"
+            android:defaultValue="true"
+            android:title="@string/pref_vibration_notification_title" 
+            android:summary="@string/pref_vibration_notification_summary" />
+        
     </PreferenceCategory>
  
 </PreferenceScreen>

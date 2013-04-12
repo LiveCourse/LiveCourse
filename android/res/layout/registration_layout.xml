@@ -12,43 +12,16 @@
         android:layout_marginTop="56dp"
         android:text="@string/reg_text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="48dp"
-        android:ems="10"
-        android:hint="@string/reg_email_hint_text"
-        android:inputType="textEmailAddress" >
-			<requestFocus />
-        </EditText>
     
-      <EditText
-        android:id="@+id/editText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editText1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
-        android:ems="10"
-        android:inputType="textPassword" 
-        android:hint="@string/reg_password_hint_text"/>
-
-    <EditText
-        android:id="@+id/editText3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_below="@+id/editText2"
-        android:layout_marginTop="17dp"
-        android:ems="10"
-        android:hint="@string/reg_re_password_hint_text"
-        android:inputType="textPassword" >
-
-    </EditText>
+    <TextView
+       android:id="@+id/error_text_view"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/textView1"
+       android:layout_centerHorizontal="true"
+       android:layout_marginTop="19dp"
+       android:visibility="invisible"
+       android:textAppearance="?android:attr/textAppearanceSmall" />
     
 	<Button
         android:id="@+id/reg_finish_button"
@@ -58,6 +31,48 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:text="@string/reg_button_text" 
-        android:onClick="onTestClick"/>
+        android:onClick="onRegClick"/>
+
+	<EditText
+	    android:id="@+id/editText2"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_centerHorizontal="true"
+	    android:layout_centerVertical="true"
+	    android:ems="10"
+	    android:hint="@string/reg_password_hint_text"
+	    android:inputType="textPassword" />
+
+	<EditText
+	    android:id="@+id/editText1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/editText4"
+	    android:layout_centerHorizontal="true"
+	    android:ems="10"
+	    android:hint="@string/reg_email_hint_text"
+	    android:inputType="textEmailAddress" />
+
+	<EditText
+	    android:id="@+id/editText4"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/editText2"
+	    android:layout_alignLeft="@+id/editText1"
+	    android:ems="10"
+	    android:hint="Enter Display Name" />
+
+	<EditText
+	    android:id="@+id/editText3"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/editText2"
+	    android:layout_below="@+id/editText2"
+	    android:ems="10"
+	    android:hint="@string/reg_re_password_hint_text"
+	    android:inputType="textPassword" >
+
+	    <requestFocus />
+	</EditText>
 
 </RelativeLayout>

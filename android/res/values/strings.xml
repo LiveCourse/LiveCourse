@@ -17,7 +17,7 @@
     <string name="pref_user_password">Change password</string>
     <string name="pref_user_password_summary">Set new password</string>
     <string name="pref_color_choice_title">Color</string>
-	<string name="pref_color_choice_summary">Color</string>
+	<string name="pref_color_choice_summary">Set your personal color preference</string>
     <string-array name="pref_color_choices">
 		<item>Blue</item>
 		<item>Red</item>
@@ -34,9 +34,12 @@
         <item>4</item> 
         <item>5</item> 
 	</string-array>
+	<string name="pref_vibration_notification_title">Vibration</string>
+	<string name="pref_vibration_notification_summary">Vibrate phone on notification</string>
     
     <!-- Options Menu Strings -->
 	<string name="main_options_menu_settings">Settings</string>
+	<string name="main_options_logout">Logout</string>
     <string name="options_menu_title">Test 1</string>
     <string name="options_sub_menu_1">Sub Menu 1</string>
     <string name="options_sub_menu_2">Sub Menu 2</string>

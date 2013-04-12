@@ -12,7 +12,9 @@ import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
@@ -22,7 +24,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Window;
 import com.google.android.gcm.GCMRegistrar;
 
 /**
@@ -244,8 +245,12 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 				JSONObject user = parse.getJSONObject("user"); 
 				
 				Globals.userId 		= auth.getString("user_id");
-				Globals.name 		= user.getString("display_name");
+				Globals.displayName 		= user.getString("display_name");
 				Globals.colorPref 	= user.getString("color_preference");
+				
+		        SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+		        prefs.edit().putString("pref_color", Globals.colorPref).commit();
+		        prefs.edit().putString("pref_display_name", Globals.displayName).commit();
 			} 
 			catch (JSONException e) 
 			{
@@ -288,7 +293,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 			Log.d(this.TAG, "Current Device ID: " + Secure.getString(this.getContentResolver(),
                     Secure.ANDROID_ID));
 			
-			new Restful(Restful.REGISTER_ANDROID_USER_PATH, Restful.POST, new String[]{"email","name","reg_id","device_id"}, new String[]{Globals.email,Globals.name,Globals.regId, Secure.getString(this.getContentResolver(),
+			new Restful(Restful.REGISTER_ANDROID_USER_PATH, Restful.POST, new String[]{"email","name","reg_id","device_id"}, new String[]{Globals.email,Globals.displayName,Globals.regId, Secure.getString(this.getContentResolver(),
                     Secure.ANDROID_ID)}, 4, this);
 		}
 		else if(restCall.equals(Restful.REGISTER_ANDROID_USER_PATH))

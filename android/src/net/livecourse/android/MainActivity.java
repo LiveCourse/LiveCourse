@@ -6,22 +6,17 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 import net.livecourse.R;
+import net.livecourse.database.Chatroom;
 import net.livecourse.database.DatabaseHandler;
 import net.livecourse.rest.OnRestCalled;
-import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
+import net.livecourse.utility.Utility;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 /**
  * 
@@ -49,7 +44,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        this.changeActionBarColorBasedOnPref();
+        Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
         
         Globals.mainActivity = this;
         
@@ -97,6 +92,25 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 				Intent settings = new Intent(this, SettingsActivity.class);
 	            startActivityForResult(settings, RESULT_SETTINGS);
 				break;
+			case R.id.main_options_logout:
+				Toast.makeText(this, "Logging Out", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(this, LoginActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				Globals.roomList = null;
+				Globals.userId = null;
+				Globals.email = null;
+				Globals.displayName = null;
+				Globals.passwordToken = null;
+				Globals.query = null;
+				Globals.token = null;
+				Globals.chatId = null;
+				Globals.regId = null;
+				Globals.colorPref = null;
+				Globals.startEpoch = null;
+				Globals.message = null;
+				Globals.chatName = null;
+				startActivity(intent);
+				break;
 			case R.id.item1:
 				Toast.makeText(this, "Menu item 1 tapped", Toast.LENGTH_SHORT).show();
 				break;
@@ -109,46 +123,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		}
 		
 		return super.onOptionsItemSelected(item);
-	}
-	
-	public void changeActionBarColorBasedOnPref()
-	{
-		switch(Integer.parseInt(Globals.colorPref))
-		{
-			case Globals.INDEX_BLUE:
-				changeActionBarColor(Globals.HEX_BLUE);
-				break;
-			case Globals.INDEX_RED:
-				changeActionBarColor(Globals.HEX_RED);
-				break;
-			case Globals.INDEX_BROWN:
-				changeActionBarColor(Globals.HEX_BROWN);
-				break;
-			case Globals.INDEX_GREEN:
-				changeActionBarColor(Globals.HEX_GREEN);
-				break;
-			case Globals.INDEX_CYAN:
-				changeActionBarColor(Globals.HEX_CYAN);
-				break;
-			case Globals.INDEX_PURPLE:
-				changeActionBarColor(Globals.HEX_PURPLE);
-				break;
-		}
-	}
-	
-	public void changeActionBarColor(String hexColor)
-	{
-		this.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(hexColor)));
-        int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");    
-        
-        if ( 0 == titleId ) 
-        {
-        	titleId = com.actionbarsherlock.R.id.abs__action_bar_title;
-        }
-        this.getSupportActionBar().setIcon(R.drawable.paperairplanewhite);
-        
-        TextView yourTextView = (TextView)findViewById(titleId);
-        yourTextView.setTextColor(Color.WHITE);
 	}
 
 	/*
@@ -213,20 +187,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		this.mAdapter = mAdapter;
 	}
 	
-	private void showUserSettings() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
- 
-        StringBuilder builder = new StringBuilder();
- 
-        builder.append("" + sharedPrefs.getString("prefUsername", "NULL"));
-
-        System.out.println(builder.toString());
-        
-        Log.d(this.TAG, "The username: " + builder.toString());
-        new Restful(Restful.CHANGE_DISPLAY_NAME_PATH, Restful.POST,new String[]{"name"}, new String[]{builder.toString()}, 1, this);
-    }
-
-	
 	public void onActivityResult(int request, int result, Intent data) 
 	{
 		/**
@@ -238,9 +198,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 			case IntentIntegrator.REQUEST_CODE:
 				Globals.classListFragment.onActivityResult(request, result, data);
 				break;
-			case RESULT_SETTINGS:
-				showUserSettings();
-	            break;
 		}		
 		
 	}
