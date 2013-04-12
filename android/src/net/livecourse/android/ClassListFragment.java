@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
@@ -39,6 +40,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 {
 	private final String TAG = " == Class List Fragment == ";
 	private static final String KEY_CONTENT = "TestFragment:Content";
+	private String chatRoomToDelete = "";
 	
 	/**
 	 * This is used to add the other tabs once a class is selected
@@ -177,10 +179,10 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	 * menu
 	 */
 	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) 
 	{
 		Globals.mode = this.getSherlockActivity().startActionMode(this);
-		
+		this.chatRoomToDelete = ( (ChatroomViewHolder)view.getTag() ).idString;
 		return true;
 	}
 
@@ -213,7 +215,13 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) 
 	{
-		// TODO Auto-generated method stub
+		switch(item.getItemId())
+		{
+			case R.id.delete_class_menu_item:
+				Toast.makeText(this.getSherlockActivity(), "Course Removed", Toast.LENGTH_SHORT).show();
+			    new Restful(Restful.UNSUBSCRIBE_CHAT_PATH, Restful.POST, new String[]{"id"},new String[]{this.chatRoomToDelete}, 1, this);
+			    break;
+		}
 		return false;
 	}
 
@@ -379,6 +387,10 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			
 		}
 		else if(restCall.equals(Restful.JOIN_CHAT_PATH))
+		{
+			this.updateList();
+		}
+		else if(restCall.equals(Restful.UNSUBSCRIBE_CHAT_PATH))
 		{
 			this.updateList();
 		}

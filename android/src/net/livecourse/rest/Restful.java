@@ -64,7 +64,7 @@ public class Restful extends AsyncTask <Void, String, String>
 	public static final String		SEARCH_FOR_CHAT_PATH		= "chats/search";
 	public static final String		GET_CHAT_INFORMATION_PATH	= "chats/info";
 	public static final String		JOIN_CHAT_PATH				= "chats/join";
-	public static final String		LEAVE_CHAT_PATH				= "chats/leave";
+	public static final String		UNSUBSCRIBE_CHAT_PATH		= "chats/leave";
 	public static final String		SEND_MESSAGE_PATH			= "chats/send";
 	public static final String		GET_RECENT_MESSAGES_PATH	= "chats/fetch_recent";
 	public static final String		GET_PARTICIPANTS_PATH		= "chats/get_participants";
