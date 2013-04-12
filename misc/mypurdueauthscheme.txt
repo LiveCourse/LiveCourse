@@ -1,0 +1,23 @@
+Call to
+	https://wl.mypurdue.purdue.edu/cp/ip/login?sys=sctssb&url=https://selfservice.mypurdue.purdue.edu/prod/tzwkwbis.P_CheckAgreeAndRedir?ret_code=STU_LOOKCLASS
+	No cookies
+	Parameters:
+		sys:sctssb
+		url:https://selfservice.mypurdue.purdue.edu/prod/tzwkwbis.P_CheckAgreeAndRedir
+	RESPONDS WITH:
+		Location:https://selfservice.mypurdue.purdue.edu/prod/gokcsso.p_call_banner_sserv?sess_token=SE1DQUZFRQ==QURRXGWUSRWIVIKYBMGY&url=https%3A%2F%2Fselfservice.mypurdue.purdue.edu%2Fprod%2Ftzwkwbis.P_CheckAgreeAndRedir%3Fret_code%3DSTU_LOOKCLASS
+		
+Call to
+	https://selfservice.mypurdue.purdue.edu/prod/gokcsso.p_call_banner_sserv?sess_token=SE1DQUZFRQ==QURRXGWUSRWIVIKYBMGY&url=https%3A%2F%2Fselfservice.mypurdue.purdue.edu%2Fprod%2Ftzwkwbis.P_CheckAgreeAndRedir%3Fret_code%3DSTU_LOOKCLASS
+	COOKIES:
+		Set-Cookie:BANSSO=759KKa0G917jWY1WIZBlEZ2TRo86OcSFO9LXWLWW1lPMKMHWAoF=;path=/;domain=mypurdue.purdue.edu
+		Set-Cookie:CPSESSID=AQARMjAxMzA0MTEyMzU4MzADABBGSEJWS1AxMDk2NDAx;path=/;domain=mypurdue.purdue.edu
+		Set-Cookie:SESSID=;expires=Mon, 01-Jan-1990 08:00:00 GMT
+		Set-Cookie:TESTID=SET
+	RESPONDS WITH:
+		Location:https://selfservice.mypurdue.purdue.edu/prod/tzwkwbis.P_CheckAgreeAndRedir?ret_code=STU_LOOKCLASS
+		
+Call to
+	https://selfservice.mypurdue.purdue.edu/prod/tzwkwbis.P_CheckAgreeAndRedir?ret_code=STU_LOOKCLASS
+	COOKIES:
+		CPSESSID=AQARMjAxMzA0MTIwMDM4NDgDABBOTkcwU0IxMDk2NDAx;path=/;domain=mypurdue.purdue.edu
