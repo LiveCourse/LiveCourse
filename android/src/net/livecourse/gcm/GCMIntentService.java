@@ -1,14 +1,11 @@
 package net.livecourse.gcm;
  
 import net.livecourse.R;
-import net.livecourse.database.DatabaseHandler;
 import net.livecourse.utility.Globals;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
@@ -73,31 +70,7 @@ public class GCMIntentService extends GCMBaseIntentService
 			mNotificationManager.notify(71237, notBuilder.build());
 		}
 			
-		SQLiteDatabase db = Globals.appDb.getWritableDatabase();
-		SQLiteStatement statement = db.compileStatement(
-				"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
-					" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
-					", "		+ DatabaseHandler.KEY_USER_ID +
-					", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
-					", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
-					", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
-					") VALUES (?, ?, ?, ?, ?)");
-
-		db.beginTransaction();
-   		        	    	
-    	statement.bindString(1, intent.getStringExtra("message_id"));
-    	statement.bindString(2, intent.getStringExtra("user_id"));
-    	statement.bindString(3, intent.getStringExtra("send_time"));
-    	statement.bindString(4, intent.getStringExtra("message_string"));
-    	statement.bindString(5, intent.getStringExtra("display_name"));
-    	
-    	statement.execute();
-
-		db.setTransactionSuccessful();	
-		db.endTransaction();
-			
-		statement.close();
-		db.close();
+		Globals.appDb.addChatMessageFromIntent(false, intent);
 		
 		Globals.chatFragment.updateListNoRRecreate();
 	}

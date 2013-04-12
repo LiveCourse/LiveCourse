@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,8 +23,6 @@ import android.util.Log;
 public class DatabaseHandler extends SQLiteOpenHelper
 {
 	private final String TAG = " == DatabaseHandler == ";
-
-	private String message;
 
 	private static final int DATABASE_VERSION = 33;
 	
@@ -416,6 +415,41 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			db.endTransaction();
 
 		}
+		statement.close();
+		db.close();
+	}
+	
+	/**
+	 * Adds a single message to the database from a Intent
+	 * 
+	 * @param cancel 	The boolean given and used to cancel the execution of the database
+	 * @param messages	The message intent
+	 */
+	public void addChatMessageFromIntent(boolean cancel, Intent messages)
+	{
+		SQLiteDatabase db = Globals.appDb.getWritableDatabase();
+		SQLiteStatement statement = db.compileStatement(
+				"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
+					" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
+					", "		+ DatabaseHandler.KEY_USER_ID +
+					", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
+					", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
+					", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
+					") VALUES (?, ?, ?, ?, ?)");
+
+		db.beginTransaction();
+   		        	    	
+    	statement.bindString(1, messages.getStringExtra("message_id"));
+    	statement.bindString(2, messages.getStringExtra("user_id"));
+    	statement.bindString(3, messages.getStringExtra("send_time"));
+    	statement.bindString(4, messages.getStringExtra("message_string"));
+    	statement.bindString(5, messages.getStringExtra("display_name"));
+    	
+    	statement.execute();
+
+		db.setTransactionSuccessful();	
+		db.endTransaction();
+			
 		statement.close();
 		db.close();
 	}
