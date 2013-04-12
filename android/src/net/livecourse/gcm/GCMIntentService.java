@@ -6,10 +6,12 @@ import net.livecourse.utility.Globals;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
  
@@ -17,14 +19,12 @@ import com.google.android.gcm.GCMBaseIntentService;
  
 public class GCMIntentService extends GCMBaseIntentService
 {
-	 
+	private final String TAG = " == GCMIntentService == ";
+
 	public GCMIntentService() 
 	{
 		super(Globals.SENDER_ID);
-	}
-	 
-	private static final String TAG = " == GCMIntentService == ";
-	 
+	}	 
 	 
 	@Override
 	protected void onRegistered(Context arg0, String registrationId) 
@@ -56,16 +56,19 @@ public class GCMIntentService extends GCMBaseIntentService
 		if(!intent.getStringExtra("user_id").equals(Globals.userId))
 		{
 			Bitmap notPic = BitmapFactory.decodeResource(context.getResources(),R.drawable.paperairplanewhite);
-			//Resources res = Globals.mainActivity.getResources();
-			//int height = (int) res.getDimension(android.R.dimen.notification_large_icon_height);
-			//int width = (int) res.getDimension(android.R.dimen.notification_large_icon_width);
+
 			notPic = Bitmap.createScaledBitmap(notPic, 48, 48, false); 
 			NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(Globals.mainActivity)
 				.setSmallIcon(R.drawable.paperairplanewhite)
 				.setLargeIcon(notPic)
 				.setContentTitle(intent.getStringExtra("display_name"))
-				.setContentText(intent.getStringExtra("message_string"))
-				.setVibrate(new long[]{100,500});
+				.setContentText(intent.getStringExtra("message_string"));
+			
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			Log.d(this.TAG, "Exists: " + prefs.contains("pref_vibration") + " The vibration: " + prefs.getBoolean("pref_vibration", true));
+			if(prefs.getBoolean("pref_vibration", true))
+				notBuilder.setVibrate(new long[]{100,100});
+			
 			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			mNotificationManager.notify(71237, notBuilder.build());
 		}

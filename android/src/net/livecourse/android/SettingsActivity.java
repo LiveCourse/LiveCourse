@@ -39,7 +39,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) 
 	{
-		Log.d("SettingsActivity", "The key: " + key + " value: " + sharedPreferences.getString(key, null));
+		//Log.d("SettingsActivity", "The key: " + key + " value: " + sharedPreferences.getString(key, null));
+		Log.d("SettingsActivity", "The key: " + key);
 		
 		if(key.equals("pref_Color"))
 		{
