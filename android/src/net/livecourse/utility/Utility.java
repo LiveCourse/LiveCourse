@@ -197,7 +197,7 @@ public class Utility
 	 */
 	public static void stopDialog(ProgressDialog progressDialog)
 	{
-		if(progressDialog.isShowing())
+		if(progressDialog != null && progressDialog.isShowing())
 		{
 			progressDialog.dismiss();
 		}
