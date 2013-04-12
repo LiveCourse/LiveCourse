@@ -276,7 +276,9 @@ public class Restful extends AsyncTask <Void, String, String>
 	 */
 	private HttpResponse getHttpPostResponse(String path, int numArgs, String[] serverArgs, String[] args)
 	{
-		String shaHead = Utility.convertStringToSha1(Globals.token + Globals.passwordToken + path);
+		String shaHead = "";
+		if(!path.equals(Restful.REGISTER_USER_PATH))
+			shaHead = Utility.convertStringToSha1(Globals.token + Globals.passwordToken + path);
 		
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
@@ -284,7 +286,8 @@ public class Restful extends AsyncTask <Void, String, String>
 		Uri b = Uri.parse(Restful.API_PATH + path);
 		
 		HttpPost httpPost = new HttpPost(b.toString());
-		httpPost.addHeader("Auth", "LiveCourseAuth token="+Globals.token+" auth="+shaHead);
+		if(!path.equals(Restful.REGISTER_USER_PATH))
+			httpPost.addHeader("Auth", "LiveCourseAuth token="+Globals.token+" auth="+shaHead);
 		
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(numArgs);
 		for(int x = 0; x < numArgs; x++)
