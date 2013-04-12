@@ -169,6 +169,22 @@ class Model_Users extends CI_Model {
 	}
 	
 	/**
+	 *Retrieves an android user from the gcm database by their device ID
+	 *dev_id - Device ID of the device
+	 *returns the user(s) with the given credentials, else false.
+	 */
+	function fetch_android_user_by_device($dev_id)
+	{
+		$droid_user = $this->db
+				->where('device_id', $dev_id)
+				->from('lc_gcm_users')
+				->get()
+				->result();
+				
+		return $droid_user;
+	}
+	
+	/**
 	 *Retrieves all android users from the gcm database
 	 *returns the users, else false.
 	 */

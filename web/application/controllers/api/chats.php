@@ -460,6 +460,51 @@ class Chats extends REST_Controller
 		
 		$message_id = $this->db->insert_id();
 		
+		$this->load->model('Model_S3');
+		$this->load->model('Model_Auth');
+		
+		//Randomly generate the file name.
+		$file_name = $this->Model_Auth->_random_string(16);
+		
+		//Check if there was an uploaded file.
+		if(isset($_FILES['file']))
+		{
+			//Generate an inputFile for S3, part of the function
+			$file = $this->Model_S3->inputFile($_FILES['file']);
+			
+			//Redundancy is key.
+			if(!$file)
+			{
+				$this->response($this->rest_error(array("Invalid file uploaded!")), 404);
+				return;
+			}
+			
+			//Upload the file to S3
+			$upload = $this->Model_Chats->add_file($user_id, $chat_id, $file_name, $message_id);
+			if(!$upload)
+			{
+				$this->response($this->rest_error(array("Error adding file entry to database!")), 404);
+				return;
+			}
+			
+			//Set the authentication keys and SSL mode for S3
+			$this->Model_S3->setAuth($this->config->item['access_key'], $this->config->item['secret_key']);
+			$this->Model_S3->setSSL('false');
+			
+			//Upload the file to S3
+			if ($this->Model_S3->putObject($file_name, 'livecourse', $file, 'public-read-write'))
+			{
+				$this->response(null, 201);
+				return;
+			}
+			else
+			{
+				$this->response($this->rest_error(array("Error uploading the file!")), 500);
+				return;
+			}
+			
+		}
+		
 		//Sending push notifications to the android users who are subscribed to this chat
 		$users = $this->Model_Users->fetch_all_subscribed_android_user($chat_id); 
 		$time = time();
@@ -1069,5 +1114,153 @@ class Chats extends REST_Controller
 		
 		$url = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=livecourse.net/join/" . $chat_id_string;
 		header("Location: " . $url);
+	}
+	
+	function retrieve_file_get()
+	{
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+		
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
+			return;
+		}
+		
+		$this->load->model('Model_Chats');
+		$this->load->model('Model_S3');
+		$this->load->model('Model_Auth');
+		
+		//Get Variables
+		$chat_id_string = $this->get('chat_id_string');
+		$file_id = $this->get('file_id');
+		
+		//Make sure we requested a chat ID
+		if (strlen($chat_id_string) <= 0)
+		{
+			$this->response($this->rest_error(array("No chat ID was specified.")), 400);
+			return;
+		}
+
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+
+		if ($chat_id < 0)
+		{
+			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
+			return;
+		}
+		
+		//Look up the name of the file by the unique file ID
+		$fileinfo = $this-Model_Chats->get_file_info($file_id);
+		
+		$filename = $fileinfo->filename;
+		
+		//Make sure there was a specified file
+		if(strlen($filename) <= 0)
+		{
+			$this->response($this->rest_error(array("Specified file could not be found!")), 404);
+			return;
+		}
+		
+		//Set the authentication keys and SSL mode for S3
+		$this->Model_S3->setAuth($this->config->item['access_key'], $this->config->item['secret_key']);
+		$this->Model_S3->setSSL('false');
+		
+		//Get the file from S3
+		$file = $this->Model_S3->getObjectInfo('livecourse', $filename);
+		if(!file)
+		{
+			$this->response($this->rest_error(array("Error finding file!")), 404);
+			return;
+		}
+		
+		$file['chat_id'] = $chat_id;
+		$file['user_id'] = $user_id;
+		$file['time'] = $fileinfo->uploaded_at;
+		$file['message_id'] = $fileinfo->message_id;
+		
+		$this->response($file, 200);
+		return;
+		
+	}
+	
+	function remove_file_post()
+	{
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+		
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
+			return;
+		}
+		
+		$this->load->model('Model_Chats');
+		$this->load->model('Model_S3');
+		$this->load->model('Model_Auth');
+		
+		//Get Post Variables
+		$chat_id_string = $this->post('chat_id_string');
+		$file_id = $this->post('file_id');
+		
+		//Make sure we requested a chat ID
+		if (strlen($chat_id_string) <= 0)
+		{
+			$this->response($this->rest_error(array("No chat ID was specified.")), 400);
+			return;
+		}
+
+		//Try to find the chat
+		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+
+		if ($chat_id < 0)
+		{
+			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
+			return;
+		}
+		
+		//Look up the name of the file by the unique file ID
+		$filename = $this-Model_Chats->get_filename($file_id);
+		
+		//Make sure there was a specified file
+		if(strlen($filename) <= 0)
+		{
+			$this->response($this->rest_error(array("Specified file could not be found!")), 404);
+			return;
+		}
+		
+		//Set the authentication keys and SSL mode for S3
+		$this->Model_S3->setAuth($this->config->item['access_key'], $this->config->item['secret_key']);
+		$this->Model_S3->setSSL('false');
+		
+		//Get the file from S3
+		$file = $this->Model_S3->getObject('livecourse', $filename);
+		if(!file)
+		{
+			$this->response($this->rest_error(array("Error finding file!")), 404);
+			return;
+		}
+		
+		$delete = $this->Model_Chats->remove_file($user_id, $chat_id, $filename);
+		
+		if(!$delete)
+		{
+			$this->response($this->rest_error(array("Error removing file entry!")), 404);
+			return;
+		}
+		
+		//Delete the file from S3
+		if ($this->Model_S3->deleteObject('livecourse', $filename))
+		{
+			$this->response(null, 200);
+			return;
+		}
+		else
+		{
+			$this->response($this->rest_error(array("Error deleting the file!")), 500);
+			return;
+		}
+		
 	}
 }

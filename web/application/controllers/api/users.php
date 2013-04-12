@@ -310,12 +310,12 @@ class Users extends REST_Controller
 		}
 		
 		//check to see the device is already registered
-		if ($this->Model_Users->fetch_android_user($user_id, $dev_id))
+		if ($this->Model_Users->fetch_android_user_by_device($dev_id))
 		{
 			$this->Model_Users->remove_android($user_id, $dev_id);
 		}
 
-		$result = $this->Model_Users->add_android_user($user_id,$reg_id,$dev_id);
+		$result = $this->Model_Users->add_android_user($user_id, $reg_id, $dev_id);
 
 		if ($result)
 		{
@@ -360,18 +360,16 @@ class Users extends REST_Controller
 		}
 
 		$data = $this->Model_Users->fetch_android_user($user_id, $dev_id);
-
+		
 		//check to see the device exists
-		if(!$data)
+		if(count($data) <= 0)
 		{
-			$this->response($this->rest_error(array("That device does not exist!")),409);
-
+			return $this->response($this->rest_error(array("That device does not exist!")),409);
 		}
 		else
 		{
 			return $this->response($data, 200);
 		}
-		return;
 	}
 	
 	/**

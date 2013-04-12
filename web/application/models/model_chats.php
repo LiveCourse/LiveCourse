@@ -448,4 +448,41 @@ WHERE lc_chat_participants.chat_id = 1
 			->get()
 			->result();
 	}
+	
+	function add_file($user_id, $chat_id, $filename, $message_id, $time = '')
+	{
+		if($time == '')
+			$time = time();
+		$data = array(
+			'user_id' => $user_id,
+			'chat_id' => $chat_id,
+			'filename' => $filename,
+			'message_id' => $message_id,
+			'uploaded_at' => $time,
+		)
+		return $this->db->insert('lc_chat_files', $data);
+		
+	}
+	
+	function get_filename($file_id)
+	{
+		return $this->db->select('filename')
+				->from('lc_chat_files')
+				->where('id', $file_id)
+				->get();
+	}
+	
+	function get_file_info($file_id)
+	{
+		return $this->db->get('lc_chat_files');
+	}
+	
+	function remove_file($user_id, $chat_id, $filename)
+	{
+		return $this->db->delete('lc_chat_files', array(
+			'user_id' => $user_id,
+			'chat_id' => $chat_id,
+			'filename' => $filename,
+		));
+	}
 }

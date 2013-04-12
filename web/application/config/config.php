@@ -365,8 +365,21 @@ $config['proxy_ips'] = '';
 |
 | This is used by Google and the server to send push notifications to the
 | android devices.
+|
 */
 $config['api_key'] = 'AIzaSyABodKWBL4SkAf2MxCQwPlIX1ek0bYzF3I';
+
+/*
+|--------------------------------------------------------------------------
+| Amazon S3 Keys
+|--------------------------------------------------------------------------
+|
+| These keys are used to access S3 for uploading files.
+|
+*/
+$config['secret_key']   = '1rut3NDQNKHMUBA7/JPrLWCaIcpqA2pNc+oT2eMr';
+$config['access_key']   = 'AKIAJMNWBMSJ72FOR3YA';
+$config['bucket']       = 'livecourse';
 
 
 /* End of file config.php */
