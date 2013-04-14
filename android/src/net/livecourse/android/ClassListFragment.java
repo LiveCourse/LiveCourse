@@ -305,10 +305,10 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		/**
 		 * Once a class is selected it'll expand the tabs
 		 */
-		if(!tabsAdapter.CONTENT.equals(new String[] { "Class List", "Chat", "Participants"}))
+		if(!tabsAdapter.CONTENT.equals(new String[] { "Class List", "Chat", "Documents", "Participants"}))
 		{
-			tabsAdapter.CONTENT = new String[] { "Class List", "Chat", "Participants"};
-			tabsAdapter.setCount(3);
+			tabsAdapter.CONTENT = new String[] { "Class List", "Chat", "Documents","Participants"};
+			tabsAdapter.setCount(4);
 			tabsAdapter.notifyDataSetChanged();
 		}
 		

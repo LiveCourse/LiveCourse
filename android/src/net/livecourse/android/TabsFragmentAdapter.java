@@ -34,7 +34,8 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
     private PageIndicator mIndicator;
     private MainActivity mActivity;
 
-    public TabsFragmentAdapter(FragmentManager fm) {
+    public TabsFragmentAdapter(FragmentManager fm) 
+    {
         super(fm);
     }
 
@@ -55,6 +56,10 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
     		return ChatFragment.newInstance(CONTENT[position % CONTENT.length], this);
     	}
     	if(position == 2)
+    	{
+    		return DocumentsFragment.newInstance(CONTENT[position % CONTENT.length], this);
+    	}
+    	if(position == 3)
     	{
     		return ParticipantsFragment.newInstance(CONTENT[position % CONTENT.length], this);
     	}

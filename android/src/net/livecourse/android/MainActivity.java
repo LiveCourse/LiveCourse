@@ -6,7 +6,6 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 import net.livecourse.R;
-import net.livecourse.database.Chatroom;
 import net.livecourse.database.DatabaseHandler;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.utility.Globals;
@@ -29,7 +28,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	private final String TAG = " == MainActivity == ";
 
 	private static final int RESULT_SETTINGS = 1;
-	public static final int VIEW_PAGE_LOAD_COUNT = 2;
+	public static final int VIEW_PAGE_LOAD_COUNT = 3;
 	
 	/**
 	 * Declares the required objects for the swipey tabs.
@@ -109,7 +108,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 				Globals.startEpoch = null;
 				Globals.message = null;
 				Globals.chatName = null;
-				startActivity(intent);
+				this.startActivity(intent);
 				break;
 			case R.id.item1:
 				Toast.makeText(this, "Menu item 1 tapped", Toast.LENGTH_SHORT).show();

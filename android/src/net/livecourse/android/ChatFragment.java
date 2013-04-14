@@ -33,15 +33,11 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 {
 	private final String TAG = " == Chat Fragment == ";
 	
-	public Handler mHandler = new Handler();
 	public Restful restful;
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
-	
-	/**
-	 * This is the current class we are
-	 */
 	private String CURRENT_CLASS = "";
+	private String mContent = "???";
 	
 	/**
 	 * This section declares all the views that this fragment handles Could
@@ -63,7 +59,6 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		return fragment;
 	}
 
-	private String mContent = "???";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
