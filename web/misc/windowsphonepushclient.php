@@ -45,13 +45,14 @@ class WindowsPhonePushClient
                                 ), $msg);
     }
     
-    public function send_toast($title, $message, $priority = WindowsPhonePushPriority::ToastImmediately)
+    public function send_toast($title, $message, $param, $priority = WindowsPhonePushPriority::ToastImmediately)
     {
         $msg = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" .
             "<wp:Notification xmlns:wp=\"WPNotification\">" .
                 "<wp:Toast>" . 
                     "<wp:Text1>" . $title . "</wp:Text1>" .
                     "<wp:Text2>" . $message . "</wp:Text2>" .
+                    "<wp:Param>" . $param . "</wp:Param>" . 
                 "</wp:Toast>" .
             "</wp:Notification>";
         

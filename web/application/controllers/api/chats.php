@@ -574,7 +574,7 @@ class Chats extends REST_Controller
 		foreach ($wp_users as $wp)
 		{
 			$wpp = new WindowsPhonePushClient($wp->push_url);
-			$wpp->send_toast($chat_info->name,$message);
+			$wpp->send_toast($chat_info->name,$message,"/Chat.xaml?id=" . $chat_id_string);
 		}
 		
 		$this->response(null,201); //Success
