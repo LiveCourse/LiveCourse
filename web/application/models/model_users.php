@@ -255,10 +255,94 @@ class Model_Users extends CI_Model {
 	}
 	
 	/**
-	 *Changes the user's password
-	 *user_id - the ID of the user whose password we are changing
-	 *password - SHA1 hash of the user's password
-	 *returns TRUE or FALSE depending on success or failure.
+	 * Adds a windows phone user to the database
+	 * user_id - ID of the user
+	 * dev_id - ID of device
+	 * url - Push URL
+	 * jointime - time added
+	 * returns inserted information if successful, otherwise null/false.
+	 */
+	function add_wp_user($user_id, $dev_id,$url, $jointime = "")
+	{
+		if($jointime == "") $jointime = time();
+		$data = array(
+			'user_id' => $user_id,
+			'device_id' => $dev_id,
+			'push_url' => $url,
+			'timeadded' => $jointime
+		);
+		
+		return $this->db->insert('lc_wp_users', $data);
+		
+	}
+	
+	/**
+	 * Updates a windows phone row
+	 * dev_id - ID of device
+	 * url - Push URL
+	 * returns inserted information if successful, otherwise null/false.
+	 */
+	function update_wp_user($dev_id,$url)
+	{
+		if($jointime == "") $jointime = time();
+		$data = array(
+			'push_url' => $url
+		);
+		$this->db->where('device_id',$dev_id);
+		return $this->db->update('lc_wp_users', $data);
+	}
+	
+	/**
+	 * Retrieves a windows phone user by their device ID
+	 * dev_id - Device ID of the device
+	 * returns the user(s) with the given credentials, else false.
+	 */
+	function fetch_wp_by_device($dev_id)
+	{
+		$wp_user = $this->db
+				->where('device_id', $dev_id)
+				->from('lc_wp_users')
+				->get()
+				->result();
+				
+		return $wp_user;
+	}
+	
+	/**
+	 * Removes a windows phone device from the database.
+	 * dev_id - unique identification string of the device
+	 * returns - number of rows effected
+	 */
+	function remove_wp_by_device($dev_id)
+	{
+		$data = array(
+			'device_id' => $dev_id,
+			);
+		return $this->db->delete('lc_wp_users', $data);
+		
+	}
+	
+	/**
+	* This function will grab all of the windows phone devices that are subscribed to the given chat
+	* chat_id - ID, numerical, of the chat that we want windows phone users notified of
+	* returns the array of people who are registered with a windows phone device to this chat
+	*/
+	function fetch_all_subscribed_wp_user($chat_id)
+	{
+		$users = $this->db
+				->select('lc_wp_users.user_id, lc_wp_users.device_id, lc_wp_users.push_url')
+				->from('lc_wp_users')
+				->join('lc_chat_participants', 'lc_chat_participants.user_id = lc_wp_users.user_id AND lc_chat_participants.chat_id = ' . $chat_id )
+				->get()
+				->result();
+		return $users;
+	}
+	
+	/**
+	 * Changes the user's password
+	 * user_id - the ID of the user whose password we are changing
+	 * password - SHA1 hash of the user's password
+	 * returns TRUE or FALSE depending on success or failure.
 	 */
 	function change_user_password($user_id, $password)
 	{

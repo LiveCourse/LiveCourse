@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.11.1deb1
+-- version 3.5.6
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 12, 2013 at 05:34 AM
--- Server version: 5.5.29
--- PHP Version: 5.4.6-1ubuntu1.2
+-- Generation Time: Apr 16, 2013 at 05:40 PM
+-- Server version: 5.5.30-log
+-- PHP Version: 5.3.17
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `lc_authentication` (
   `lastused` int(11) NOT NULL COMMENT 'Last time this token was used to successfully authenticate',
   `device` int(11) NOT NULL COMMENT 'identifier for device that this authentication took place using',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=775 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `lc_chats` (
   `dow_saturday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Saturday',
   `dow_sunday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Sunday',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `lc_chat_messages` (
   `send_time` int(11) NOT NULL COMMENT 'Time that this message was sent in UNIX Epoch',
   `message_string` varchar(2048) NOT NULL COMMENT 'Message content',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1217 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `lc_chat_messages_flagged` (
   `reason` varchar(1024) NOT NULL COMMENT 'Reason for reporting the message',
   `time_submitted` int(11) NOT NULL COMMENT 'Time at which the user reported the message. Seconds since unix epoch.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `lc_gcm_users` (
   `user_id` int(11) NOT NULL COMMENT 'ID of the user who registered the device',
   `gcm_regid` text,
   `created_at` int(11) NOT NULL,
-  `device_id` varchar(16) NOT NULL COMMENT 'The Unique Identifier for a Mobile Device'
+  `device_id` varchar(16) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `lc_institutions` (
   `name` varchar(255) NOT NULL COMMENT 'Name of institution',
   `zip` varchar(5) NOT NULL COMMENT 'Zip code of institution location',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -186,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `lc_subjects` (
   `name` varchar(256) NOT NULL COMMENT 'Name of subject',
   `code` varchar(5) NOT NULL COMMENT 'Code (Computer science = CS, etc)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
   `time_lastfocus` int(11) NOT NULL DEFAULT '0' COMMENT 'Time of the user''s last message / focus. Used to determine online status.',
   `time_lastrequest` int(11) NOT NULL DEFAULT '0' COMMENT 'Time of user''s last active request to the server. Used to determine online status.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=42 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -215,6 +215,19 @@ CREATE TABLE IF NOT EXISTS `lc_users` (
 CREATE TABLE IF NOT EXISTS `lc_users_ignored` (
   `user_id` int(11) NOT NULL,
   `ignore_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lc_wp_users`
+--
+
+CREATE TABLE IF NOT EXISTS `lc_wp_users` (
+  `user_id` int(11) NOT NULL COMMENT 'User ID of the user who registered the phone',
+  `device_id` varchar(255) NOT NULL COMMENT 'Unique ID identifying the phone',
+  `push_url` varchar(512) NOT NULL COMMENT 'URL to send PUSH notifications to',
+  `timeadded` int(11) NOT NULL COMMENT 'Time this device was registered'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
