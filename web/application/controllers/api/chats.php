@@ -427,12 +427,14 @@ class Chats extends REST_Controller
 
 		//Try to find the chat
 		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
-
 		if ($chat_id < 0)
 		{
 			$this->response($this->rest_error(array("Specified chat does not exist.")),404);
 			return;
 		}
+		
+		//Fetch chat info
+		$chat_info = $this->Model_Chats->get_chat_by_id($chat_id);
 
 		//Check to make sure user is joined to this chat.
 		if (!$this->Model_Chats->is_user_subscribed($user_id,$chat_id))
@@ -564,6 +566,17 @@ class Chats extends REST_Controller
 			}
 			
 		}
+		
+		include_once("misc/windowsphonepushclient.php");
+		
+		//Send push notifications to all Windows Phone users
+		$wp_users = $this->Model_Users->fetch_all_subscribed_wp_user($chat_id); 
+		foreach ($wp_users as $wp)
+		{
+			$wpp = new WindowsPhonePushClient($wp->push_url);
+			$wpp->send_toast($chat_info->name,$user_info[0]->display_name . ": " . $message);
+		}
+		
 		$this->response(null,201); //Success
 	}
 

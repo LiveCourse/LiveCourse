@@ -253,6 +253,103 @@ class Users extends REST_Controller
 	}
 	
 	/**
+	 * Register a Windows Phone device to the logged in user.
+	 * dev_id - Device ID
+	 * url - Push notification URL
+	 */
+	public function wp_add_post()
+	{
+		$this->load->model('Model_Users');
+		$this->load->model('Model_Auth');
+
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
+
+		//Get POST variables...
+		$url	 	= $this->post('url');
+		$dev_id		= $this->post('dev_id');
+
+		//must have a valid registration id
+		if (strlen($url) <= 0)
+		{
+			$this->response($this->rest_error(array("Invalid Push Notification URL.")),403);
+			return;
+		}
+		
+		if (strlen($dev_id) <= 0)
+		{
+			$this->response($this->rest_error(array("Device ID not provided!")), 403);
+			return;
+		}
+		
+		//check to see the device is already registered
+		$existing = $this->Model_Users->fetch_wp_by_device($dev_id);
+		if (count($existing) > 0 && $existing[0]->user_id == $this->authenticated_as)
+		{
+			$this->Model_Users->update_wp_user($dev_id,$url);
+			$this->response(NULL,200);
+			return;
+		}
+
+		$result = $this->Model_Users->add_wp_user($user_id, $dev_id, $url);
+
+		if ($result)
+		{
+			$this->response(NULL,200);
+		}
+		else
+		{
+			$this->response($this->rest_error(array("Error registering device!")),500);
+		}
+		return;
+	}
+	
+	/**
+	 * Removes a windows phone user from the database.
+	 * dev_id - POST variable - registration id of the device to be removed.
+	 * returns - device ID on successful removal.
+	 */
+	public function wp_remove_post()
+	{
+		$this->load->model('Model_Users');
+		$this->load->model('Model_Auth');
+
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
+
+		//Remove a user from the db
+		$dev_id = $this->post('dev_id');
+
+		//Check error conditions:
+		//must have a valid registration id
+		if (strlen($dev_id) <= 0)
+		{
+			$this->response($this->rest_error(array("Invalid Device ID.")),403);
+			return;
+		}
+		
+		$existing = $this->Model_Users->fetch_wp_by_device($dev_id);
+		if (count($existing) > 0 && $existing[0]->user_id == $this->authenticated_as)
+		{
+			$this->Model_Users->remove_wp_by_device($dev_id);
+		} else {
+			$this->response($this->rest_error(array("Error removing device!")),404);
+		}
+	}
+	
+	/**
 	 *Register an android users' device
 	 *name - Name of the user
 	 *email - Email of the user
