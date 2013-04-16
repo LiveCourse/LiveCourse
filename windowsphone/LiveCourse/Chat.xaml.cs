@@ -43,11 +43,6 @@ namespace LiveCourse
             participants_timer.Interval = TimeSpan.FromMilliseconds(10000);
             participants_timer.Tick += new EventHandler(participants_tick);
             participants_timer.Start();
-
-            chat_timer = new DispatcherTimer();
-            chat_timer.Interval = TimeSpan.FromMilliseconds(2000);
-            chat_timer.Tick += new EventHandler(chat_tick);
-            chat_timer.Start();
         }
 
         void participants_tick(object sender, EventArgs e)
@@ -207,6 +202,10 @@ namespace LiveCourse
             }
             list_messages.ScrollTo(chat_messages.Last());
             progress_history.IsVisible = false;
+            chat_timer = new DispatcherTimer();
+            chat_timer.Interval = TimeSpan.FromMilliseconds(2000);
+            chat_timer.Tick += new EventHandler(chat_tick);
+            chat_timer.Start();
         }
 
         public void rest_load_history_failure(System.Net.HttpStatusCode code, dynamic data)

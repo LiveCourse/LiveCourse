@@ -84,12 +84,14 @@ namespace LiveCourse
                     response.StatusCode == System.Net.HttpStatusCode.PartialContent)
                 {
                     System.Diagnostics.Debug.WriteLine("Begin serialize");
-                    successDelegate(response.StatusCode, JsonConvert.DeserializeObject<dynamic>(response.Content));
+                    if (successDelegate != null)
+                        successDelegate(response.StatusCode, JsonConvert.DeserializeObject<dynamic>(response.Content));
                     System.Diagnostics.Debug.WriteLine("End serialize");
                 }
                 else
                 {
-                    failureDelegate(response.StatusCode, JsonConvert.DeserializeObject<dynamic>(response.Content));
+                    if (failureDelegate != null)
+                        failureDelegate(response.StatusCode, JsonConvert.DeserializeObject<dynamic>(response.Content));
                 }
             });
         }
