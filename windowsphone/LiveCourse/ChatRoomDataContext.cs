@@ -22,5 +22,13 @@ namespace LiveCourse
                 return this.GetTable<MyChatRoom>();
             }   
         }
+
+        public Table<ChatMessage> ChatMessages
+        {
+            get
+            {
+                return this.GetTable<ChatMessage>();
+            }
+        }
     }
 }

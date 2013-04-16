@@ -15,7 +15,7 @@ namespace LiveCourse
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private const string Con_String = @"isostore:/livecourse.sdf";
+        public const string Con_String = @"isostore:/livecourse.sdf";
 
         ProgressIndicator progress_chatlist;
 
@@ -23,7 +23,6 @@ namespace LiveCourse
         public MainPage()
         {
             InitializeComponent();
-            BackKeyPress += MainPage_BackKeyPress; //Handle back key press.
 
             //Load up database
             using (ChatRoomDataContext context = new ChatRoomDataContext(Con_String))
@@ -159,7 +158,7 @@ namespace LiveCourse
             }
         }
 
-        public async void rest_updateChatRoomList_success(System.Net.HttpStatusCode code, dynamic data)
+        public void rest_updateChatRoomList_success(System.Net.HttpStatusCode code, dynamic data)
         {
             using (ChatRoomDataContext context = new ChatRoomDataContext(Con_String))
             {
@@ -167,8 +166,6 @@ namespace LiveCourse
                 {
                     context.CreateDatabase();
                 }
-                context.ChatRooms.DeleteAllOnSubmit(context.ChatRooms);
-                context.SubmitChanges();
                 foreach (dynamic item in data)
                 {
                     MyChatRoom room = new MyChatRoom
@@ -188,11 +185,10 @@ namespace LiveCourse
                         C_DOW_Saturday = ((String)(item.dow_saturday)).Equals("1"),
                         C_DOW_Sunday = ((String)(item.dow_sunday)).Equals("1")
                     };
-                    System.Diagnostics.Debug.WriteLine("Done with item.");
-                    context.ChatRooms.InsertOnSubmit(room);
+                    if (!context.ChatRooms.Contains<MyChatRoom>(room)) //If we don't have this room in the database, add it.
+                        context.ChatRooms.InsertOnSubmit(room);
                 }
                 context.SubmitChanges();
-                System.Diagnostics.Debug.WriteLine("Done query");
 
                 list_chatrooms.ItemsSource = context.ChatRooms.ToList();
             }
@@ -210,6 +206,7 @@ namespace LiveCourse
             
         }
         
+        /*
         private void MainPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //App.NaviService.BackKeyPress(sender, e);
@@ -219,17 +216,7 @@ namespace LiveCourse
             //}
             e.Cancel = true; //Cancel navigation
         }
-
-        private void chat_room_listing_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            //MyChatRoom room = ((sender as LongListSelector).SelectedItem as MyChatRoom);
-            //NavigationService.Navigate(new Uri("/Chat.xaml?id=", UriKind.Relative));
-            
-        }
-
-        private void list_chatrooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
+        */
 
         private void list_chatrooms_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {

@@ -31,6 +31,17 @@ namespace LiveCourse
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            string chatidstring;
+            if (NavigationContext.QueryString.TryGetValue("id", out chatidstring))
+            {
+                using (ChatRoomDataContext context = new ChatRoomDataContext(MainPage.Con_String))
+                {
+                    IEnumerable<MyChatRoom> queryRooms = from MyChatRoom in context.ChatRooms
+                                     where MyChatRoom.C_ID_String == chatidstring
+                                     select MyChatRoom;
+                    App.currentRoom = queryRooms.First();
+                }
+            }
             chatpage_pivot.Title = App.currentRoom.C_Name.ToUpper();
             chat_messages = new ObservableCollection<ChatMessage>();
             chat_participants = new ObservableCollection<Participant>();
@@ -151,9 +162,15 @@ namespace LiveCourse
                         chatroom_id = (int)(item.chat_id)
                     };
                     chat_messages.Add(msg);
+                    using (ChatRoomDataContext context = new ChatRoomDataContext(MainPage.Con_String))
+                    {
+                        context.ChatMessages.InsertOnSubmit(msg);
+                        context.SubmitChanges();
+                    }
                 }
+                list_messages.ScrollTo(chat_messages.Last());
             }
-            list_messages.ScrollTo(chat_messages.Last());
+            
             //progress_history.IsVisible = false;
             chat_timer.Interval = TimeSpan.FromMilliseconds(2000);
             chat_timer.Stop();
@@ -180,27 +197,69 @@ namespace LiveCourse
             };
             SystemTray.SetProgressIndicator(this, progress_history);
             progress_history.IsVisible = true;
+
+            //Grab recent history from database
+            System.Diagnostics.Debug.WriteLine("Loading recent chat from DB...");
+            using (ChatRoomDataContext context = new ChatRoomDataContext(MainPage.Con_String))
+            {
+                IEnumerable<ChatMessage> queryMsgs = from ChatMessage in context.ChatMessages
+                                                     where ChatMessage.chatroom_id == App.currentRoom.C_ID
+                                                     select ChatMessage;
+                foreach (ChatMessage c in queryMsgs)
+                {
+                    chat_messages.Add(c);
+                }
+            }
+
             Dictionary<String, String> chatvars = new Dictionary<String, String>();
             chatvars.Add("chat_id", App.currentRoom.C_ID_String);
-            REST historyREST = new REST("chats/fetch_recent", "GET", chatvars);
-            historyREST.call(rest_load_history_success, rest_load_history_failure);
+            if (chat_messages.Count <= 0)
+            {
+                System.Diagnostics.Debug.WriteLine("No history stored. Fetching from server instead...");
+                REST historyREST = new REST("chats/fetch_recent", "GET", chatvars);
+                historyREST.call(rest_load_history_success, rest_load_history_failure);
+            } else {
+                progress_history.IsVisible = false;
+                chat_timer = new DispatcherTimer();
+                chat_timer.Interval = TimeSpan.FromMilliseconds(2000);
+                chat_timer.Tick += new EventHandler(chat_tick);
+                chat_timer.Start();
+                DispatcherTimer scroll_timer = new DispatcherTimer();
+                scroll_timer.Interval = TimeSpan.FromMilliseconds(100);
+                scroll_timer.Tick += new EventHandler(scrollChatToBottom);
+                scroll_timer.Start();
+            }
+        }
+
+        public void scrollChatToBottom(object sender, EventArgs e)
+        {
+            list_messages.ScrollTo(list_messages.ItemsSource[list_messages.ItemsSource.Count - 1]);
+            (sender as DispatcherTimer).Stop();
         }
 
         public void rest_load_history_success(System.Net.HttpStatusCode code, dynamic data)
         {
-            foreach (dynamic item in data)
+            if (data != null)
             {
-                ChatMessage msg = new ChatMessage
+                foreach (dynamic item in data)
                 {
-                    msg_id = (int)(item.id),
-                    sender_id = (int)(item.user_id),
-                    sender_name = (String)(item.display_name),
-                    msg_string = (String)(item.message_string),
-                    chatroom_id = (int)(item.chat_id)
-                };
-                chat_messages.Add(msg);
+                    ChatMessage msg = new ChatMessage
+                    {
+                        msg_id = (int)(item.id),
+                        sender_id = (int)(item.user_id),
+                        sender_name = (String)(item.display_name),
+                        msg_string = (String)(item.message_string),
+                        chatroom_id = App.currentRoom.C_ID
+                    };
+                    chat_messages.Add(msg);
+                    using (ChatRoomDataContext context = new ChatRoomDataContext(MainPage.Con_String))
+                    {
+                        context.ChatMessages.InsertOnSubmit(msg);
+                        context.SubmitChanges();
+                    }
+                }
+                list_messages.ScrollTo(chat_messages.Last());
             }
-            list_messages.ScrollTo(chat_messages.Last());
             progress_history.IsVisible = false;
             chat_timer = new DispatcherTimer();
             chat_timer.Interval = TimeSpan.FromMilliseconds(2000);
