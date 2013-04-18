@@ -274,6 +274,7 @@ class Users extends REST_Controller
 		//Get POST variables...
 		$url	 	= $this->post('url');
 		$dev_id		= $this->post('dev_id');
+		$channel	= $this->post('channel');
 
 		//must have a valid registration id
 		if (strlen($url) <= 0)
@@ -288,16 +289,22 @@ class Users extends REST_Controller
 			return;
 		}
 		
+		if (strlen($channel) <= 0)
+		{
+			$this->response($this->rest_error(array("Notification channel not provided!")), 403);
+			return;
+		}
+		
 		//check to see the device is already registered
-		$existing = $this->Model_Users->fetch_wp_by_device($dev_id);
+		$existing = $this->Model_Users->fetch_wp_by_device($dev_id,$channel);
 		if (count($existing) > 0 && $existing[0]->user_id == $this->authenticated_as)
 		{
-			$this->Model_Users->update_wp_user($dev_id,$url);
+			$this->Model_Users->update_wp_user($dev_id,$channel,$url);
 			$this->response(NULL,200);
 			return;
 		}
 
-		$result = $this->Model_Users->add_wp_user($user_id, $dev_id, $url);
+		$result = $this->Model_Users->add_wp_user($user_id, $dev_id, $channel, $url);
 
 		if ($result)
 		{
@@ -331,6 +338,7 @@ class Users extends REST_Controller
 
 		//Remove a user from the db
 		$dev_id = $this->post('dev_id');
+		$channel = $this->post('channel');
 
 		//Check error conditions:
 		//must have a valid registration id
@@ -340,10 +348,16 @@ class Users extends REST_Controller
 			return;
 		}
 		
-		$existing = $this->Model_Users->fetch_wp_by_device($dev_id);
+		if (strlen($channel) <= 0)
+		{
+			$this->response($this->rest_error(array("No channel specified.")),403);
+			return;
+		}
+		
+		$existing = $this->Model_Users->fetch_wp_by_device($dev_id,$channel);
 		if (count($existing) > 0 && $existing[0]->user_id == $this->authenticated_as)
 		{
-			$this->Model_Users->remove_wp_by_device($dev_id);
+			$this->Model_Users->remove_wp_by_device($dev_id,$channel);
 		} else {
 			$this->response($this->rest_error(array("Error removing device!")),404);
 		}

@@ -262,13 +262,14 @@ class Model_Users extends CI_Model {
 	 * jointime - time added
 	 * returns inserted information if successful, otherwise null/false.
 	 */
-	function add_wp_user($user_id, $dev_id,$url, $jointime = "")
+	function add_wp_user($user_id, $dev_id,$channel,$url, $jointime = "")
 	{
 		if($jointime == "") $jointime = time();
 		$data = array(
 			'user_id' => $user_id,
 			'device_id' => $dev_id,
 			'push_url' => $url,
+			'channel' => $channel,
 			'timeadded' => $jointime
 		);
 		
@@ -282,13 +283,14 @@ class Model_Users extends CI_Model {
 	 * url - Push URL
 	 * returns inserted information if successful, otherwise null/false.
 	 */
-	function update_wp_user($dev_id,$url)
+	function update_wp_user($dev_id,$channel,$url)
 	{
 		if($jointime == "") $jointime = time();
 		$data = array(
 			'push_url' => $url
 		);
 		$this->db->where('device_id',$dev_id);
+		$this->db->where('channel',$channel);
 		return $this->db->update('lc_wp_users', $data);
 	}
 	
@@ -297,10 +299,11 @@ class Model_Users extends CI_Model {
 	 * dev_id - Device ID of the device
 	 * returns the user(s) with the given credentials, else false.
 	 */
-	function fetch_wp_by_device($dev_id)
+	function fetch_wp_by_device($dev_id,$channel)
 	{
 		$wp_user = $this->db
 				->where('device_id', $dev_id)
+				->where('channel', $channel)
 				->from('lc_wp_users')
 				->get()
 				->result();
@@ -313,10 +316,11 @@ class Model_Users extends CI_Model {
 	 * dev_id - unique identification string of the device
 	 * returns - number of rows effected
 	 */
-	function remove_wp_by_device($dev_id)
+	function remove_wp_by_device($dev_id,$channel)
 	{
 		$data = array(
 			'device_id' => $dev_id,
+			'channel' => $channel
 			);
 		return $this->db->delete('lc_wp_users', $data);
 		
@@ -327,12 +331,13 @@ class Model_Users extends CI_Model {
 	* chat_id - ID, numerical, of the chat that we want windows phone users notified of
 	* returns the array of people who are registered with a windows phone device to this chat
 	*/
-	function fetch_all_subscribed_wp_user($chat_id)
+	function fetch_all_subscribed_wp_user($chat_id,$channel)
 	{
 		$users = $this->db
 				->select('lc_wp_users.user_id, lc_wp_users.device_id, lc_wp_users.push_url')
 				->from('lc_wp_users')
 				->join('lc_chat_participants', 'lc_chat_participants.user_id = lc_wp_users.user_id AND lc_chat_participants.chat_id = ' . $chat_id )
+				->where('lc_wp_users.channel',$channel)
 				->get()
 				->result();
 		return $users;

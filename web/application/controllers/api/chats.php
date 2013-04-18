@@ -570,7 +570,7 @@ class Chats extends REST_Controller
 		include_once("misc/windowsphonepushclient.php");
 		
 		//Send push notifications to all Windows Phone users
-		$wp_users = $this->Model_Users->fetch_all_subscribed_wp_user($chat_id); 
+		$wp_users = $this->Model_Users->fetch_all_subscribed_wp_user($chat_id,0); 
 		foreach ($wp_users as $wp)
 		{
 			$wpp = new WindowsPhonePushClient($wp->push_url);
