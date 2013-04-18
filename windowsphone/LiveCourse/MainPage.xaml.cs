@@ -195,7 +195,7 @@ namespace LiveCourse
             progress_chatlist.IsVisible = false;
         }
 
-        public async void rest_updateChatRoomList_failure(System.Net.HttpStatusCode code, dynamic data)
+        public void rest_updateChatRoomList_failure(System.Net.HttpStatusCode code, dynamic data)
         {
             MessageBox.Show("Error updating chat list!");
         }
