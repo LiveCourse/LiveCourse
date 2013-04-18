@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 16, 2013 at 05:40 PM
+-- Generation Time: Apr 18, 2013 at 05:43 PM
 -- Server version: 5.5.30-log
 -- PHP Version: 5.3.17
 
@@ -227,6 +227,7 @@ CREATE TABLE IF NOT EXISTS `lc_wp_users` (
   `user_id` int(11) NOT NULL COMMENT 'User ID of the user who registered the phone',
   `device_id` varchar(255) NOT NULL COMMENT 'Unique ID identifying the phone',
   `push_url` varchar(512) NOT NULL COMMENT 'URL to send PUSH notifications to',
+  `channel` tinyint(4) NOT NULL COMMENT '0 = toast, 1 = raw',
   `timeadded` int(11) NOT NULL COMMENT 'Time this device was registered'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

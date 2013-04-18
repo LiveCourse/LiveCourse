@@ -36,55 +36,57 @@ namespace LiveCourse
                 updateChatRoomList();
             }
 
+            initToastNotifications();
+        }
+
+        public void initToastNotifications()
+        {
             /// Holds the push channel that is created or found.
-            HttpNotificationChannel pushChannel;
+            HttpNotificationChannel pushToastChannel;
 
             // The name of our push channel.
-            string channelName = "ChatNotifications";
+            string channelName = "ChatToastNotifications";
 
             // Try to find the push channel.
-            pushChannel = HttpNotificationChannel.Find(channelName);
+            pushToastChannel = HttpNotificationChannel.Find(channelName);
 
             // If the channel was not found, then create a new connection to the push service.
-            if (pushChannel == null)
+            if (pushToastChannel == null)
             {
-                pushChannel = new HttpNotificationChannel(channelName);
+                pushToastChannel = new HttpNotificationChannel(channelName);
 
                 // Register for all the events before attempting to open the channel.
-                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
-                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+                pushToastChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+                pushToastChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
 
                 // Register for this notification only if you need to receive the notifications while your application is running.
-                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+                // pushToastChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
 
-                pushChannel.Open();
+                pushToastChannel.Open();
 
                 // Bind this new channel for toast events.
-                pushChannel.BindToShellToast();
+                pushToastChannel.BindToShellToast();
 
             }
             else
             {
                 // The channel was already open, so just register for all the events.
-                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
-                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+                pushToastChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+                pushToastChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
 
                 // Register for this notification only if you need to receive the notifications while your application is running.
-                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+                // pushToastChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
 
                 // Display the URI for testing purposes. Normally, the URI would be passed back to your web service at this point.
                 byte[] myDeviceID = (byte[])Microsoft.Phone.Info.DeviceExtendedProperties.GetValue("DeviceUniqueId");
                 string DeviceIDAsString = Convert.ToBase64String(myDeviceID);
                 System.Diagnostics.Debug.WriteLine("Device ID: '" + DeviceIDAsString + "'");
-                System.Diagnostics.Debug.WriteLine("PUSH URI: '" + pushChannel.ChannelUri.ToString() + "'");
-
+                System.Diagnostics.Debug.WriteLine("PUSH URI: '" + pushToastChannel.ChannelUri.ToString() + "'");
             }
-            
         }
 
         void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
         {
-
             Dispatcher.BeginInvoke(() =>
             {
                 byte[] myDeviceID = (byte[])Microsoft.Phone.Info.DeviceExtendedProperties.GetValue("DeviceUniqueId");
@@ -97,7 +99,6 @@ namespace LiveCourse
                 wpvars.Add("url", e.ChannelUri.ToString());
                 REST chatroomREST = new REST("users/wp_add", "POST", wpvars);
                 chatroomREST.call(null, null);
-
             });
         }
         void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
@@ -107,30 +108,6 @@ namespace LiveCourse
                 MessageBox.Show(String.Format("A push notification {0} error occurred.  {1} ({2}) {3}",
                     e.ErrorType, e.Message, e.ErrorCode, e.ErrorAdditionalData))
                     );
-        }
-
-        void PushChannel_ShellToastNotificationReceived(object sender, NotificationEventArgs e)
-        {
-            StringBuilder message = new StringBuilder();
-            string relativeUri = string.Empty;
-
-            message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
-
-            // Parse out the information that was part of the message.
-            foreach (string key in e.Collection.Keys)
-            {
-                message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
-
-                if (string.Compare(
-                    key,
-                    "wp:Param",
-                    System.Globalization.CultureInfo.InvariantCulture,
-                    System.Globalization.CompareOptions.IgnoreCase) == 0)
-                {
-                    relativeUri = e.Collection[key];
-                }
-            }
-
         }
 
         private void updateChatRoomList()
@@ -185,7 +162,11 @@ namespace LiveCourse
                         C_DOW_Saturday = ((String)(item.dow_saturday)).Equals("1"),
                         C_DOW_Sunday = ((String)(item.dow_sunday)).Equals("1")
                     };
-                    if (!context.ChatRooms.Contains<MyChatRoom>(room)) //If we don't have this room in the database, add it.
+                    String room_string_id = (String)(item.id_string);
+                    IEnumerable<MyChatRoom> queryRooms = from MyChatRoom in context.ChatRooms
+                                                         where MyChatRoom.C_ID_String == room_string_id
+                                                         select MyChatRoom;
+                    if (queryRooms.Count() <= 0) //If we don't have this room in the database, add it.
                         context.ChatRooms.InsertOnSubmit(room);
                 }
                 context.SubmitChanges();
@@ -236,6 +217,8 @@ namespace LiveCourse
             appSettings.Remove("auth_pass");
             appSettings.Remove("auth_token");
             NavigationService.Navigate(new Uri("/LogIn.xaml", UriKind.Relative));
+            IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
+            storage.DeleteFile("livecourse.sdf");
         }
     }
 }
