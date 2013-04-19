@@ -15,7 +15,7 @@ class Chats extends REST_Controller
 	/**
 	 *Fetches all the available chats that the user is subscribed to
 	 *
-	 *returns
+	 * returns
 	 *	401 if not logged in
 	 *	200 and the information for all the chats upon success
 	 */
@@ -84,7 +84,7 @@ class Chats extends REST_Controller
 	 *
 	 *query - String based query of what to search for
 	 *
-	 *returns
+	 * returns
 	 *	401 if not logged in
 	 *	403 if the query was empty
 	 *	404 if no matching chats could be found
@@ -123,7 +123,16 @@ class Chats extends REST_Controller
 	}
 
 	/*
-	*Flags a file as innapropriate
+	* Flags a file as innapropriate
+	*
+	 * message_id - Numerical ID of the message the file to be flagged is connected to
+	 * reason - String reason why the file was flagged
+	 *
+	 * returns
+	 *	401 if not logged in
+	 *	403 if message doesn't exist
+	 *	403 if you've already flagged this file
+	 *	200 if successful
 	*/
 	public function flag_file_post()
 	{
@@ -131,7 +140,7 @@ class Chats extends REST_Controller
 		$reporter_id = $this->authenticated_as;
 		if ($reporter_id <= 0)
 		{
-			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
 			return;
 		}
 	
@@ -143,37 +152,40 @@ class Chats extends REST_Controller
 	
 	
 	
-		if($this->Model_Chats->check_reporter($reporter_id,$message_id)==false)
+		if ($this->Model_Chats->check_reporter($reporter_id,$message_id)==false)
 		{		
-			if($this->Model_Chats->check_message($message_id)==true)
+			if ($this->Model_Chats->check_message($message_id)==true)
 			{
 				$this->Model_Chats->flag_message($message_id,$reporter_id,$reason,$time);		
-				if($this->Model_Chats->check_flagged($message_id)>=5)
+				if ($this->Model_Chats->check_flagged($message_id)>=5)
 				{
 					$this->Model_Chats->remove_file($message_id);
 				}
+				$this->response(null, 200);
+				return;
 			}
 			else
 			{
-			$this->response($this->rest_error(array("Only messages that exist my be deleted.")),403);
-			return;
+				
+				$this->response($this->rest_error(array("Only messages that exist my be deleted.")), 403);
+				return;
 			}
 		}
 		else
 		{
-		$this->response($this->rest_error(array("You have already reported this message.")),403);
-		return;
+			$this->response($this->rest_error(array("You have already reported this message.")), 403);
+			return;
 		}
 			
 	}
 	
 	/**
-	 *Flags a message as inappropriate
+	 * Flags a message as inappropriate
 	 *
-	 *message_id - Numerical ID of the message to be flagged
-	 *reason - String reason why the message was flagged
+	 * message_id - Numerical ID of the message to be flagged
+	 * reason - String reason why the message was flagged
 	 *
-	 *returns
+	 * returns
 	 *	401 if not logged in
 	 *	403 if message doesn't exist
 	 *	403 if you've already flagged this message
@@ -223,11 +235,11 @@ class Chats extends REST_Controller
 	}
 	
 	/**
-	 *Joins a user to a chat
+	 * Joins a user to a chat
 	 *
-	 *id - The Chat ID String of the chat the user is to be joined to
+	 * id - The Chat ID String of the chat the user is to be joined to
 	 *
-	 *returns
+	 * returns
 	 *	401 if you are not logged in
 	 *	403 if no chat ID was specified
 	 *	404 if the specified chat doesn't exist
@@ -281,25 +293,25 @@ class Chats extends REST_Controller
 	}
 
 	/**
-	 *Adds a chat to the database
+	 * Adds a chat to the database
 	 *
-	 *id_string 		- the generated unique string for the chat
-	 *subject_id 		- The ID for the subject of the class
-	 *course_number 	- self explanatory
-	 *name 			- Name of the chat room
-	 *institution_id 	- ID for the university, organization, etc using the room
-	 *room_id 		- The Room # for the class
-	 *start_time 		- The time that the class starts
-	 *end_time 		- The time at which the class ends
-	 *dow_monday 		- Whether or not the class is held on a monday
-	 *dow_tuesday 		- Whether or not the class is held on a tuesday
-	 *dow_wednesday 	- Whether or not the class is held on a wednesday
-	 *dow_thursday 		- Whether or not the class is held on a thursday
-	 *dow_friday 		- Whether or not the class is held on a friday
-	 *dow_saturday 		- Whether or not the class is held on a saturday
-	 *dow_sunday 		- Whether or not the class is held on a sunday
+	 * id_string 		- the generated unique string for the chat
+	 * subject_id 		- The ID for the subject of the class
+	 * course_number 	- self explanatory
+	 * name 			- Name of the chat room
+	 * institution_id 	- ID for the university, organization, etc using the room
+	 * room_id 		- The Room # for the class
+	 * start_time 		- The time that the class starts
+	 * end_time 		- The time at which the class ends
+	 * dow_monday 		- Whether or not the class is held on a monday
+	 * dow_tuesday 		- Whether or not the class is held on a tuesday
+	 * dow_wednesday 	- Whether or not the class is held on a wednesday
+	 * dow_thursday 		- Whether or not the class is held on a thursday
+	 * dow_friday 		- Whether or not the class is held on a friday
+	 * dow_saturday 		- Whether or not the class is held on a saturday
+	 * dow_sunday 		- Whether or not the class is held on a sunday
 	 *
-	 *Returns
+	 * Returns
 	 *	401 if not logged in
 	 *	403 if any of the information supplied is invalid
 	 *	200 upon success
@@ -448,12 +460,12 @@ class Chats extends REST_Controller
 	}
 
 	/**
-	 *Removes a user from the chat
+	 * Removes a user from the chat
 	 *
-	 *chat_id - the ID for the chat that the user is to be removed from
-	 *user_id - user id of the user who is to be removed
+	 * chat_id - the ID for the chat that the user is to be removed from
+	 * user_id - user id of the user who is to be removed
 	 *
-	 *returns
+	 * returns
 	 *	401 if not logged in
 	 *	403 if no Chat ID is supplied
 	 *	404 if specified chat does not exist
@@ -963,11 +975,11 @@ class Chats extends REST_Controller
 	}
 	
 	/**
-	 *Remove a chat room
+	 * Remove a chat room
 	 *
-	 *chat_id_string - The string of the Chat to be removed
+	 * chat_id_string - The string of the Chat to be removed
 	 *
-	 *returns
+	 * returns
 	 *	401 if not logged in
 	 *	403 if no chat ID is supplied
 	 *	404 if the specified chat ID does no exist
@@ -1019,11 +1031,11 @@ class Chats extends REST_Controller
 	}
 	
 	/**
-	 *Gets all participants in a selected chat
+	 * Gets all participants in a selected chat
 	 *
-	 *id - Chat ID String of the chat to get subscribed users
+	 * id - Chat ID String of the chat to get subscribed users
 	 *
-	 *returns
+	 * returns
 	 *	401 if not logged in
 	 *	403 if no Chat ID is supplied
 	 *	404 if the supplied Chat ID does not exist
@@ -1081,12 +1093,12 @@ class Chats extends REST_Controller
 	}
 	
 	/**
-	*This function grants a user administrative permissions in a specific chat room.
+	* This function grants a user administrative permissions in a specific chat room.
 	*
-	*chat_id_string - The Unique String associated with the chat room
-	*user_id - ID of the user who is to be given administrative permissions
+	* chat_id_string - The Unique String associated with the chat room
+	* user_id - ID of the user who is to be given administrative permissions
 	*
-	*Returns
+	* Returns
 	*	401 if not logged in
 	*	400 if no user ID is supplied
 	*	404 if the target doesn't exist
@@ -1179,12 +1191,12 @@ class Chats extends REST_Controller
 	}
 	
 	/**
-	*This function removes a user's administrative permissions in a specific chat room.
+	* This function removes a user's administrative permissions in a specific chat room.
 	*
-	*chat_id_string - The Unique String associated with the chat room
-	*user_id - ID of the user who is to lose administrative permissions
+	* chat_id_string - The Unique String associated with the chat room
+	* user_id - ID of the user who is to lose administrative permissions
 	*
-	*Returns
+	* Returns
 	*	401 if not logged in
 	*	400 if User ID is not supplied
 	*	404 if target user does not exist
@@ -1276,11 +1288,11 @@ class Chats extends REST_Controller
 		}
 	}
 	/**
-	*This function will generate a QR code and return the URL to be embedded as an image.
+	* This function will generate a QR code and return the URL to be embedded as an image.
 	*
-	*id - ID of the chat to join
+	* id - ID of the chat to join
 	*
-	*returns
+	* returns
 	*	400 if no chat id provided
 	*	404 if chat does not exist
 	*	a URL and 200 on success
@@ -1311,12 +1323,12 @@ class Chats extends REST_Controller
 		header("Location: " . $url);
 	}
 	
-	/*This function retrieves a file object
+	/* This function retrieves a file object
 	 *
-	 *chat_id_string - The String for the Chat in which the file was uploaded
-	 *message_id - ID of the message linked to the file
+	 * chat_id_string - The String for the Chat in which the file was uploaded
+	 * message_id - ID of the message linked to the file
 	 *
-	 *returns
+	 * returns
 	 *	401 if not logged in
 	 *	400 if no chat ID was specified
 	 *	404 if the specified chat doesn't exist
@@ -1393,12 +1405,12 @@ class Chats extends REST_Controller
 		
 	}
 	
-	/*This function removes a file
+	/* This function removes a file
 	 *
-	 *chat_id_string - The String for the Chat in which the file was uploaded
-	 *message_id - ID of the message linked to the file
+	 * chat_id_string - The String for the Chat in which the file was uploaded
+	 * message_id - ID of the message linked to the file
 	 *
-	 *returns
+	 * returns
 	 *	401 if not logged in
 	 *	400 if no chat ID was specified
 	 *	404 if the specified chat doesn't exist
