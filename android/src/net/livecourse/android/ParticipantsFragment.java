@@ -129,7 +129,9 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 				new Restful(Restful.IGNORE_USER_PATH, Restful.POST, new String[]{"ignore_id"}, new String[]{((ParticipantViewHolder)this.clickedView.getTag()).userId}, 1, this);
 				break;
 		}	
-		return false;
+		
+		Globals.mode.finish();
+		return true;
 	}
 
 	/**
