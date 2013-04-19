@@ -1,8 +1,11 @@
 package net.livecourse.gcm;
  
 import net.livecourse.R;
+import net.livecourse.android.MainActivity;
 import net.livecourse.utility.Globals;
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
  
 import com.google.android.gcm.GCMBaseIntentService;
@@ -53,21 +57,32 @@ public class GCMIntentService extends GCMBaseIntentService
 		if(!intent.getStringExtra("user_id").equals(Globals.userId))
 		{
 			Bitmap notPic = BitmapFactory.decodeResource(context.getResources(),R.drawable.paperairplanewhite);
-
 			notPic = Bitmap.createScaledBitmap(notPic, 48, 48, false); 
+			
+			Intent launchIntent = new Intent(this, MainActivity.class);
+			TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+			stackBuilder.addNextIntent(launchIntent);
+			// Gets a PendingIntent containing the entire back stack
+			PendingIntent resultPendingIntent =
+			        stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+			
 			NotificationCompat.Builder notBuilder = new NotificationCompat.Builder(Globals.mainActivity)
 				.setSmallIcon(R.drawable.paperairplanewhite)
 				.setLargeIcon(notPic)
 				.setContentTitle(intent.getStringExtra("display_name"))
-				.setContentText(intent.getStringExtra("message_string"));
+				.setContentText(intent.getStringExtra("message_string"))
+				.setContentIntent(resultPendingIntent);
 			
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 			Log.d(this.TAG, "Exists: " + prefs.contains("pref_vibration") + " The vibration: " + prefs.getBoolean("pref_vibration", true));
 			if(prefs.getBoolean("pref_vibration", true))
 				notBuilder.setVibrate(new long[]{100,100});
 			
+			Notification not = notBuilder.build();
+			not.flags = Notification.FLAG_AUTO_CANCEL;
+			
 			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			mNotificationManager.notify(71237, notBuilder.build());
+			mNotificationManager.notify(71237, not);
 		}
 			
 		Globals.appDb.addChatMessageFromIntent(false, intent);
