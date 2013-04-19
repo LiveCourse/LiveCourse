@@ -13,7 +13,7 @@ setlocale(LC_ALL, 'en_US.UTF8');
 class Chats extends REST_Controller
 {
 	/**
-	 *Fetches all the available chats that the user is subscribed to
+	 * Fetches all the available chats that the user is subscribed to
 	 *
 	 * returns
 	 *	401 if not logged in
@@ -176,7 +176,7 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("You have already reported this message.")), 403);
 			return;
 		}
-			
+
 	}
 	
 	/**
