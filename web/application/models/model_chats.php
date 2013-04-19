@@ -142,8 +142,9 @@ class Model_Chats extends CI_Model {
 	function get_num_latest_messages($chat_id,$num_lines = 100)
 	{
 		$q = 'SELECT * FROM (
-				SELECT lc_chat_messages.id, lc_chat_messages.chat_id, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name FROM `lc_chat_messages`
+				SELECT lc_chat_messages.id, lc_chats.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name FROM `lc_chat_messages`
 				JOIN lc_users ON lc_users.id = lc_chat_messages.user_id 
+				JOIN lc_chats ON lc_chats.id = lc_chat_messages.chat_id
 				WHERE lc_chat_messages.chat_id = ' . $chat_id . ' 
 				ORDER BY lc_chat_messages.send_time 
 				DESC LIMIT ' . $num_lines . ' 
@@ -164,12 +165,13 @@ class Model_Chats extends CI_Model {
 	function get_time_frame_messages($chat_id,$start_time,$end_time)
 	{
 		$query = $this->db
-				->select('lc_chat_messages.id, lc_chat_messages.chat_id, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name')
+				->select('lc_chat_messages.id, lc_chats.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name')
 				->where('lc_chat_messages.chat_id',$chat_id)
 				->where('lc_chat_messages.send_time >=',$start_time)
 				->where('lc_chat_messages.send_time <=',$end_time)
 				->from('lc_chat_messages')
 				->join('lc_users','lc_users.id = lc_chat_messages.user_id')
+				->join('lc_chats','lc_chats.id = lc_chat_messages.chat_id')
 				->order_by("send_time", "asc")
 				->get()
 				->result();
@@ -185,11 +187,12 @@ class Model_Chats extends CI_Model {
 	function get_messages_after_msg_id($chat_id,$msg_id)
 	{
 		$query = $this->db
-				->select('lc_chat_messages.id, lc_chat_messages.chat_id, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name')
+				->select('lc_chat_messages.id, lc_chats.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name')
 				->where('lc_chat_messages.chat_id',$chat_id)
 				->where('lc_chat_messages.id >',$msg_id)
 				->from('lc_chat_messages')
 				->join('lc_users','lc_users.id = lc_chat_messages.user_id')
+				->join('lc_chats','lc_chats.id = lc_chat_messages.chat_id')
 				->order_by("send_time", "asc")
 				->get()
 				->result();
