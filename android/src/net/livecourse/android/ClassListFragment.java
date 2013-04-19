@@ -385,6 +385,11 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 				this.updateListCalledByQR = false;
 			}
 			
+			if(Globals.chatId != null)
+			{
+				this.switchToChat(Globals.chatId, Globals.chatName);
+			}
+			
 		}
 		else if(restCall.equals(Restful.JOIN_CHAT_PATH))
 		{
