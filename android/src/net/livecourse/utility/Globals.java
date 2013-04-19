@@ -15,6 +15,7 @@ public class Globals
 	 * The ID from Google's GCM Console
 	 */
 	public static final String SENDER_ID = "584781219532";
+	public static boolean newReg = false;
 	
 	/**
 	 * The loaders

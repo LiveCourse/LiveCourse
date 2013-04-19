@@ -11,6 +11,7 @@ import net.livecourse.rest.OnRestCalled;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -142,6 +143,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         prefs.edit().putString("pref_reg_id"		, Globals.regId			).commit();
         prefs.edit().putString("pref_color"			, Globals.colorPref		).commit();
         prefs.edit().putString("pref_chat_name"		, Globals.chatName		).commit();
+        
+        Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
+        unregIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+        startService(unregIntent);
 	}
 	
 	@Override
@@ -160,6 +165,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         prefs.getString("pref_reg_id"			, Globals.regId			);
         prefs.getString("pref_color"			, Globals.colorPref		);
         prefs.getString("pref_chat_name"		, Globals.chatName		);
+        
+        Intent registrationIntent = new Intent("com.google.android.c2dm.intent.REGISTER");
+		registrationIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+		registrationIntent.putExtra("sender", Globals.SENDER_ID);
+		startService(registrationIntent);
+		Globals.newReg = true;
 	}
 
 	@Override
