@@ -9,7 +9,6 @@ import net.livecourse.utility.Globals;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -200,7 +199,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	{
 		// TODO Auto-generated method stub
 		
-		return false;
+		Globals.mode.finish();
+		return true;
 	}
 
 	/**

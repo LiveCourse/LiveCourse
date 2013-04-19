@@ -24,6 +24,7 @@ import net.livecourse.R;
 import net.livecourse.database.Chatroom;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
+import net.livecourse.utility.Utility;
 
 public class UserInfoActivity extends SherlockFragmentActivity implements OnRestCalled
 {
@@ -50,12 +51,12 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
     protected void onCreate(Bundle savedInstanceState) 
 	{
         this.userId = this.getIntent().getStringExtra("userId");
-        Log.d(this.TAG, "The current user id: " + this.getIntent().getStringExtra("userId"));
-        //this.setTitle();
-        
+        Log.d(this.TAG, "The current user id: " + this.getIntent().getStringExtra("userId"));        
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.userinfo_layout);
+        
+        Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
         
         Log.d(this.TAG, "ID1:" + this.userId);
         new Restful(Restful.GET_USER_PATH, Restful.GET, new String[]{"id"}, new String[]{this.userId}, 1, this);

@@ -222,7 +222,9 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			    new Restful(Restful.UNSUBSCRIBE_CHAT_PATH, Restful.POST, new String[]{"id"},new String[]{this.chatRoomToDelete}, 1, this);
 			    break;
 		}
-		return false;
+		
+		Globals.mode.finish();
+		return true;
 	}
 
 	/**
@@ -325,6 +327,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		 * Changes the chatId
 		 */
 		Globals.chatId = chatId;
+		Globals.chatName = chatName;
 		
 		/**
 		 * Call to grab the chat messages from the server and populate them
@@ -388,6 +391,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			
 			if(Globals.chatId != null)
 			{
+				Log.d(this.TAG, "Chat Id: " + Globals.chatId +" Chat Name: " + Globals.chatName);
 				this.switchToChat(Globals.chatId, Globals.chatName);
 			}
 			
