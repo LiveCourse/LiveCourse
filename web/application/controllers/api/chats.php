@@ -571,13 +571,6 @@ class Chats extends REST_Controller
 		
 		//Send toast push notifications to all Windows Phone users
 		$wp_users = $this->Model_Users->fetch_all_subscribed_wp_user($chat_id,0); 
-		foreach ($wp_users as $wp)
-		{
-			$wpp = new WindowsPhonePushClient($wp->push_url);
-			$wpp->send_toast($chat_info->name,$message,"/Chat.xaml?id=" . $chat_id_string);
-		}
-		
-		$wp_users = $this->Model_Users->fetch_all_subscribed_wp_user($chat_id,1);
 		$msg_data = array('message_id' => $message_id,
 		    		'chat_id' => $chat_id_string,
 		    		'send_time' => $time,
@@ -585,10 +578,10 @@ class Chats extends REST_Controller
 		    		'user_id' => $user_id,
 		    		'email' => $user_info[0]->email,
 		    		'display_name' => $user_info[0]->display_name);
-		    		
 		foreach ($wp_users as $wp)
 		{
 			$wpp = new WindowsPhonePushClient($wp->push_url);
+			$wpp->send_toast($chat_info->name,$message,"/Chat.xaml?id=" . $chat_id_string);
 			$wpp->send_raw_update(json_encode($msg_data));
 		}
 		
