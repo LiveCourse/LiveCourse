@@ -470,7 +470,7 @@ WHERE lc_chat_participants.chat_id = 1
 	function get_file_info($message_id)
 	{
 		return $this->db
-			->where('message_id', $message_id);
+			->where('message_id', $message_id)
 			->get('lc_chat_files');
 	}
 	

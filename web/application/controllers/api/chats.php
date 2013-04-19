@@ -551,8 +551,8 @@ class Chats extends REST_Controller
 		$this->load->model('Model_Chats');
 
 		$chat_id_string = $this->post('chat_id');
-		$message = $this->post('message');
-		$user_id = $this->authenticated_as;
+		$message 	= $this->post('message');
+		$user_id 	= $this->authenticated_as;
 
 		//Make sure we're signed in and we requested a chat ID
 		if ($user_id <= 0 || strlen($chat_id_string) <= 0)
