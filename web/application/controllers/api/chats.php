@@ -590,10 +590,14 @@ class Chats extends REST_Controller
 		
 		
 		$send_time = time();
-		if($send_time - $this->Model_Chats->get_time_newest($user_id)>2){
-			$message_data = $this->Model_Chats->send_message($user_id,$chat_id,$message,$send_time);
-		}else{
-			$this->response($this->rest_error(array("Please wait a few seconds before sending another message.")),403);
+		if ($send_time - $this->Model_Chats->get_time_newest($user_id) > 2)
+		{
+			$message_data = $this->Model_Chats->send_message($user_id, $chat_id, $message, $send_time);
+		}
+		
+		else
+		{
+			$this->response($this->rest_error(array("Please wait a few seconds before sending another message.")), 403);
 			return;
 		}
 		
@@ -708,7 +712,7 @@ class Chats extends REST_Controller
 		include_once("misc/windowsphonepushclient.php");
 		
 		//Send toast push notifications to all Windows Phone users
-		$wp_users = $this->Model_Users->fetch_all_subscribed_wp_user($chat_id,0); 
+		$wp_users = $this->Model_Users->fetch_all_subscribed_wp_user($chat_id, 0); 
 		$msg_data = array('message_id' => $message_id,
 		    		'chat_id' => $chat_id_string,
 		    		'send_time' => $time,
@@ -719,7 +723,7 @@ class Chats extends REST_Controller
 		foreach ($wp_users as $wp)
 		{
 			$wpp = new WindowsPhonePushClient($wp->push_url);
-			$wpp->send_toast($chat_info->name,$message,"/Chat.xaml?id=" . $chat_id_string);
+			$wpp->send_toast($chat_info->name, $message, "/Chat.xaml?id=" . $chat_id_string);
 			$wpp->send_raw_update(json_encode($msg_data));
 		}
 		
