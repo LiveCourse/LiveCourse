@@ -222,7 +222,9 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			    new Restful(Restful.UNSUBSCRIBE_CHAT_PATH, Restful.POST, new String[]{"id"},new String[]{this.chatRoomToDelete}, 1, this);
 			    break;
 		}
-		return false;
+		
+		Globals.mode.finish();
+		return true;
 	}
 
 	/**
