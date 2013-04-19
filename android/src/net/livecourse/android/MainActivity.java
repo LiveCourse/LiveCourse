@@ -95,9 +95,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	            startActivityForResult(settings, RESULT_SETTINGS);
 				break;
 			case R.id.main_options_logout:
+				
 				Toast.makeText(this, "Logging Out", Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(this, LoginActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				
 				Globals.roomList = null;
 				Globals.userId = null;
 				Globals.email = null;
@@ -111,7 +113,21 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 				Globals.startEpoch = null;
 				Globals.message = null;
 				Globals.chatName = null;
+				
+				SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+				
+		        prefs.edit().putString("pref_user_id"		, null	).commit();
+		        prefs.edit().putString("pref_email"			, null	).commit();
+		        prefs.edit().putString("pref_display_name"	, null	).commit();
+		        prefs.edit().putString("pref_password_token", null	).commit();
+		        prefs.edit().putString("pref_token"			, null	).commit();
+		        prefs.edit().putString("pref_chat_id"		, null	).commit();
+		        prefs.edit().putString("pref_reg_id"		, null	).commit();
+		        prefs.edit().putString("pref_color"			, null	).commit();
+		        prefs.edit().putString("pref_chat_name"		, null	).commit();
+		        
 				this.startActivity(intent);
+				
 				break;
 			case R.id.item1:
 				Toast.makeText(this, "Menu item 1 tapped", Toast.LENGTH_SHORT).show();
