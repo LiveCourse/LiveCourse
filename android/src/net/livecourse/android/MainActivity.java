@@ -194,14 +194,21 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 			case 0:
 	    		mAdapter.getItem(0).setMenuVisibility(true);
 	    		mAdapter.getItem(1).setMenuVisibility(false);
+	    		mAdapter.getItem(2).setMenuVisibility(false);
 	    		break;
 			case 1:
 	    		mAdapter.getItem(0).setMenuVisibility(false);
 	    		mAdapter.getItem(1).setMenuVisibility(true);
+	    		mAdapter.getItem(2).setMenuVisibility(false);
 	    		break;
 			case 2:
 	    		mAdapter.getItem(0).setMenuVisibility(false);
 	    		mAdapter.getItem(1).setMenuVisibility(false);
+	    		mAdapter.getItem(2).setMenuVisibility(true);
+			case 3:
+				mAdapter.getItem(0).setMenuVisibility(false);
+	    		mAdapter.getItem(1).setMenuVisibility(false);
+	    		mAdapter.getItem(2).setMenuVisibility(false);
 	    		break;
 		}		
 	}

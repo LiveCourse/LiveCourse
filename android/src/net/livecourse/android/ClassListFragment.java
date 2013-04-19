@@ -310,6 +310,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			tabsAdapter.CONTENT = new String[] { "Class List", "Chat", "Documents","Participants"};
 			tabsAdapter.setCount(4);
 			tabsAdapter.notifyDataSetChanged();
+			
 		}
 		
 		/**

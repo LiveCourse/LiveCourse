@@ -48,7 +48,6 @@ public class DocumentsFragment extends SherlockFragment
 		 * Allows adding stuff for the options menu
 		 */
 		this.setHasOptionsMenu(true);
-		this.setMenuVisibility(true);
 		
 		documentsLayout = inflater.inflate(R.layout.documents_layout, container, false);
 		
