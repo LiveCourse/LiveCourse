@@ -104,6 +104,51 @@ class Chats extends REST_Controller
 
 	}
 
+	/*
+	*Flags a file as innapropriate
+	*/
+	public function flag_file_post()
+	{
+	
+		$reporter_id = $this->authenticated_as;
+		if ($reporter_id <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")),401);
+			return;
+		}
+	
+		$this->load->model('Model_Chats');
+	
+		$message_id = $this->post('message_id');
+		$reason = $this->post('reason');
+		$time = time();
+	
+	
+	
+		if($this->Model_Chats->check_reporter($reporter_id,$message_id)==false)
+		{		
+			if($this->Model_Chats->check_message($message_id)==true)
+			{
+				$this->Model_Chats->flag_message($message_id,$reporter_id,$reason,$time);		
+				if($this->Model_Chats->check_flagged($message_id)>=5)
+				{
+					$this->Model_Chats->remove_file($message_id);
+				}
+			}
+			else
+			{
+			$this->response($this->rest_error(array("Only messages that exist my be deleted.")),403);
+			return;
+			}
+		}
+		else
+		{
+		$this->response($this->rest_error(array("You have already reported this message.")),403);
+		return;
+		}
+			
+	}
+	
 	/**
 	 *Flags a message as inapropriate
 	 */
@@ -452,7 +497,15 @@ class Chats extends REST_Controller
 			return;
 		}
 		
-		$message_data = $this->Model_Chats->send_message($user_id,$chat_id,$message);
+		
+		$send_time = time();
+		if($send_time - $this->Model_Chats->get_time_newest($user_id)>2){
+			$message_data = $this->Model_Chats->send_message($user_id,$chat_id,$message,$send_time);
+		}else{
+			$this->response($this->rest_error(array("Please wait a few seconds before sending another message.")),403);
+			return;
+		}
+		
 		
 		if(!$message_data)
 		{
