@@ -597,7 +597,7 @@ class Chats extends REST_Controller
 		$this->load->model('Model_S3');
 		$this->load->model('Model_Auth');
 		
-		//Randomly generate the file name.
+		//Randomly generate the filename.
 		$file_name = $this->Model_Auth->_random_string(16);
 		
 		//Check if there was an uploaded file.
@@ -647,6 +647,7 @@ class Chats extends REST_Controller
 			{
 				$registration_ids[] = $user->gcm_regid;
 			}
+			
 			$url = 'https://android.googleapis.com/gcm/send';
 		
 			$fields = array(
@@ -657,8 +658,8 @@ class Chats extends REST_Controller
 			    		'message_string' => $message,
 			    		'user_id' => $user_id,
 			    		'email' => $user_info[0]->email,
-			    		'display_name' => $user_info[0]->display_name,)
-			);
+			    		'display_name' => $user_info[0]->display_name,
+			));
 			
 			$headers = array(
 			    'Authorization: key=' . $this->config->item('api_key'),
@@ -1313,13 +1314,13 @@ class Chats extends REST_Controller
 	/*This function retrieves a file object
 	 *
 	 *chat_id_string - The String for the Chat in which the file was uploaded
-	 *file_id - the unique ID of the file that was uploaded
+	 *message_id - ID of the message linked to the file
 	 *
 	 *returns
 	 *	401 if not logged in
 	 *	400 if no chat ID was specified
 	 *	404 if the specified chat doesn't exist
-	 *	404 if no file name was supplied
+	 *	404 if no filename was supplied
 	 *	404 if there was an error finding the file
 	 *	200 and an array of information about the file
 	 */
@@ -1340,7 +1341,7 @@ class Chats extends REST_Controller
 		
 		//Get Variables
 		$chat_id_string = $this->get('chat_id_string');
-		$file_id = $this->get('file_id');
+		$message_id = $this->get('message_id');
 		
 		//Make sure we requested a chat ID
 		if (strlen($chat_id_string) <= 0)
@@ -1359,7 +1360,7 @@ class Chats extends REST_Controller
 		}
 		
 		//Look up the name of the file by the unique file ID
-		$fileinfo = $this->Model_Chats->get_file_info($file_id);
+		$fileinfo = $this->Model_Chats->get_file_info($message_id);
 		
 		$filename = $fileinfo->filename;
 		
@@ -1395,13 +1396,13 @@ class Chats extends REST_Controller
 	/*This function removes a file
 	 *
 	 *chat_id_string - The String for the Chat in which the file was uploaded
-	 *file_id - the unique ID of the file that was uploaded
+	 *message_id - ID of the message linked to the file
 	 *
 	 *returns
 	 *	401 if not logged in
 	 *	400 if no chat ID was specified
 	 *	404 if the specified chat doesn't exist
-	 *	404 if no file name was supplied
+	 *	404 if no filename was supplied
 	 *	404 if there was an error finding the file
 	 *	404 if there was an error removing the file entry from the database
 	 *	200 on successful delete
@@ -1424,7 +1425,7 @@ class Chats extends REST_Controller
 		
 		//Get Post Variables
 		$chat_id_string = $this->post('chat_id_string');
-		$file_id = $this->post('file_id');
+		$message_id = $this->post('message_id');
 		
 		//Make sure we requested a chat ID
 		if (strlen($chat_id_string) <= 0)
@@ -1443,7 +1444,8 @@ class Chats extends REST_Controller
 		}
 		
 		//Look up the name of the file by the unique file ID
-		$filename = $this->Model_Chats->get_filename($file_id);
+		$filename = $this->Model_Chats->get_file_info($message_id);
+		$filename = $filename->filename;
 		
 		//Make sure there was a specified file
 		if (strlen($filename) <= 0)

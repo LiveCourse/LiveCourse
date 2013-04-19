@@ -112,26 +112,6 @@ class Model_Chats extends CI_Model {
 			return true;
 		return false;
 	}
-	/**
-	 *Gets the time of the most recent message sent by a user
-	 *user_id - ID of the user in question
-	 *returns the time or NULL if no messages in the chat room
-	 */
-	function get_time_newest($user_id){
-		
-		$time = $this->db
-				->select()
-				->from('lc_chat_messages')
-				->where('user_id',$user_id)
-				->order_by("send_time", "desc")
-				->limit(1)
-				->get()
-				->result();
-		if (count($time) <= 0)
-			return NULL;
-		
-		return $time[0]->send_time;
-	}
 	
 	/**
 	 * Sends a message from the specified user to the specified chat room.
@@ -140,14 +120,14 @@ class Model_Chats extends CI_Model {
 	 * message_string - SANITIZED message string.
 	 * returns - NULL or FALSE if failed.
 	 */
-	function send_message($user_id,$chat_id,$message_string,$send_time)
+	function send_message($user_id,$chat_id,$message_string)
 	{
 		$this->load->model('Model_Users');
 		$this->Model_Users->update_user_focus_time($user_id);
 		$data = array(
 				'chat_id'	=> $chat_id,
 				'user_id'	=> $user_id,
-				'send_time'	=> $send_time,
+				'send_time'	=> time(),
 				'message_string'=> $message_string
 				);
 		return $this->db->insert('lc_chat_messages', $data); //Should return NULL or FALSE if failed.
@@ -487,17 +467,11 @@ WHERE lc_chat_participants.chat_id = 1
 		
 	}
 	
-	function get_filename($file_id)
+	function get_file_info($message_id)
 	{
-		return $this->db->select('filename')
-				->from('lc_chat_files')
-				->where('id', $file_id)
-				->get();
-	}
-	
-	function get_file_info($file_id)
-	{
-		return $this->db->get('lc_chat_files');
+		return $this->db
+			->where('message_id', $message_id);
+			->get('lc_chat_files');
 	}
 	
 	function remove_file($user_id, $chat_id, $filename)
