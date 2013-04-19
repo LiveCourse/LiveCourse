@@ -310,6 +310,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			tabsAdapter.CONTENT = new String[] { "Class List", "Chat", "Documents","Participants"};
 			tabsAdapter.setCount(4);
 			tabsAdapter.notifyDataSetChanged();
+			
 		}
 		
 		/**
@@ -383,6 +384,11 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			{
 				this.switchToChat(Globals.chatId, Globals.chatName);
 				this.updateListCalledByQR = false;
+			}
+			
+			if(Globals.chatId != null)
+			{
+				this.switchToChat(Globals.chatId, Globals.chatName);
 			}
 			
 		}

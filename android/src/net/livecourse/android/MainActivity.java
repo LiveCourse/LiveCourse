@@ -11,7 +11,9 @@ import net.livecourse.rest.OnRestCalled;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -124,13 +126,41 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		return super.onOptionsItemSelected(item);
 	}
 
-	/*
+	
 	@Override
 	protected void onPause() 
 	{
 		super.onPause();
-		GCMRegistrar.unregister(this);
-	}*/
+		SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+		
+        prefs.edit().putString("pref_user_id"		, Globals.userId		).commit();
+        prefs.edit().putString("pref_email"			, Globals.email			).commit();
+        prefs.edit().putString("pref_display_name"	, Globals.displayName	).commit();
+        prefs.edit().putString("pref_password_token", Globals.passwordToken	).commit();
+        prefs.edit().putString("pref_token"			, Globals.token			).commit();
+        prefs.edit().putString("pref_chat_id"		, Globals.chatId		).commit();
+        prefs.edit().putString("pref_reg_id"		, Globals.regId			).commit();
+        prefs.edit().putString("pref_color"			, Globals.colorPref		).commit();
+        prefs.edit().putString("pref_chat_name"		, Globals.chatName		).commit();
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		
+		SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+		
+        prefs.getString("pref_user_id"			, Globals.userId		);
+        prefs.getString("pref_email"			, Globals.email			);
+        prefs.getString("pref_display_name"		, Globals.displayName	);
+        prefs.getString("pref_password_token"	, Globals.passwordToken	);
+        prefs.getString("pref_token"			, Globals.token			);
+        prefs.getString("pref_chat_id"			, Globals.chatId		);
+        prefs.getString("pref_reg_id"			, Globals.regId			);
+        prefs.getString("pref_color"			, Globals.colorPref		);
+        prefs.getString("pref_chat_name"		, Globals.chatName		);
+	}
 
 	@Override
 	public void onPageScrollStateChanged(int arg0) {
@@ -164,14 +194,21 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 			case 0:
 	    		mAdapter.getItem(0).setMenuVisibility(true);
 	    		mAdapter.getItem(1).setMenuVisibility(false);
+	    		mAdapter.getItem(2).setMenuVisibility(false);
 	    		break;
 			case 1:
 	    		mAdapter.getItem(0).setMenuVisibility(false);
 	    		mAdapter.getItem(1).setMenuVisibility(true);
+	    		mAdapter.getItem(2).setMenuVisibility(false);
 	    		break;
 			case 2:
 	    		mAdapter.getItem(0).setMenuVisibility(false);
 	    		mAdapter.getItem(1).setMenuVisibility(false);
+	    		mAdapter.getItem(2).setMenuVisibility(true);
+			case 3:
+				mAdapter.getItem(0).setMenuVisibility(false);
+	    		mAdapter.getItem(1).setMenuVisibility(false);
+	    		mAdapter.getItem(2).setMenuVisibility(false);
 	    		break;
 		}		
 	}
