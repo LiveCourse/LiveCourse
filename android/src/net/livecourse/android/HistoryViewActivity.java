@@ -11,10 +11,12 @@ import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -24,10 +26,15 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class HistoryViewActivity extends SherlockFragmentActivity implements OnItemLongClickListener, LoaderCallbacks<Cursor>, OnRestCalled
 {
 	private final String TAG = " == History View Activity == ";
+	
+	private long time;
 	/**
 	 * View used for the history list
 	 */
@@ -42,10 +49,13 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
 	{
+		Log.d(this.TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_layout);
         
         Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
+        this.setTitle(this.getIntent().getStringExtra("date"));
+        this.time = this.getIntent().getLongExtra("time", 0);
         
         /**
          * Connects the view to the XML
@@ -61,6 +71,39 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 		historyListView.setOnItemLongClickListener(this);
 		
 		this.updateList();
+	}
+	
+	@Override
+	protected void onNewIntent (Intent intent)
+	{
+		Log.d(this.TAG, "onNewIntent");
+        this.setTitle(this.getIntent().getStringExtra("date"));
+		this.time = intent.getLongExtra("time", 0);
+		this.updateList();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater=getSupportMenuInflater();
+		inflater.inflate(R.menu.history_activity_menu,menu);
+		
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch(item.getItemId())
+		{
+		case R.id.change_history_date_item:
+			Log.d(this.TAG, "Running onOptionsItemSelected view history");
+			DialogFragment newFragment = new HistoryDatePickerFragment();
+		    newFragment.show(this.getSupportFragmentManager(), "datePicker");
+			break;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -90,7 +133,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	public void updateList()
 	{
 		Globals.appDb.recreateHistory();
-		new Restful(Restful.GET_CHAT_HISTORY_PATH, Restful.GET,new String[] {"chat_id","start_epoch"},new String[] {Globals.chatId, "" + this.getIntent().getLongExtra("time", 0)},2,this);
+		new Restful(Restful.GET_CHAT_HISTORY_PATH, Restful.GET,new String[] {"chat_id","start_epoch"},new String[] {Globals.chatId, "" + this.time},2,this);
 	}
 	public void clearList()
 	{

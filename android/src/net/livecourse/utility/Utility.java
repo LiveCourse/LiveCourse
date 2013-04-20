@@ -234,6 +234,59 @@ public class Utility
 	}
 	
 	/**
+	 * This method converts the month given as an int into the month given as a string,
+	 * with 0 = January
+	 * 
+	 * @param month	The month of the year with 0 being January
+	 * @return		The month as a string, null if month not between 0 (inclusive) and
+	 * 				12 (exclusive)
+	 */
+	public static String convertMonthToString(int month)
+	{
+		switch(month)
+		{
+			case  0:
+				return "January";
+			case  1:
+				return "Febuary";
+			case  2:
+				return "March";
+			case  3:
+				return "April";
+			case  4:
+				return "May";
+			case  5:
+				return "June";
+			case  6:
+				return "July";
+			case  7:
+				return "August";
+			case  8:
+				return "September";
+			case  9:
+				return "October";
+			case 10:
+				return "November";
+			case 11:
+				return "December";	
+		}
+		return null;
+	}
+	
+	/**
+	 * This method takes the month, date, and year in ints and outputs the String of the date
+	 * 
+	 * @param month	The month
+	 * @param date	The date
+	 * @param year	The year
+	 * @return		The date in the format: Month Date, Year
+	 */
+	public static String convertToStringDate(int month, int date, int year)
+	{
+		return Utility.convertMonthToString(month) + " " + date + ", " + year;
+	}
+	
+	/**
 	 * This method is used to change a specified activity to a color in hex
 	 * 
 	 * @param activity	The activity whose color is to be changed

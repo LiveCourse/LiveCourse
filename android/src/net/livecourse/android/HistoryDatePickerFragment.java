@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 
 import net.livecourse.utility.Globals;
+import net.livecourse.utility.Utility;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -16,15 +17,19 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 
 public class HistoryDatePickerFragment extends SherlockDialogFragment implements DatePickerDialog.OnDateSetListener
 {
-	boolean invoked = false;
+	private boolean invoked = false;
+	
+	private int month;
+	private int day;
+	private int year;
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) 
 	{
 		final Calendar c = Calendar.getInstance();
-		int year = c.get(Calendar.YEAR);
-        int month  = c.get(Calendar.MONTH) + 1;
-        int day = c.get(Calendar.DAY_OF_MONTH);
+		year = c.get(Calendar.YEAR);
+        month  = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
 
 		return new DatePickerDialog(this.getSherlockActivity(), this, year, month, day);
 	}
@@ -36,7 +41,7 @@ public class HistoryDatePickerFragment extends SherlockDialogFragment implements
 			return;
 		invoked = true;
 		
-		String curDate = String.format("%02d/%02d/%04d", month, date, year) + " 00:00:00";
+		String curDate = String.format("%02d/%02d/%04d", month + 1, date, year) + " 00:00:00";
 		Log.d("== DatePicker ==", "The date: " + curDate);
 		
 		long epoch;
@@ -47,6 +52,8 @@ public class HistoryDatePickerFragment extends SherlockDialogFragment implements
 			Globals.historyTime = epoch;
 			Intent historyIntent = new Intent(this.getSherlockActivity(), HistoryViewActivity.class);
 			historyIntent.putExtra("time", epoch);
+			historyIntent.putExtra("date", Utility.convertToStringDate(month, day, year));
+			historyIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			
 			Log.d("== DatePicker ==", "History activity started");
 			this.getSherlockActivity().startActivity(historyIntent);
