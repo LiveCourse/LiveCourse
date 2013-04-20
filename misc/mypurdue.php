@@ -121,7 +121,7 @@ unset($ch);
 
 $cookie_db = updateCookiesFromRequest($sessid,$cookie_db);
 
-print("Requesting (massive) class list...\n");
+print("Creating session ...\n");
 
 //https://selfservice.mypurdue.purdue.edu/prod/bwskfcls.P_GetCrse_Advanced
 
@@ -146,7 +146,6 @@ unset($ch);
 
 preg_match('/Location: (.*)' . PHP_EOL . '/',$buf,$result);
 $cookie_db = updateCookiesFromRequest($buf,$cookie_db);
-echo("\n\nNew Loc: " . $result[1]);
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL,$result[1]);
@@ -166,7 +165,11 @@ unset($ch);
 
 $cookie_db = updateCookiesFromRequest($buf,$cookie_db);
 
-$classpost = "rsts=dummy&crn=dummy&term_in=201410&sel_subj=dummy&sel_day=dummy&sel_schd=dummy&sel_insm=dummy&sel_camp=dummy&sel_levl=dummy&sel_sess=dummy&sel_instr=dummy&sel_ptrm=dummy&sel_attr=dummy&sel_subj=AAE&sel_subj=AAS&sel_subj=ABE&sel_subj=AD&sel_subj=AFT&sel_subj=AGEC&sel_subj=AGR&sel_subj=AGRY&sel_subj=AMST&sel_subj=ANSC&sel_subj=ANTH&sel_subj=ARAB&sel_subj=ASAM&sel_subj=ASL&sel_subj=ASM&sel_subj=ASTR&sel_subj=AT&sel_subj=BAND&sel_subj=BCHM&sel_subj=BCM&sel_subj=BIOL&sel_subj=BME&sel_subj=BMS&sel_subj=BTNY&sel_subj=CAND&sel_subj=CE&sel_subj=CEM&sel_subj=CGT&sel_subj=CHE&sel_subj=CHM&sel_subj=CHNS&sel_subj=CLCS&sel_subj=CLPH&sel_subj=CMPL&sel_subj=CNIT&sel_subj=COM&sel_subj=CPB&sel_subj=CS&sel_subj=CSR&sel_subj=DANC&sel_subj=EAPS&sel_subj=ECE&sel_subj=ECET&sel_subj=ECON&sel_subj=EDCI&sel_subj=EDPS&sel_subj=EDST&sel_subj=EEE&sel_subj=ENE&sel_subj=ENGL&sel_subj=ENGR&sel_subj=ENTM&sel_subj=ENTR&sel_subj=EPCS&sel_subj=FNR&sel_subj=FR&sel_subj=FS&sel_subj=FVS&sel_subj=GEP&sel_subj=GER&sel_subj=GRAD&sel_subj=GREK&sel_subj=GS&sel_subj=HDFS&sel_subj=HEBR&sel_subj=HHS&sel_subj=HIST&sel_subj=HK&sel_subj=HONR&sel_subj=HORT&sel_subj=HSCI&sel_subj=HTM&sel_subj=IDE&sel_subj=IDIS&sel_subj=IE&sel_subj=IET&sel_subj=IPPH&sel_subj=IT&sel_subj=ITAL&sel_subj=JPNS&sel_subj=LA&sel_subj=LALS&sel_subj=LATN&sel_subj=LC&sel_subj=LCME&sel_subj=LING&sel_subj=MA&sel_subj=MARS&sel_subj=MCMP&sel_subj=ME&sel_subj=MET&sel_subj=MFET&sel_subj=MGMT&sel_subj=MSE&sel_subj=MSL&sel_subj=MUS&sel_subj=NRES&sel_subj=NS&sel_subj=NUCL&sel_subj=NUPH&sel_subj=NUR&sel_subj=NUTR&sel_subj=OBHR&sel_subj=OLS&sel_subj=PES&sel_subj=PHAD&sel_subj=PHIL&sel_subj=PHPR&sel_subj=PHRM&sel_subj=PHYS&sel_subj=POL&sel_subj=PSY&sel_subj=PTGS&sel_subj=REL&sel_subj=RUSS&sel_subj=SA&sel_subj=SCI&sel_subj=SLHS&sel_subj=SOC&sel_subj=SPAN&sel_subj=STAT&sel_subj=TECH&sel_subj=THTR&sel_subj=USP&sel_subj=VCS&sel_subj=VM&sel_subj=WOST&sel_subj=YDAE&sel_crse=&sel_title=&sel_schd=%25&sel_from_cred=&sel_to_cred=&sel_camp=%25&sel_ptrm=%25&sel_instr=%25&sel_sess=%25&sel_attr=%25&begin_hh=0&begin_mi=0&begin_ap=a&end_hh=0&end_mi=0&end_ap=a&SUB_BTN=Section+Search&path=1";
+print("Retrieving class list ...\n");
+
+$classpost =  "rsts=dummy&crn=dummy&term_in=201410&sel_subj=dummy&sel_day=dummy&sel_schd=dummy&sel_insm=dummy&sel_camp=dummy&sel_levl=dummy&sel_sess=dummy&sel_instr=dummy&sel_ptrm=dummy&sel_attr=dummy&sel_subj=CS&sel_crse=&sel_title=&sel_schd=%25&sel_from_cred=&sel_to_cred=&sel_camp=%25&sel_ptrm=%25&sel_instr=%25&sel_sess=%25&sel_attr=%25&begin_hh=0&begin_mi=0&begin_ap=a&end_hh=0&end_mi=0&end_ap=a&SUB_BTN=Section+Search&path=1"; //Just get CS courses.
+
+//$classpost = "rsts=dummy&crn=dummy&term_in=201410&sel_subj=dummy&sel_day=dummy&sel_schd=dummy&sel_insm=dummy&sel_camp=dummy&sel_levl=dummy&sel_sess=dummy&sel_instr=dummy&sel_ptrm=dummy&sel_attr=dummy&sel_subj=AAE&sel_subj=AAS&sel_subj=ABE&sel_subj=AD&sel_subj=AFT&sel_subj=AGEC&sel_subj=AGR&sel_subj=AGRY&sel_subj=AMST&sel_subj=ANSC&sel_subj=ANTH&sel_subj=ARAB&sel_subj=ASAM&sel_subj=ASL&sel_subj=ASM&sel_subj=ASTR&sel_subj=AT&sel_subj=BAND&sel_subj=BCHM&sel_subj=BCM&sel_subj=BIOL&sel_subj=BME&sel_subj=BMS&sel_subj=BTNY&sel_subj=CAND&sel_subj=CE&sel_subj=CEM&sel_subj=CGT&sel_subj=CHE&sel_subj=CHM&sel_subj=CHNS&sel_subj=CLCS&sel_subj=CLPH&sel_subj=CMPL&sel_subj=CNIT&sel_subj=COM&sel_subj=CPB&sel_subj=CS&sel_subj=CSR&sel_subj=DANC&sel_subj=EAPS&sel_subj=ECE&sel_subj=ECET&sel_subj=ECON&sel_subj=EDCI&sel_subj=EDPS&sel_subj=EDST&sel_subj=EEE&sel_subj=ENE&sel_subj=ENGL&sel_subj=ENGR&sel_subj=ENTM&sel_subj=ENTR&sel_subj=EPCS&sel_subj=FNR&sel_subj=FR&sel_subj=FS&sel_subj=FVS&sel_subj=GEP&sel_subj=GER&sel_subj=GRAD&sel_subj=GREK&sel_subj=GS&sel_subj=HDFS&sel_subj=HEBR&sel_subj=HHS&sel_subj=HIST&sel_subj=HK&sel_subj=HONR&sel_subj=HORT&sel_subj=HSCI&sel_subj=HTM&sel_subj=IDE&sel_subj=IDIS&sel_subj=IE&sel_subj=IET&sel_subj=IPPH&sel_subj=IT&sel_subj=ITAL&sel_subj=JPNS&sel_subj=LA&sel_subj=LALS&sel_subj=LATN&sel_subj=LC&sel_subj=LCME&sel_subj=LING&sel_subj=MA&sel_subj=MARS&sel_subj=MCMP&sel_subj=ME&sel_subj=MET&sel_subj=MFET&sel_subj=MGMT&sel_subj=MSE&sel_subj=MSL&sel_subj=MUS&sel_subj=NRES&sel_subj=NS&sel_subj=NUCL&sel_subj=NUPH&sel_subj=NUR&sel_subj=NUTR&sel_subj=OBHR&sel_subj=OLS&sel_subj=PES&sel_subj=PHAD&sel_subj=PHIL&sel_subj=PHPR&sel_subj=PHRM&sel_subj=PHYS&sel_subj=POL&sel_subj=PSY&sel_subj=PTGS&sel_subj=REL&sel_subj=RUSS&sel_subj=SA&sel_subj=SCI&sel_subj=SLHS&sel_subj=SOC&sel_subj=SPAN&sel_subj=STAT&sel_subj=TECH&sel_subj=THTR&sel_subj=USP&sel_subj=VCS&sel_subj=VM&sel_subj=WOST&sel_subj=YDAE&sel_crse=&sel_title=&sel_schd=%25&sel_from_cred=&sel_to_cred=&sel_camp=%25&sel_ptrm=%25&sel_instr=%25&sel_sess=%25&sel_attr=%25&begin_hh=0&begin_mi=0&begin_ap=a&end_hh=0&end_mi=0&end_ap=a&SUB_BTN=Section+Search&path=1";
 
 //$classpost = "rsts=dummy&crn=dummy&term_in=201410&sel_subj=dummy&sel_day=dummy&sel_schd=dummy&sel_insm=dummy&sel_camp=dummy&sel_levl=dummy&sel_sess=dummy&sel_instr=dummy&sel_ptrm=dummy&sel_attr=dummy&sel_subj=AAE&sel_crse=&sel_title=&sel_schd=%25&sel_from_cred=&sel_to_cred=&sel_camp=%25&sel_ptrm=%25&sel_instr=%25&sel_sess=%25&sel_attr=%25&begin_hh=0&begin_mi=0&begin_ap=a&end_hh=0&end_mi=0&end_ap=a&SUB_BTN=Section+Search&path=1";
 
@@ -188,7 +191,53 @@ unset($ch);
 
 $cookie_db = updateCookiesFromRequest($buf,$cookie_db);
 
-print_r($buf);
+//Let's parse this BABY
+
+print("Parsing class list ...\n");
+
+$dom = new DOMDocument;
+error_reporting(E_ALL ^ E_WARNING); // Don't show warnings for the HTML parsing
+$dom->loadHTML($buf);
+error_reporting(E_ALL ^ E_NOTICE);
+$xpath = new DOMXPath($dom);
+
+$xquery = "//table[@class='datadisplaytable']//tr";
+
+$classes = $xpath->query($xquery);
+
+foreach ($classes as $class)
+{
+	//Make sure this isn't a header.
+	$headercheck = $xpath->query(".//th",$class);
+	if ($headercheck->length > 0)
+	{
+		continue;
+	}
+	
+	//Now let's get the class data.
+	$c = array();
+	$classdata = $xpath->query(".//td",$class);
+	$c["crn"] = $classdata->item(1)->nodeValue;
+	$c["subj"] = $classdata->item(2)->nodeValue;
+	$c["course_number"] = $classdata->item(3)->nodeValue;
+	$c["section"] = $classdata->item(4)->nodeValue;
+	$c["name"] = $classdata->item(7)->nodeValue;
+	$c["dow"] = $classdata->item(8)->nodeValue;
+	$c["time"] = $classdata->item(9)->nodeValue;
+	$c["capacity"] = $classdata->item(10)->nodeValue;
+	$c["instructor"] = $classdata->item(19)->nodeValue;
+	$c["date"] = $classdata->item(20)->nodeValue;
+	$c["location"] = $classdata->item(21)->nodeValue;
+	$c["type"] = $classdata->item(22)->nodeValue;
+	$c["notes"] = $classdata->item(26)->nodeValue;
+	$links = explode("|",$classdata->item(23)->nodeValue);
+	if (count($links) == 2)
+	{
+		$c["link_self"] = $links[0];
+		$c["link_other"] = $links[1];
+	}
+	print_r($c);
+}
 
 ?>
 

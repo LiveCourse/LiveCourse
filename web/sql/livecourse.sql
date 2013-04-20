@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 20, 2013 at 06:49 AM
+-- Generation Time: Apr 20, 2013 at 07:49 AM
 -- Server version: 5.5.30
 -- PHP Version: 5.4.13
 
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `lc_sections` (
   `class_id` int(11) NOT NULL COMMENT 'ID of class this is a section of from lc_classes table',
   `type` varchar(64) NOT NULL COMMENT 'Type of section - Lecture, Recitation, Laboratory, etc.',
   `crn` int(11) NOT NULL COMMENT 'CRN number',
-  `section` int(11) NOT NULL COMMENT 'Section number',
+  `section` varchar(10) NOT NULL COMMENT 'Section number',
   `room_id` int(11) NOT NULL COMMENT 'ID of the room this section takes place in from lc_rooms',
   `dow_monday` tinyint(1) NOT NULL,
   `dow_tuesday` tinyint(1) NOT NULL,
