@@ -331,12 +331,14 @@ class Model_Users extends CI_Model {
 	* chat_id - ID, numerical, of the chat that we want windows phone users notified of
 	* returns the array of people who are registered with a windows phone device to this chat
 	*/
-	function fetch_all_subscribed_wp_user($chat_id,$channel)
+	function fetch_all_subscribed_wp_user($class_id,$channel)
 	{
 		$users = $this->db
 				->select('lc_wp_users.user_id, lc_wp_users.device_id, lc_wp_users.push_url')
 				->from('lc_wp_users')
-				->join('lc_chat_participants', 'lc_chat_participants.user_id = lc_wp_users.user_id AND lc_chat_participants.chat_id = ' . $chat_id )
+				->join('lc_section_participants', 'lc_section_participants.user_id = lc_wp_users.user_id' )
+				->join('lc_sections','lc_sections.id = lc_section_participants.section_id')
+				->where('lc_sections.class_id',$class_id)
 				->where('lc_wp_users.channel',$channel)
 				->get()
 				->result();
@@ -434,12 +436,14 @@ class Model_Users extends CI_Model {
 	*chat_id - ID, numerical, of the chat that we want android users notified of
 	*returns the array of people who are registered with an android device to this chat
 	*/
-	function fetch_all_subscribed_android_user($chat_id)
+	function fetch_all_subscribed_android_user($class_id)
 	{
 		$users = $this->db
 				->select('lc_gcm_users.user_id, lc_gcm_users.gcm_regid')
 				->from('lc_gcm_users')
-				->join('lc_chat_participants', 'lc_chat_participants.user_id = lc_gcm_users.user_id AND lc_chat_participants.chat_id = ' . $chat_id )
+				->join('lc_section_participants', 'lc_section_participants.user_id = lc_gcm_users.user_id' ) // AND lc_chat_participants.chat_id = ' . $chat_id
+				->join('lc_sections','lc_sections.id = lc_section_participants.section_id')
+				->where('lc_sections.class_id',$class_id)
 				->get()
 				->result();
 		return $users;

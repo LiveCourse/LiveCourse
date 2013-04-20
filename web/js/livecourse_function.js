@@ -298,7 +298,7 @@ function joinroom_show()
 		} else {
 			var ind = progress_indicator_show();
 			$(dialog).find("#joinroom_results").html();
-			call_api("chats/search","GET",{query: $(dialog).find("input[name=classnumber]").val()},
+			call_api("sections/search","GET",{query: $(dialog).find("input[name=classnumber]").val()},
 				function (data) {
 					$(dialog).find("#joinroom_results").html('<ul></ul>');
 					for (var i in data)
@@ -321,11 +321,11 @@ function joinroom_show()
 						item.fadeIn();
 						item.click(function() {
 							var _this = this;
-							class_join($(this).attr('id'),function (data) {
+							section_join($(this).attr('id'),function (data) {
 									dialog_close($(_this).parents('.DialogOverlay').first());
 								}, function(xhr, status)
 								{
-									var errdialog = dialog_new("Error Joining","An error occurred while attempting to join this class.",true,true);
+									var errdialog = dialog_new("Error Joining","An error occurred while attempting to join this class section.",true,true);
 									errdialog.find(".DialogContainer").addClass("error");
 									dialog_show(errdialog);
 								});
@@ -337,7 +337,7 @@ function joinroom_show()
 				function (xhr, status)
 				{
 					if (xhr.status == 404)
-						$(dialog).find("#joinroom_results").html("No matching classes could be found.");
+						$(dialog).find("#joinroom_results").html("No matching class sections could be found.");
 					else
 						$(dialog).find("#joinroom_results").html("There was an error processing your query.");
 					progress_indicator_hide(ind);
@@ -453,10 +453,10 @@ function user_profile_show(user_id)
 /**
  * Joins the logged in user to the specified class
  */
-function class_join(class_idstring,success_callback,error_callback)
+function section_join(section_idstring,success_callback,error_callback)
 {
 	var join_ind = progress_indicator_show();
-	call_api("chats/join","POST",{id: class_idstring},
+	call_api("sections/join","POST",{id: section_idstring},
 		function (data) {
 			if (typeof success_callback != "undefined")
 			{

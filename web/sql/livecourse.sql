@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.6
+-- version 3.5.7
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 18, 2013 at 05:43 PM
--- Server version: 5.5.30-log
--- PHP Version: 5.3.17
+-- Generation Time: Apr 20, 2013 at 06:49 AM
+-- Server version: 5.5.30
+-- PHP Version: 5.4.13
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -45,36 +45,9 @@ CREATE TABLE IF NOT EXISTS `lc_buildings` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identifier',
   `institution_id` int(11) NOT NULL COMMENT 'ID of institution where this building resides',
   `name` varchar(512) NOT NULL COMMENT 'Name of the building',
+  `short_name` varchar(10) NOT NULL COMMENT 'Shortened name (ex. LWSN)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `lc_chats`
---
-
-CREATE TABLE IF NOT EXISTS `lc_chats` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Room ID, primary index',
-  `id_string` varchar(12) NOT NULL COMMENT 'Randomized string for identifying the room to the client',
-  `subject_id` int(11) NOT NULL COMMENT 'ID of subject this room belongs to',
-  `course_number` smallint(6) NOT NULL COMMENT 'Course number',
-  `name` varchar(100) NOT NULL COMMENT 'Name of the room / class',
-  `institution_id` int(11) NOT NULL COMMENT 'identifier of the institution this room is offered at',
-  `room_id` int(11) NOT NULL COMMENT 'room identifier from lc_rooms',
-  `start_time` int(5) NOT NULL COMMENT 'Time that the class starts at in format MINUTES SINCE MIDNIGHT UTC',
-  `end_time` int(5) NOT NULL COMMENT 'Time that the class ends at in format MINUTES SINCE MIDNIGHT UTC',
-  `start_date` date NOT NULL COMMENT 'Date that the class begins',
-  `end_date` date NOT NULL COMMENT 'Date that the class ends',
-  `dow_monday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Monday',
-  `dow_tuesday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Tuesday',
-  `dow_wednesday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Wednesday',
-  `dow_thursday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Thursday',
-  `dow_friday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Friday',
-  `dow_saturday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Saturday',
-  `dow_sunday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Class occurs on a Sunday',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -90,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `lc_chat_files` (
   `message_id` int(11) NOT NULL COMMENT 'ID of the associated message',
   `uploaded_at` int(11) NOT NULL COMMENT 'Timestamp in EPOCH of when the file was uploaded',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -100,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `lc_chat_files` (
 
 CREATE TABLE IF NOT EXISTS `lc_chat_messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID of message',
-  `chat_id` int(11) NOT NULL COMMENT 'ID of chat room message is destined for',
+  `class_id` int(11) NOT NULL COMMENT 'ID of chat room message is destined for',
   `user_id` int(11) NOT NULL COMMENT 'ID of user that sent this message',
   `send_time` int(11) NOT NULL COMMENT 'Time that this message was sent in UNIX Epoch',
   `message_string` varchar(2048) NOT NULL COMMENT 'Message content',
@@ -120,20 +93,23 @@ CREATE TABLE IF NOT EXISTS `lc_chat_messages_flagged` (
   `reason` varchar(1024) NOT NULL COMMENT 'Reason for reporting the message',
   `time_submitted` int(11) NOT NULL COMMENT 'Time at which the user reported the message. Seconds since unix epoch.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lc_chat_participants`
+-- Table structure for table `lc_classes`
 --
 
-CREATE TABLE IF NOT EXISTS `lc_chat_participants` (
-  `chat_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `permissions` int(11) NOT NULL DEFAULT '0' COMMENT '0 = default, 1 = admin',
-  `jointime` int(11) NOT NULL COMMENT 'Time the user joined this particular chat in UNIX epoch'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `lc_classes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Room ID, primary index',
+  `id_string` varchar(12) NOT NULL COMMENT 'Randomized string for identifying the room to the client',
+  `subject_id` int(11) NOT NULL COMMENT 'ID of subject this room belongs to',
+  `course_number` smallint(6) NOT NULL COMMENT 'Course number',
+  `name` varchar(100) NOT NULL COMMENT 'Name of the room / class',
+  `institution_id` int(11) NOT NULL COMMENT 'identifier of the institution this room is offered at',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -159,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `lc_institutions` (
   `name` varchar(255) NOT NULL COMMENT 'Name of institution',
   `zip` varchar(5) NOT NULL COMMENT 'Zip code of institution location',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -178,6 +154,50 @@ CREATE TABLE IF NOT EXISTS `lc_rooms` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `lc_sections`
+--
+
+CREATE TABLE IF NOT EXISTS `lc_sections` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary ID',
+  `id_string` varchar(32) NOT NULL COMMENT 'Random string ID',
+  `class_id` int(11) NOT NULL COMMENT 'ID of class this is a section of from lc_classes table',
+  `type` varchar(64) NOT NULL COMMENT 'Type of section - Lecture, Recitation, Laboratory, etc.',
+  `crn` int(11) NOT NULL COMMENT 'CRN number',
+  `section` int(11) NOT NULL COMMENT 'Section number',
+  `room_id` int(11) NOT NULL COMMENT 'ID of the room this section takes place in from lc_rooms',
+  `dow_monday` tinyint(1) NOT NULL,
+  `dow_tuesday` tinyint(1) NOT NULL,
+  `dow_wednesday` tinyint(1) NOT NULL,
+  `dow_thursday` tinyint(1) NOT NULL,
+  `dow_friday` tinyint(1) NOT NULL,
+  `dow_saturday` tinyint(1) NOT NULL,
+  `dow_sunday` tinyint(1) NOT NULL,
+  `start_time` int(11) NOT NULL,
+  `end_time` int(11) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `capacity` int(11) NOT NULL,
+  `instructor` varchar(256) NOT NULL,
+  `notes` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lc_section_participants`
+--
+
+CREATE TABLE IF NOT EXISTS `lc_section_participants` (
+  `section_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `permissions` int(11) NOT NULL DEFAULT '0' COMMENT '0 = default, 1 = admin',
+  `jointime` int(11) NOT NULL COMMENT 'Time the user joined this particular chat in UNIX epoch'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `lc_subjects`
 --
 
@@ -186,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `lc_subjects` (
   `name` varchar(256) NOT NULL COMMENT 'Name of subject',
   `code` varchar(5) NOT NULL COMMENT 'Code (Computer science = CS, etc)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

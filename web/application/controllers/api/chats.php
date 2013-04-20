@@ -21,7 +21,7 @@ class Chats extends REST_Controller
 	 */
 	public function index_get()
 	{
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 		
 		if ($this->authenticated_as <= 0)
 		{
@@ -33,7 +33,7 @@ class Chats extends REST_Controller
 		if (!isset($user_id) || $user_id == "")
 			$user_id = $this->authenticated_as;
 		
-		$chats = $this->Model_Chats->get_subscribed_chats($user_id);
+		$chats = $this->Model_Classes->get_subscribed_chats($user_id);
 		$this->response($chats, 200);
 	}
 
@@ -50,7 +50,7 @@ class Chats extends REST_Controller
 	 */
 	public function info_get()
 	{
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 		$chat_id_string = $this->get('id');
 		
 		//Check to see if they are authenticated
@@ -68,18 +68,19 @@ class Chats extends REST_Controller
 			return;
 		}
 		
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 		if ($chat_id < 0)
 		{
 			$this->response($this->rest_error(array("Specified chat could not be found.")), 404);
 			return;
 		}
 		
-		$chat_info = $this->Model_Chats->get_chat_by_id($chat_id);
+		$chat_info = $this->Model_Classes->get_chat_by_id($chat_id);
 		$this->response($chat_info);
 	}
 
 	/**
+	 * DEPRECATED
 	 *Searches for a specific chat based on a keyword query
 	 *
 	 *query - String based query of what to search for
@@ -92,7 +93,12 @@ class Chats extends REST_Controller
 	 */
 	public function search_get()
 	{
-		$this->load->model('Model_Chats');
+		$this->response($this->rest_error(array("This function is deprecated Please use the section API.")), 404);
+		return;
+		
+		/*
+	
+		$this->load->model('Model_Classes');
 		$query_string = $this->get('query');
 		
 		//Check to see if they are authenticated
@@ -110,7 +116,7 @@ class Chats extends REST_Controller
 			return;
 		}
 
-		$chats = $this->Model_Chats->search_chats($query_string);
+		$chats = $this->Model_Classes->search_chats($query_string);
 		if (count($chats) <= 0)
 		{
 			$this->response($this->rest_error(array("No matching chats could be found.")), 404);
@@ -119,6 +125,7 @@ class Chats extends REST_Controller
 		{
 			$this->response($chats);
 		}
+		*/
 
 	}
 
@@ -144,7 +151,7 @@ class Chats extends REST_Controller
 			return;
 		}
 	
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 	
 		$message_id = $this->post('message_id');
 		$reason = $this->post('reason');
@@ -152,14 +159,14 @@ class Chats extends REST_Controller
 	
 	
 	
-		if ($this->Model_Chats->check_reporter($reporter_id,$message_id)==false)
+		if ($this->Model_Classes->check_reporter($reporter_id,$message_id)==false)
 		{		
-			if ($this->Model_Chats->check_message($message_id)==true)
+			if ($this->Model_Classes->check_message($message_id)==true)
 			{
-				$this->Model_Chats->flag_message($message_id,$reporter_id,$reason,$time);		
-				if ($this->Model_Chats->check_flagged($message_id)>=5)
+				$this->Model_Classes->flag_message($message_id,$reporter_id,$reason,$time);		
+				if ($this->Model_Classes->check_flagged($message_id)>=5)
 				{
-					$this->Model_Chats->remove_file($message_id);
+					$this->Model_Classes->remove_file($message_id);
 				}
 				$this->response(null, 200);
 				return;
@@ -201,20 +208,20 @@ class Chats extends REST_Controller
 			return;
 		}
 		
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 	
 		$message_id = $this->post('message_id');
 		$reason = $this->post('reason');
 		$time = time();
 		
-		if ($this->Model_Chats->check_reporter($reporter_id,$message_id)==false)
+		if ($this->Model_Classes->check_reporter($reporter_id,$message_id)==false)
 		{		
-			if ($this->Model_Chats->check_message($message_id)==true)
+			if ($this->Model_Classes->check_message($message_id)==true)
 			{
-				$this->Model_Chats->flag_message($message_id,$reporter_id,$reason,$time);		
-				if ($this->Model_Chats->check_flagged($message_id)>=5)
+				$this->Model_Classes->flag_message($message_id,$reporter_id,$reason,$time);		
+				if ($this->Model_Classes->check_flagged($message_id)>=5)
 				{
-					$this->Model_Chats->remove_message($message_id);
+					$this->Model_Classes->remove_message($message_id);
 				}
 				$this->response(null, 200);
 				
@@ -235,6 +242,7 @@ class Chats extends REST_Controller
 	}
 	
 	/**
+	 * DEPRECATED!!!
 	 * Joins a user to a chat
 	 *
 	 * id - The Chat ID String of the chat the user is to be joined to
@@ -248,7 +256,10 @@ class Chats extends REST_Controller
 	 */
 	public function join_post()
 	{
-		$this->load->model('Model_Chats');
+		$this->response($this->rest_error(array("This API call is deprecated. Please use the sections API.")), 404);
+		return;
+		/*
+		$this->load->model('Model_Classes');
 
 		$chat_id_string = $this->post('id');
 		
@@ -269,7 +280,7 @@ class Chats extends REST_Controller
 		}
 
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 
 		if ($chat_id < 0)
 		{
@@ -278,21 +289,24 @@ class Chats extends REST_Controller
 		}
 
 		//Verify that the user hasn't already subscribed to this chat room.
-		$already_joined = $this->Model_Chats->is_user_subscribed($user_id,$chat_id);
+		$already_joined = $this->Model_Classes->is_user_subscribed($user_id,$chat_id);
 		if ($already_joined)
 		{
 			$this->response($this->rest_error(array("You have already joined that chat.")), 403);
 			return;
 		}
 
-		$this->Model_Chats->join_chat_by_id($user_id,$chat_id);
+		$this->Model_Classes->join_chat_by_id($user_id,$chat_id);
 
-		$chatinfo = $this->Model_Chats->get_chat_by_id($chat_id);
+		$chatinfo = $this->Model_Classes->get_chat_by_id($chat_id);
 
 		$this->response($chatinfo, 200);
+		*/
 	}
 
 	/**
+	 * DEPRECATED!!!
+	 * TODO: Make this work with sections and re-enable.
 	 * Adds a chat to the database
 	 *
 	 * id_string 		- the generated unique string for the chat
@@ -319,7 +333,11 @@ class Chats extends REST_Controller
 	 */
 	public function add_post()
 	{
-		$this->load->model('Model_Chats');
+		$this->response($this->rest_error(array("Not implemented.")), 500); //We need to make this work properly with linked sections.
+		return; 
+		
+		
+		$this->load->model('Model_Classes');
 		
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
@@ -446,7 +464,7 @@ class Chats extends REST_Controller
 		$chat_info['dow_saturday'] = $dow_saturday;
 		$chat_info['dow_sunday'] = $dow_sunday;
 		
-		if ($this->Model_Chats->add_chat($chat_info))
+		if ($this->Model_Classes->add_chat($chat_info))
 		{
 			$this->response('Successfully added a chat room!', 200);
 			return;
@@ -475,11 +493,11 @@ class Chats extends REST_Controller
 	 */
 	public function leave_post()
 	{
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
-		$chat_id_string = $this->post('id');
+		$class_id_string = $this->post('id');
 
 		//Make sure they gave us a user id.
 		if ($user_id <= 0)
@@ -489,31 +507,31 @@ class Chats extends REST_Controller
 		}
 
 		//Check to make sure we have a chat id string
-		if (strlen($chat_id_string) <= 0)
+		if (strlen($class_id_string) <= 0)
 		{
-			$this->response($this->rest_error(array("No chat ID was specified.")), 403);
+			$this->response($this->rest_error(array("No class ID was specified.")), 403);
 			return;
 		}
 
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$class_id = $this->Model_Classes->get_id_from_string($class_id_string);
 
-		if ($chat_id < 0)
+		if ($class_id < 0)
 		{
-			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
+			$this->response($this->rest_error(array("Specified class does not exist.")), 404);
 			return;
 		}
 
 		//Check to see if the user is subscribed
-		$subscribed = $this->Model_Chats->is_user_subscribed($user_id,$chat_id);
+		$subscribed = $this->Model_Classes->is_user_subscribed($user_id,$class_id);
 		if ($subscribed == false)
 		{
-			$this->response($this->rest_error(array("User was not subscribed to the chat!")), 403);
+			$this->response($this->rest_error(array("User was not subscribed to the class!")), 403);
 			return;
 		}
 
 		//Well, all that error checking done, lets unsubscribe the user.
-		$remove = $this->Model_Chats->leave_chat_by_id($chat_id,$user_id);
+		$remove = $this->Model_Classes->leave_class_by_id($class_id,$user_id);
 		
 		if ($remove)
 		{
@@ -548,7 +566,7 @@ class Chats extends REST_Controller
 	 */
 	public function send_post()
 	{
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 
 		$chat_id_string = $this->post('chat_id');
 		$message 	= $this->post('message');
@@ -562,7 +580,7 @@ class Chats extends REST_Controller
 		}
 
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 		if ($chat_id < 0)
 		{
 			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
@@ -570,10 +588,10 @@ class Chats extends REST_Controller
 		}
 		
 		//Fetch chat info
-		$chat_info = $this->Model_Chats->get_chat_by_id($chat_id);
+		$chat_info = $this->Model_Classes->get_chat_by_id($chat_id);
 
 		//Check to make sure user is joined to this chat.
-		if (!$this->Model_Chats->is_user_subscribed($user_id,$chat_id))
+		if (!$this->Model_Classes->is_user_subscribed($user_id,$chat_id))
 		{
 			$this->response($this->rest_error(array("You are not subscribed to this chat.")), 401);
 			return;
@@ -590,9 +608,9 @@ class Chats extends REST_Controller
 		
 		
 		$send_time = time();
-		if ($send_time - $this->Model_Chats->get_time_newest($user_id) > 2)
+		if ($send_time - $this->Model_Classes->get_time_newest($user_id) > 2)
 		{
-			$message_data = $this->Model_Chats->send_message($user_id, $chat_id, $message, $send_time);
+			$message_data = $this->Model_Classes->send_message($user_id, $chat_id, $message, $send_time);
 		}
 		
 		else
@@ -630,7 +648,7 @@ class Chats extends REST_Controller
 			}
 			
 			//Upload the file to S3
-			$upload = $this->Model_Chats->add_file($user_id, $chat_id, $file_name, $message_id);
+			$upload = $this->Model_Classes->add_file($user_id, $chat_id, $file_name, $message_id);
 			if (!$upload)
 			{
 				$this->response($this->rest_error(array("Error adding file entry to database!")), 404);
@@ -742,7 +760,7 @@ class Chats extends REST_Controller
 	 */
 	function fetch_recent_get()
 	{
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 		
 		$chat_id_string = $this->get('chat_id');
 		
@@ -754,16 +772,16 @@ class Chats extends REST_Controller
 		$user_id = $this->authenticated_as;
 
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 		
 		//Check to make sure user is joined to this chat.
-		if (!$this->Model_Chats->is_user_subscribed($user_id,$chat_id))
+		if (!$this->Model_Classes->is_user_subscribed($user_id,$chat_id))
 		{
 			$this->response($this->rest_error(array("You are not subscribed to this chat.")), 401);
 			return;
 		}
 
-		$messages = $this->Model_Chats->get_num_latest_messages($chat_id,$num_messages);
+		$messages = $this->Model_Classes->get_num_latest_messages($chat_id,$num_messages);
 		$this->response($messages, 200); //Success
 	}
 	
@@ -779,7 +797,7 @@ class Chats extends REST_Controller
 	 */
 	function fetch_since_get()
 	{
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 		
 		$chat_id_string = $this->get('chat_id');
 		$msg_id = $this->get('msg_id');
@@ -792,16 +810,16 @@ class Chats extends REST_Controller
 		$user_id = $this->authenticated_as;
 
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 		
 		//Check to make sure user is joined to this chat.
-		if (!$this->Model_Chats->is_user_subscribed($user_id,$chat_id))
+		if (!$this->Model_Classes->is_user_subscribed($user_id,$chat_id))
 		{
 			$this->response($this->rest_error(array("You are not subscribed to this chat.")), 401);
 			return;
 		}
 
-		$messages = $this->Model_Chats->get_messages_after_msg_id($chat_id,$msg_id);
+		$messages = $this->Model_Classes->get_messages_after_msg_id($chat_id,$msg_id);
 		$this->response($messages, 200); //Success
 	}
 	
@@ -820,7 +838,7 @@ class Chats extends REST_Controller
 	 */
 	function fetch_day_get()
 	{
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 		
 		$chat_id_string = $this->get('chat_id');
 		$start_epoch = $this->get('start_epoch');
@@ -834,16 +852,16 @@ class Chats extends REST_Controller
 		$user_id = $this->authenticated_as;
 
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 		
 		//Check to make sure user is joined to this chat.
-		if (!$this->Model_Chats->is_user_subscribed($user_id,$chat_id))
+		if (!$this->Model_Classes->is_user_subscribed($user_id,$chat_id))
 		{
 			$this->response($this->rest_error(array("You are not subscribed to this chat.")), 401);
 			return;
 		}
 
-		$messages = $this->Model_Chats->get_time_frame_messages($chat_id,$start_epoch,$start_epoch+(24*60*60));
+		$messages = $this->Model_Classes->get_time_frame_messages($chat_id,$start_epoch,$start_epoch+(24*60*60));
 		$this->response($messages, 200); //Success
 	}
 	
@@ -858,7 +876,7 @@ class Chats extends REST_Controller
 	{
 		// verify authentication first. Can't do this through headers...
 		$this->load->model('Model_Auth');
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 		$this->load->model('Model_Users');
 		$auth_token = $this->get('auth_token');
 		$auth_code = $this->get('auth_code');
@@ -903,10 +921,10 @@ class Chats extends REST_Controller
 		//}
 		
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 		
 		//Check to make sure user is joined to this chat.
-		if (!$this->Model_Chats->is_user_subscribed($user_id,$chat_id))
+		if (!$this->Model_Classes->is_user_subscribed($user_id,$chat_id))
 		{
 			$this->response(NULL,401);
 			return;
@@ -932,7 +950,7 @@ class Chats extends REST_Controller
 		//Give IE an event ID to send us back if they didn't specify one:
 		if ($last_msg_id == "")
 		{
-			$last_msg = $this->Model_Chats->get_num_latest_messages($chat_id,1);
+			$last_msg = $this->Model_Classes->get_num_latest_messages($chat_id,1);
 			if (count($last_msg) > 0)
 			{
 				$last_msg = $last_msg[0];
@@ -953,7 +971,7 @@ class Chats extends REST_Controller
 				die();
 			}
 
-			$msgs = $this->Model_Chats->get_messages_after_msg_id($chat_id,$last_msg_id);
+			$msgs = $this->Model_Classes->get_messages_after_msg_id($chat_id,$last_msg_id);
 			foreach ($msgs as $msg)
 			{
 				echo "id: $msg->id" . PHP_EOL;
@@ -993,7 +1011,7 @@ class Chats extends REST_Controller
 	function delete_post()
 	{
 		return; //TODO: PERMISSIONS !!
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 		
 		$chat_id_string = $this->post('id');
 		
@@ -1014,7 +1032,7 @@ class Chats extends REST_Controller
 		}
 
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 
 		if ($chat_id < 0)
 		{
@@ -1022,7 +1040,7 @@ class Chats extends REST_Controller
 			return;
 		}
 		
-		if ($this->Model_Chats->remove_chat($chat_id))
+		if ($this->Model_Classes->remove_chat($chat_id))
 		{
 			$this->response('Successfully removed the chat!', 200);
 			return;
@@ -1049,7 +1067,7 @@ class Chats extends REST_Controller
 	 */
 	function get_participants_get()
 	{
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 		
 		$chat_id_string = $this->get('id');
 		
@@ -1070,7 +1088,7 @@ class Chats extends REST_Controller
 		}
 
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 
 		if ($chat_id < 0)
 		{
@@ -1079,17 +1097,18 @@ class Chats extends REST_Controller
 		}
 		
 		$users = null;
-		$users = $this->Model_Chats->get_participants($chat_id,$user_id);
+		$users = $this->Model_Classes->get_participants($chat_id,$user_id);
 		
 		if (!$users)
 		{
-			$this->response($this->rest_error(array("Error finding users!")), 500);
+			//$this->response($this->rest_error(array("Error finding users!")), 500); //This actually gets run when there aren't any.
+			$this->response(NULL, 200); //This is actually success.
 			return;
 		}
 		
 		if (count($users) <= 0)
 		{
-			$this->response($this->rest_error(array("No subscribed users")), 404);
+			$this->response(NULL, 200);
 			return;
 		}
 		
@@ -1115,7 +1134,7 @@ class Chats extends REST_Controller
 	*/
 	function promote_user_post()
 	{
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 		$this->load->model('Model_Users');
 		
 		$chat_id_string = $this->post('chat_id');
@@ -1154,7 +1173,7 @@ class Chats extends REST_Controller
 		}
 
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 
 		if ($chat_id < 0)
 		{
@@ -1163,7 +1182,7 @@ class Chats extends REST_Controller
 		}
 		
 		//Make sure the target is subscribed to the specified chat room
-		$target_in_chat = $this->Model_Chats->is_user_subscribed($target_id, $chat_id);
+		$target_in_chat = $this->Model_Classes->is_user_subscribed($target_id, $chat_id);
 		
 		if (!$target_in_chat)
 		{
@@ -1172,7 +1191,7 @@ class Chats extends REST_Controller
 		}
 		
 		//Check to make sure the requesting user has permissions
-		$admin_user = $this->Model_Chats->check_user_permissions($chat_id, $user_id);
+		$admin_user = $this->Model_Classes->check_user_permissions($chat_id, $user_id);
 		//print_r($admin_user[0]->permissions);
 		if (!$admin_user[0]->permissions)
 		{
@@ -1181,7 +1200,7 @@ class Chats extends REST_Controller
 		}
 		
 		//After extensive checking, we can update the users permissions.		
-		$update_user = $this->Model_Chats->change_user_permissions($chat_id, $target_id, 1);
+		$update_user = $this->Model_Classes->change_user_permissions($chat_id, $target_id, 1);
 		if ($update_user)
 		{
 			$this->response(NULL, 200);
@@ -1213,7 +1232,7 @@ class Chats extends REST_Controller
 	*/
 	function demote_user_post()
 	{
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 		$this->load->model('Model_Users');
 		
 		$chat_id_string = $this->post('chat_id');
@@ -1252,7 +1271,7 @@ class Chats extends REST_Controller
 		}
 
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 
 		if ($chat_id < 0)
 		{
@@ -1261,7 +1280,7 @@ class Chats extends REST_Controller
 		}
 		
 		//Make sure the target is subscribed to the specified chat room
-		$target_in_chat = $this->Model_Chats->is_user_subscribed($target_id, $chat_id);
+		$target_in_chat = $this->Model_Classes->is_user_subscribed($target_id, $chat_id);
 		
 		if (!$target_in_chat)
 		{
@@ -1270,7 +1289,7 @@ class Chats extends REST_Controller
 		}
 		
 		//Check to make sure the requesting user has permissions
-		$admin_user = $this->Model_Chats->check_user_permissions($chat_id, $user_id);
+		$admin_user = $this->Model_Classes->check_user_permissions($chat_id, $user_id);
 		
 		if (!$admin_user[0]->permissions)
 		{
@@ -1279,7 +1298,7 @@ class Chats extends REST_Controller
 		}
 		
 		//After extensive checking, we can update the users permissions.		
-		$update_user = $this->Model_Chats->change_user_permissions($chat_id, $target_id, 0);
+		$update_user = $this->Model_Classes->change_user_permissions($chat_id, $target_id, 0);
 		if ($update_user)
 		{
 			$this->response(NULL, 200);
@@ -1303,7 +1322,7 @@ class Chats extends REST_Controller
 	*/
 	function generate_qr_get()
 	{
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 		
 		$chat_id_string = $this->get('id');
 		
@@ -1315,7 +1334,7 @@ class Chats extends REST_Controller
 		}
 
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 
 		if ($chat_id < 0)
 		{
@@ -1351,7 +1370,7 @@ class Chats extends REST_Controller
 			return;
 		}
 		
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 		$this->load->model('Model_S3');
 		$this->load->model('Model_Auth');
 		
@@ -1367,7 +1386,7 @@ class Chats extends REST_Controller
 		}
 
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 
 		if ($chat_id < 0)
 		{
@@ -1376,7 +1395,7 @@ class Chats extends REST_Controller
 		}
 		
 		//Look up the name of the file by the unique file ID
-		$fileinfo = $this->Model_Chats->get_file_info($message_id);
+		$fileinfo = $this->Model_Classes->get_file_info($message_id);
 		
 		$filename = $fileinfo->filename;
 		
@@ -1435,7 +1454,7 @@ class Chats extends REST_Controller
 			return;
 		}
 		
-		$this->load->model('Model_Chats');
+		$this->load->model('Model_Classes');
 		$this->load->model('Model_S3');
 		$this->load->model('Model_Auth');
 		
@@ -1451,7 +1470,7 @@ class Chats extends REST_Controller
 		}
 
 		//Try to find the chat
-		$chat_id = $this->Model_Chats->get_id_from_string($chat_id_string);
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 
 		if ($chat_id < 0)
 		{
@@ -1460,7 +1479,7 @@ class Chats extends REST_Controller
 		}
 		
 		//Look up the name of the file by the unique file ID
-		$filename = $this->Model_Chats->get_file_info($message_id);
+		$filename = $this->Model_Classes->get_file_info($message_id);
 		$filename = $filename->filename;
 		
 		//Make sure there was a specified file
@@ -1482,7 +1501,7 @@ class Chats extends REST_Controller
 			return;
 		}
 		
-		$delete = $this->Model_Chats->remove_file($user_id, $chat_id, $filename);
+		$delete = $this->Model_Classes->remove_file($user_id, $chat_id, $filename);
 		
 		if (!$delete)
 		{
