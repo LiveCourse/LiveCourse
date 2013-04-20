@@ -76,7 +76,7 @@ public class Restful extends AsyncTask <Void, String, String>
 	public static final String		IGNORE_USER_PATH			= "users/ignore_user";
 	public static final String		UNIGNORE_USER_PATH			= "users/unignore_user";
 	public static final String		CHANGE_DISPLAY_NAME_PATH	= "users/change_display_name";
-	public static final String		FETCH_DAY					= "chats/fetch_day";
+	public static final String		GET_CHAT_HISTORY_PATH		= "chats/fetch_day";
 	
 	/**
 	 * Private variables used by Restful

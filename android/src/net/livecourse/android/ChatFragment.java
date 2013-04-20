@@ -6,9 +6,9 @@ import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -73,6 +73,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
+		Log.d(this.TAG, "Created");
+		
 		Globals.chatFragment = this;
 		/**
 		 * Settings for the fragment
@@ -125,8 +127,9 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		switch (item.getItemId())
 		{
 			case R.id.view_history_item:
-				Intent historyIntent = new Intent(this.getActivity(), HistoryViewActivity.class);
-				this.startActivity(historyIntent);
+				Log.d(this.TAG, "Running onOptionsItemSelected view history");
+				DialogFragment newFragment = new HistoryDatePickerFragment();
+			    newFragment.show(this.getSherlockActivity().getSupportFragmentManager(), "datePicker");
 				break;
 		}
 

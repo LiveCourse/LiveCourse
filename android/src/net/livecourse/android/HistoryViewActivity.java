@@ -10,6 +10,7 @@ import net.livecourse.database.HistoryListLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
+import net.livecourse.utility.Utility;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -44,6 +45,8 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_layout);
         
+        Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
+        
         /**
          * Connects the view to the XML
          */
@@ -77,7 +80,6 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	{
 		adapter.notifyDataSetChanged();
 		adapter.swapCursor(cursor);
-		this.historyListView.setStackFromBottom(true);
 	}
 
 	@Override
@@ -87,8 +89,8 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	}
 	public void updateList()
 	{
-		//TODO: Change this to the new Restful call
-		new Restful("chats/fetch_day",0,new String[] {"chat_id","start_epoch"},new String[] {"sproga","1365307201"},2,this);
+		Globals.appDb.recreateHistory();
+		new Restful(Restful.GET_CHAT_HISTORY_PATH, Restful.GET,new String[] {"chat_id","start_epoch"},new String[] {Globals.chatId, "" + this.getIntent().getLongExtra("time", 0)},2,this);
 	}
 	public void clearList()
 	{
@@ -113,13 +115,19 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 		 * 
 		 * If the call is to Fetch_Day...
 		 */
-		if(restCall.equals(Restful.FETCH_DAY))
+		if(restCall.equals(Restful.GET_CHAT_HISTORY_PATH))
 		{
 			SQLiteDatabase db = null;
 			SQLiteStatement statement = null;
+			
+			if(response == null || response.equals(""))
+				return;
+			
 			try 
 			{
+				
 				parse = new JSONArray(response);
+				
 				db = Globals.appDb.getWritableDatabase();
 				statement = db.compileStatement(
 						"INSERT INTO " 	+ DatabaseHandler.TABLE_HISTORY + 
@@ -159,7 +167,6 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 
 			}
 			statement.close();
-			db.close();
 			
 			//Log.d(this.TAG, parse.length() + " messages stored in database in " + (System.currentTimeMillis() - startTime) + "ms");
 		}
@@ -168,7 +175,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	@Override
 	public void onRestPostExecutionSuccess(String restCall, String result) 
 	{
-		if(restCall.equals(Restful.FETCH_DAY))
+		if(restCall.equals(Restful.GET_CHAT_HISTORY_PATH))
 		{
 			this.getSupportLoaderManager().restartLoader(4, null, this);
 		}

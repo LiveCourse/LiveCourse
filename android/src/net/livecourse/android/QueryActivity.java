@@ -27,6 +27,7 @@ import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.ChatroomViewHolder;
 import net.livecourse.utility.Globals;
+import net.livecourse.utility.Utility;
 
 public class QueryActivity extends SherlockFragmentActivity implements SearchView.OnQueryTextListener, OnItemClickListener, OnRestCalled
 {
@@ -44,6 +45,8 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 		
         super.onCreate(savedInstanceState);
         setContentView(R.layout.query_layout);
+        
+        Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
                 
         queryListView = (ListView) this.findViewById(R.id.query_list_view);
         

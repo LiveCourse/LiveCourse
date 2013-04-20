@@ -63,6 +63,7 @@ public class Globals
 	public static String				chatName;
 	
 	public static ActionMode			mode;
+	public static long					historyTime;
 	
 	/**
 	 * UI Colors

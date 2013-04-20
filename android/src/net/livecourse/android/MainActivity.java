@@ -46,7 +46,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        this.resumeSaveState();
+        if(Globals.email == null)
+        	this.resumeSaveState();
         
         Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
         
@@ -162,9 +163,9 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         prefs.edit().putString("pref_color"			, Globals.colorPref		).commit();
         prefs.edit().putString("pref_chat_name"		, Globals.chatName		).commit();
         
-        Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
-        unregIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
-        startService(unregIntent);
+        //Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
+        //unregIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+        //startService(unregIntent);
 	}
 	
 	
@@ -172,7 +173,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	protected void onResume()
 	{
 		super.onResume();
-	
 	}
 	
 	private void resumeSaveState()
@@ -197,13 +197,15 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	}
 
 	@Override
-	public void onPageScrollStateChanged(int arg0) {
+	public void onPageScrollStateChanged(int arg0) 
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void onPageScrolled(int arg0, float arg1, int arg2) {
+	public void onPageScrolled(int arg0, float arg1, int arg2) 
+	{
 		// TODO Auto-generated method stub
 		
 	}
