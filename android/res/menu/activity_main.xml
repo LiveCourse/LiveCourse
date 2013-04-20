@@ -13,19 +13,4 @@
         android:title="@string/main_options_logout" >
         
     </item>
-    
-    <item
-        android:id="@+id/item1"
-        android:orderInCategory="0"
-        android:title="@string/options_menu_title" >
-    	
-    	<menu>
-    	    <item 	
-    	        android:id="@+id/subItem1"
-    	        android:title="@string/options_sub_menu_1" />
-    	    <item 	
-    	        android:id="@+id/subItem2"
-    	        android:title="@string/options_sub_menu_2" />
-		</menu>
-	</item>
 </menu>
