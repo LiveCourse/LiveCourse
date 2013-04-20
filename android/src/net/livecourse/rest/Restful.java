@@ -42,41 +42,42 @@ import android.util.Log;
  */
 public class Restful extends AsyncTask <Void, String, String> 
 {
-	private final String			TAG							= " == Restful == ";
+	private final String			TAG								= " == Restful == ";
 	/**
 	 * Max number of messages that the REST API call FETCH_RECENT would get
 	 */
-	public static final String 		MAX_MESSAGE_SIZE 			= "20";
+	public static final String 		MAX_MESSAGE_SIZE 				= "20";
 
 	/**
 	 * Flags for type of command
 	 */
-	public static final int			GET							= 0;
-	public static final int			POST						= 1;
+	public static final int			GET								= 0;
+	public static final int			POST							= 1;
 	
 	/**
 	 * Path locations for specific commands
 	 */
-	public static final String		API_PATH					= "http://livecourse.net/index.php/api/";
-	public static final String		AUTH_PATH					= "auth";
-	public static final String		VERIFY_PATH					= "auth/verify";
-	public static final String		GET_SUBSCRIBED_CHATS_PATH	= "chats";
-	public static final String		SEARCH_FOR_CHAT_PATH		= "chats/search";
-	public static final String		GET_CHAT_INFORMATION_PATH	= "chats/info";
-	public static final String		JOIN_CHAT_PATH				= "chats/join";
-	public static final String		UNSUBSCRIBE_CHAT_PATH		= "chats/leave";
-	public static final String		SEND_MESSAGE_PATH			= "chats/send";
-	public static final String		GET_RECENT_MESSAGES_PATH	= "chats/fetch_recent";
-	public static final String		GET_PARTICIPANTS_PATH		= "chats/get_participants";
-	public static final String		REGISTER_USER_PATH			= "users/add";
-	public static final String		GET_USER_PATH				= "users/index";
-	public static final String		UPDATE_COLOR_PREF_PATH		= "users/update_color";
-	public static final String		UPDATE_USER_STATUS_PATH		= "users/focus";
-	public static final String		REGISTER_ANDROID_USER_PATH	= "users/android_add";
-	public static final String		IGNORE_USER_PATH			= "users/ignore_user";
-	public static final String		UNIGNORE_USER_PATH			= "users/unignore_user";
-	public static final String		CHANGE_DISPLAY_NAME_PATH	= "users/change_display_name";
-	public static final String		GET_CHAT_HISTORY_PATH		= "chats/fetch_day";
+	public static final String		API_PATH						= "http://livecourse.net/index.php/api/";
+	public static final String		AUTH_PATH						= "auth";
+	public static final String		VERIFY_PATH						= "auth/verify";
+	public static final String		GET_SUBSCRIBED_CHATS_PATH		= "chats";
+	public static final String		GET_CHAT_INFORMATION_PATH		= "chats/info";
+	public static final String		UNSUBSCRIBE_CHAT_PATH			= "chats/leave";
+	public static final String		SEND_MESSAGE_PATH				= "chats/send";
+	public static final String		GET_RECENT_MESSAGES_PATH		= "chats/fetch_recent";
+	public static final String		GET_PARTICIPANTS_PATH			= "chats/get_participants";
+	public static final String		GET_SUBSCRIBED_SECTIONS_PATH 	= "sections";
+	public static final String		JOIN_CHAT_PATH					= "sections/join";
+	public static final String		SEARCH_FOR_CHAT_PATH			= "sections/search";
+	public static final String		REGISTER_USER_PATH				= "users/add";
+	public static final String		GET_USER_PATH					= "users/index";
+	public static final String		UPDATE_COLOR_PREF_PATH			= "users/update_color";
+	public static final String		UPDATE_USER_STATUS_PATH			= "users/focus";
+	public static final String		REGISTER_ANDROID_USER_PATH		= "users/android_add";
+	public static final String		IGNORE_USER_PATH				= "users/ignore_user";
+	public static final String		UNIGNORE_USER_PATH				= "users/unignore_user";
+	public static final String		CHANGE_DISPLAY_NAME_PATH		= "users/change_display_name";
+	public static final String		GET_CHAT_HISTORY_PATH			= "chats/fetch_day";
 	
 	/**
 	 * Private variables used by Restful

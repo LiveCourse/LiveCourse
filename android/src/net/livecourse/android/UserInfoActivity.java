@@ -186,7 +186,7 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 			}
 			
 		}
-		else if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
+		else if(restCall.equals(Restful.GET_SUBSCRIBED_SECTIONS_PATH))
 		{
 			
 			try 
@@ -199,13 +199,20 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 					Chatroom room = new Chatroom();
 					ob = parse.getJSONObject(x);
 					
-		        	room.setIdString(ob.getString(		"id_string"));
+		        	room.setIdString(ob.getString(		"class_id_string"));
+		        	room.setSectionString(ob.getString(	"id_string"));
+
 	            	room.setSubjectId(ob.getString(		"subject_id"));
 	            	room.setCourseNumber(ob.getString(	"course_number"));
 	            	room.setName(ob.getString(			"name"));
 	            	room.setStartTime(ob.getString(		"start_time"));	            	
-		        	room.setInstitutionId(ob.getString(	"institution_id"));
 		        	room.setRoomId(ob.getString(		"room_id"));
+		        	
+		        	room.setClassId(ob.getString(		"class_id"));
+		        	room.setClassType(ob.getString(		"type"));
+		        	room.setCrn(ob.getString(			"crn"));
+		        	room.setSection(ob.getString(		"section"));
+
 		        	room.setStartTime(ob.getString(		"start_time"));
 		        	room.setEndTime(ob.getString(		"end_time"));
 		        	room.setStartDate(ob.getString(		"start_date"));
@@ -217,6 +224,9 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 		        	room.setDowFriday(ob.getString(		"dow_friday"));
 		        	room.setDowSaturday(ob.getString(	"dow_saturday"));
 		        	room.setDowSunday(ob.getString(		"dow_sunday"));
+		        	room.setInstructor(ob.getString(	"instructor"));
+		        	room.setNotes(ob.getString(			"notes"));
+		        	room.setCapacity(ob.getString(		"capacity"));
 		        	
 		        	this.emptyAList.add(room);
 					Log.d(this.TAG, "Added Chatroom " + room.getName() + " to query array list");
@@ -236,13 +246,13 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 		{
 			this.setTitle(this.displayName);
 			Log.d(this.TAG, "ID2:" + this.userId);
-			new Restful(Restful.GET_SUBSCRIBED_CHATS_PATH,Restful.GET, new String[]{"user_id"}, new String[]{this.userId}, 1, this);
+			new Restful(Restful.GET_SUBSCRIBED_SECTIONS_PATH,Restful.GET, new String[]{"user_id"}, new String[]{this.userId}, 1, this);
 		}
 		else if(restCall.equals(Restful.CHANGE_DISPLAY_NAME_PATH));
 		{
 			this.setTitle(this.displayName);
 		}
-		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
+		if(restCall.equals(Restful.GET_SUBSCRIBED_SECTIONS_PATH))
 		{
 			this.adapter.clear();
         	this.adapter.addAll(this.emptyAList);

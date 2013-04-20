@@ -125,6 +125,7 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	@Override
 	public void onRestHandleResponseSuccess(String restCall, String response) 
 	{
+		Log.d(this.TAG, response);
 		JSONArray parse;
 		JSONObject ob;
 		
@@ -154,13 +155,19 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 					Chatroom room = new Chatroom();
 					ob = parse.getJSONObject(x);
 					
-		        	room.setIdString(ob.getString(		"id_string"));
+		        	room.setIdString(ob.getString(		"class_id_string"));
+		        	room.setSectionString(ob.getString(	"id_string"));
 	            	room.setSubjectId(ob.getString(		"subject_id"));
 	            	room.setCourseNumber(ob.getString(	"course_number"));
 	            	room.setName(ob.getString(			"name"));
 	            	room.setStartTime(ob.getString(		"start_time"));	            	
-		        	room.setInstitutionId(ob.getString(	"institution_id"));
 		        	room.setRoomId(ob.getString(		"room_id"));
+		        	
+		        	room.setClassId(ob.getString(		"class_id"));
+		        	room.setClassType(ob.getString(		"type"));
+		        	room.setCrn(ob.getString(			"crn"));
+		        	room.setSection(ob.getString(		"section"));
+
 		        	room.setStartTime(ob.getString(		"start_time"));
 		        	room.setEndTime(ob.getString(		"end_time"));
 		        	room.setStartDate(ob.getString(		"start_date"));
@@ -172,6 +179,10 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 		        	room.setDowFriday(ob.getString(		"dow_friday"));
 		        	room.setDowSaturday(ob.getString(	"dow_saturday"));
 		        	room.setDowSunday(ob.getString(		"dow_sunday"));
+		        	room.setInstructor(ob.getString(	"instructor"));
+		        	room.setNotes(ob.getString(			"notes"));
+		        	room.setCapacity(ob.getString(		"capacity"));
+
 		        	
 		        	this.emptyAList.add(room);
 					Log.d(this.TAG, "Added Chatroom " + room.getName() + " to query array list");
