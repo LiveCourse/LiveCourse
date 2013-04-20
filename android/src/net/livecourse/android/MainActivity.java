@@ -46,6 +46,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+        this.resumeSaveState();
+        
         Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
         
         Globals.mainActivity = this;
@@ -165,11 +167,16 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         startService(unregIntent);
 	}
 	
+	
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
-		
+	
+	}
+	
+	private void resumeSaveState()
+	{
 		SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
 		
         prefs.getString("pref_user_id"			, Globals.userId		);
