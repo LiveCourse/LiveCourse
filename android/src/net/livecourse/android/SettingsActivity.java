@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.util.Log;
 
 import net.livecourse.R;
@@ -33,6 +34,9 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
         
         Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
         
+        ListPreference listPreference = (ListPreference) findPreference("pref_color");
+        listPreference.setValueIndex(Integer.parseInt(Globals.colorPref));
+        
         progressDialog = new ProgressDialog(this);
 	}
 
@@ -44,7 +48,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 		
 		if(key.equals("pref_color"))
 		{
-			this.tempChangeStorage = sharedPreferences.getString(key, null);
+			this.tempChangeStorage = sharedPreferences.getString(key, "0");
 			if(this.tempChangeStorage != null)
 			{				
 				new Restful(Restful.UPDATE_COLOR_PREF_PATH, Restful.POST,new String[]{"color"}, new String[]{this.tempChangeStorage}, 1, this);

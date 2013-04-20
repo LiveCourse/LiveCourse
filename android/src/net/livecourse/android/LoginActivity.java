@@ -245,12 +245,15 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 				JSONObject user = parse.getJSONObject("user"); 
 				
 				Globals.userId 		= auth.getString("user_id");
-				Globals.displayName 		= user.getString("display_name");
+				Globals.displayName = user.getString("display_name");
 				Globals.colorPref 	= user.getString("color_preference");
 				
 		        SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
 		        prefs.edit().putString("pref_color", Globals.colorPref).commit();
 		        prefs.edit().putString("pref_display_name", Globals.displayName).commit();
+		        
+		        
+		        Log.d(this.TAG, "The Color Pref: " + prefs.getString("pref_color", "0"));
 			} 
 			catch (JSONException e) 
 			{
