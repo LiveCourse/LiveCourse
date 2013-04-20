@@ -61,7 +61,7 @@ public class ClassListCursorAdapter extends CursorAdapter
 			time += "S";
 		if(cursor.getString(cursor.getColumnIndexOrThrow("dow_sunday")).equals("1"))
 			time += "U";		
-		time += " from " + Utility.convertMinutesTo24Hour(cursor.getString(cursor.getColumnIndexOrThrow("start_time"))) + " - " + Utility.convertMinutesTo24Hour(cursor.getString(cursor.getColumnIndexOrThrow("end_time")));		
+		time += " " + Utility.convertMinutesTo24Hour(cursor.getString(cursor.getColumnIndexOrThrow("start_time"))) + " - " + Utility.convertMinutesTo24Hour(cursor.getString(cursor.getColumnIndexOrThrow("end_time")));		
 
 		v.className.setText(name);
 		v.classTime.setText(time);

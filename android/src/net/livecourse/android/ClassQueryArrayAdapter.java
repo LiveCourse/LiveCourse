@@ -68,7 +68,7 @@ public class ClassQueryArrayAdapter extends ArrayAdapter<Chatroom>
             		temp += "S";
             	if(item.getDowSunday().equals("1"))
             		temp += "U";
-            	temp += " from " + Utility.convertMinutesTo24Hour(item.getStartTime()) + " - " + Utility.convertMinutesTo24Hour(item.getEndTime());
+            	temp += " " + Utility.convertMinutesTo24Hour(item.getStartTime()) + " - " + Utility.convertMinutesTo24Hour(item.getEndTime());
             	
             	v.classTime.setText(temp);
             }
