@@ -1,11 +1,6 @@
 package net.livecourse.android;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import net.livecourse.R;
-import net.livecourse.database.DatabaseHandler;
 import net.livecourse.database.HistoryListLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
@@ -13,8 +8,6 @@ import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -77,7 +70,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	protected void onNewIntent (Intent intent)
 	{
 		Log.d(this.TAG, "onNewIntent");
-        this.setTitle(this.getIntent().getStringExtra("date"));
+        this.setTitle(intent.getStringExtra("date"));
 		this.time = intent.getLongExtra("time", 0);
 		this.updateList();
 	}
@@ -144,11 +137,6 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	public void onRestHandleResponseSuccess(String restCall, String response) 
 	{
 		Log.d(this.TAG, "Result: " + response);
-		/**
-		 * Used to parse the response into String objects
-		 */
-		JSONArray parse = null;
-		JSONObject ob = null;
 		
 		/**
 		 * This section of code is executed in the Rest background thread after grabbing
@@ -160,58 +148,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 		 */
 		if(restCall.equals(Restful.GET_CHAT_HISTORY_PATH))
 		{
-			SQLiteDatabase db = null;
-			SQLiteStatement statement = null;
-			
-			if(response == null || response.equals(""))
-				return;
-			
-			try 
-			{
-				
-				parse = new JSONArray(response);
-				
-				db = Globals.appDb.getWritableDatabase();
-				statement = db.compileStatement(
-						"INSERT INTO " 	+ DatabaseHandler.TABLE_HISTORY + 
-							" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
-							", "		+ DatabaseHandler.KEY_USER_ID +
-							", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
-							", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
-							", " 		+ DatabaseHandler.KEY_USER_EMAIL + 
-							", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
-							") VALUES (?, ?, ?, ?, ?, ?)");
-
-				db.beginTransaction();
-				for(int x = 0;x<parse.length();x++)
-		        {
-		        	ob = parse.getJSONObject(x);
-		   		        	
-		        	//statement.clearBindings();
-		        	
-		        	statement.bindString(1, ob.getString("id"));
-		        	statement.bindString(2, ob.getString("user_id"));
-		        	statement.bindString(3, ob.getString("send_time"));
-		        	statement.bindString(4, ob.getString("message_string"));
-		        	statement.bindString(5, ob.getString("email"));
-		        	statement.bindString(6, ob.getString("display_name"));
-		        	
-		        	statement.execute();
-		        }
-				db.setTransactionSuccessful();	
-			}
-			catch (JSONException e) 
-			{
-				e.printStackTrace();
-			}
-			finally
-			{
-				db.endTransaction();
-
-			}
-			statement.close();
-			
-			//Log.d(this.TAG, parse.length() + " messages stored in database in " + (System.currentTimeMillis() - startTime) + "ms");
+			Globals.appDb.addHistoryMessagesFromJSON(false, response);
 		}
 	}
 

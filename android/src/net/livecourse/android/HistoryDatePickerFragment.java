@@ -19,17 +19,13 @@ public class HistoryDatePickerFragment extends SherlockDialogFragment implements
 {
 	private boolean invoked = false;
 	
-	private int month;
-	private int day;
-	private int year;
-	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) 
 	{
 		final Calendar c = Calendar.getInstance();
-		year = c.get(Calendar.YEAR);
-        month  = c.get(Calendar.MONTH);
-        day = c.get(Calendar.DAY_OF_MONTH);
+		int year = c.get(Calendar.YEAR);
+        int month  = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
 
 		return new DatePickerDialog(this.getSherlockActivity(), this, year, month, day);
 	}
@@ -52,7 +48,7 @@ public class HistoryDatePickerFragment extends SherlockDialogFragment implements
 			Globals.historyTime = epoch;
 			Intent historyIntent = new Intent(this.getSherlockActivity(), HistoryViewActivity.class);
 			historyIntent.putExtra("time", epoch);
-			historyIntent.putExtra("date", Utility.convertToStringDate(month, day, year));
+			historyIntent.putExtra("date", Utility.convertToStringDate(month, date, year));
 			historyIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			
 			Log.d("== DatePicker ==", "History activity started");
