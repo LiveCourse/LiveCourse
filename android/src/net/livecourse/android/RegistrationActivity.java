@@ -2,10 +2,6 @@ package net.livecourse.android;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,7 +15,6 @@ import com.actionbarsherlock.app.SherlockActivity;
 import net.livecourse.R;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
-import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 
 /**

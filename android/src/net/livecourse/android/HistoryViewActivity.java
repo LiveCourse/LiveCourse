@@ -1,19 +1,15 @@
 package net.livecourse.android;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import net.livecourse.R;
-import net.livecourse.database.DatabaseHandler;
 import net.livecourse.database.HistoryListLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
+import net.livecourse.utility.Utility;
+import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -23,10 +19,15 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class HistoryViewActivity extends SherlockFragmentActivity implements OnItemLongClickListener, LoaderCallbacks<Cursor>, OnRestCalled
 {
 	private final String TAG = " == History View Activity == ";
+	
+	private long time;
 	/**
 	 * View used for the history list
 	 */
@@ -41,8 +42,13 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
 	{
+		Log.d(this.TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_layout);
+        
+        Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
+        this.setTitle(this.getIntent().getStringExtra("date"));
+        this.time = this.getIntent().getLongExtra("time", 0);
         
         /**
          * Connects the view to the XML
@@ -58,6 +64,39 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 		historyListView.setOnItemLongClickListener(this);
 		
 		this.updateList();
+	}
+	
+	@Override
+	protected void onNewIntent (Intent intent)
+	{
+		Log.d(this.TAG, "onNewIntent");
+        this.setTitle(intent.getStringExtra("date"));
+		this.time = intent.getLongExtra("time", 0);
+		this.updateList();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater=getSupportMenuInflater();
+		inflater.inflate(R.menu.history_activity_menu,menu);
+		
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch(item.getItemId())
+		{
+		case R.id.change_history_date_item:
+			Log.d(this.TAG, "Running onOptionsItemSelected view history");
+			DialogFragment newFragment = new HistoryDatePickerFragment();
+		    newFragment.show(this.getSupportFragmentManager(), "datePicker");
+			break;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -77,7 +116,6 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	{
 		adapter.notifyDataSetChanged();
 		adapter.swapCursor(cursor);
-		this.historyListView.setStackFromBottom(true);
 	}
 
 	@Override
@@ -87,8 +125,8 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	}
 	public void updateList()
 	{
-		//TODO: Change this to the new Restful call
-		new Restful("chats/fetch_day",0,new String[] {"chat_id","start_epoch"},new String[] {"sproga","1365307201"},2,this);
+		Globals.appDb.recreateHistory();
+		new Restful(Restful.GET_CHAT_HISTORY_PATH, Restful.GET,new String[] {"chat_id","start_epoch"},new String[] {Globals.chatId, "" + this.time},2,this);
 	}
 	public void clearList()
 	{
@@ -99,11 +137,6 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	public void onRestHandleResponseSuccess(String restCall, String response) 
 	{
 		Log.d(this.TAG, "Result: " + response);
-		/**
-		 * Used to parse the response into String objects
-		 */
-		JSONArray parse = null;
-		JSONObject ob = null;
 		
 		/**
 		 * This section of code is executed in the Rest background thread after grabbing
@@ -113,62 +146,16 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 		 * 
 		 * If the call is to Fetch_Day...
 		 */
-		if(restCall.equals(Restful.FETCH_DAY))
+		if(restCall.equals(Restful.GET_CHAT_HISTORY_PATH))
 		{
-			SQLiteDatabase db = null;
-			SQLiteStatement statement = null;
-			try 
-			{
-				parse = new JSONArray(response);
-				db = Globals.appDb.getWritableDatabase();
-				statement = db.compileStatement(
-						"INSERT INTO " 	+ DatabaseHandler.TABLE_HISTORY + 
-							" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
-							", "		+ DatabaseHandler.KEY_USER_ID +
-							", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
-							", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
-							", " 		+ DatabaseHandler.KEY_USER_EMAIL + 
-							", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
-							") VALUES (?, ?, ?, ?, ?, ?)");
-
-				db.beginTransaction();
-				for(int x = 0;x<parse.length();x++)
-		        {
-		        	ob = parse.getJSONObject(x);
-		   		        	
-		        	//statement.clearBindings();
-		        	
-		        	statement.bindString(1, ob.getString("id"));
-		        	statement.bindString(2, ob.getString("user_id"));
-		        	statement.bindString(3, ob.getString("send_time"));
-		        	statement.bindString(4, ob.getString("message_string"));
-		        	statement.bindString(5, ob.getString("email"));
-		        	statement.bindString(6, ob.getString("display_name"));
-		        	
-		        	statement.execute();
-		        }
-				db.setTransactionSuccessful();	
-			}
-			catch (JSONException e) 
-			{
-				e.printStackTrace();
-			}
-			finally
-			{
-				db.endTransaction();
-
-			}
-			statement.close();
-			db.close();
-			
-			//Log.d(this.TAG, parse.length() + " messages stored in database in " + (System.currentTimeMillis() - startTime) + "ms");
+			Globals.appDb.addHistoryMessagesFromJSON(false, response);
 		}
 	}
 
 	@Override
 	public void onRestPostExecutionSuccess(String restCall, String result) 
 	{
-		if(restCall.equals(Restful.FETCH_DAY))
+		if(restCall.equals(Restful.GET_CHAT_HISTORY_PATH))
 		{
 			this.getSupportLoaderManager().restartLoader(4, null, this);
 		}

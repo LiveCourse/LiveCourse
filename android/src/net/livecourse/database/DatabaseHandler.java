@@ -452,6 +452,77 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	}
 	
 	/**
+	 * Adds a list of history messages to the database from a JSON string
+	 * 
+	 * @param cancel 	The boolean given and used to cancel the execution of the database
+	 * @param messages	The list of messages in a string in JSON
+	 */
+	public void addHistoryMessagesFromJSON(boolean cancel, String messages)
+	{
+		synchronized(this.historyLock)
+		{
+			JSONArray parse = null;
+			JSONObject ob = null;
+			SQLiteDatabase db = null;
+			SQLiteStatement statement = null;
+			
+			Log.d(this.TAG, "The history message: " + messages);
+			
+			if(messages.equals(""))
+				return;
+			
+			try 
+			{
+				parse = new JSONArray(messages);	
+				db = this.getWritableDatabase();
+				statement = db.compileStatement(
+						"INSERT INTO " 	+ DatabaseHandler.TABLE_HISTORY + 
+							" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
+							", "		+ DatabaseHandler.KEY_USER_ID +
+							", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
+							", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
+							", " 		+ DatabaseHandler.KEY_USER_EMAIL + 
+							", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
+							") VALUES (?, ?, ?, ?, ?, ?)");
+	
+				db.beginTransaction();
+				for(int x = 0;x<parse.length();x++)
+		        {
+					if(cancel)
+					{
+						this.closeConnections(db, statement);
+						Log.d(this.TAG, "Connection canceled while adding messages from JSON");
+						return;
+					}
+					
+		        	ob = parse.getJSONObject(x);
+		   		    	        	
+		        	statement.bindString(1, ob.getString("id"));
+		        	statement.bindString(2, ob.getString("user_id"));
+		        	statement.bindString(3, ob.getString("send_time"));
+		        	statement.bindString(4, ob.getString("message_string"));
+		        	statement.bindString(5, ob.getString("email"));
+		        	statement.bindString(6, ob.getString("display_name"));
+		        	
+		        	statement.execute();
+		        	Log.d(this.TAG, "History Message id: " + ob.getString("id") + " with message: "  + ob.getString("message_string"));
+		        }
+				db.setTransactionSuccessful();	
+			} 
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
+			}	
+			finally
+			{
+				db.endTransaction();
+	
+			}
+			statement.close();
+		}
+	}
+	
+	/**
 	 * Adds a single message to the database from a Intent
 	 * 
 	 * @param cancel 	The boolean given and used to cancel the execution of the database

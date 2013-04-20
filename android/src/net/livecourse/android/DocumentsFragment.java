@@ -14,7 +14,8 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class DocumentsFragment extends SherlockFragment
 {
-	private final String TAG = " == Chat Fragment == ";
+	@SuppressWarnings("unused")
+	private final String TAG = " == Documents Fragment == ";
 	
 	private static final String KEY_CONTENT = "TestFragment:Content";
 	private String mContent = "???";
