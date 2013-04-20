@@ -152,38 +152,8 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 				
 				for(int x = 0; x < parse.length(); x++)
 				{
-					Chatroom room = new Chatroom();
 					ob = parse.getJSONObject(x);
-					
-		        	room.setIdString(ob.getString(		"class_id_string"));
-		        	room.setSectionString(ob.getString(	"id_string"));
-	            	room.setSubjectId(ob.getString(		"subject_id"));
-	            	room.setCourseNumber(ob.getString(	"course_number"));
-	            	room.setName(ob.getString(			"name"));
-	            	room.setStartTime(ob.getString(		"start_time"));	            	
-		        	room.setRoomId(ob.getString(		"room_id"));
-		        	
-		        	room.setClassId(ob.getString(		"class_id"));
-		        	room.setClassType(ob.getString(		"type"));
-		        	room.setCrn(ob.getString(			"crn"));
-		        	room.setSection(ob.getString(		"section"));
-
-		        	room.setStartTime(ob.getString(		"start_time"));
-		        	room.setEndTime(ob.getString(		"end_time"));
-		        	room.setStartDate(ob.getString(		"start_date"));
-		        	room.setEndDate(ob.getString(		"end_date"));
-		        	room.setDowMonday(ob.getString(		"dow_monday"));
-		        	room.setDowTuesday(ob.getString(	"dow_tuesday"));
-		        	room.setDowWednesday(ob.getString(	"dow_wednesday"));
-		        	room.setDowThursday(ob.getString(	"dow_thursday"));
-		        	room.setDowFriday(ob.getString(		"dow_friday"));
-		        	room.setDowSaturday(ob.getString(	"dow_saturday"));
-		        	room.setDowSunday(ob.getString(		"dow_sunday"));
-		        	room.setInstructor(ob.getString(	"instructor"));
-		        	room.setNotes(ob.getString(			"notes"));
-		        	room.setCapacity(ob.getString(		"capacity"));
-
-		        	
+					Chatroom room = new Chatroom(ob);
 		        	this.emptyAList.add(room);
 					Log.d(this.TAG, "Added Chatroom " + room.getName() + " to query array list");
 				}

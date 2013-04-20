@@ -40,8 +40,11 @@ public class ClassQueryArrayAdapter extends ArrayAdapter<Chatroom>
         Chatroom item = items.get(position);
         if (item!= null) 
         {
-            v.className = (TextView) view.findViewById(R.id.classquery_item_class_name_text_view);
-            v.classTime = (TextView) view.findViewById(R.id.classquery_item_class_time_text_view);
+            v.className 		= (TextView) view.findViewById(R.id.classquery_item_class_name_text_view);
+            v.classTime 		= (TextView) view.findViewById(R.id.classquery_item_class_time_text_view);
+            v.classType 		= (TextView) view.findViewById(R.id.classquery_item_class_type_text_view);
+    		v.classInstructor 	= (TextView) view.findViewById(R.id.classquery_item_class_instructor_text_view);
+
             
             if (v.className != null) 
             {
@@ -68,6 +71,14 @@ public class ClassQueryArrayAdapter extends ArrayAdapter<Chatroom>
             	temp += " from " + Utility.convertMinutesTo24Hour(item.getStartTime()) + " - " + Utility.convertMinutesTo24Hour(item.getEndTime());
             	
             	v.classTime.setText(temp);
+            }
+            if(v.classType != null)
+            {
+            	v.classType.setText(item.getClassType());
+            }
+            if(v.classInstructor != null)
+            {
+            	v.classInstructor.setText(item.getInstructor());
             }
             
             v.idString = item.getIdString();

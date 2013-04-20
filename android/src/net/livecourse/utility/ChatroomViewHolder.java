@@ -6,5 +6,7 @@ public class ChatroomViewHolder
 {
 	public TextView className;
 	public TextView classTime;
+	public TextView classType;
+	public TextView classInstructor;
 	public String idString;
 }

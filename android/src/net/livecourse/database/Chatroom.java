@@ -1,5 +1,8 @@
 package net.livecourse.database;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * This is the object that holds the information for Chatrooms.
  * 
@@ -32,6 +35,41 @@ public class Chatroom
 	private String notes;
 	private String capacity;
 	
+	public Chatroom(JSONObject ob)
+	{
+    	try 
+    	{
+		this.setIdString(ob.getString(		"class_id_string"));
+		this.setSectionString(ob.getString(	"id_string"));
+    	this.setSubjectId(ob.getString(		"subject_id"));
+    	this.setCourseNumber(ob.getString(	"course_number"));
+    	this.setName(ob.getString(			"name"));
+    	this.setStartTime(ob.getString(		"start_time"));	            	
+    	this.setRoomId(ob.getString(		"room_id"));	
+    	this.setClassId(ob.getString(		"class_id"));
+    	this.setClassType(ob.getString(		"type"));
+    	this.setCrn(ob.getString(			"crn"));
+    	this.setSection(ob.getString(		"section"));
+    	this.setStartTime(ob.getString(		"start_time"));
+    	this.setEndTime(ob.getString(		"end_time"));
+    	this.setStartDate(ob.getString(		"start_date"));
+    	this.setEndDate(ob.getString(		"end_date"));
+    	this.setDowMonday(ob.getString(		"dow_monday"));
+    	this.setDowTuesday(ob.getString(	"dow_tuesday"));
+    	this.setDowWednesday(ob.getString(	"dow_wednesday"));
+    	this.setDowThursday(ob.getString(	"dow_thursday"));
+    	this.setDowFriday(ob.getString(		"dow_friday"));
+    	this.setDowSaturday(ob.getString(	"dow_saturday"));
+    	this.setDowSunday(ob.getString(		"dow_sunday"));
+    	this.setInstructor(ob.getString(	"instructor"));
+    	this.setNotes(ob.getString(			"notes"));
+    	this.setCapacity(ob.getString(		"capacity"));   	
+		} 
+    	catch (JSONException e) 
+    	{
+			e.printStackTrace();
+		}
+	}
 	public String toString()
 	{
 		String temp = 	"ID String: " 		+ id_string 	+

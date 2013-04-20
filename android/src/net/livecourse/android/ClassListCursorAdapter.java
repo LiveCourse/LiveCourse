@@ -27,9 +27,11 @@ public class ClassListCursorAdapter extends CursorAdapter
 		View view = LayoutInflater.from(mContext).inflate(R.layout.classlist_item_layout, parent, false);
 		
 		ChatroomViewHolder v = new ChatroomViewHolder();
-		v.className = (TextView) view.findViewById(R.id.classquery_item_class_name_text_view);
-		v.classTime = (TextView) view.findViewById(R.id.classquery_item_class_time_text_view);
-		
+		v.className 		= (TextView) view.findViewById(R.id.classquery_item_class_name_text_view);
+		v.classTime 		= (TextView) view.findViewById(R.id.classquery_item_class_time_text_view);
+		v.classType 		= (TextView) view.findViewById(R.id.classquery_item_class_type_text_view);
+		v.classInstructor 	= (TextView) view.findViewById(R.id.classquery_item_class_instructor_text_view);
+
 		view.setTag(v);
 		
 		return view;
@@ -41,6 +43,9 @@ public class ClassListCursorAdapter extends CursorAdapter
 		ChatroomViewHolder v = (ChatroomViewHolder) view.getTag();
 		
 		String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+		String type = cursor.getString(cursor.getColumnIndexOrThrow("class_type"));
+		String instructor = cursor.getString(cursor.getColumnIndexOrThrow("instructor"));
+		
 		String time = "";
 		if(cursor.getString(cursor.getColumnIndexOrThrow("dow_monday")).equals("1"))
 			time += "M";
@@ -55,12 +60,13 @@ public class ClassListCursorAdapter extends CursorAdapter
 		if(cursor.getString(cursor.getColumnIndexOrThrow("dow_saturday")).equals("1"))
 			time += "S";
 		if(cursor.getString(cursor.getColumnIndexOrThrow("dow_sunday")).equals("1"))
-			time += "U";
-		
-		time += " " + Utility.convertMinutesTo24Hour(cursor.getString(cursor.getColumnIndexOrThrow("start_time"))) + " - " + Utility.convertMinutesTo24Hour(cursor.getString(cursor.getColumnIndexOrThrow("end_time")));
-		
+			time += "U";		
+		time += " from " + Utility.convertMinutesTo24Hour(cursor.getString(cursor.getColumnIndexOrThrow("start_time"))) + " - " + Utility.convertMinutesTo24Hour(cursor.getString(cursor.getColumnIndexOrThrow("end_time")));		
+
 		v.className.setText(name);
 		v.classTime.setText(time);
+		v.classType.setText(type);
+		v.classInstructor.setText(instructor);
 		v.idString = cursor.getString(cursor.getColumnIndexOrThrow("id_string"));
 		
 		view.setTag(v);
