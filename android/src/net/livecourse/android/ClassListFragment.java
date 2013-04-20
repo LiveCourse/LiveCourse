@@ -348,13 +348,14 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	public void updateList()
 	{
 		Globals.appDb.recreateClassEnroll();
-		new Restful(Restful.GET_SUBSCRIBED_CHATS_PATH, Restful.GET, null, null, 0, this);
+		new Restful(Restful.GET_SUBSCRIBED_SECTIONS_PATH, Restful.GET, null, null, 0, this);
 	}
 
 	@Override
 	public void onRestHandleResponseSuccess(String restCall, String response) 
 	{		
-		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
+		Log.d(this.TAG, response);
+		if(restCall.equals(Restful.GET_SUBSCRIBED_SECTIONS_PATH))
 		{	
 			Globals.appDb.addClassesFromJSON(false, response);
 		}
@@ -379,7 +380,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	@Override
 	public void onRestPostExecutionSuccess(String restCall, String result) 
 	{
-		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
+		if(restCall.equals(Restful.GET_SUBSCRIBED_SECTIONS_PATH))
 		{
 			this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.CLASS_LIST_LOADER, null, this);	
 
@@ -412,7 +413,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		Log.d(this.TAG, "Rest call: " + restCall + "failed with status code: " + code);
 		Log.d(this.TAG,"Result from server is:\n" + result);
 		
-		if(restCall.equals(Restful.GET_SUBSCRIBED_CHATS_PATH))
+		if(restCall.equals(Restful.GET_SUBSCRIBED_SECTIONS_PATH))
 		{
 			if(this.updateListCalledByQR)
 			{

@@ -8,11 +8,15 @@ package net.livecourse.database;
 public class Chatroom 
 {
 	private String id_string;
+	private String section_string;
 	private String subject_id;
 	private String course_number;
 	private String name;
-	private String institution_id;
 	private String room_id;
+	private String class_id;
+	private String class_type;
+	private String crn;
+	private String section;
 	private String start_time;
 	private String end_time;
 	private String start_date;
@@ -24,15 +28,60 @@ public class Chatroom
 	private String dow_friday;
 	private String dow_saturday;
 	private String dow_sunday;
+	private String instructor;
+	private String notes;
+	private String capacity;
 	
 	public String toString()
 	{
-		String temp = "ID String: "+id_string+" Course Number: "+course_number+" Name: "+name
-				+"Institution ID: "+institution_id+" Room ID: "+room_id+" Start Time: "+start_time+" End Time: "
-				+end_time+" Start Date: "+start_date+" End Date: "+end_date+" Dow Monday: "+dow_monday+" Dow Monday: "+dow_monday
-				+" Dow Tuesday: "+dow_tuesday+" Dow Wednesday: "+dow_wednesday+" Dow Thursday: "+dow_thursday+" Dow Friday: "+dow_friday
-				+" Dow Sunday: "+dow_sunday;
+		String temp = 	"ID String: " 		+ id_string 	+
+						" SectionString: "	+ section_string+
+						" Course Number: " 	+ course_number + 
+						" Name: " 			+ name 			+ 
+						" Room ID: " 		+ room_id 		+
+						" Class ID: "		+ class_id		+
+						" Class Type: "		+ class_type 	+
+						" CRN: "			+ crn 			+
+						" Section: "		+ section 		+
+						" Start Time: " 	+ start_time 	+
+						" End Time: " 		+ end_time 		+ 
+						" Start Date: " 	+ start_date 	+ 
+						" End Date: " 		+ end_date 		+ 
+						" Dow Monday: " 	+ dow_monday 	+ 
+						" Dow Tuesday: " 	+ dow_tuesday 	+ 
+						" Dow Wednesday: " 	+ dow_wednesday + 
+						" Dow Thursday: " 	+ dow_thursday 	+ 
+						" Dow Friday: " 	+ dow_friday 	+
+						" Dow Saturday: " 	+ dow_saturday 	+
+						" Dow Sunday: " 	+ dow_sunday	+
+						" Instructor: "		+ instructor	+
+						" Notes: "			+ notes			+
+						" Capacity: "		+ capacity;
 		return temp;
+	}
+	public String getSectionString()
+	{
+		return section_string;
+	}
+	public void setSectionString(String sectionString)
+	{
+		this.section_string = sectionString;
+	}
+	public String getInstructor() 
+	{
+		return instructor;
+	}
+	public void setInstructor(String instructor) 
+	{
+		this.instructor = instructor;
+	}
+	public String getNotes() 
+	{
+		return notes;
+	}
+	public void setNotes(String notes) 
+	{
+		this.notes = notes;
 	}
 	public String getEndTime() 
 	{
@@ -146,14 +195,6 @@ public class Chatroom
 	{
 		this.name = name;
 	}
-	public String getInstitutionId() 
-	{
-		return institution_id;
-	}
-	public void setInstitutionId(String institution_id) 
-	{
-		this.institution_id = institution_id;
-	}
 	public String getRoomId() 
 	{
 		return room_id;
@@ -169,5 +210,43 @@ public class Chatroom
 	public void setStartTime(String start_time) 
 	{
 		this.start_time = start_time;
+	}
+	public String getClassId() 
+	{
+		return class_id;
+	}
+	public void setClassId(String class_id) 
+	{
+		this.class_id = class_id;
+	}
+	public String getClassType() 
+	{
+		return class_type;
+	}
+	public void setClassType(String class_type) 
+	{
+		this.class_type = class_type;
+	}
+	public String getCrn() 
+	{
+		return crn;
+	}
+	public void setCrn(String crn) 
+	{
+		this.crn = crn;
+	}
+	public String getSection() 
+	{
+		return section;
+	}
+	public void setSection(String section) 
+	{
+		this.section = section;
+	}
+	public String getCapacity() {
+		return capacity;
+	}
+	public void setCapacity(String capacity) {
+		this.capacity = capacity;
 	}
 }
