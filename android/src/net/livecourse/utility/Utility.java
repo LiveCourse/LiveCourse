@@ -22,8 +22,8 @@ import android.util.Log;
 import android.widget.TextView;
 
 /**
- * This is the ultities class that focuses on ultity based methods as well as
- * methods that focus around the REST API calls.  All REST API calls should go here.
+ * This is the ultities class that focuses on ultity based methods.  Every
+ * method in this class should be static.
  * 
  * @author Darren
  *
