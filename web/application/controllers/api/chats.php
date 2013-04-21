@@ -638,8 +638,10 @@ class Chats extends REST_Controller
 		if (isset($_FILES['file']))
 		{
 			$file = null;
+
 			//Generate an inputFile for S3, part of the function
-			$file = $_FILES['file']['name'];
+			$file = $this->Model_S3->inputFile($_FILES['file']['tmp_name']);
+			//$file_name = $_FILES['file']['name'];
 
 			if (!$file)
 			{
@@ -659,7 +661,7 @@ class Chats extends REST_Controller
 			$this->Model_S3->setAuth($this->config->item('access_key'), $this->config->item('secret_key'));
 
 			//Upload the file to S3
-			if (!$this->Model_S3->putObject($file_name, 'livecourse', $file, 'public-read-write'))
+			if (!$this->Model_S3->putObject($file, 'livecourse', $file_name, 'public-read-write'))
 			{
 				$this->response($this->rest_error(array("Error uploading the file!")), 500);
 				return;
@@ -1396,7 +1398,7 @@ class Chats extends REST_Controller
 		//Look up the name of the file by the unique file ID
 		$fileinfo = $this->Model_Classes->get_file_info($message_id);
 
-		$filename = $fileinfo->filename;
+		$filename = $fileinfo['filename'];
 
 		//Make sure there was a specified file
 		if (strlen($filename) <= 0)
@@ -1406,8 +1408,7 @@ class Chats extends REST_Controller
 		}
 
 		//Set the authentication keys and SSL mode for S3
-		$this->Model_S3->setAuth($this->config->item['access_key'], $this->config->item['secret_key']);
-		$this->Model_S3->setSSL('false');
+		$this->Model_S3->setAuth($this->config->item('access_key'), $this->config->item('secret_key'));
 
 		//Get the file from S3
 		$file = $this->Model_S3->getObjectInfo('livecourse', $filename);
@@ -1478,9 +1479,8 @@ class Chats extends REST_Controller
 		}
 
 		//Look up the name of the file by the unique file ID
-		$filename = $this->Model_Classes->get_file_info($message_id);
-		print_r($filename);die;
-		$filename = $filename['filename'];
+		$fileinfo = $this->Model_Classes->get_file_info($message_id);
+		$filename = $fileinfo['filename'];
 
 		//Make sure there was a specified file
 		if (strlen($filename) <= 0)
@@ -1494,7 +1494,7 @@ class Chats extends REST_Controller
 
 		//Get the file from S3
 		$file = $this->Model_S3->getObject('livecourse', $filename);
-		if (!file)
+		if (!$file)
 		{
 			$this->response($this->rest_error(array("Error finding file!")), 404);
 			return;
