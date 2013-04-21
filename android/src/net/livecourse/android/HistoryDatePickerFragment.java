@@ -8,14 +8,14 @@ import net.livecourse.utility.Utility;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.DatePicker;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
-public class HistoryDatePickerFragment extends SherlockDialogFragment implements DatePickerDialog.OnDateSetListener
+public class HistoryDatePickerFragment extends SherlockDialogFragment
 {
 	private boolean invoked = false;
 	
@@ -23,15 +23,35 @@ public class HistoryDatePickerFragment extends SherlockDialogFragment implements
 	public Dialog onCreateDialog(Bundle savedInstanceState) 
 	{
 		final Calendar c = Calendar.getInstance();
-		int year = c.get(Calendar.YEAR);
-        int month  = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-
-		return new DatePickerDialog(this.getSherlockActivity(), this, year, month, day);
+		final int year = c.get(Calendar.YEAR);
+        final int month  = c.get(Calendar.MONTH);
+        final int day = c.get(Calendar.DAY_OF_MONTH);
+        
+        final DatePickerDialog picker = new DatePickerDialog(this.getSherlockActivity(), null, year, month, day);
+        picker.setCancelable(true);
+        picker.setCanceledOnTouchOutside(true);
+        picker.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() 
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) 
+            {
+                Log.d("Picker", "Cancel!");
+            }
+        });
+        picker.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() 
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) 
+            {
+                Log.d("Picker", "Correct behavior!");                
+                changeDateOnSet(picker.getDatePicker().getYear(), picker.getDatePicker().getMonth(), picker.getDatePicker().getDayOfMonth());
+            }
+        });
+       
+		return picker;
 	}
-
-	@Override
-	public void onDateSet(DatePicker view, int year, int month, int date) 
+	
+	public void changeDateOnSet(int year, int month, int date)
 	{
 		if(invoked)
 			return;

@@ -46,9 +46,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        if(Globals.email == null)
+        if(Globals.email == null || Globals.colorPref == null)
+        {
+        	Log.d(this.TAG, "Loading data from prefs");
         	this.resumeSaveState();
-        
+        }
         Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
         
         Globals.mainActivity = this;
