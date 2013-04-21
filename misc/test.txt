@@ -1,0 +1,5480 @@
+Logged in to MyPurdue ...
+Getting session ID...
+Creating session ...
+Retrieving class list ...
+Parsing class list ...
+Array
+(
+    [crn] => 13063
+    [subj] => CS
+    [course_number] => 11000
+    [section] => L01
+    [name] => Introduction To Computers
+    [dow] => W
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 25
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 246
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A3
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13069
+    [subj] => CS
+    [course_number] => 11000
+    [section] => L02
+    [name] => Introduction To Computers
+    [dow] => R
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 25
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 277
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A3
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13070
+    [subj] => CS
+    [course_number] => 11000
+    [section] => L03
+    [name] => Introduction To Computers
+    [dow] => R
+    [time] => 09:30 am-11:20 am
+    [capacity] => 25
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 289
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A3
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13068
+    [subj] => CS
+    [course_number] => 11000
+    [section] => L04
+    [name] => Introduction To Computers
+    [dow] => W
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 25
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 246
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A3
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 56519
+    [subj] => CS
+    [course_number] => 11000
+    [section] => L05
+    [name] => Introduction To Computers
+    [dow] => T
+    [time] => 07:30 am-09:20 am
+    [capacity] => 25
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 289
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A3
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62066
+    [subj] => CS
+    [course_number] => 11000
+    [section] => L06
+    [name] => Introduction To Computers
+    [dow] => W
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 25
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 246
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A3
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13062
+    [subj] => CS
+    [course_number] => 11000
+    [section] => LE1
+    [name] => Introduction To Computers
+    [dow] => WF
+    [time] => 08:30 am-09:20 am
+    [capacity] => 150
+    [instructor] => Gary Thomas  McFall (P)
+    [date] => 08/19-12/07
+    [location] => MATH 175
+    [type] => Lecture
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A1
+    [link_other] => A3
+)
+Array
+(
+    [crn] => 47852
+    [subj] => CS
+    [course_number] => 11000
+    [section] => X01
+    [name] => Introduction To Computers
+    [dow] => W
+    [time] => 06:00 pm-07:50 pm
+    [capacity] => 19
+    [instructor] => Marta Annette  Crowe (P)
+    [date] => 08/19-12/07
+    [location] => BRNG B282
+    [type] => Lecture
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A4
+)
+Array
+(
+    [crn] => 47851
+    [subj] => CS
+    [course_number] => 11000
+    [section] => X02
+    [name] => Introduction To Computers
+    [dow] => W
+    [time] => 08:00 pm-09:50 pm
+    [capacity] => 19
+    [instructor] => Marta Annette  Crowe (P)
+    [date] => 08/19-12/07
+    [location] => BRNG B282
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A4
+    [link_other] => A2
+)
+Array
+(
+    [crn] => 56103
+    [subj] => CS
+    [course_number] => 11000
+    [section] => Y01
+    [name] => Introduction To Computers
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 30
+    [instructor] => Gary Thomas  McFall (P)
+    [date] => 10/16-12/07
+    [location] => TBA
+    [type] => Distance Learning
+    [notes] => Credit By Exam and Lower Division
+)
+Array
+(
+    [crn] => 42985
+    [subj] => CS
+    [course_number] => 15800
+    [section] => L01
+    [name] => C Programming
+    [dow] => F
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 27
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13085
+    [subj] => CS
+    [course_number] => 15800
+    [section] => L02
+    [name] => C Programming
+    [dow] => F
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 27
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13084
+    [subj] => CS
+    [course_number] => 15800
+    [section] => L03
+    [name] => C Programming
+    [dow] => R
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 27
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13086
+    [subj] => CS
+    [course_number] => 15800
+    [section] => L04
+    [name] => C Programming
+    [dow] => F
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 27
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13083
+    [subj] => CS
+    [course_number] => 15800
+    [section] => LE1
+    [name] => C Programming
+    [dow] => TR
+    [time] => 04:30 pm-05:20 pm
+    [capacity] => 108
+    [instructor] => William N  Crum (P)
+    [date] => 08/19-12/07
+    [location] => PHYS 223
+    [type] => Lecture
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A1
+    [link_other] => A2
+)
+Array
+(
+    [crn] => 56717
+    [subj] => CS
+    [course_number] => 15900
+    [section] => D11
+    [name] => Programming Applications For Engineers
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 81
+    [instructor] => William N  Crum (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Distance Learning
+    [notes] => Lower Division
+    [link_self] => AH
+    [link_other] => A4
+)
+Array
+(
+    [crn] => 56710
+    [subj] => CS
+    [course_number] => 15900
+    [section] => L11
+    [name] => Programming Applications For Engineers
+    [dow] => T
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 27
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A6
+)
+Array
+(
+    [crn] => 56709
+    [subj] => CS
+    [course_number] => 15900
+    [section] => L12
+    [name] => Programming Applications For Engineers
+    [dow] => R
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 27
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A6
+)
+Array
+(
+    [crn] => 56708
+    [subj] => CS
+    [course_number] => 15900
+    [section] => L13
+    [name] => Programming Applications For Engineers
+    [dow] => W
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 27
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A6
+)
+Array
+(
+    [crn] => 62073
+    [subj] => CS
+    [course_number] => 15900
+    [section] => L20
+    [name] => Programming Applications For Engineers
+    [dow] => W
+    [time] => 07:30 am-09:20 am
+    [capacity] => 26
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62074
+    [subj] => CS
+    [course_number] => 15900
+    [section] => L21
+    [name] => Programming Applications For Engineers
+    [dow] => T
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 26
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62070
+    [subj] => CS
+    [course_number] => 15900
+    [section] => L22
+    [name] => Programming Applications For Engineers
+    [dow] => F
+    [time] => 09:30 am-11:20 am
+    [capacity] => 26
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62071
+    [subj] => CS
+    [course_number] => 15900
+    [section] => L23
+    [name] => Programming Applications For Engineers
+    [dow] => R
+    [time] => 07:30 am-09:20 am
+    [capacity] => 26
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62072
+    [subj] => CS
+    [course_number] => 15900
+    [section] => L24
+    [name] => Programming Applications For Engineers
+    [dow] => W
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 26
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62075
+    [subj] => CS
+    [course_number] => 15900
+    [section] => L25
+    [name] => Programming Applications For Engineers
+    [dow] => W
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 26
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62076
+    [subj] => CS
+    [course_number] => 15900
+    [section] => L26
+    [name] => Programming Applications For Engineers
+    [dow] => W
+    [time] => 09:30 am-11:20 am
+    [capacity] => 26
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62077
+    [subj] => CS
+    [course_number] => 15900
+    [section] => L27
+    [name] => Programming Applications For Engineers
+    [dow] => T
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 26
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62078
+    [subj] => CS
+    [course_number] => 15900
+    [section] => L28
+    [name] => Programming Applications For Engineers
+    [dow] => R
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 26
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62079
+    [subj] => CS
+    [course_number] => 15900
+    [section] => L29
+    [name] => Programming Applications For Engineers
+    [dow] => R
+    [time] => 09:30 am-11:20 am
+    [capacity] => 26
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => SC 189
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 56704
+    [subj] => CS
+    [course_number] => 15900
+    [section] => LE1
+    [name] => Programming Applications For Engineers
+    [dow] => T
+    [time] => 10:30 am-11:20 am
+    [capacity] => 81
+    [instructor] => William N  Crum (P)
+    [date] => 08/19-12/07
+    [location] => HAMP 1144
+    [type] => Lecture
+    [notes] => Lower Division
+    [link_self] => A6
+    [link_other] => AH
+)
+Array
+(
+    [crn] => 62080
+    [subj] => CS
+    [course_number] => 15900
+    [section] => LE2
+    [name] => Programming Applications For Engineers
+    [dow] => TR
+    [time] => 12:30 pm-01:20 pm
+    [capacity] => 260
+    [instructor] => William N  Crum (P)
+    [date] => 08/19-12/07
+    [location] => PHYS 112
+    [type] => Lecture
+    [notes] => Lower Division
+    [link_self] => A1
+    [link_other] => A2
+)
+Array
+(
+    [crn] => 13114
+    [subj] => CS
+    [course_number] => 17700
+    [section] => L02
+    [name] => Programming With Multimedia Objects
+    [dow] => W
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G056
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => AF
+)
+Array
+(
+    [crn] => 51035
+    [subj] => CS
+    [course_number] => 17700
+    [section] => L03
+    [name] => Programming With Multimedia Objects
+    [dow] => W
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G056
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => AF
+)
+Array
+(
+    [crn] => 13117
+    [subj] => CS
+    [course_number] => 17700
+    [section] => L04
+    [name] => Programming With Multimedia Objects
+    [dow] => R
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G056
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => AF
+)
+Array
+(
+    [crn] => 13112
+    [subj] => CS
+    [course_number] => 17700
+    [section] => L05
+    [name] => Programming With Multimedia Objects
+    [dow] => F
+    [time] => 07:30 am-09:20 am
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G056
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => AF
+)
+Array
+(
+    [crn] => 13111
+    [subj] => CS
+    [course_number] => 17700
+    [section] => L06
+    [name] => Programming With Multimedia Objects
+    [dow] => R
+    [time] => 09:30 am-11:20 am
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G056
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => AF
+)
+Array
+(
+    [crn] => 13123
+    [subj] => CS
+    [course_number] => 17700
+    [section] => L07
+    [name] => Programming With Multimedia Objects
+    [dow] => R
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G056
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => AF
+)
+Array
+(
+    [crn] => 13116
+    [subj] => CS
+    [course_number] => 17700
+    [section] => L08
+    [name] => Programming With Multimedia Objects
+    [dow] => W
+    [time] => 07:30 am-09:20 am
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G056
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => AF
+)
+Array
+(
+    [crn] => 58649
+    [subj] => CS
+    [course_number] => 17700
+    [section] => L09
+    [name] => Programming With Multimedia Objects
+    [dow] => F
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G056
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => AF
+)
+Array
+(
+    [crn] => 13126
+    [subj] => CS
+    [course_number] => 17700
+    [section] => LE1
+    [name] => Programming With Multimedia Objects
+    [dow] => TR
+    [time] => 03:30 pm-04:20 pm
+    [capacity] => 220
+    [instructor] => Christoph M  Hoffmann (P), Lorenzo Dario  Martino 
+    [date] => 08/19-12/07
+    [location] => WTHR 200
+    [type] => Lecture
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A1
+    [link_other] => A2
+)
+Array
+(
+    [crn] => 60168
+    [subj] => CS
+    [course_number] => 17700
+    [section] => LM0
+    [name] => Programming With Multimedia Objects
+    [dow] => F
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G056
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => AF
+)
+Array
+(
+    [crn] => 48937
+    [subj] => CS
+    [course_number] => 17700
+    [section] => LM1
+    [name] => Programming With Multimedia Objects
+    [dow] => R
+    [time] => 07:30 am-09:20 am
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G056
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A2
+    [link_other] => AF
+)
+Array
+(
+    [crn] => 13104
+    [subj] => CS
+    [course_number] => 17700
+    [section] => R02
+    [name] => Programming With Multimedia Objects
+    [dow] => R
+    [time] => 02:30 pm-03:20 pm
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => AF
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58648
+    [subj] => CS
+    [course_number] => 17700
+    [section] => R03
+    [name] => Programming With Multimedia Objects
+    [dow] => F
+    [time] => 04:30 pm-05:20 pm
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => AF
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 51036
+    [subj] => CS
+    [course_number] => 17700
+    [section] => R04
+    [name] => Programming With Multimedia Objects
+    [dow] => W
+    [time] => 07:30 am-08:20 am
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN 1106
+    [type] => Recitation
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => AF
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13109
+    [subj] => CS
+    [course_number] => 17700
+    [section] => R05
+    [name] => Programming With Multimedia Objects
+    [dow] => R
+    [time] => 07:30 am-08:20 am
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN 1106
+    [type] => Recitation
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => AF
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 51037
+    [subj] => CS
+    [course_number] => 17700
+    [section] => R06
+    [name] => Programming With Multimedia Objects
+    [dow] => R
+    [time] => 10:30 am-11:20 am
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN 1106
+    [type] => Recitation
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => AF
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13105
+    [subj] => CS
+    [course_number] => 17700
+    [section] => R07
+    [name] => Programming With Multimedia Objects
+    [dow] => R
+    [time] => 12:30 pm-01:20 pm
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => AF
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 48936
+    [subj] => CS
+    [course_number] => 17700
+    [section] => R08
+    [name] => Programming With Multimedia Objects
+    [dow] => W
+    [time] => 04:30 pm-05:20 pm
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => AF
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13108
+    [subj] => CS
+    [course_number] => 17700
+    [section] => R09
+    [name] => Programming With Multimedia Objects
+    [dow] => W
+    [time] => 01:30 pm-02:20 pm
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => AF
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13107
+    [subj] => CS
+    [course_number] => 17700
+    [section] => RM0
+    [name] => Programming With Multimedia Objects
+    [dow] => F
+    [time] => 07:30 am-08:20 am
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN 1106
+    [type] => Recitation
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => AF
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13103
+    [subj] => CS
+    [course_number] => 17700
+    [section] => RM1
+    [name] => Programming With Multimedia Objects
+    [dow] => W
+    [time] => 10:30 am-11:20 am
+    [capacity] => 22
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN 1106
+    [type] => Recitation
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => AF
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58659
+    [subj] => CS
+    [course_number] => 18000
+    [section] => L01
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => R
+    [time] => 09:30 am-11:20 am
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B158
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58661
+    [subj] => CS
+    [course_number] => 18000
+    [section] => L02
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => F
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B148
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58657
+    [subj] => CS
+    [course_number] => 18000
+    [section] => L03
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => T
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B146
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58663
+    [subj] => CS
+    [course_number] => 18000
+    [section] => L04
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => F
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B158
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 34295
+    [subj] => CS
+    [course_number] => 18000
+    [section] => LE1
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => MWF
+    [time] => 09:30 am-10:20 am
+    [capacity] => 238
+    [instructor] => Antony L  Hosking (P), Lorenzo Dario  Martino 
+    [date] => 08/19-12/07
+    [location] => CL50 224
+    [type] => Lecture
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A1
+    [link_other] => A6
+)
+Array
+(
+    [crn] => 58662
+    [subj] => CS
+    [course_number] => 18000
+    [section] => LM0
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => T
+    [time] => 09:30 am-11:20 am
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B146
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58654
+    [subj] => CS
+    [course_number] => 18000
+    [section] => LM1
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => R
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B158
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58655
+    [subj] => CS
+    [course_number] => 18000
+    [section] => LM2
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => T
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B158
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58658
+    [subj] => CS
+    [course_number] => 18000
+    [section] => LM3
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => R
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B148
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58660
+    [subj] => CS
+    [course_number] => 18000
+    [section] => LM4
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => T
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B148
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 59971
+    [subj] => CS
+    [course_number] => 18000
+    [section] => LM5
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => W
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B146
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58656
+    [subj] => CS
+    [course_number] => 18000
+    [section] => LM6
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => W
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B158
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58652
+    [subj] => CS
+    [course_number] => 18000
+    [section] => LM7
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => T
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B158
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58651
+    [subj] => CS
+    [course_number] => 18000
+    [section] => LM8
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => W
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B148
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58653
+    [subj] => CS
+    [course_number] => 18000
+    [section] => LM9
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => F
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 17
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B146
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 59968
+    [subj] => CS
+    [course_number] => 18000
+    [section] => LMA
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => F
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 0
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B148
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58664
+    [subj] => CS
+    [course_number] => 18000
+    [section] => LMB
+    [name] => Problem Solving And Object-Oriented Programming
+    [dow] => R
+    [time] => 09:30 am-11:20 am
+    [capacity] => 0
+    [instructor] => Lorenzo Dario  Martino (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B148
+    [type] => Laboratory
+    [notes] => Lower Division and S Biology Math Electives
+    [link_self] => A6
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13146
+    [subj] => CS
+    [course_number] => 18200
+    [section] => LE1
+    [name] => Foundations Of Computer Science
+    [dow] => MWF
+    [time] => 09:30 am-10:20 am
+    [capacity] => 128
+    [instructor] => Ananth Y  Grama (P)
+    [date] => 08/19-12/07
+    [location] => KRAN G016
+    [type] => Lecture
+    [notes] => Lower Division
+    [link_self] => A1
+    [link_other] => A2
+)
+Array
+(
+    [crn] => 56535
+    [subj] => CS
+    [course_number] => 18200
+    [section] => P01
+    [name] => Foundations Of Computer Science
+    [dow] => TR
+    [time] => 10:30 am-11:20 am
+    [capacity] => 32
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Practice Study Observation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13149
+    [subj] => CS
+    [course_number] => 18200
+    [section] => P02
+    [name] => Foundations Of Computer Science
+    [dow] => MW
+    [time] => 02:30 pm-03:20 pm
+    [capacity] => 32
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN 1106
+    [type] => Practice Study Observation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13148
+    [subj] => CS
+    [course_number] => 18200
+    [section] => P03
+    [name] => Foundations Of Computer Science
+    [dow] => MF
+    [time] => 12:30 pm-01:20 pm
+    [capacity] => 32
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Practice Study Observation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13147
+    [subj] => CS
+    [course_number] => 18200
+    [section] => P04
+    [name] => Foundations Of Computer Science
+    [dow] => TR
+    [time] => 08:30 am-09:20 am
+    [capacity] => 32
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN 1106
+    [type] => Practice Study Observation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13150
+    [subj] => CS
+    [course_number] => 18300
+    [section] => 001
+    [name] => Professional Practice I
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => William Joseph  Gorman (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Experiential
+    [notes] => Coop and Full-Time Privileges and Lower Division
+)
+Array
+(
+    [crn] => 13151
+    [subj] => CS
+    [course_number] => 18400
+    [section] => 001
+    [name] => Professional Practice II
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => William Joseph  Gorman (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Experiential
+    [notes] => Coop and Full-Time Privileges and Lower Division
+)
+Array
+(
+    [crn] => 64241
+    [subj] => CS
+    [course_number] => 19000
+    [section] => 001
+    [name] => Topics In CS
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Individual Study
+    [notes] => Lower Division and Variable Title
+)
+Array
+(
+    [crn] => 59973
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 700
+    [name] => Freshman Resources Seminar
+    [dow] => T
+    [time] => 10:30 am-11:20 am
+    [capacity] => 17
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => LWSN 1106
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 43071
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 701
+    [name] => Freshman Resources Seminar
+    [dow] => T
+    [time] => 10:30 am-11:20 am
+    [capacity] => 17
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => LWSN 1106
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 59886
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 800
+    [name] => Freshman Resources Seminar
+    [dow] => W
+    [time] => 01:30 pm-02:20 pm
+    [capacity] => 17
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => HAAS G066
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 59891
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 801
+    [name] => Freshman Resources Seminar
+    [dow] => W
+    [time] => 01:30 pm-02:20 pm
+    [capacity] => 17
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => HAAS G066
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 59972
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 802
+    [name] => Freshman Resources Seminar
+    [dow] => F
+    [time] => 03:30 pm-04:20 pm
+    [capacity] => 17
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 48954
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 803
+    [name] => Freshman Resources Seminar
+    [dow] => F
+    [time] => 03:30 pm-04:20 pm
+    [capacity] => 17
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 59893
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 804
+    [name] => Freshman Resources Seminar
+    [dow] => T
+    [time] => 11:30 am-12:20 pm
+    [capacity] => 17
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13163
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 805
+    [name] => Freshman Resources Seminar
+    [dow] => T
+    [time] => 11:30 am-12:20 pm
+    [capacity] => 17
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 59892
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 806
+    [name] => Freshman Resources Seminar
+    [dow] => R
+    [time] => 01:30 pm-02:20 pm
+    [capacity] => 17
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 59889
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 807
+    [name] => Freshman Resources Seminar
+    [dow] => R
+    [time] => 01:30 pm-02:20 pm
+    [capacity] => 17
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13158
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 808
+    [name] => Freshman Resources Seminar
+    [dow] => R
+    [time] => 11:30 am-12:20 pm
+    [capacity] => 17
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 52640
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 809
+    [name] => Freshman Resources Seminar
+    [dow] => R
+    [time] => 11:30 am-12:20 pm
+    [capacity] => 17
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13159
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 80A
+    [name] => Freshman Resources Seminar
+    [dow] => W
+    [time] => 11:30 am-12:20 pm
+    [capacity] => 20
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => LWSN B134
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 59890
+    [subj] => CS
+    [course_number] => 19100
+    [section] => 80B
+    [name] => Freshman Resources Seminar
+    [dow] => W
+    [time] => 11:30 am-12:20 pm
+    [capacity] => 20
+    [instructor] => TBA
+    [date] => 08/19-10/15
+    [location] => LWSN 1106
+    [type] => Recitation
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13157
+    [subj] => CS
+    [course_number] => 19100
+    [section] => LE1
+    [name] => Freshman Resources Seminar
+    [dow] => F
+    [time] => 11:30 am-12:20 pm
+    [capacity] => 244
+    [instructor] => William N  Crum (P)
+    [date] => 08/19-10/15
+    [location] => CL50 224
+    [type] => Lecture
+    [notes] => Lower Division
+    [link_self] => A1
+    [link_other] => A2
+)
+Array
+(
+    [crn] => 58436
+    [subj] => CS
+    [course_number] => 23500
+    [section] => D01
+    [name] => Introduction To Organizational Computing
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 576
+    [instructor] => Gary Thomas  McFall (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Distance Learning
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A3
+    [link_other] => A2
+)
+Array
+(
+    [crn] => 13176
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L11
+    [name] => Introduction To Organizational Computing
+    [dow] => R
+    [time] => 09:30 am-11:20 am
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 13177
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L12
+    [name] => Introduction To Organizational Computing
+    [dow] => R
+    [time] => 07:30 am-09:20 am
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 13170
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L13
+    [name] => Introduction To Organizational Computing
+    [dow] => F
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 117
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 13179
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L14
+    [name] => Introduction To Organizational Computing
+    [dow] => R
+    [time] => 09:30 am-11:20 am
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 117
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 13195
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L15
+    [name] => Introduction To Organizational Computing
+    [dow] => T
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 13182
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L16
+    [name] => Introduction To Organizational Computing
+    [dow] => F
+    [time] => 09:30 am-11:20 am
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 13175
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L21
+    [name] => Introduction To Organizational Computing
+    [dow] => W
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13202
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L22
+    [name] => Introduction To Organizational Computing
+    [dow] => F
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13199
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L23
+    [name] => Introduction To Organizational Computing
+    [dow] => R
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13174
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L24
+    [name] => Introduction To Organizational Computing
+    [dow] => T
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13187
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L31
+    [name] => Introduction To Organizational Computing
+    [dow] => T
+    [time] => 09:30 am-11:20 am
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A4
+)
+Array
+(
+    [crn] => 13173
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L32
+    [name] => Introduction To Organizational Computing
+    [dow] => W
+    [time] => 09:30 am-11:20 am
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A4
+)
+Array
+(
+    [crn] => 13171
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L33
+    [name] => Introduction To Organizational Computing
+    [dow] => W
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A4
+)
+Array
+(
+    [crn] => 13194
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L34
+    [name] => Introduction To Organizational Computing
+    [dow] => T
+    [time] => 07:30 am-09:20 am
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A4
+)
+Array
+(
+    [crn] => 13200
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L41
+    [name] => Introduction To Organizational Computing
+    [dow] => F
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 117
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A6
+)
+Array
+(
+    [crn] => 13185
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L42
+    [name] => Introduction To Organizational Computing
+    [dow] => R
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 117
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A6
+)
+Array
+(
+    [crn] => 38094
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L43
+    [name] => Introduction To Organizational Computing
+    [dow] => F
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 117
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A6
+)
+Array
+(
+    [crn] => 13189
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L44
+    [name] => Introduction To Organizational Computing
+    [dow] => R
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 117
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A6
+)
+Array
+(
+    [crn] => 13196
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L45
+    [name] => Introduction To Organizational Computing
+    [dow] => T
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A6
+)
+Array
+(
+    [crn] => 13203
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L46
+    [name] => Introduction To Organizational Computing
+    [dow] => F
+    [time] => 07:30 am-09:20 am
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A6
+)
+Array
+(
+    [crn] => 64346
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L51
+    [name] => Introduction To Organizational Computing
+    [dow] => W
+    [time] => 07:30 am-09:20 am
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A7
+)
+Array
+(
+    [crn] => 64347
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L52
+    [name] => Introduction To Organizational Computing
+    [dow] => R
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 117
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A7
+)
+Array
+(
+    [crn] => 64348
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L53
+    [name] => Introduction To Organizational Computing
+    [dow] => W
+    [time] => 07:30 am-09:20 am
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 117
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A7
+)
+Array
+(
+    [crn] => 64349
+    [subj] => CS
+    [course_number] => 23500
+    [section] => L54
+    [name] => Introduction To Organizational Computing
+    [dow] => R
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 24
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => PHYS 116
+    [type] => Laboratory
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A2
+    [link_other] => A7
+)
+Array
+(
+    [crn] => 58437
+    [subj] => CS
+    [course_number] => 23500
+    [section] => LE1
+    [name] => Introduction To Organizational Computing
+    [dow] => W
+    [time] => 01:30 pm-02:20 pm
+    [capacity] => 144
+    [instructor] => Gary Thomas  McFall (P)
+    [date] => 08/19-12/07
+    [location] => PHYS 112
+    [type] => Lecture
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A5
+    [link_other] => A3
+)
+Array
+(
+    [crn] => 13169
+    [subj] => CS
+    [course_number] => 23500
+    [section] => LE2
+    [name] => Introduction To Organizational Computing
+    [dow] => F
+    [time] => 12:30 pm-01:20 pm
+    [capacity] => 96
+    [instructor] => Gary Thomas  McFall (P)
+    [date] => 08/19-12/07
+    [location] => HIKS B848
+    [type] => Lecture
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A1
+    [link_other] => A3
+)
+Array
+(
+    [crn] => 13168
+    [subj] => CS
+    [course_number] => 23500
+    [section] => LE3
+    [name] => Introduction To Organizational Computing
+    [dow] => F
+    [time] => 01:30 pm-02:20 pm
+    [capacity] => 96
+    [instructor] => Gary Thomas  McFall (P)
+    [date] => 08/19-12/07
+    [location] => HIKS B848
+    [type] => Lecture
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A4
+    [link_other] => A3
+)
+Array
+(
+    [crn] => 58438
+    [subj] => CS
+    [course_number] => 23500
+    [section] => LE4
+    [name] => Introduction To Organizational Computing
+    [dow] => W
+    [time] => 10:30 am-11:20 am
+    [capacity] => 144
+    [instructor] => Gary Thomas  McFall (P)
+    [date] => 08/19-12/07
+    [location] => ARMS 1010
+    [type] => Lecture
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A6
+    [link_other] => A3
+)
+Array
+(
+    [crn] => 64345
+    [subj] => CS
+    [course_number] => 23500
+    [section] => LE5
+    [name] => Introduction To Organizational Computing
+    [dow] => F
+    [time] => 02:30 pm-03:20 pm
+    [capacity] => 96
+    [instructor] => Gary Thomas  McFall (P)
+    [date] => 08/19-12/07
+    [location] => HIKS B848
+    [type] => Lecture
+    [notes] => Credit By Exam and Lower Division
+    [link_self] => A7
+    [link_other] => A3
+)
+Array
+(
+    [crn] => 51078
+    [subj] => CS
+    [course_number] => 24000
+    [section] => L01
+    [name] => Programming In C
+    [dow] => T
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B146
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A5
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 51077
+    [subj] => CS
+    [course_number] => 24000
+    [section] => L02
+    [name] => Programming In C
+    [dow] => R
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B158
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A5
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 45909
+    [subj] => CS
+    [course_number] => 24000
+    [section] => L03
+    [name] => Programming In C
+    [dow] => W
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B148
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A5
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 48987
+    [subj] => CS
+    [course_number] => 24000
+    [section] => L04
+    [name] => Programming In C
+    [dow] => R
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B158
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A5
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 59899
+    [subj] => CS
+    [course_number] => 24000
+    [section] => L05
+    [name] => Programming In C
+    [dow] => F
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B146
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A5
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 45910
+    [subj] => CS
+    [course_number] => 24000
+    [section] => L06
+    [name] => Programming In C
+    [dow] => R
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B148
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A5
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62112
+    [subj] => CS
+    [course_number] => 24000
+    [section] => L07
+    [name] => Programming In C
+    [dow] => T
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B146
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A5
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 51076
+    [subj] => CS
+    [course_number] => 24000
+    [section] => LE1
+    [name] => Programming In C
+    [dow] => TR
+    [time] => 09:30 am-10:20 am
+    [capacity] => 147
+    [instructor] => Cristina   Nita-Rotaru (P)
+    [date] => 08/19-12/07
+    [location] => ARMS 1010
+    [type] => Lecture
+    [notes] => Lower Division
+    [link_self] => A1
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 51079
+    [subj] => CS
+    [course_number] => 25000
+    [section] => L01
+    [name] => Computer Architecture
+    [dow] => F
+    [time] => 09:30 am-11:20 am
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G056
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13212
+    [subj] => CS
+    [course_number] => 25000
+    [section] => L02
+    [name] => Computer Architecture
+    [dow] => F
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B160
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 42951
+    [subj] => CS
+    [course_number] => 25000
+    [section] => L03
+    [name] => Computer Architecture
+    [dow] => R
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B160
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 51080
+    [subj] => CS
+    [course_number] => 25000
+    [section] => L04
+    [name] => Computer Architecture
+    [dow] => T
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B160
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13210
+    [subj] => CS
+    [course_number] => 25000
+    [section] => L05
+    [name] => Computer Architecture
+    [dow] => R
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B160
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13211
+    [subj] => CS
+    [course_number] => 25000
+    [section] => L06
+    [name] => Computer Architecture
+    [dow] => W
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G056
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62113
+    [subj] => CS
+    [course_number] => 25000
+    [section] => L07
+    [name] => Computer Architecture
+    [dow] => T
+    [time] => 09:30 am-11:20 am
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G056
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62114
+    [subj] => CS
+    [course_number] => 25000
+    [section] => L08
+    [name] => Computer Architecture
+    [dow] => R
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B160
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13209
+    [subj] => CS
+    [course_number] => 25000
+    [section] => LE1
+    [name] => Computer Architecture
+    [dow] => MWF
+    [time] => 04:30 pm-05:20 pm
+    [capacity] => 176
+    [instructor] => Gustavo   Rodriguez-Rivera (P)
+    [date] => 08/19-12/07
+    [location] => LILY G126
+    [type] => Lecture
+    [notes] => Lower Division
+    [link_self] => A1
+    [link_other] => A2
+)
+Array
+(
+    [crn] => 53032
+    [subj] => CS
+    [course_number] => 25100
+    [section] => LE1
+    [name] => Data Structures And Algorithms
+    [dow] => MWF
+    [time] => 01:30 pm-02:20 pm
+    [capacity] => 198
+    [instructor] => Greg N  Frederickson (P)
+    [date] => 08/19-12/07
+    [location] => MTHW 210
+    [type] => Lecture
+    [notes] => Lower Division
+    [link_self] => A5
+    [link_other] => A4
+)
+Array
+(
+    [crn] => 52649
+    [subj] => CS
+    [course_number] => 25100
+    [section] => P01
+    [name] => Data Structures And Algorithms
+    [dow] => M
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G040
+    [type] => Practice Study Observation
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 52660
+    [subj] => CS
+    [course_number] => 25100
+    [section] => P02
+    [name] => Data Structures And Algorithms
+    [dow] => W
+    [time] => 09:30 am-11:20 am
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G040
+    [type] => Practice Study Observation
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 54220
+    [subj] => CS
+    [course_number] => 25100
+    [section] => P03
+    [name] => Data Structures And Algorithms
+    [dow] => R
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G040
+    [type] => Practice Study Observation
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 53037
+    [subj] => CS
+    [course_number] => 25100
+    [section] => P04
+    [name] => Data Structures And Algorithms
+    [dow] => T
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G040
+    [type] => Practice Study Observation
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 53036
+    [subj] => CS
+    [course_number] => 25100
+    [section] => P05
+    [name] => Data Structures And Algorithms
+    [dow] => M
+    [time] => 09:30 am-11:20 am
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G040
+    [type] => Practice Study Observation
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 53033
+    [subj] => CS
+    [course_number] => 25100
+    [section] => P06
+    [name] => Data Structures And Algorithms
+    [dow] => T
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G040
+    [type] => Practice Study Observation
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 53137
+    [subj] => CS
+    [course_number] => 25100
+    [section] => P07
+    [name] => Data Structures And Algorithms
+    [dow] => R
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G040
+    [type] => Practice Study Observation
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 62126
+    [subj] => CS
+    [course_number] => 25100
+    [section] => P08
+    [name] => Data Structures And Algorithms
+    [dow] => T
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G040
+    [type] => Practice Study Observation
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 62127
+    [subj] => CS
+    [course_number] => 25100
+    [section] => P09
+    [name] => Data Structures And Algorithms
+    [dow] => R
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G040
+    [type] => Practice Study Observation
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A5
+)
+Array
+(
+    [crn] => 54202
+    [subj] => CS
+    [course_number] => 25200
+    [section] => L01
+    [name] => Systems Programming
+    [dow] => T
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 21
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B158
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 56538
+    [subj] => CS
+    [course_number] => 25200
+    [section] => L02
+    [name] => Systems Programming
+    [dow] => W
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B158
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 53191
+    [subj] => CS
+    [course_number] => 25200
+    [section] => L03
+    [name] => Systems Programming
+    [dow] => T
+    [time] => 09:30 am-11:20 am
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B158
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 53192
+    [subj] => CS
+    [course_number] => 25200
+    [section] => L04
+    [name] => Systems Programming
+    [dow] => R
+    [time] => 09:30 am-11:20 am
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B146
+    [type] => Laboratory
+    [notes] => Lower Division
+    [link_self] => A4
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 64662
+    [subj] => CS
+    [course_number] => 25200
+    [section] => LE2
+    [name] => Systems Programming
+    [dow] => MWF
+    [time] => 08:30 am-09:20 am
+    [capacity] => 87
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => GRIS 180
+    [type] => Lecture
+    [notes] => Lower Division
+    [link_self] => A1
+    [link_other] => A4
+)
+Array
+(
+    [crn] => 13217
+    [subj] => CS
+    [course_number] => 28400
+    [section] => 001
+    [name] => Professional Practice III
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => William Joseph  Gorman (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Experiential
+    [notes] => Coop and Full-Time Privileges and Lower Division
+)
+Array
+(
+    [crn] => 64108
+    [subj] => CS
+    [course_number] => 28401
+    [section] => 001
+    [name] => Professional Practice Part-Time
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Experiential
+    [notes] => Lower Division
+)
+Array
+(
+    [crn] => 35141
+    [subj] => CS
+    [course_number] => 29000
+    [section] => 003
+    [name] => Topics In CS
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Individual Study
+    [notes] => Lower Division and Variable Title
+)
+Array
+(
+    [crn] => 64078
+    [subj] => CS
+    [course_number] => 29000
+    [section] => SLO
+    [name] => Service Learn Outreach
+    [dow] => W
+    [time] => 03:30 pm-04:20 pm
+    [capacity] => 36
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Lecture
+    [notes] => Lower Division and Variable Title
+)
+Array
+(
+    [crn] => 13219
+    [subj] => CS
+    [course_number] => 29100
+    [section] => LE1
+    [name] => Sophomore Development Seminar
+    [dow] => MW
+    [time] => 03:30 pm-04:20 pm
+    [capacity] => 82
+    [instructor] => William N  Crum (P)
+    [date] => 08/19-10/15
+    [location] => LWSN B155
+    [type] => Lecture
+    [notes] => Lower Division
+)
+Array
+(
+    [crn] => 52675
+    [subj] => CS
+    [course_number] => 30700
+    [section] => LE1
+    [name] => Software Engineering I
+    [dow] => MWF
+    [time] => 12:30 pm-01:20 pm
+    [capacity] => 60
+    [instructor] => Hubert E  Dunsmore (P)
+    [date] => 08/19-12/07
+    [location] => WTHR 320
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 58534
+    [subj] => CS
+    [course_number] => 33400
+    [section] => LE1
+    [name] => Fundamentals Of Computer Graphics
+    [dow] => MWF
+    [time] => 11:30 am-12:20 pm
+    [capacity] => 60
+    [instructor] => Daniel G  Aliaga (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G066
+    [type] => Lecture
+    [notes] => Upper Division
+    [link_self] => A1
+    [link_other] => A2
+)
+Array
+(
+    [crn] => 58537
+    [subj] => CS
+    [course_number] => 33400
+    [section] => P01
+    [name] => Fundamentals Of Computer Graphics
+    [dow] => M
+    [time] => 09:30 am-11:20 am
+    [capacity] => 20
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B160
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58532
+    [subj] => CS
+    [course_number] => 33400
+    [section] => P02
+    [name] => Fundamentals Of Computer Graphics
+    [dow] => T
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 20
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B160
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 58536
+    [subj] => CS
+    [course_number] => 33400
+    [section] => P03
+    [name] => Fundamentals Of Computer Graphics
+    [dow] => W
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 20
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B160
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13235
+    [subj] => CS
+    [course_number] => 34800
+    [section] => LE1
+    [name] => Information Systems
+    [dow] => MWF
+    [time] => 09:30 am-10:20 am
+    [capacity] => 66
+    [instructor] => Bharat Kumar  Bhargava (P)
+    [date] => 08/19-12/07
+    [location] => BRWN 1154
+    [type] => Lecture
+    [notes] => Upper Division
+    [link_self] => A1
+    [link_other] => A2
+)
+Array
+(
+    [crn] => 13237
+    [subj] => CS
+    [course_number] => 34800
+    [section] => P01
+    [name] => Information Systems
+    [dow] => W
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B146
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13236
+    [subj] => CS
+    [course_number] => 34800
+    [section] => P02
+    [name] => Information Systems
+    [dow] => T
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B148
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 45974
+    [subj] => CS
+    [course_number] => 34800
+    [section] => P03
+    [name] => Information Systems
+    [dow] => M
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B146
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 64077
+    [subj] => CS
+    [course_number] => 35300
+    [section] => 001
+    [name] => Principles Of Concurrency And Parrallelism
+    [dow] => MWF
+    [time] => 02:30 pm-03:20 pm
+    [capacity] => 36
+    [instructor] => Suresh   Jagannathan (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 13241
+    [subj] => CS
+    [course_number] => 35400
+    [section] => LE1
+    [name] => Operating Systems
+    [dow] => TR
+    [time] => 03:00 pm-04:15 pm
+    [capacity] => 88
+    [instructor] => Dongyan   Xu (P)
+    [date] => 08/19-12/07
+    [location] => GRIS 180
+    [type] => Lecture
+    [notes] => Upper Division
+    [link_self] => A1
+    [link_other] => A2
+)
+Array
+(
+    [crn] => 13243
+    [subj] => CS
+    [course_number] => 35400
+    [section] => P01
+    [name] => Operating Systems
+    [dow] => R
+    [time] => 09:30 am-11:20 am
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G040
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 60236
+    [subj] => CS
+    [course_number] => 35400
+    [section] => P02
+    [name] => Operating Systems
+    [dow] => W
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G040
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 52686
+    [subj] => CS
+    [course_number] => 35400
+    [section] => P03
+    [name] => Operating Systems
+    [dow] => F
+    [time] => 03:30 pm-05:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G040
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 62132
+    [subj] => CS
+    [course_number] => 35400
+    [section] => P04
+    [name] => Operating Systems
+    [dow] => F
+    [time] => 01:30 pm-03:20 pm
+    [capacity] => 22
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS G040
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13246
+    [subj] => CS
+    [course_number] => 35500
+    [section] => LE1
+    [name] => Introduction To Cryptography
+    [dow] => MWF
+    [time] => 07:30 am-08:20 am
+    [capacity] => 45
+    [instructor] => Samuel S  Wagstaff (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B151
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 13247
+    [subj] => CS
+    [course_number] => 38100
+    [section] => LE1
+    [name] => Introduction To The Analysis Of Algorithms
+    [dow] => TR
+    [time] => 01:30 pm-02:45 pm
+    [capacity] => 80
+    [instructor] => Mikhail J  Atallah (P)
+    [date] => 08/19-12/07
+    [location] => SC 239
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 13248
+    [subj] => CS
+    [course_number] => 38600
+    [section] => 001
+    [name] => Professional Practice IV
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => William Joseph  Gorman (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Experiential
+    [notes] => Coop and Full-Time Privileges and Upper Division
+)
+Array
+(
+    [crn] => 64850
+    [subj] => CS
+    [course_number] => 39000
+    [section] => 001
+    [name] => Scrum Software Dev Research
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Hubert E  Dunsmore (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Individual Study
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 53092
+    [subj] => CS
+    [course_number] => 39000
+    [section] => CP0
+    [name] => Competitive Programming
+    [dow] => R
+    [time] => 03:00 pm-05:50 pm
+    [capacity] => 24
+    [instructor] => John Timothy  Korb (P)
+    [date] => 08/19-11/05
+    [location] => LWSN B146
+    [type] => Laboratory
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 64079
+    [subj] => CS
+    [course_number] => 39000
+    [section] => SLO
+    [name] => Service Learn Outreach
+    [dow] => W
+    [time] => 03:30 pm-04:20 pm
+    [capacity] => 36
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Lecture
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 42908
+    [subj] => CS
+    [course_number] => 39100
+    [section] => LE1
+    [name] => Junior Resources Seminar
+    [dow] => MW
+    [time] => 04:30 pm-05:20 pm
+    [capacity] => 70
+    [instructor] => William N  Crum (P)
+    [date] => 08/19-10/15
+    [location] => LWSN B155
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 13251
+    [subj] => CS
+    [course_number] => 39700
+    [section] => H01
+    [name] => Honors Seminar
+    [dow] => W
+    [time] => 03:30 pm-04:20 pm
+    [capacity] => 36
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN 1106
+    [type] => Lecture
+    [notes] => Honors and Upper Division
+)
+Array
+(
+    [crn] => 62134
+    [subj] => CS
+    [course_number] => 40800
+    [section] => 001
+    [name] => Software Testing
+    [dow] => MWF
+    [time] => 11:30 am-12:20 pm
+    [capacity] => 89
+    [instructor] => Hubert E  Dunsmore (P)
+    [date] => 08/19-12/07
+    [location] => WTHR 320
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 13257
+    [subj] => CS
+    [course_number] => 47100
+    [section] => LE1
+    [name] => Introduction to Artificial Intelligence
+    [dow] => TR
+    [time] => 12:00 pm-01:15 pm
+    [capacity] => 60
+    [instructor] => Elisha P  Sacks (P)
+    [date] => 08/19-12/07
+    [location] => GRIS 280
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 62166
+    [subj] => CS
+    [course_number] => 47300
+    [section] => 001
+    [name] => Web Information Search And Management
+    [dow] => TR
+    [time] => 09:00 am-10:15 am
+    [capacity] => 36
+    [instructor] => Luo   Si (P)
+    [date] => 08/19-12/07
+    [location] => UNIV 317
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 13259
+    [subj] => CS
+    [course_number] => 48700
+    [section] => 001
+    [name] => Professional Practice V
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => William Joseph  Gorman (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Experiential
+    [notes] => Coop and Full-Time Privileges and Upper Division
+)
+Array
+(
+    [crn] => 13260
+    [subj] => CS
+    [course_number] => 49000
+    [section] => 001
+    [name] => Topics In CS
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Individual Study
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 64953
+    [subj] => CS
+    [course_number] => 49000
+    [section] => 002
+    [name] => Molecular Modeling
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Tonglei   Li (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Individual Study
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 64080
+    [subj] => CS
+    [course_number] => 49000
+    [section] => DS0
+    [name] => Distributed Systems
+    [dow] => MWF
+    [time] => 04:30 pm-05:20 pm
+    [capacity] => 36
+    [instructor] => Patrick Thomas  Eugster (P)
+    [date] => 08/19-12/07
+    [location] => LWSN 1106
+    [type] => Lecture
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 64379
+    [subj] => CS
+    [course_number] => 49000
+    [section] => ES0
+    [name] => Embedded Systems
+    [dow] => TR
+    [time] => 01:30 pm-02:45 pm
+    [capacity] => 40
+    [instructor] => Douglas E  Comer (P), Vijay   Raghunathan 
+    [date] => 08/19-12/07
+    [location] => REC 313
+    [type] => Lecture
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 64595
+    [subj] => CS
+    [course_number] => 49000
+    [section] => WMS
+    [name] => Web And Mobile Startups
+    [dow] => R
+    [time] => 06:30 pm-08:20 pm
+    [capacity] => 36
+    [instructor] => John Timothy  Korb (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Lecture
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 13268
+    [subj] => CS
+    [course_number] => 49700
+    [section] => H01
+    [name] => Honors Research Project
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Elisha P  Sacks (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Individual Study
+    [notes] => Honors and Upper Division
+)
+Array
+(
+    [crn] => 13269
+    [subj] => CS
+    [course_number] => 50100
+    [section] => LE1
+    [name] => Computing For Science And Engineering
+    [dow] => MWF
+    [time] => 12:30 pm-01:20 pm
+    [capacity] => 60
+    [instructor] => Robert D  Skeel (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G066
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 62666
+    [subj] => CS
+    [course_number] => 50200
+    [section] => EPE
+    [name] => Compiling And Programming Systems
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 95
+    [instructor] => Zhiyuan   Li (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Distance Learning
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 52695
+    [subj] => CS
+    [course_number] => 50200
+    [section] => PTR
+    [name] => Compiling And Programming Systems
+    [dow] => TR
+    [time] => 03:00 pm-04:15 pm
+    [capacity] => 65
+    [instructor] => Zhiyuan   Li (P)
+    [date] => 08/19-12/07
+    [location] => POTR 262
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 13272
+    [subj] => CS
+    [course_number] => 50300
+    [section] => LE1
+    [name] => Operating Systems
+    [dow] => TR
+    [time] => 03:00 pm-04:15 pm
+    [capacity] => 40
+    [instructor] => Kihong   Park (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G066
+    [type] => Lecture
+    [notes] => Upper Division
+    [link_self] => A1
+    [link_other] => A2
+)
+Array
+(
+    [crn] => 13274
+    [subj] => CS
+    [course_number] => 50300
+    [section] => P01
+    [name] => Operating Systems
+    [dow] => W
+    [time] => 09:30 am-11:20 am
+    [capacity] => 20
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS 257
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13273
+    [subj] => CS
+    [course_number] => 50300
+    [section] => P02
+    [name] => Operating Systems
+    [dow] => F
+    [time] => 09:30 am-11:20 am
+    [capacity] => 20
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS 257
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 46551
+    [subj] => CS
+    [course_number] => 51400
+    [section] => LE1
+    [name] => Numerical Analysis
+    [dow] => TR
+    [time] => 12:00 pm-01:15 pm
+    [capacity] => 60
+    [instructor] => Zhiqiang   Cai (P)
+    [date] => 08/19-12/07
+    [location] => ME 1052
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 46100
+    [subj] => CS
+    [course_number] => 51500
+    [section] => LE1
+    [name] => Numerical Linear Algebra
+    [dow] => TR
+    [time] => 09:00 am-10:15 am
+    [capacity] => 36
+    [instructor] => Ahmed H  Sameh (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 46101
+    [subj] => CS
+    [course_number] => 52600
+    [section] => LE1
+    [name] => Information Security
+    [dow] => TR
+    [time] => 12:00 pm-01:15 pm
+    [capacity] => 60
+    [instructor] => Ninghui   Li (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G066
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 64081
+    [subj] => CS
+    [course_number] => 53000
+    [section] => 001
+    [name] => Introduction To Scientific Visualization
+    [dow] => TR
+    [time] => 04:30 pm-05:45 pm
+    [capacity] => 36
+    [instructor] => Xavier Michel  Tricoche (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 37412
+    [subj] => CS
+    [course_number] => 53500
+    [section] => LE1
+    [name] => Interactive Computer Graphics
+    [dow] => TR
+    [time] => 03:00 pm-04:15 pm
+    [capacity] => 36
+    [instructor] => Voicu S  Popescu (P)
+    [date] => 08/19-12/07
+    [location] => LWSN 1106
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 64603
+    [subj] => CS
+    [course_number] => 53600
+    [section] => EPE
+    [name] => Data Communication And Computer Networks
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 95
+    [instructor] => Sonia A  Fahmy (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Distance Learning
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 13282
+    [subj] => CS
+    [course_number] => 53600
+    [section] => P01
+    [name] => Data Communication And Computer Networks
+    [dow] => M
+    [time] => 11:30 am-01:20 pm
+    [capacity] => 18
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS 257
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13283
+    [subj] => CS
+    [course_number] => 53600
+    [section] => P02
+    [name] => Data Communication And Computer Networks
+    [dow] => M
+    [time] => 09:30 am-11:20 am
+    [capacity] => 18
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => HAAS 257
+    [type] => Practice Study Observation
+    [notes] => Upper Division
+    [link_self] => A2
+    [link_other] => A1
+)
+Array
+(
+    [crn] => 13281
+    [subj] => CS
+    [course_number] => 53600
+    [section] => PTR
+    [name] => Data Communication And Computer Networks
+    [dow] => TR
+    [time] => 10:30 am-11:45 am
+    [capacity] => 36
+    [instructor] => Sonia A  Fahmy (P)
+    [date] => 08/19-12/07
+    [location] => POTR 262
+    [type] => Lecture
+    [notes] => Upper Division
+    [link_self] => A1
+    [link_other] => A2
+)
+Array
+(
+    [crn] => 52699
+    [subj] => CS
+    [course_number] => 54300
+    [section] => LE1
+    [name] => Introduction To Simulation And Modeling Of Computer Systems
+    [dow] => TR
+    [time] => 07:30 am-08:45 am
+    [capacity] => 36
+    [instructor] => Vernon J  Rego (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 57153
+    [subj] => CS
+    [course_number] => 56900
+    [section] => 001
+    [name] => Introduction To Robotic Systems
+    [dow] => TR
+    [time] => 03:00 pm-04:15 pm
+    [capacity] => 31
+    [instructor] => Chun-Sing George  Lee (P)
+    [date] => 08/19-12/07
+    [location] => EE 224
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 58713
+    [subj] => CS
+    [course_number] => 57300
+    [section] => LE1
+    [name] => Data Mining
+    [dow] => MWF
+    [time] => 11:30 am-12:20 pm
+    [capacity] => 80
+    [instructor] => Clifton W  Bingham (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B155
+    [type] => Lecture
+    [notes] =>  
+)
+Array
+(
+    [crn] => 60972
+    [subj] => CS
+    [course_number] => 57800
+    [section] => LE1
+    [name] => Statistical Machine Learning
+    [dow] => TR
+    [time] => 03:00 pm-04:15 pm
+    [capacity] => 40
+    [instructor] => Yuan   Qi (P)
+    [date] => 08/19-12/07
+    [location] => LWSN B155
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 60273
+    [subj] => CS
+    [course_number] => 57900
+    [section] => LE1
+    [name] => Bioinformatics Algorithms
+    [dow] => TR
+    [time] => 01:30 pm-02:45 pm
+    [capacity] => 36
+    [instructor] => Alex   Pothen (P)
+    [date] => 08/19-12/07
+    [location] => LWSN 1106
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 38512
+    [subj] => CS
+    [course_number] => 58000
+    [section] => LE1
+    [name] => Algorithm Design, Analysis, And Implementation
+    [dow] => TR
+    [time] => 10:30 am-11:45 am
+    [capacity] => 60
+    [instructor] => Elena   Grigorescu (P)
+    [date] => 08/19-12/07
+    [location] => HAAS G066
+    [type] => Lecture
+    [notes] => Upper Division
+)
+Array
+(
+    [crn] => 35316
+    [subj] => CS
+    [course_number] => 59000
+    [section] => 012
+    [name] => Topics In Computer Sciences
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Ahmed H  Sameh (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Individual Study
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 59501
+    [subj] => CS
+    [course_number] => 59000
+    [section] => CLS
+    [name] => Computing For Life Sciences
+    [dow] => TR
+    [time] => 03:00 pm-04:15 pm
+    [capacity] => 20
+    [instructor] => Daisuke   Kihara (P)
+    [date] => 08/19-12/07
+    [location] => BRNG 1254
+    [type] => Lecture
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 64082
+    [subj] => CS
+    [course_number] => 59000
+    [section] => RAL
+    [name] => Randomized Algorithms
+    [dow] => TR
+    [time] => 04:30 pm-05:45 pm
+    [capacity] => 36
+    [instructor] => Yi   Wu (P)
+    [date] => 08/19-12/07
+    [location] => LWSN 1106
+    [type] => Lecture
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 48020
+    [subj] => CS
+    [course_number] => 59100
+    [section] => DSN
+    [name] => Dist Systems & Netwkng Seminar
+    [dow] => M
+    [time] => 04:30 pm-05:20 pm
+    [capacity] => 25
+    [instructor] => TBA
+    [date] => 08/19-12/07
+    [location] => LWSN B134
+    [type] => Lecture
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 38903
+    [subj] => CS
+    [course_number] => 59100
+    [section] => RS1
+    [name] => Res Sem First Yr Gr Student
+    [dow] => MW
+    [time] => 02:30 pm-03:20 pm
+    [capacity] => 82
+    [instructor] => TBA
+    [date] => 08/26-10/22
+    [location] => LWSN B155
+    [type] => Lecture
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 34240
+    [subj] => CS
+    [course_number] => 59100
+    [section] => SEC
+    [name] => Info Sec&Cybr Crime Sem
+    [dow] => W
+    [time] => 04:30 pm-05:20 pm
+    [capacity] => 44
+    [instructor] => Mikhail J  Atallah (P)
+    [date] => 08/19-12/07
+    [location] => STEW 050B
+    [type] => Lecture
+    [notes] => Upper Division and Variable Title
+)
+Array
+(
+    [crn] => 13303
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 001
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Ahmed K  Elmagarmid (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13304
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 002
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Luo   Si (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13305
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 003
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Mikhail J  Atallah (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13306
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 004
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Aditya P  Mathur (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13307
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 005
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Elisa   Bertino (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13308
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 006
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Eugene H  Spafford (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13309
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 007
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Antony L  Hosking (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13310
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 008
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Jennifer L  Neville (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13311
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 009
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Ananth Y  Grama (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13312
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 010
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Zhiyuan   Li (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13313
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 011
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => David K Y  Yau (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13314
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 012
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Sonia A  Fahmy (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13315
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 013
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Dongyan   Xu (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13316
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 014
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Suresh   Jagannathan (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13317
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 015
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Gopalakrishnan C  Pandurangan (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13318
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 016
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Daniel G  Aliaga (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13319
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 017
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Daisuke   Kihara (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13320
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 018
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Ninghui   Li (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13321
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 019
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Cristina   Nita-Rotaru (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 34204
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 020
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Yuan   Qi (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 34206
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 021
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Y Charlie   Hu (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 34872
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 022
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Ahmed H  Sameh (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 34893
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 023
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Patrick Thomas  Eugster (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 34969
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 024
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Walid G  Aref (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 34990
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 025
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Bharat Kumar  Bhargava (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 40235
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 027
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Christoph M  Hoffmann (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 39194
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 030
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Clifton W  Bingham (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 39195
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 032
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Jan   Vitek (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 39196
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 033
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Xiangyu   Zhang (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 39197
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 034
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Jan   Vitek (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 35060
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 035
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Ramana Rao   Kompella (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 35198
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 036
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Sunil K  Prabhakar (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 35367
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 037
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Saurabh   Bagchi (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 35376
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 038
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Vernon J  Rego (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 35399
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 039
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Xavier Michel  Tricoche (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 35812
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 040
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Alex   Pothen (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 40393
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 045
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => David S  Ebert (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 40420
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 046
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Charles E  Killian (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 40467
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 047
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Samuel S  Wagstaff (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 40856
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 049
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Douglas E  Comer (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 40924
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 050
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Hubert E  Dunsmore (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 40951
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 051
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Kihong   Park (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 40954
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 061
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Sabre   Kais (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 48862
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 062
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Voicu S  Popescu (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 49718
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 063
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Zhiyuan   Li (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 49859
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 064
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Bharat Kumar  Bhargava (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 50116
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 065
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Sonia A  Fahmy (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 55850
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 066
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => David F  Gleich (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 55869
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 067
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Ninghui   Li (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 56004
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 068
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Aditya P  Mathur (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 56008
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 069
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Vishwanathan V N  Swaminathan (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 59440
+    [subj] => CS
+    [course_number] => 69800
+    [section] => 070
+    [name] => Research MS Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Wojciech   Szpankowski (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13322
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 001
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Christoph M  Hoffmann (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13323
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 002
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Ahmed K  Elmagarmid (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13324
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 003
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Vernon J  Rego (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13325
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 004
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Luo   Si (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13326
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 005
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Mikhail J  Atallah (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13327
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 006
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Wojciech   Szpankowski (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13328
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 007
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Greg N  Frederickson (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13329
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 008
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Bharat Kumar  Bhargava (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13330
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 009
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Xiangyu   Zhang (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13331
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 010
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Elisa   Bertino (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13332
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 011
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Patrick Thomas  Eugster (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13333
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 012
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Elisha P  Sacks (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13334
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 013
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Antony L  Hosking (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13335
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 014
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Jennifer L  Neville (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13336
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 015
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Ananth Y  Grama (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13337
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 016
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Kihong   Park (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13338
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 017
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Ahmed H  Sameh (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13339
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 018
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Zhiyuan   Li (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13340
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 019
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => David K Y  Yau (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13341
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 020
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Sunil K  Prabhakar (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13342
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 021
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Walid G  Aref (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13343
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 022
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Sonia A  Fahmy (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13344
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 023
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Jan   Vitek (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13345
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 024
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Clifton W  Bingham (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13346
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 025
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Voicu S  Popescu (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13347
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 026
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Dongyan   Xu (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13348
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 027
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Suresh   Jagannathan (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13349
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 028
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Gopalakrishnan C  Pandurangan (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13350
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 029
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Daniel G  Aliaga (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13351
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 030
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Daisuke   Kihara (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13352
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 031
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Ninghui   Li (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 13353
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 032
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Cristina   Nita-Rotaru (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 35736
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 033
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Aditya P  Mathur (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 35737
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 034
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Raymond A  Decarlo (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 40236
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 035
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Ramana Rao   Kompella (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 40594
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 036
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Xavier Michel  Tricoche (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 48466
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 037
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Vishwanathan V N  Swaminathan (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 48618
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 038
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Samuel S  Wagstaff (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 49409
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 040
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Eugene H  Spafford (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 49497
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 041
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Saurabh   Bagchi (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 49605
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 042
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Charles E  Killian (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 53985
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 043
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Alex   Pothen (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 54345
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 044
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Eugene H  Spafford (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 55365
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 045
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Sabre   Kais (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 55409
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 046
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Yuan   Qi (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 55649
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 047
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Ramana Rao   Kompella (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 56109
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 048
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Susanne E  Hambrusch (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 59931
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 049
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Mourad   Ouzzani (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 60922
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 050
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => Antony L  Hosking (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+Array
+(
+    [crn] => 61018
+    [subj] => CS
+    [course_number] => 69900
+    [section] => 051
+    [name] => Research PhD Thesis
+    [dow] =>  
+    [time] => TBA
+    [capacity] => 9999
+    [instructor] => David F  Gleich (P)
+    [date] => 08/19-12/07
+    [location] => TBA
+    [type] => Research
+    [notes] =>  
+)
+

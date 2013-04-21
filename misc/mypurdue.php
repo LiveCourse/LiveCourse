@@ -7,6 +7,13 @@
  * from a local page.
 */
 
+function mysql_insert($table, $inserts) {
+	$values = array_map('mysql_real_escape_string', array_values($inserts));
+	$keys = array_keys($inserts);
+
+	return mysql_query('INSERT INTO `'.$table.'` (`'.implode('`,`', $keys).'`) VALUES (\''.implode('\',\'', $values).'\')');
+}
+
 function convertCookiesToString($cookiedb)
 {
 	$str = '';
@@ -205,6 +212,11 @@ $xquery = "//table[@class='datadisplaytable']//tr";
 
 $classes = $xpath->query($xquery);
 
+$class_db = array();
+
+mysql_connect("localhost","livecourse","fart4fun");
+mysql_select_db("livecourse_import");
+
 foreach ($classes as $class)
 {
 	//Make sure this isn't a header.
@@ -222,11 +234,71 @@ foreach ($classes as $class)
 	$c["course_number"] = $classdata->item(3)->nodeValue;
 	$c["section"] = $classdata->item(4)->nodeValue;
 	$c["name"] = $classdata->item(7)->nodeValue;
-	$c["dow"] = $classdata->item(8)->nodeValue;
-	$c["time"] = $classdata->item(9)->nodeValue;
+	
+	//Get days of week
+	$c["dow_monday"] = 0;
+	$c["dow_tuesday"] = 0;
+	$c["dow_wednesday"] = 0;
+	$c["dow_thursday"] = 0;
+	$c["dow_friday"] = 0;
+	$c["dow_saturday"] = 0;
+	$c["dow_sunday"] = 0;
+	
+	$dow = $classdata->item(8)->nodeValue;
+	if (strpos($dow,"M") !== false)
+		$c["dow_monday"] = 1;
+	if (strpos($dow,"T") !== false)
+		$c["dow_tuesday"] = 1;
+	if (strpos($dow,"W") !== false)
+		$c["dow_wednesday"] = 1;
+	if (strpos($dow,"R") !== false)
+		$c["dow_thursday"] = 1;
+	if (strpos($dow,"F") !== false)
+		$c["dow_friday"] = 1;
+	if (strpos($dow,"S") !== false)
+		$c["dow_saturday"] = 1;
+	if (strpos($dow,"U") !== false)
+		$c["dow_sunday"] = 1;
+	
+	//Get start and end times.
+	$c["time_start"] = 0;
+	$c["time_end"] = 0;
+	$time = $classdata->item(9)->nodeValue;
+	if (strlen($time) > 0)
+	{
+		$times = explode("-",$time);
+		$start_hour = intval(substr($times[0],0,2));
+		$start_minute = intval(substr($times[0],3,2));
+		if (strpos($times[0],"pm") !== false)
+			$start_hour += 12;
+		$end_hour = intval(substr($times[1],0,2));
+		$end_minute = intval(substr($times[1],3,2));
+		if (strpos($times[1],"pm") !== false)
+			$end_hour += 12;
+	
+		$c["time_start"] = ($start_hour*60)+$start_minute;
+		$c["time_end"] = ($end_hour*60)+$end_minute;
+	}
+	
 	$c["capacity"] = $classdata->item(10)->nodeValue;
 	$c["instructor"] = $classdata->item(19)->nodeValue;
-	$c["date"] = $classdata->item(20)->nodeValue;
+	//YYYY-MM-DD
+	$dates = $classdata->item(20)->nodeValue;
+	if (strlen($dates) > 0)
+	{
+		$dates = explode("-",$dates);
+		$start_month = substr($dates[0],0,2);
+		$start_day = substr($dates[0],3,2);
+		$end_month = substr($dates[1],0,2);
+		$end_day = substr($dates[1],3,2);
+		
+		$year = date("Y");
+		
+		$c["date_start"] = $year . "-" . $start_month . "-" . $start_day;
+		$c["date_end"] = $year . "-" . $end_month . "-" . $end_day;
+	}
+	
+	
 	$c["location"] = $classdata->item(21)->nodeValue;
 	$c["type"] = $classdata->item(22)->nodeValue;
 	$c["notes"] = $classdata->item(26)->nodeValue;
@@ -237,6 +309,8 @@ foreach ($classes as $class)
 		$c["link_other"] = $links[1];
 	}
 	print_r($c);
+	mysql_insert('sections', $c);
+	//array_push($class_db,$c);
 }
 
 ?>
