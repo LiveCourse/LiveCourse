@@ -38,13 +38,20 @@
         android:layout_height="wrap_content"
         android:padding="5dp" >
         
+	    <ImageButton 
+            android:id="@+id/upload_button_view"
+        	android:layout_width="wrap_content"
+        	android:layout_height="fill_parent"  
+        	android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" 
+        	android:src="@drawable/chat_upload_button"
+        	android:background="@drawable/button_selector" />
+	    
         <EditText
             android:id="@+id/send_message_edit_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:ems="10"
             android:inputType="textPersonName" >
 
@@ -54,9 +61,11 @@
         <ImageButton 
             android:id="@+id/send_button_view"
         	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"   
+        	android:layout_height="fill_parent"  
+        	android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" 
         	android:src="@drawable/chat_send_button"
-        	android:background="@drawable/send_selector" />
+        	android:background="@drawable/button_selector" />
 
     </LinearLayout>
 </LinearLayout>
