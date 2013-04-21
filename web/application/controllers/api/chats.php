@@ -22,26 +22,26 @@ class Chats extends REST_Controller
 	public function index_get()
 	{
 		$this->load->model('Model_Classes');
-		
+
 		if ($this->authenticated_as <= 0)
 		{
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
 			return;
 		}
-		
+
 		$user_id = $this->get('user_id');
 		if (!isset($user_id) || $user_id == "")
 			$user_id = $this->authenticated_as;
-		
+
 		$chats = $this->Model_Classes->get_subscribed_chats($user_id);
 		$this->response($chats, 200);
 	}
 
 	/**
 	 * Fetches chat information on a specific chat
-	 * 
+	 *
 	 * id - String form of chat ID
-	 * 
+	 *
 	 * returns
 	 * 	401 if not logged in
 	 * 	403 if query was empty
@@ -52,7 +52,7 @@ class Chats extends REST_Controller
 	{
 		$this->load->model('Model_Classes');
 		$chat_id_string = $this->get('id');
-		
+
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -61,20 +61,20 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
 			return;
 		}
-		
+
 		if (strlen($chat_id_string) <= 0)
 		{
 			$this->response($this->rest_error(array("Empty queries can not be processed.")), 403);
 			return;
 		}
-		
+
 		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
 		if ($chat_id < 0)
 		{
 			$this->response($this->rest_error(array("Specified chat could not be found.")), 404);
 			return;
 		}
-		
+
 		$chat_info = $this->Model_Classes->get_chat_by_id($chat_id);
 		$this->response($chat_info);
 	}
@@ -95,12 +95,12 @@ class Chats extends REST_Controller
 	{
 		$this->response($this->rest_error(array("This function is deprecated Please use the section API.")), 404);
 		return;
-		
+
 		/*
-	
+
 		$this->load->model('Model_Classes');
 		$query_string = $this->get('query');
-		
+
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -143,27 +143,27 @@ class Chats extends REST_Controller
 	*/
 	public function flag_file_post()
 	{
-	
+
 		$reporter_id = $this->authenticated_as;
 		if ($reporter_id <= 0)
 		{
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
 			return;
 		}
-	
+
 		$this->load->model('Model_Classes');
-	
+
 		$message_id = $this->post('message_id');
 		$reason = $this->post('reason');
 		$time = time();
-	
-	
-	
+
+
+
 		if ($this->Model_Classes->check_reporter($reporter_id,$message_id)==false)
-		{		
+		{
 			if ($this->Model_Classes->check_message($message_id)==true)
 			{
-				$this->Model_Classes->flag_message($message_id,$reporter_id,$reason,$time);		
+				$this->Model_Classes->flag_message($message_id,$reporter_id,$reason,$time);
 				if ($this->Model_Classes->check_flagged($message_id)>=5)
 				{
 					$this->Model_Classes->remove_file($message_id);
@@ -173,7 +173,7 @@ class Chats extends REST_Controller
 			}
 			else
 			{
-				
+
 				$this->response($this->rest_error(array("Only messages that exist my be deleted.")), 403);
 				return;
 			}
@@ -185,7 +185,7 @@ class Chats extends REST_Controller
 		}
 
 	}
-	
+
 	/**
 	 * Flags a message as inappropriate
 	 *
@@ -200,47 +200,47 @@ class Chats extends REST_Controller
 	 */
 	public function flag_message_post()
 	{
-		
+
 		$reporter_id = $this->authenticated_as;
 		if ($reporter_id <= 0)
 		{
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
 			return;
 		}
-		
+
 		$this->load->model('Model_Classes');
-	
+
 		$message_id = $this->post('message_id');
 		$reason = $this->post('reason');
 		$time = time();
-		
+
 		if ($this->Model_Classes->check_reporter($reporter_id,$message_id)==false)
-		{		
+		{
 			if ($this->Model_Classes->check_message($message_id)==true)
 			{
-				$this->Model_Classes->flag_message($message_id,$reporter_id,$reason,$time);		
+				$this->Model_Classes->flag_message($message_id,$reporter_id,$reason,$time);
 				if ($this->Model_Classes->check_flagged($message_id)>=5)
 				{
 					$this->Model_Classes->remove_message($message_id);
 				}
 				$this->response(null, 200);
-				
+
 			}
 			else
 			{
 				$this->response($this->rest_error(array("Only messages that exist may be flagged.")), 403);
 				return;
 			}
-			
+
 		}
 		else
 		{
 			$this->response($this->rest_error(array("You have already reported this message.")), 403);
 			return;
 		}
-		
+
 	}
-	
+
 	/**
 	 * DEPRECATED!!!
 	 * Joins a user to a chat
@@ -262,7 +262,7 @@ class Chats extends REST_Controller
 		$this->load->model('Model_Classes');
 
 		$chat_id_string = $this->post('id');
-		
+
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -334,11 +334,11 @@ class Chats extends REST_Controller
 	public function add_post()
 	{
 		$this->response($this->rest_error(array("Not implemented.")), 500); //We need to make this work properly with linked sections.
-		return; 
-		
-		
+		return;
+
+
 		$this->load->model('Model_Classes');
-		
+
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -347,7 +347,7 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
 			return;
 		}
-		
+
 		$id_string 		= $this->Model_Auth->_random_string(16);
 		$subject_id 		= $this->post('subject_id');
 		$course_number		= $this->post('course_number');
@@ -369,85 +369,85 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("No subject ID was specified.")), 403);
 			return;
 		}
-		
+
 		if ($course_number <= 0)
 		{
 			$this->response($this->rest_error(array("No course number was specified.")), 403);
 			return;
 		}
-		
+
 		if (strlen($name) <= 0)
 		{
 			$this->response($this->rest_error(array("No name was specified.")), 403);
 			return;
 		}
-		
+
 		if ($institution_id <= 0)
 		{
 			$this->response($this->rest_error(array("No institution id was specified.")), 403);
 			return;
 		}
-		
+
 		if ($room_id <= 0)
 		{
 			$this->response($this->rest_error(array("No room id was specified.")), 403);
 			return;
 		}
-		
+
 		if ($start_time <= 0)
 		{
 			$this->response($this->rest_error(array("No start time was specified.")), 403);
 			return;
 		}
-		
+
 		if ($end_time <= 0)
 		{
 			$this->response($this->rest_error(array("No end time was specified.")), 403);
 			return;
 		}
-		
+
 		if ($dow_monday != 0 && $dow_monday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on a Monday.")), 403);
 			return;
 		}
-		
+
 		if ($dow_tuesday != 0 && $dow_tuesday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on a Tuesday.")), 403);
 			return;
 		}
-		
+
 		if ($dow_wednesday != 0 && $dow_wednesday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on a Wednesday.")), 403);
 			return;
 		}
-		
+
 		if ($dow_thursday != 0 && $dow_thursday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on a Thursday.")), 403);
 			return;
 		}
-		
+
 		if ($dow_friday != 0 && $dow_friday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on Friday.")), 403);
 			return;
 		}
-		
+
 		if ($dow_saturday != 0 && $dow_saturday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on a Saturday.")), 403);
 			return;
 		}
-		
+
 		if ($dow_sunday != 0 && $dow_sunday != 1)
 		{
 			$this->response($this->rest_error(array("Did not specify if class is on Sunday.")), 403);
 			return;
 		}
-		
+
 		$chat_info['id_string'] = $id_string;
 		$chat_info['subject_id'] = $subject_id;
 		$chat_info['course_number'] = $course_number;
@@ -463,7 +463,7 @@ class Chats extends REST_Controller
 		$chat_info['dow_friday'] = $dow_friday;
 		$chat_info['dow_saturday'] = $dow_saturday;
 		$chat_info['dow_sunday'] = $dow_sunday;
-		
+
 		if ($this->Model_Classes->add_chat($chat_info))
 		{
 			$this->response('Successfully added a chat room!', 200);
@@ -532,7 +532,7 @@ class Chats extends REST_Controller
 
 		//Well, all that error checking done, lets unsubscribe the user.
 		$remove = $this->Model_Classes->leave_class_by_id($class_id,$user_id);
-		
+
 		if ($remove)
 		{
 			$this->response('User successfully removed!', 200);
@@ -548,10 +548,10 @@ class Chats extends REST_Controller
 	/**
 	 * Sends a message to the specified room, also supports uploading files tagged to a message
 	 * and pushing notifications to android devices
-	 * 
+	 *
 	 * chat_id - string ID of room to send to.
 	 * message - message string
-	 * 
+	 *
 	 * returns
 	 * 	403 if not logged in or Chat ID was not supplied
 	 * 	404 if the specified chat does not exist
@@ -586,7 +586,7 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
 			return;
 		}
-		
+
 		//Fetch chat info
 		$chat_info = $this->Model_Classes->get_chat_by_id($chat_id);
 
@@ -605,48 +605,48 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("You must provide a message.")), 403);
 			return;
 		}
-		
-		
+
+
 		$send_time = time();
 		if ($send_time - $this->Model_Classes->get_time_newest($user_id) > 2)
 		{
 			$message_data = $this->Model_Classes->send_message($user_id, $chat_id, $message, $send_time);
 		}
-		
+
 		else
 		{
 			$this->response($this->rest_error(array("Please wait a few seconds before sending another message.")), 403);
 			return;
 		}
-		
-		
+
+
 		if (!$message_data)
 		{
 			$this->response($this->rest_errror(array("ERROR adding the message!")), 403);
 			return;
 		}
-		
+
 		$message_id = $this->db->insert_id();
-		
+
 		$this->load->model('Model_S3');
 		$this->load->model('Model_Auth');
-		
+
 		//Randomly generate the filename.
 		$file_name = $this->Model_Auth->_random_string(16);
-		
+
 		//Check if there was an uploaded file.
 		if (isset($_FILES['file']))
 		{
+			$file = null;
 			//Generate an inputFile for S3, part of the function
-			$file = $this->Model_S3->inputFile($_FILES['file']);
-			
-			//Redundancy is key.
+			$file = $_FILES['file']['name'];
+
 			if (!$file)
 			{
 				$this->response($this->rest_error(array("Invalid file uploaded!")), 404);
 				return;
 			}
-			
+
 			//Upload the file to S3
 			$upload = $this->Model_Classes->add_file($user_id, $chat_id, $file_name, $message_id);
 			if (!$upload)
@@ -654,26 +654,25 @@ class Chats extends REST_Controller
 				$this->response($this->rest_error(array("Error adding file entry to database!")), 404);
 				return;
 			}
-			
+
 			//Set the authentication keys and SSL mode for S3
-			$this->Model_S3->setAuth($this->config->item['access_key'], $this->config->item['secret_key']);
-			$this->Model_S3->setSSL('false');
-			
+			$this->Model_S3->setAuth($this->config->item('access_key'), $this->config->item('secret_key'));
+
 			//Upload the file to S3
 			if (!$this->Model_S3->putObject($file_name, 'livecourse', $file, 'public-read-write'))
 			{
 				$this->response($this->rest_error(array("Error uploading the file!")), 500);
 				return;
 			}
-			
+
 		}
-		
+
 		//Sending push notifications to the android users who are subscribed to this chat
-		$users = $this->Model_Users->fetch_all_subscribed_android_user($chat_id); 
+		$users = $this->Model_Users->fetch_all_subscribed_android_user($chat_id);
 		$time = time();
-		
+
 		$user_info = $this->Model_Users->fetch_user_by_id($user_id);
-		
+
 		if (count($users) > 0)
 		{
 			$registration_ids = null;
@@ -681,9 +680,9 @@ class Chats extends REST_Controller
 			{
 				$registration_ids[] = $user->gcm_regid;
 			}
-			
+
 			$url = 'https://android.googleapis.com/gcm/send';
-		
+
 			$fields = array(
 			    'registration_ids' => $registration_ids,
 			    'data' => array('message_id' => $message_id,
@@ -694,29 +693,29 @@ class Chats extends REST_Controller
 			    		'email' => $user_info[0]->email,
 			    		'display_name' => $user_info[0]->display_name,
 			));
-			
+
 			$headers = array(
 			    'Authorization: key=' . $this->config->item('api_key'),
 			    'Content-Type: application/json'
 			);
 			// Open connection
 			$ch = curl_init();
-			
+
 			// Set the url, number of POST vars, POST data
 			curl_setopt($ch, CURLOPT_URL, $url);
-			
+
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			
+
 			// Disabling SSL Certificate support temporarly
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			
+
 			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-			
+
 			// Execute post
 			$result = curl_exec($ch);
-			
+
 			// Close connection
 			curl_close($ch);
 			if (!$result)
@@ -724,13 +723,13 @@ class Chats extends REST_Controller
 				$this->response($this->rest_error(array("Could not send android messages!")), 404);
 				return;
 			}
-			
+
 		}
-		
+
 		include_once("misc/windowsphonepushclient.php");
-		
+
 		//Send toast push notifications to all Windows Phone users
-		$wp_users = $this->Model_Users->fetch_all_subscribed_wp_user($chat_id, 0); 
+		$wp_users = $this->Model_Users->fetch_all_subscribed_wp_user($chat_id, 0);
 		$msg_data = array('message_id' => $message_id,
 		    		'chat_id' => $chat_id_string,
 		    		'send_time' => $time,
@@ -744,16 +743,16 @@ class Chats extends REST_Controller
 			$wpp->send_toast($chat_info->name, $message, "/Chat.xaml?id=" . $chat_id_string);
 			$wpp->send_raw_update(json_encode($msg_data));
 		}
-		
+
 		$this->response(null,201); //Success
 	}
 
 	/**
 	 * Retrieves a number of recent messages from the specified chat.
-	 * 
+	 *
 	 * chat_id - Chat ID to fetch from
 	 * num_messages - Number of messages to fetch
-	 * 
+	 *
 	 * returns
 	 * 	401 if not logged in
 	 * 	200 and an array of messages upon success
@@ -761,19 +760,19 @@ class Chats extends REST_Controller
 	function fetch_recent_get()
 	{
 		$this->load->model('Model_Classes');
-		
+
 		$chat_id_string = $this->get('chat_id');
-		
+
 		$num_messages = $this->get('num_messages');
-		
+
 		if (!isset($num_messages) || $num_messages == "")
 			$num_messages = 100;
-			
+
 		$user_id = $this->authenticated_as;
 
 		//Try to find the chat
 		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
-		
+
 		//Check to make sure user is joined to this chat.
 		if (!$this->Model_Classes->is_user_subscribed($user_id,$chat_id))
 		{
@@ -784,13 +783,13 @@ class Chats extends REST_Controller
 		$messages = $this->Model_Classes->get_num_latest_messages($chat_id,$num_messages);
 		$this->response($messages, 200); //Success
 	}
-	
+
 	/**
 	 * Retrieves all messages past a certain defined message id
-	 * 
+	 *
 	 * chat_id - Chat ID to fetch from
 	 * msg_id - Message ID after which to grab
-	 * 
+	 *
 	 * returns
 	 * 	401 if not logged in
 	 * 	200 and an array of messages on success
@@ -798,20 +797,20 @@ class Chats extends REST_Controller
 	function fetch_since_get()
 	{
 		$this->load->model('Model_Classes');
-		
+
 		$chat_id_string = $this->get('chat_id');
 		$msg_id = $this->get('msg_id');
-		
+
 		$num_messages = $this->get('num_messages');
-		
+
 		if (!isset($num_messages) || $num_messages == "")
 			$num_messages = 100;
-			
+
 		$user_id = $this->authenticated_as;
 
 		//Try to find the chat
 		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
-		
+
 		//Check to make sure user is joined to this chat.
 		if (!$this->Model_Classes->is_user_subscribed($user_id,$chat_id))
 		{
@@ -822,15 +821,15 @@ class Chats extends REST_Controller
 		$messages = $this->Model_Classes->get_messages_after_msg_id($chat_id,$msg_id);
 		$this->response($messages, 200); //Success
 	}
-	
+
 	/**
 	 * Retrieves all messages from a given room between specified time and specified time + 24 hours.
 	 * NOTE: This operates in UTC time, effectively. Client should do some conversions before requesting
 	 *       if they expect results to be arranged like their local time zone.
-	 *       
+	 *
 	 * chat_id - Chat ID to fetch from
 	 * start_epoch - UNIX epoch of start of the day from which to retrieve 24 hours worth of messages for.
-	 * 
+	 *
 	 * returns
 	 * 	403 if no start epoch is given
 	 * 	401 if you are not subscribed to the chat
@@ -839,21 +838,21 @@ class Chats extends REST_Controller
 	function fetch_day_get()
 	{
 		$this->load->model('Model_Classes');
-		
+
 		$chat_id_string = $this->get('chat_id');
 		$start_epoch = $this->get('start_epoch');
-		
+
 		if (!isset($start_epoch) || $start_epoch == "")
 		{
 			$this->response($this->rest_error(array("No time frame given.")), 403);
 			return;
 		}
-		
+
 		$user_id = $this->authenticated_as;
 
 		//Try to find the chat
 		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
-		
+
 		//Check to make sure user is joined to this chat.
 		if (!$this->Model_Classes->is_user_subscribed($user_id,$chat_id))
 		{
@@ -864,7 +863,7 @@ class Chats extends REST_Controller
 		$messages = $this->Model_Classes->get_time_frame_messages($chat_id,$start_epoch,$start_epoch+(24*60*60));
 		$this->response($messages, 200); //Success
 	}
-	
+
 	/**
 	 * EventSource function called by the HTML 5 client to stream chat updates from a room.
 	 * auth_token - authentication token
@@ -888,7 +887,7 @@ class Chats extends REST_Controller
 		//} else {
 		//	$last_msg_id = $_COOKIE['lc_last_msg'];
 		//}
-		
+
 		$users = $this->Model_Auth->fetch_user_by_token($auth_token);
 		if (count($users) > 0) //Auth token was valid... now let's verify their request.
 		{
@@ -900,36 +899,36 @@ class Chats extends REST_Controller
 				$this->authenticated_as = $users[0]->id;
 			}
 		}
-		
+
 		$user_id = $this->authenticated_as;
-		
+
 		//Make sure they gave us a user id.
 		if ($user_id <= 0)
 		{
 			$this->response(NULL,401);
 			return;
 		}
-		
+
 		//Update their request activity
 		$this->Model_Users->update_user_request_time($user_id);
-		
+
 		//Make sure they gave us a message id.
 		//if ($last_msg_id <= 0)
 		//{
 		//	$this->response(NULL,401);
 		//	return;
 		//}
-		
+
 		//Try to find the chat
 		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
-		
+
 		//Check to make sure user is joined to this chat.
 		if (!$this->Model_Classes->is_user_subscribed($user_id,$chat_id))
 		{
 			$this->response(NULL,401);
 			return;
 		}
-		
+
 		header('Content-Type: text/event-stream');
 		header('Cache-Control: no-cache');
 		header('Access-Control-Allow-Origin: *');
@@ -946,7 +945,7 @@ class Chats extends REST_Controller
 		$startedAt = time();
 		echo ':' . str_repeat(' ', 2048) . "\n"; //2KB header for IE
 		echo "retry: 2000\n";
-		
+
 		//Give IE an event ID to send us back if they didn't specify one:
 		if ($last_msg_id == "")
 		{
@@ -964,7 +963,7 @@ class Chats extends REST_Controller
 			echo "data: \"compatibility\":\"thing.\"\n";
 			echo "data: }\n\n";
 		}
-		
+
 		do {
 			// Cap connections at 15 seconds. The browser will reopen the connection on close (update lost msgs)
 			if ((time() - $startedAt) > 15) {
@@ -995,7 +994,7 @@ class Chats extends REST_Controller
 			// one request.
 		} while(true);
 	}
-	
+
 	/**
 	 * Remove a chat room
 	 *
@@ -1012,9 +1011,9 @@ class Chats extends REST_Controller
 	{
 		return; //TODO: PERMISSIONS !!
 		$this->load->model('Model_Classes');
-		
+
 		$chat_id_string = $this->post('id');
-		
+
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -1023,7 +1022,7 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
 			return;
 		}
-		
+
 		//Make sure we requested a chat ID
 		if (strlen($chat_id_string) <= 0)
 		{
@@ -1039,7 +1038,7 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
 			return;
 		}
-		
+
 		if ($this->Model_Classes->remove_chat($chat_id))
 		{
 			$this->response('Successfully removed the chat!', 200);
@@ -1051,7 +1050,7 @@ class Chats extends REST_Controller
 			return;
 		}
 	}
-	
+
 	/**
 	 * Gets all participants in a selected chat
 	 *
@@ -1068,9 +1067,9 @@ class Chats extends REST_Controller
 	function get_participants_get()
 	{
 		$this->load->model('Model_Classes');
-		
+
 		$chat_id_string = $this->get('id');
-		
+
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -1079,7 +1078,7 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
 			return;
 		}
-		
+
 		//Make sure we requested a chat ID
 		if (strlen($chat_id_string) <= 0)
 		{
@@ -1095,26 +1094,26 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
 			return;
 		}
-		
+
 		$users = null;
 		$users = $this->Model_Classes->get_participants($chat_id,$user_id);
-		
+
 		if (!$users)
 		{
 			//$this->response($this->rest_error(array("Error finding users!")), 500); //This actually gets run when there aren't any.
 			$this->response(NULL, 200); //This is actually success.
 			return;
 		}
-		
+
 		if (count($users) <= 0)
 		{
 			$this->response(NULL, 200);
 			return;
 		}
-		
+
 		$this->response($users, 200);
 	}
-	
+
 	/**
 	* This function grants a user administrative permissions in a specific chat room.
 	*
@@ -1136,10 +1135,10 @@ class Chats extends REST_Controller
 	{
 		$this->load->model('Model_Classes');
 		$this->load->model('Model_Users');
-		
+
 		$chat_id_string = $this->post('chat_id');
 		$target_id = $this->post('user_id');
-		
+
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -1148,23 +1147,23 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
 			return;
 		}
-		
+
 		//Make sure they gave us a proper target
 		if ($target_id == NULL || $target_id <= 0)
 		{
 			$this->response($this->rest_error(array("User ID not supplied!")), 400);
 			return;
 		}
-		
+
 		//Make sure the target is a user
 		$target_user = $this->Model_Users->fetch_user_by_id($target_id);
-		
+
 		if (count($target_user) <= 0)
 		{
 			$this->response($this->rest_error(array("The target user does not exist!")), 404);
 			return;
 		}
-		
+
 		//Make sure we requested a chat ID
 		if (strlen($chat_id_string) <= 0)
 		{
@@ -1180,16 +1179,16 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
 			return;
 		}
-		
+
 		//Make sure the target is subscribed to the specified chat room
 		$target_in_chat = $this->Model_Classes->is_user_subscribed($target_id, $chat_id);
-		
+
 		if (!$target_in_chat)
 		{
 			$this->response($this->rest_error(array("The target User ID is not subscribed to this chat room!")), 404);
 			return;
 		}
-		
+
 		//Check to make sure the requesting user has permissions
 		$admin_user = $this->Model_Classes->check_user_permissions($chat_id, $user_id);
 		//print_r($admin_user[0]->permissions);
@@ -1198,8 +1197,8 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("You do not have the proper permissions to do that!")), 401);
 			return;
 		}
-		
-		//After extensive checking, we can update the users permissions.		
+
+		//After extensive checking, we can update the users permissions.
 		$update_user = $this->Model_Classes->change_user_permissions($chat_id, $target_id, 1);
 		if ($update_user)
 		{
@@ -1212,7 +1211,7 @@ class Chats extends REST_Controller
 			return;
 		}
 	}
-	
+
 	/**
 	* This function removes a user's administrative permissions in a specific chat room.
 	*
@@ -1234,35 +1233,35 @@ class Chats extends REST_Controller
 	{
 		$this->load->model('Model_Classes');
 		$this->load->model('Model_Users');
-		
+
 		$chat_id_string = $this->post('chat_id');
 		$target_id = $this->post('user_id');
-		
+
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
-		
+
 		if ($this->authenticated_as <= 0)
 		{
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
 			return;
 		}
-		
+
 		//Make sure they gave us a proper target
 		if ($target_id == NULL || $target_id <= 0)
 		{
 			$this->response($this->rest_error(array("User ID not supplied!")), 400);
 			return;
 		}
-		
+
 		//Make sure the target is a user
 		$target_user = $this->Model_Users->fetch_user_by_id($target_id);
-		
+
 		if (count($target_user) <= 0)
 		{
 			$this->response($this->rest_error(array("The target user does not exist!")), 404);
 			return;
 		}
-		
+
 		//Make sure we requested a chat ID
 		if (strlen($chat_id_string) <= 0)
 		{
@@ -1278,26 +1277,26 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
 			return;
 		}
-		
+
 		//Make sure the target is subscribed to the specified chat room
 		$target_in_chat = $this->Model_Classes->is_user_subscribed($target_id, $chat_id);
-		
+
 		if (!$target_in_chat)
 		{
 			$this->response($this->rest_error(array("The target User ID is not subscribed to this chat room!")), 404);
 			return;
 		}
-		
+
 		//Check to make sure the requesting user has permissions
 		$admin_user = $this->Model_Classes->check_user_permissions($chat_id, $user_id);
-		
+
 		if (!$admin_user[0]->permissions)
 		{
 			$this->response($this->rest_error(array("You do not have the proper permissions to do that!")), 401);
 			return;
 		}
-		
-		//After extensive checking, we can update the users permissions.		
+
+		//After extensive checking, we can update the users permissions.
 		$update_user = $this->Model_Classes->change_user_permissions($chat_id, $target_id, 0);
 		if ($update_user)
 		{
@@ -1323,9 +1322,9 @@ class Chats extends REST_Controller
 	function generate_qr_get()
 	{
 		$this->load->model('Model_Classes');
-		
+
 		$chat_id_string = $this->get('id');
-		
+
 		//Make sure we requested a chat ID
 		if (strlen($chat_id_string) <= 0)
 		{
@@ -1341,11 +1340,11 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
 			return;
 		}
-		
+
 		$url = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=livecourse.net/join/" . $chat_id_string;
 		header("Location: " . $url);
 	}
-	
+
 	/* This function retrieves a file object
 	 *
 	 * chat_id_string - The String for the Chat in which the file was uploaded
@@ -1363,21 +1362,21 @@ class Chats extends REST_Controller
 	{
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
-		
+
 		if ($this->authenticated_as <= 0)
 		{
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
 			return;
 		}
-		
+
 		$this->load->model('Model_Classes');
 		$this->load->model('Model_S3');
 		$this->load->model('Model_Auth');
-		
+
 		//Get Variables
 		$chat_id_string = $this->get('chat_id_string');
 		$message_id = $this->get('message_id');
-		
+
 		//Make sure we requested a chat ID
 		if (strlen($chat_id_string) <= 0)
 		{
@@ -1393,23 +1392,23 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
 			return;
 		}
-		
+
 		//Look up the name of the file by the unique file ID
 		$fileinfo = $this->Model_Classes->get_file_info($message_id);
-		
+
 		$filename = $fileinfo->filename;
-		
+
 		//Make sure there was a specified file
 		if (strlen($filename) <= 0)
 		{
 			$this->response($this->rest_error(array("Specified file could not be found!")), 404);
 			return;
 		}
-		
+
 		//Set the authentication keys and SSL mode for S3
 		$this->Model_S3->setAuth($this->config->item['access_key'], $this->config->item['secret_key']);
 		$this->Model_S3->setSSL('false');
-		
+
 		//Get the file from S3
 		$file = $this->Model_S3->getObjectInfo('livecourse', $filename);
 		if (!file)
@@ -1417,17 +1416,17 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("Error finding file!")), 404);
 			return;
 		}
-		
+
 		$file['chat_id'] = $chat_id;
 		$file['user_id'] = $user_id;
 		$file['time'] = $fileinfo->uploaded_at;
 		$file['message_id'] = $fileinfo->message_id;
-		
+
 		$this->response($file, 200);
 		return;
-		
+
 	}
-	
+
 	/* This function removes a file
 	 *
 	 * chat_id_string - The String for the Chat in which the file was uploaded
@@ -1447,21 +1446,21 @@ class Chats extends REST_Controller
 	{
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
-		
+
 		if ($this->authenticated_as <= 0)
 		{
 			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
 			return;
 		}
-		
+
 		$this->load->model('Model_Classes');
 		$this->load->model('Model_S3');
 		$this->load->model('Model_Auth');
-		
+
 		//Get Post Variables
 		$chat_id_string = $this->post('chat_id_string');
 		$message_id = $this->post('message_id');
-		
+
 		//Make sure we requested a chat ID
 		if (strlen($chat_id_string) <= 0)
 		{
@@ -1477,22 +1476,22 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
 			return;
 		}
-		
+
 		//Look up the name of the file by the unique file ID
 		$filename = $this->Model_Classes->get_file_info($message_id);
-		$filename = $filename->filename;
-		
+		print_r($filename);die;
+		$filename = $filename['filename'];
+
 		//Make sure there was a specified file
 		if (strlen($filename) <= 0)
 		{
 			$this->response($this->rest_error(array("Specified file could not be found!")), 404);
 			return;
 		}
-		
+
 		//Set the authentication keys and SSL mode for S3
-		$this->Model_S3->setAuth($this->config->item['access_key'], $this->config->item['secret_key']);
-		$this->Model_S3->setSSL('false');
-		
+		$this->Model_S3->setAuth($this->config->item('access_key'), $this->config->item('secret_key'));
+
 		//Get the file from S3
 		$file = $this->Model_S3->getObject('livecourse', $filename);
 		if (!file)
@@ -1500,15 +1499,15 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("Error finding file!")), 404);
 			return;
 		}
-		
+
 		$delete = $this->Model_Classes->remove_file($user_id, $chat_id, $filename);
-		
+
 		if (!$delete)
 		{
 			$this->response($this->rest_error(array("Error removing file entry!")), 404);
 			return;
 		}
-		
+
 		//Delete the file from S3
 		if ($this->Model_S3->deleteObject('livecourse', $filename))
 		{
@@ -1520,6 +1519,6 @@ class Chats extends REST_Controller
 			$this->response($this->rest_error(array("Error deleting the file!")), 500);
 			return;
 		}
-		
+
 	}
 }

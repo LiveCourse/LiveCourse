@@ -21,7 +21,7 @@ class Model_Classes extends CI_Model {
 				->get();
 		return $query->result();
 	}
-	
+
 	/**
 	 * Returns the integer chat ID of the chat ID string provided
 	 * chat_id_string - ID string of chat to find
@@ -40,7 +40,7 @@ class Model_Classes extends CI_Model {
 		else
 			return $query[0]->id;
 	}
-	
+
 	/**
 	 * Gets chat information by ID
 	 * chat_id - ID of chat
@@ -58,7 +58,7 @@ class Model_Classes extends CI_Model {
 		else
 			return $query[0];
 	}
-	
+
 	/**
 	 * Fetches chats that the specified user is a participant in.
 	 * user_id - ID of user
@@ -72,7 +72,7 @@ class Model_Classes extends CI_Model {
 				->join('lc_classes','lc_classes.id = lc_chat_participants.chat_id')
 				->get()
 				->result();
-		*/		
+		*/
 		$query = $this->db
 				->select('lc_classes.*')
 				->from('lc_sections')
@@ -83,7 +83,7 @@ class Model_Classes extends CI_Model {
 				->result();
 		return $query;
 	}
-	
+
 	/**
 	 * Checks if the specified user is subscribed to the specified chat.
 	 * user_id - ID of the user
@@ -105,14 +105,14 @@ class Model_Classes extends CI_Model {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 *Gets the time of the most recent message sent by a user
 	 *user_id - ID of the user in question
 	 *returns the time or NULL if no messages in the chat room
 	 */
 	function get_time_newest($user_id){
-		
+
 		$time = $this->db
 				->select()
 				->from('lc_chat_messages')
@@ -123,10 +123,10 @@ class Model_Classes extends CI_Model {
 				->result();
 		if (count($time) <= 0)
 			return NULL;
-		
+
 		return $time[0]->send_time;
 	}
-	
+
 	/**
 	 * Sends a message from the specified user to the specified chat room.
 	 * user_id - ID of the message author
@@ -146,7 +146,7 @@ class Model_Classes extends CI_Model {
 				);
 		return $this->db->insert('lc_chat_messages', $data); //Should return NULL or FALSE if failed.
 	}
-	
+
 	/**
 	 * Gets the specified number of latest messages from a chat room
 	 * chat_id - ID of chat to fetch from
@@ -157,18 +157,18 @@ class Model_Classes extends CI_Model {
 	{
 		$q = 'SELECT * FROM (
 				SELECT lc_chat_messages.id, lc_classes.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name FROM `lc_chat_messages`
-				JOIN lc_users ON lc_users.id = lc_chat_messages.user_id 
+				JOIN lc_users ON lc_users.id = lc_chat_messages.user_id
 				JOIN lc_classes ON lc_classes.id = lc_chat_messages.class_id
-				WHERE lc_chat_messages.class_id = ' . $class_id . ' 
-				ORDER BY lc_chat_messages.send_time 
-				DESC LIMIT ' . $num_lines . ' 
+				WHERE lc_chat_messages.class_id = ' . $class_id . '
+				ORDER BY lc_chat_messages.send_time
+				DESC LIMIT ' . $num_lines . '
 			) sub
 			ORDER BY send_time ASC';
 		$query = $this->db->query($q)
 				->result();
 		return $query;
 	}
-	
+
 	/**
 	 * Gets messages in the given time frame from given room.
 	 * chat_id - ID of chat to fetch from
@@ -191,7 +191,7 @@ class Model_Classes extends CI_Model {
 				->result();
 		return $query;
 	}
-	
+
 	/**
 	 * Gets messages from a chat room that were sent AFTER the specified message ID.
 	 * chat_id - ID of chat to fetch from
@@ -212,7 +212,7 @@ class Model_Classes extends CI_Model {
 				->result();
 		return $query;
 	}
-	
+
 	/**
 	 *Adds a message to the flagged message table
 	 *message_id - ID of message that has been flagged
@@ -228,12 +228,12 @@ class Model_Classes extends CI_Model {
 			'message_id'=>$message_id,
 			'reporter_id'=>$reporter_id,
 			'reason'=>$reason,
-			'time_submitted'=>$time	
+			'time_submitted'=>$time
 		);
-		
+
 		return $this->db->insert('lc_chat_messages_flagged', $data);
 	}
-	
+
 	/**
 	 * Removes a user from ALL SECTIONS associated with this class.
 	 * class_id - ID of the class to remove the user from
@@ -250,12 +250,12 @@ class Model_Classes extends CI_Model {
 			WHERE lc_section_participants.user_id = ? AND lc_classes.id = ?";
 		$this->db->query($sql,array($user_id, $class_id));
 		return $count - $this->db->count_all('lc_section_participants');
-		
+
 	}
-	
+
 	/**
 	 *Adds a new chat to the database
-	 *chat_info - Array of chat information to be added into the database. 
+	 *chat_info - Array of chat information to be added into the database.
 	 *returns - NULL or FALSE if failed.
 	 */
 	function add_class($chat_info)
@@ -264,7 +264,7 @@ class Model_Classes extends CI_Model {
 		{
 			return false;
 		}
-		
+
 		$data = array(
 			'id_string' => $chat_info['id_string'],
 			'subject_id' => $chat_info['subject_id'],
@@ -272,7 +272,7 @@ class Model_Classes extends CI_Model {
 			'name' => $chat_info['name'],
 			'institution_id' => $chat_info['institution_id']
 			);
-		
+
 		return $this->db->insert('lc_classes', $chat_info);
 	}
 	/**
@@ -282,12 +282,12 @@ class Model_Classes extends CI_Model {
 	 *returns true if the reporter has reported this message, false if it hasnt
 	 */
 	function check_reporter($reporter_id, $message_id){
-		
+
 		$count = $this->db->where('reporter_id',$reporter_id)
 								->where('message_id',$message_id)
 								->get('lc_chat_messages_flagged')
 								->result();
-		
+
 		if(count($count)>=1)
 		{
 			return true;
@@ -296,9 +296,9 @@ class Model_Classes extends CI_Model {
 		{
 			return false;
 		}
-	
+
 	}
-	
+
 	/**
 	 *Checks to see if a message exists
 	 *message_id - the ID number of the message to be checked
@@ -318,7 +318,7 @@ class Model_Classes extends CI_Model {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Checks the flagged status of a message
 	 * If the message has been flagged more than 5 times, remove it
@@ -331,9 +331,9 @@ class Model_Classes extends CI_Model {
 		$count = $this->db->where('message_id',$message_id)
 				->get('lc_chat_messages_flagged')
 				->result();
-		return count($count);	
-	}	
-	
+		return count($count);
+	}
+
 	/**
 	 * Removes a message from a chat room
 	 * message_id - the ID number of the message to be removed
@@ -342,12 +342,12 @@ class Model_Classes extends CI_Model {
 	function remove_message($message_id)
 	{
 		$count = $this->db->count_all('lc_chat_messages');
-		
+
 		$this->db
 			->where('id',$message_id)
 			->from('lc_chat_messages')
 			->delete();
-	
+
 		$this->db
 			->where('message_id',$message_id)
 			->from('lc_chat_messages_flagged')
@@ -371,14 +371,14 @@ class Model_Classes extends CI_Model {
 	function remove_chat($class_id)
 	{
 		$count = $this->db->count_all('lc_classes');
-		
+
 		//Clear all participants
 		//Uh oh, codeigniter doesn't like joins in delete queries... looks like we get to write it ourselves.
 		$sql = "DELETE lc_section_participants FROM lc_section_participants
 			JOIN lc_sections ON lc_sections.id = lc_section_participants.section_id
 			WHERE lc_sections.class_id = ?";
 		$this->db->query($sql,array($class_id));
-		
+
 		//Clear all sections
 		$this->db
 			->where('class_id', $class_id)
@@ -390,8 +390,8 @@ class Model_Classes extends CI_Model {
 			->where('id', $class_id)
 			->from('lc_classes')
 			->delete();
-				
-						
+
+
 		if($count - $this->db->count_all('lc_classes') <= 0)
 		{
 			return false;
@@ -401,7 +401,7 @@ class Model_Classes extends CI_Model {
 			return true;
 		}
 	}
-	
+
 	/**
 	 *Get all of the users subscribed to a chat room
 	 *chat_id - ID of the chat to get participants
@@ -409,7 +409,7 @@ class Model_Classes extends CI_Model {
 	 *returns an array of users that are subscribed, 0 on first failure, null on second.
 	 */
 	 /*
-	 
+
 	 SELECT lc_users.id,lc_users.display_name,lc_users.jointime,lc_users.color_preference,lc_users.time_lastfocus,lc_users.time_lastrequest, (lc_users_ignored.ignore_id IS NOT NULL) AS ignored FROM `lc_chat_participants`
 JOIN `lc_users` on lc_users.id = lc_chat_participants.user_id
 LEFT OUTER JOIN `lc_users_ignored` on lc_users_ignored.ignore_id = lc_chat_participants.user_id AND lc_users_ignored.user_id=22
@@ -427,10 +427,10 @@ WHERE lc_chat_participants.chat_id = 1
 				->where('lc_sections.class_id', $class_id)
 				->get()
 				->result();
-		
+
 		return $users;
 	}
-	
+
 	/**
 	* DEPRECATED
 	*Alters a user administrative permissions
@@ -448,7 +448,7 @@ WHERE lc_chat_participants.chat_id = 1
 			->update('lc_chat_participants', array('permissions' => $permissions));
 	}
 	*/
-	
+
 	/**
 	* DEPRECATED
 	*Checks the user's current permissions
@@ -468,7 +468,7 @@ WHERE lc_chat_participants.chat_id = 1
 			->result();
 	}
 	*/
-	
+
 	function add_file($user_id, $chat_id, $filename, $message_id, $time = '')
 	{
 		if($time == '')
@@ -481,16 +481,17 @@ WHERE lc_chat_participants.chat_id = 1
 			'uploaded_at' => $time,
 		);
 		return $this->db->insert('lc_chat_files', $data);
-		
+
 	}
-	
+
 	function get_file_info($message_id)
 	{
 		return $this->db
 			->where('message_id', $message_id)
-			->get('lc_chat_files');
+			->get('lc_chat_files')
+			->row_array();
 	}
-	
+
 	function remove_file($user_id, $chat_id, $filename)
 	{
 		return $this->db->delete('lc_chat_files', array(
