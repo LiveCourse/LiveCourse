@@ -65,6 +65,7 @@ public class Globals
 	
 	public static ActionMode			mode;
 	public static long					historyTime;
+	public static String				filePath;
 	
 	/**
 	 * UI Colors

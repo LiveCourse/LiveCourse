@@ -1,9 +1,12 @@
 package net.livecourse.utility;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +21,7 @@ import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -308,5 +312,26 @@ public class Utility
         
         TextView yourTextView = (TextView) activity.findViewById(titleId);
         yourTextView.setTextColor(Color.WHITE);
+	}
+	
+	public static File savePictureFromCamera()
+	{
+		File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "LiveCourse");  
+		storageDir.mkdir();
+			
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String imageFileName = Globals.displayName + "_" + timeStamp;
+		File image = new File(storageDir, imageFileName + ".jpg");
+		try 
+		{
+			image.createNewFile();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		Globals.filePath = image.getAbsolutePath();
+		return image;
 	}
 }

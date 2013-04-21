@@ -1,8 +1,10 @@
 package net.livecourse.rest;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -14,6 +16,11 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
@@ -47,7 +54,7 @@ public class Restful extends AsyncTask <Void, String, String>
 	/**
 	 * Max number of messages that the REST API call FETCH_RECENT would get
 	 */
-	public static final String 		MAX_MESSAGE_SIZE 				= "20";
+	public static final String 		MAX_MESSAGE_SIZE 				= "100";
 
 	/**
 	 * Flags for type of command
@@ -59,8 +66,7 @@ public class Restful extends AsyncTask <Void, String, String>
 	 * Flags for file type
 	 */
 	public static final int			POST_NO_FILE					= -1;
-	public static final int			POST_BYTE_ARRAY					= 0;
-	public static final int			POST_FILE						= 1;
+	public static final int			POST_FILE						= 0;
 	
 	/**
 	 * Path locations for specific commands
@@ -96,8 +102,8 @@ public class Restful extends AsyncTask <Void, String, String>
 	private String[]				args;
 	private int						numArgs;
 	private OnRestCalled			callback;
-	private byte[]					byteArray;
 	private int						fileType;
+	private File					file;
 
 	private boolean 				success;
 	private int						returnCode;
@@ -148,7 +154,7 @@ public class Restful extends AsyncTask <Void, String, String>
 	 * @param data			The byte array to be uploaded
 	 * @param call			The OnRestCalled callback that Restful will return to
 	 */
-	public Restful(String path, int command, String[] serverArgs, String[] args, int numArgs, byte[] data, OnRestCalled call)
+	public Restful(String path, int command, String[] serverArgs, String[] args, int numArgs, File file, OnRestCalled call)
 	{
 		super();
 		
@@ -160,8 +166,8 @@ public class Restful extends AsyncTask <Void, String, String>
 		this.callback 		= call;
 		this.success		= false;
 		this.returnCode		= -1;
-		this.byteArray		= data;
-		this.fileType		= Restful.POST_BYTE_ARRAY;
+		this.file			= file;
+		this.fileType		= Restful.POST_FILE;
 		
 		this.execute();
 	}
@@ -334,22 +340,29 @@ public class Restful extends AsyncTask <Void, String, String>
 		HttpPost httpPost = new HttpPost(b.toString());
 		if(!path.equals(Restful.REGISTER_USER_PATH))
 			httpPost.addHeader("Auth", "LiveCourseAuth token="+Globals.token+" auth="+shaHead);
-		
-		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(numArgs);
-		for(int x = 0; x < numArgs; x++)
-		{
-			nameValuePairs.add(new BasicNameValuePair(serverArgs[x], args[x]));
-		}
-		
+
 		try 
 		{
 			if(this.fileType == Restful.POST_NO_FILE)
 			{
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(numArgs);
+				for(int x = 0; x < numArgs; x++)
+				{
+					nameValuePairs.add(new BasicNameValuePair(serverArgs[x], args[x]));
+				}
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			}
-			if(this.fileType == Restful.POST_BYTE_ARRAY)
+			if(this.fileType == Restful.POST_FILE)
 			{
-				httpPost.setEntity(new ByteArrayEntity(this.byteArray));
+				
+				MultipartEntity ent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+				ent.addPart("file", new FileBody(this.file));
+				
+				for(int x = 0; x < numArgs; x++)
+				{
+					ent.addPart(serverArgs[x], new StringBody(args[x]));
+				}
+				httpPost.setEntity(ent);
 			}
 			if(this.fileType == Restful.POST_FILE)
 			{

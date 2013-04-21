@@ -82,6 +82,17 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
     }
 	
 	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		
+		Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
+        unregIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+        startService(unregIntent);
+        Globals.newReg = false;
+	}
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		MenuInflater inflater=getSupportMenuInflater();
@@ -130,6 +141,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		        prefs.edit().putString("pref_reg_id"		, null	).commit();
 		        prefs.edit().putString("pref_color"			, null	).commit();
 		        prefs.edit().putString("pref_chat_name"		, null	).commit();
+		        
+		        Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
+		        unregIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+		        startService(unregIntent);
 		        
 				this.startActivity(intent);
 				
