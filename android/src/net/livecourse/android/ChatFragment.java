@@ -1,5 +1,7 @@
 package net.livecourse.android;
 
+import java.io.ByteArrayOutputStream;
+
 import net.livecourse.R;
 import net.livecourse.database.ChatMessagesLoader;
 import net.livecourse.rest.OnRestCalled;
@@ -9,10 +11,12 @@ import net.livecourse.utility.Globals;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -234,6 +238,14 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 			switch(request)
 			{
 				case Globals.CAMERA_RESULT:
+				    Bitmap bm = (Bitmap) data.getExtras().get("data");
+				    ByteArrayOutputStream bao = new ByteArrayOutputStream();
+			        bm.compress(Bitmap.CompressFormat.JPEG, 90, bao);
+			        byte[] byteData = bao.toByteArray();
+			        String ba1 = Base64.encodeToString(byteData, Base64.DEFAULT);
+			        
+			        new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message", "file"}, new String[]{Globals.chatId,"Attempting to send image taken from camera as a String", ba1}, 3, this);
+			        
 					break;
 				case Globals.GALLERY_RESULT:
 					break;

@@ -11,7 +11,6 @@ import net.livecourse.rest.OnRestCalled;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;

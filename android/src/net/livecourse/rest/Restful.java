@@ -13,6 +13,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
@@ -55,6 +56,13 @@ public class Restful extends AsyncTask <Void, String, String>
 	public static final int			POST							= 1;
 	
 	/**
+	 * Flags for file type
+	 */
+	public static final int			POST_NO_FILE					= -1;
+	public static final int			POST_BYTE_ARRAY					= 0;
+	public static final int			POST_FILE						= 1;
+	
+	/**
 	 * Path locations for specific commands
 	 */
 	public static final String		API_PATH						= "http://livecourse.net/index.php/api/";
@@ -88,6 +96,8 @@ public class Restful extends AsyncTask <Void, String, String>
 	private String[]				args;
 	private int						numArgs;
 	private OnRestCalled			callback;
+	private byte[]					byteArray;
+	private int						fileType;
 
 	private boolean 				success;
 	private int						returnCode;
@@ -117,6 +127,41 @@ public class Restful extends AsyncTask <Void, String, String>
 		this.callback 		= call;
 		this.success		= false;
 		this.returnCode		= -1;
+		this.fileType		= -1;
+		
+		this.execute();
+	}
+	
+	/**
+	 * Calling this constructor will make a Rest call to the server depending on the arguments provided
+	 * This constructor differs in that it is used to upload a byte array jpeg file, just provide the byte
+	 * array of the jpeg file
+	 * 
+	 * @param path			The path of the execution, ex. auth/verify, all paths are stored as static final
+	 * 						variables in Restful and can be called upon
+	 * @param command		The command to be called, 0 for GET and 1 for POST
+	 * @param serverArgs	The String arguments variable names for the server, ex. for the pair "email",
+	 * 						"test1@test.com", "email" would be the server argument
+	 * @param args			The client side value to be passed, following the above example, would be 
+	 * 						"test1@test.com"
+	 * @param numArgs		The number of arguments passed
+	 * @param data			The byte array to be uploaded
+	 * @param call			The OnRestCalled callback that Restful will return to
+	 */
+	public Restful(String path, int command, String[] serverArgs, String[] args, int numArgs, byte[] data, OnRestCalled call)
+	{
+		super();
+		
+		this.path 			= path;
+		this.commandType 	= command;
+		this.serverArgs		= serverArgs;
+		this.args			= args;
+		this.numArgs		= numArgs;
+		this.callback 		= call;
+		this.success		= false;
+		this.returnCode		= -1;
+		this.byteArray		= data;
+		this.fileType		= Restful.POST_BYTE_ARRAY;
 		
 		this.execute();
 	}
@@ -298,8 +343,20 @@ public class Restful extends AsyncTask <Void, String, String>
 		
 		try 
 		{
-			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-		} 
+			if(this.fileType == Restful.POST_NO_FILE)
+			{
+				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			}
+			if(this.fileType == Restful.POST_BYTE_ARRAY)
+			{
+				httpPost.setEntity(new ByteArrayEntity(this.byteArray));
+			}
+			if(this.fileType == Restful.POST_FILE)
+			{
+				
+			}
+
+		}
 		catch (UnsupportedEncodingException e) 
 		{
 			e.printStackTrace();
