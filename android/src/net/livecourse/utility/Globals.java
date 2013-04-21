@@ -23,6 +23,7 @@ public class Globals
 	public static final int				CLASSLIST_LOADER		= 1;
 	public static final int				CHAT_LOADER				= 2;
 	public static final int				PARTICIPANT_LOADER 		= 3;
+	public static final int				HISTORY_LOADER			= 4;
 	
 	/**
 	 * Database
@@ -84,5 +85,12 @@ public class Globals
 	public static final int				INDEX_GREEN				= 3;
 	public static final int				INDEX_CYAN				= 4;
 	public static final int				INDEX_PURPLE			= 5;	
+	
+	/**
+	 * Result values
+	 */
+	public static final int				CAMERA_RESULT			= 4567;
+	public static final int				GALLERY_RESULT			= 5678;
+	public static final int				EXPLORER_RESULT			= 6789;
 }
 

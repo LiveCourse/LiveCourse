@@ -66,7 +66,7 @@ public class GroupNotesFragment extends SherlockFragment
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
 	{
-		inflater.inflate(R.menu.documents_fragment_menu,menu);
+		inflater.inflate(R.menu.groupchat_fragment_menu,menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 	
@@ -75,21 +75,7 @@ public class GroupNotesFragment extends SherlockFragment
 	{
 		switch (item.getItemId())
 		{
-			case R.id.add_from_camera_item:
-				Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-	            startActivityForResult(cameraIntent, 1337);
-				break;
-			case R.id.add_from_gallery_item:
-				Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"Select Picture"), 2001);
-				break;
-			case R.id.add_from_file_explorer_item:
-				Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
-			    fileIntent.setType("file/*");
-			    startActivityForResult(fileIntent, 3001);
-				break;
+
 		}
 
 		return super.onOptionsItemSelected(item);		

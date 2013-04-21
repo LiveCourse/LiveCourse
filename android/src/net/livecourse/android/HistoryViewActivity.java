@@ -157,7 +157,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	{
 		if(restCall.equals(Restful.GET_CHAT_HISTORY_PATH))
 		{
-			this.getSupportLoaderManager().restartLoader(4, null, this);
+			this.getSupportLoaderManager().restartLoader(Globals.HISTORY_LOADER, null, this);
 		}
 	}
 

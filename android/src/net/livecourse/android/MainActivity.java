@@ -11,6 +11,7 @@ import net.livecourse.rest.OnRestCalled;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -252,16 +253,26 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		this.mAdapter = mAdapter;
 	}
 	
+	@Override
 	public void onActivityResult(int request, int result, Intent data) 
 	{
+		Log.d(this.TAG, "onActivityResult request code: " + request + " result code: " + result);
 		/**
 		 * Forwards the QR Code result
 		 */
 		switch(request)
 		{
-			
 			case IntentIntegrator.REQUEST_CODE:
 				Globals.classListFragment.onActivityResult(request, result, data);
+				break;
+			case Globals.CAMERA_RESULT:
+				Globals.chatFragment.onActivityResult(request, result, data);
+				break;
+			case Globals.GALLERY_RESULT:
+				Globals.chatFragment.onActivityResult(request, result, data);
+				break;
+			case Globals.EXPLORER_RESULT:
+				Globals.chatFragment.onActivityResult(request, result, data);
 				break;
 		}		
 		

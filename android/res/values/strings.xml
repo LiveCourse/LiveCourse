@@ -106,9 +106,9 @@
     
     <!-- 	Document Fragment Menu String
     		These are the strings used in the menu of the documents fragment -->
-    <string name="add_from_camera_menu_item">Add File From Camera</string>
-	<string name="add_from_gallery_menu_item">Add File From Gallery</string>
-	<string name="add_from_file_explorer_menu_item">Add File From Explorer</string>
+    <string name="upload_from_camera_menu_item">Add File From Camera</string>
+	<string name="upload_from_gallery_menu_item">Add File From Gallery</string>
+	<string name="upload_from_file_explorer_menu_item">Add File From Explorer</string>
         
     <!-- 	History Activity Menu Strings
     		These are the strings that are used in the options menu of the history activity -->

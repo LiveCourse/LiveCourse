@@ -6,6 +6,8 @@ import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -18,10 +20,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.ActionMode;
@@ -29,7 +31,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ChatFragment extends SherlockFragment implements OnClickListener, OnItemLongClickListener, ActionMode.Callback, LoaderCallbacks<Cursor>, OnRestCalled
+public class ChatFragment extends SherlockFragment implements OnClickListener, OnItemLongClickListener, ActionMode.Callback, LoaderCallbacks<Cursor>, OnRestCalled, PopupMenu.OnMenuItemClickListener
 {
 	private final String TAG = " == Chat Fragment == ";
 	
@@ -47,6 +49,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	private ListView messageListView;
 	private ImageButton sendButtonView;
 	private EditText sendMessageEditTextView;
+	private ImageButton uploadButtonView;
 	
 	/**
 	 * This is the adapter used for the message list.
@@ -87,23 +90,25 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		/**
 		 * Connects the views to their XML equivalent
 		 */
-		chatLayout = inflater.inflate(R.layout.chat_layout, container, false);
-		messageListView = (ListView) chatLayout.findViewById(R.id.message_list_view);
-		sendButtonView = (ImageButton) chatLayout.findViewById(R.id.send_button_view);
-		sendMessageEditTextView = (EditText) chatLayout.findViewById(R.id.send_message_edit_text_view);
+		this.chatLayout 				= inflater.inflate(R.layout.chat_layout, container, false);
+		this.messageListView 			= (ListView) 	this.chatLayout.findViewById(R.id.message_list_view);
+		this.sendButtonView 			= (ImageButton) this.chatLayout.findViewById(R.id.send_button_view);
+		this.sendMessageEditTextView 	= (EditText) 	this.chatLayout.findViewById(R.id.send_message_edit_text_view);
+		this.uploadButtonView 			= (ImageButton) this.chatLayout.findViewById(R.id.upload_button_view);
 		
 		/**
 		 * Adds the adapter to the list and sends the temporary list to it
 		 */
-		adapter = new ChatCursorAdapter(this.getSherlockActivity(),null,0);
-		messageListView.setAdapter(adapter);
+		this.adapter = new ChatCursorAdapter(this.getSherlockActivity(),null,0);
+		this.messageListView.setAdapter(adapter);
 		
 
 		/**
 		 * Sets the listeners
 		 */
-		sendButtonView.setOnClickListener(this);
-		messageListView.setOnItemLongClickListener(this);
+		this.sendButtonView.setOnClickListener(this);
+		this.messageListView.setOnItemLongClickListener(this);
+		this.uploadButtonView.setOnClickListener(this);
 				
 		return chatLayout;
 	}
@@ -177,6 +182,63 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 				
 		        adapter.notifyDataSetChanged();
 				sendMessageEditTextView.setText("");
+			}
+		}
+		/**
+		 * This is the Upload Button
+		 */
+		if(v.getId() == R.id.upload_button_view)
+		{
+			PopupMenu popup = new PopupMenu(this.getSherlockActivity(), v);
+		    android.view.MenuInflater inflater = popup.getMenuInflater();
+		    inflater.inflate(R.menu.chat_upload_menu, popup.getMenu());
+		    popup.setOnMenuItemClickListener(this);
+		    popup.show();
+		}
+	}
+	
+	@Override
+	/**
+	 * Handles the popup menu used for upload
+	 */
+	public boolean onMenuItemClick(android.view.MenuItem item) 
+	{
+		switch(item.getItemId())
+		{
+			case R.id.upload_from_camera_item:
+				Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+				this.getSherlockActivity().startActivityForResult(cameraIntent, Globals.CAMERA_RESULT);
+				break;
+			case R.id.upload_from_gallery_item:
+				Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                this.getSherlockActivity().startActivityForResult(Intent.createChooser(intent,"Select Picture"), Globals.GALLERY_RESULT);
+				break;
+			case R.id.upload_from_file_explorer_item:
+				Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
+			    fileIntent.setType("file/*");
+			    this.getSherlockActivity().startActivityForResult(fileIntent, Globals.EXPLORER_RESULT);
+				break;
+		}
+		return false;
+	}
+	
+	@Override
+	public void onActivityResult(int request, int result, Intent data) 
+	{
+		Log.d(this.TAG, "onActivityResult: " + request);
+		
+		if(result == Activity.RESULT_OK)
+		{
+			switch(request)
+			{
+				case Globals.CAMERA_RESULT:
+					break;
+				case Globals.GALLERY_RESULT:
+					break;
+				case Globals.EXPLORER_RESULT:
+					break;
 			}
 		}
 	}
