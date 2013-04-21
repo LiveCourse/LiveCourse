@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -44,7 +45,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	 */
 	private View chatLayout;
 	private ListView messageListView;
-	private Button sendButtonView;
+	private ImageButton sendButtonView;
 	private EditText sendMessageEditTextView;
 	
 	/**
@@ -88,7 +89,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		 */
 		chatLayout = inflater.inflate(R.layout.chat_layout, container, false);
 		messageListView = (ListView) chatLayout.findViewById(R.id.message_list_view);
-		sendButtonView = (Button) chatLayout.findViewById(R.id.send_button_view);
+		sendButtonView = (ImageButton) chatLayout.findViewById(R.id.send_button_view);
 		sendMessageEditTextView = (EditText) chatLayout.findViewById(R.id.send_message_edit_text_view);
 		
 		/**

@@ -43,19 +43,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:ems="10"
             android:inputType="textPersonName" >
 
             <requestFocus />
         </EditText>
-
-        <Button
+        
+        <ImageButton 
             android:id="@+id/send_button_view"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/send_message" />
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"   
+        	android:src="@drawable/chat_send_button"
+        	android:background="@drawable/send_selector" />
 
     </LinearLayout>
 </LinearLayout>

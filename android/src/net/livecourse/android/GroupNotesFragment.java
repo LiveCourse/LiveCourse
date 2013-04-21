@@ -12,7 +12,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class DocumentsFragment extends SherlockFragment
+public class GroupNotesFragment extends SherlockFragment
 {
 	@SuppressWarnings("unused")
 	private final String TAG = " == Documents Fragment == ";
@@ -23,9 +23,9 @@ public class DocumentsFragment extends SherlockFragment
 	
 	private View documentsLayout;
 	
-	public static DocumentsFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
+	public static GroupNotesFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
 	{
-		DocumentsFragment fragment = new DocumentsFragment();
+		GroupNotesFragment fragment = new GroupNotesFragment();
 		return fragment;
 	}
 	

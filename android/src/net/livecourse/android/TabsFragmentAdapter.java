@@ -57,7 +57,7 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
     	}
     	if(position == 2)
     	{
-    		return DocumentsFragment.newInstance(CONTENT[position % CONTENT.length], this);
+    		return GroupNotesFragment.newInstance(CONTENT[position % CONTENT.length], this);
     	}
     	if(position == 3)
     	{
@@ -84,6 +84,16 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
             mCount = count;
             notifyDataSetChanged();
         }
+    }
+    
+    public void expand()
+    {
+    	if(!this.CONTENT.equals(new String[] { "Class List", "Chat", "Group Notes", "Participants"}))
+		{
+			this.CONTENT = new String[] { "Class List", "Chat", "Group Notes","Participants"};
+			this.setCount(4);
+			this.notifyDataSetChanged();		
+		}
     }
 
 	public ViewPager getPager() 

@@ -172,15 +172,15 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	{
 		SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
 		
-        prefs.getString("pref_user_id"			, Globals.userId		);
-        prefs.getString("pref_email"			, Globals.email			);
-        prefs.getString("pref_display_name"		, Globals.displayName	);
-        prefs.getString("pref_password_token"	, Globals.passwordToken	);
-        prefs.getString("pref_token"			, Globals.token			);
-        prefs.getString("pref_chat_id"			, Globals.chatId		);
-        prefs.getString("pref_reg_id"			, Globals.regId			);
-        prefs.getString("pref_color"			, Globals.colorPref		);
-        prefs.getString("pref_chat_name"		, Globals.chatName		);
+        Globals.userId 			= prefs.getString("pref_user_id"		, null	);
+        Globals.email 			= prefs.getString("pref_email"			, null	);
+        Globals.displayName 	= prefs.getString("pref_display_name"	, null	);
+        Globals.passwordToken 	= prefs.getString("pref_password_token"	, null	);
+        Globals.token 			= prefs.getString("pref_token"			, null	);
+        Globals.chatId 			= prefs.getString("pref_chat_id"		, null	);
+        Globals.regId 			= prefs.getString("pref_reg_id"			, null	);
+        Globals.colorPref 		= prefs.getString("pref_color"			, null	);
+        Globals.chatName 		= prefs.getString("pref_chat_name"		, null	);
         
         Intent registrationIntent = new Intent("com.google.android.c2dm.intent.REGISTER");
 		registrationIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
