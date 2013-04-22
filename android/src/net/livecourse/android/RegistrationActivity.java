@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -28,9 +30,16 @@ public class RegistrationActivity extends SherlockActivity implements OnClickLis
 	private final String TAG = " == Registration Activity == ";
 	
 	int check = 0;
-	private EditText textEmail, textPass1, textPass2, textDisplayName;
-	private TextView errorTextView;
-	private String user_email, user_display_name, user_pass; 
+	private EditText 	regEmailEditTextView;
+	private EditText 	regPasswordEditTextView;
+	private EditText 	regRePasswordEditTextView;
+	private EditText 	regDisplayNameEditTextView;
+	private TextView 	errorTextView;
+	private TextView 	regTitleTextView;
+	private Button		regButton;
+	private String 		user_email;
+	private String 		user_display_name;
+	private String 		user_pass; 
 	
 	/**
 	 * This ArrayList holds errors that occur when the user attempts to login
@@ -41,25 +50,36 @@ public class RegistrationActivity extends SherlockActivity implements OnClickLis
     protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.registration_layout_old);
+        setContentView(R.layout.registration_layout);
         
-        textEmail = (EditText) findViewById(R.id.editText1);
-        textPass1 = (EditText) findViewById(R.id.editText2);
-        textPass2 = (EditText) findViewById(R.id.editText3);
-        textDisplayName = (EditText) findViewById(R.id.editText4);
-        errorTextView = (TextView) findViewById(R.id.error_text_view);
+        this.regEmailEditTextView 		= (EditText) 	this.findViewById(R.id.reg_email_edit_text_view);
+        this.regPasswordEditTextView 	= (EditText) 	this.findViewById(R.id.reg_password_edit_text_view);
+        this.regRePasswordEditTextView 	= (EditText) 	this.findViewById(R.id.reg_re_password_edit_text_view);
+        this.regDisplayNameEditTextView = (EditText) 	this.findViewById(R.id.reg_display_name_edit_text_view);
+        this.errorTextView 				= (TextView) 	this.findViewById(R.id.error_text_view);
+        this.regTitleTextView 			= (TextView) 	this.findViewById(R.id.reg_title_text_view);
+        this.regButton					= (Button)		this.findViewById(R.id.reg_finish_button);
         
-         
+        Typeface type = Typeface.createFromAsset(getAssets(),"fonts/Cicle_Gordita.ttf"); 
+        this.regTitleTextView.setTypeface(type);
+        
+        this.regTitleTextView.setTextColor(Color.WHITE);
+        this.regEmailEditTextView.setTextColor(Color.WHITE);
+        this.regEmailEditTextView.setHintTextColor(Color.argb(205, 204, 204, 204));
+        this.regPasswordEditTextView.setTextColor(Color.WHITE);
+        this.regPasswordEditTextView.setHintTextColor(Color.argb(205, 204, 204, 204));
+        this.regRePasswordEditTextView.setTextColor(Color.WHITE);
+        this.regRePasswordEditTextView.setHintTextColor(Color.argb(205, 204, 204, 204));
+        this.regDisplayNameEditTextView.setTextColor(Color.WHITE);
+        this.regDisplayNameEditTextView.setHintTextColor(Color.argb(205, 204, 204, 204));
+        this.regButton.setTextColor(Color.WHITE);
+        
         /**
          * Inits the error list
          */
-        errorList = new ArrayList<String>();
+        this.errorList = new ArrayList<String>();
         
-        /**
-         * Sets the activity to focus on the email EditText view
-         */
-        textEmail.requestFocus();
-        
+        this.regButton.setOnClickListener(this);
 	}
 	
 	public void onRegClick(View v)
@@ -72,8 +92,8 @@ public class RegistrationActivity extends SherlockActivity implements OnClickLis
 		/**
 		 * Reset the error list
 		 */
-		errorTextView.setText("");
-		errorList.clear();
+		this.errorTextView.setText("");
+		this.errorList.clear();
 		
 		/**
 		 * Code to confirm correct entry of email and password fields
@@ -81,19 +101,19 @@ public class RegistrationActivity extends SherlockActivity implements OnClickLis
 		 * First use the isEmailValid method from the Utility ultity class to check if the email field is correct,
 		 * Then check minimum and maximum password length
 		 */
-		if(!Utility.isEmailValid(textEmail.getText().toString()))
+		if(!Utility.isEmailValid(this.regEmailEditTextView.getText().toString()))
 		{
-			errorList.add("Invalid Email Address");
+			this.errorList.add("Invalid Email Address");
 			hasError = true;
 		}
-		if(!Utility.isPasswordValid(textPass1.getText().toString()))
+		if(!Utility.isPasswordValid(regPasswordEditTextView.getText().toString()))
 		{	
-			errorList.add("Password Must Be Between 6 And 20 Characters");
+			this.errorList.add("Password Must Be Between 6 And 20 Characters");
 			hasError = true;
 		}
-		if( !textPass1.getText().toString().equals( (textPass2.getText().toString()) ) )
+		if( !regPasswordEditTextView.getText().toString().equals( (regRePasswordEditTextView.getText().toString()) ) )
 		{
-			errorList.add("Passwords do not match");
+			this.errorList.add("Passwords do not match");
 			hasError = true;
 		}
 		
@@ -108,11 +128,11 @@ public class RegistrationActivity extends SherlockActivity implements OnClickLis
 		}
 		
 		
-		 user_email = textEmail.getText().toString();
-		 user_pass = Utility.convertStringToSha1(textPass1.getText().toString());
-	     user_display_name = textDisplayName.getText().toString();
+		this.user_email = this.regEmailEditTextView.getText().toString();
+		this.user_pass = Utility.convertStringToSha1(this.regPasswordEditTextView.getText().toString());
+		this.user_display_name = this.regDisplayNameEditTextView.getText().toString();
 		
-		new Restful(Restful.REGISTER_USER_PATH, Restful.POST, new String[]{"email", "password", "display_name"},new String[]{user_email, user_pass, user_display_name}, 3, this);
+		new Restful(Restful.REGISTER_USER_PATH, Restful.POST, new String[]{"email", "password", "display_name"},new String[]{this.user_email, this.user_pass, this.user_display_name}, 3, this);
 
 	
 	}
@@ -128,9 +148,8 @@ public class RegistrationActivity extends SherlockActivity implements OnClickLis
 			temp += errorList.get(x) + "\n";
 		}
 		
-		errorTextView.setText(temp);
-		errorTextView.setTextColor(Color.RED);
-		errorTextView.setVisibility(View.VISIBLE);
+		this.errorTextView.setText(temp);
+		this.errorTextView.setTextColor(Color.RED);
 	}
 
 
@@ -169,10 +188,10 @@ public class RegistrationActivity extends SherlockActivity implements OnClickLis
 			switch(code)
 			{
 				case 403:
-					errorList.add("Invalid Input");
+					this.errorList.add("Invalid Input");
 					break;
 				case 409:
-					errorList.add("Email Already Exists");
+					this.errorList.add("Email Already Exists");
 					break;
 			}
 		}
@@ -186,8 +205,13 @@ public class RegistrationActivity extends SherlockActivity implements OnClickLis
 	}
 
 	@Override
-	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		
+	public void onClick(View view) 
+	{
+		switch(view.getId())
+		{
+			case R.id.reg_finish_button:
+				this.onRegClick(view);
+				break;
+		}
 	}
 }
