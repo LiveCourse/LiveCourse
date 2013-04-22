@@ -170,7 +170,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	{
 		if(parent == this.classListView)
 		{
-			this.switchToChat(((ChatroomViewHolder)view.getTag()).idString, ((ChatroomViewHolder)view.getTag()).className.getText().toString());
+			this.switchToChat(((ChatroomViewHolder)view.getTag()).idSectionString, ((ChatroomViewHolder)view.getTag()).className.getText().toString());
 		}
 	}
 
@@ -182,7 +182,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) 
 	{
 		Globals.mode = this.getSherlockActivity().startActionMode(this);
-		this.chatRoomToDelete = ( (ChatroomViewHolder)view.getTag() ).idString;
+		this.chatRoomToDelete = ( (ChatroomViewHolder)view.getTag() ).idSectionString;
 		return true;
 	}
 
