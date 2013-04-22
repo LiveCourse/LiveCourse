@@ -7,7 +7,7 @@
     android:background="#2e587e" >
     
     <TextView
-		android:id="@+id/login_title_text_view"
+		android:id="@+id/reg_title_text_view"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="@string/reg_text"
@@ -16,7 +16,7 @@
 		android:padding="10dp" />
 
 	<ImageView
-	    android:id="@+id/imageView1"
+	    android:id="@+id/reg_logo_image_view"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:contentDescription="@string/livecourse_logo_text"
@@ -24,21 +24,45 @@
 	    android:padding="10dp"
 	    android:src="@drawable/paperairplanewhitebluebackground96" />
 	
+	<TextView
+		android:id="@+id/error_text_view"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+	    android:padding="10dp"
+	    android:textIsSelectable="false"
+		android:textAppearance="?android:attr/textAppearanceSmall" />
+	
 	<EditText
 	    android:id="@+id/reg_email_edit_text_view"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:ems="10"
 	    android:hint="@string/reg_email_hint_text"
-	    android:inputType="textEmailAddress" />
+	    android:inputType="textEmailAddress"
+	    android:gravity="center"
+	    android:padding="10dp" >
+  		<requestFocus />
+	</EditText>
+	
+	<EditText
+	    android:id="@+id/reg_display_name_edit_text_view"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:ems="10"
+	    android:hint="@string/reg_display_name_text"
+	    android:gravity="center"
+	    android:padding="10dp" />
 	
 	<EditText
 	    android:id="@+id/reg_password_edit_text_view"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:ems="10"
-	    android:hint="@string/reg_re_password_hint_text"
-	    android:inputType="textPassword" />
+	    android:hint="@string/reg_password_hint_text"
+	    android:inputType="textPassword"
+	    android:gravity="center"
+	    android:padding="10dp" />
 	    
 	<EditText
 	    android:id="@+id/reg_re_password_edit_text_view"
@@ -46,14 +70,20 @@
 	    android:layout_height="wrap_content"
 	    android:ems="10"
 	    android:hint="@string/reg_re_password_hint_text"
-	    android:inputType="textPassword" />
+	    android:inputType="textPassword"
+	    android:gravity="center"
+	    android:padding="10dp" />
 	
-	<EditText
-	    android:id="@+id/editText4"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:ems="10"
-	    android:hint="Enter Display Name" />
+	<Button
+        android:id="@+id/reg_finish_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reg_button_text"
+        android:gravity="center"
+	    android:padding="10dp"
+		android:layout_margin="10dp"
+	    android:background="@drawable/login_button_selector" />
+
     
 
 </LinearLayout>

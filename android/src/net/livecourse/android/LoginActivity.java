@@ -100,7 +100,9 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
         this.loginLogoTextView.setTypeface(type);
         this.loginLogoTextView.setTextColor(Color.WHITE);
         this.loginEmailEditTextView.setTextColor(Color.WHITE);
+        this.loginEmailEditTextView.setHintTextColor(Color.argb(205, 204, 204, 204));
         this.loginPasswordEditTextView.setTextColor(Color.WHITE);
+        this.loginPasswordEditTextView.setHintTextColor(Color.argb(205, 204, 204, 204));
         this.loginSaveCredsCheckBoxView.setTextColor(Color.WHITE);
         this.loginButton.setTextColor(Color.WHITE);
         this.regButton.setTextColor(Color.WHITE);
