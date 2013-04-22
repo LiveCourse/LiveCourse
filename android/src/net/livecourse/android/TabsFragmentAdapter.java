@@ -1,10 +1,13 @@
 package net.livecourse.android;
 
+import net.livecourse.utility.Globals;
+
 import com.viewpagerindicator.PageIndicator;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
 /**
@@ -88,11 +91,31 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
     
     public void expand()
     {
-    	if(!this.CONTENT.equals(new String[] { "Class List", "Chat", "Group Notes", "Participants"}))
+    	if(!this.CONTENT.equals(new String[] { "Class List", "Chat", "Notes", "Participants"}))
 		{
-			this.CONTENT = new String[] { "Class List", "Chat", "Group Notes","Participants"};
+			this.CONTENT = new String[] { "Class List", "Chat", "Notes","Participants"};
 			this.setCount(4);
 			this.notifyDataSetChanged();		
+			this.mPager.setEnabled(true);
+		}
+    }
+    public void collapse()
+    {
+    	if(!this.CONTENT.equals(new String[] { "Class List"}))
+		{
+			this.CONTENT = new String[] { "Class List",};
+			FragmentManager fm = mActivity.getSupportFragmentManager();
+			FragmentTransaction ft = fm.beginTransaction();
+			ft.remove(Globals.chatFragment);
+			ft.remove(Globals.participantsFragment);
+			ft.commit();
+			this.setCount(1);
+			this.notifyDataSetChanged();
+			this.mIndicator.notifyDataSetChanged();
+			this.mPager.clearDisappearingChildren();
+			this.mPager.setCurrentItem(0);
+			this.mPager.setEnabled(false);
+ 
 		}
     }
 

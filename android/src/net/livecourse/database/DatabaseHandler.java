@@ -423,7 +423,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			SQLiteDatabase db = null;
 			SQLiteStatement statement = null;
 			
-			Log.d(this.TAG, "The message: " + messages);
+			//Log.d(this.TAG, "The message: " + messages);
 			
 			if(messages.equals(""))
 				return;

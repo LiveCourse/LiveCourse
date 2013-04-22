@@ -56,9 +56,9 @@ public class GCMIntentService extends GCMBaseIntentService implements OnRestCall
 		if(Globals.chatFragment == null)
 			return;
 			
-		Log.d(TAG, "Server chat id " + intent.getStringExtra("chat_id") + " Client chat id: " + Globals.chatId);
+		Log.d(TAG, "Server chat id " + intent.getStringExtra("chat_id") + " Client chat id: " + Globals.sectionId);
 
-		if(!intent.getStringExtra("chat_id").equals(Globals.chatId))
+		if(!intent.getStringExtra("chat_id").equals(Globals.sectionId))
 			return;
 		
 		if(!intent.getStringExtra("user_id").equals(Globals.userId))

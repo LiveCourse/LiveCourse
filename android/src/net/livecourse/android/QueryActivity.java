@@ -134,7 +134,7 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 			try 
 			{
 				ob = new JSONObject(response);
-				Globals.chatId = ob.getString("class_id_string");
+				Globals.sectionId = ob.getString("class_id_string");
 				Globals.chatName = ob.getString("name");				
 			} 
 			catch (JSONException e) 

@@ -126,7 +126,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 	public void updateList()
 	{
 		Globals.appDb.recreateHistory();
-		new Restful(Restful.GET_CHAT_HISTORY_PATH, Restful.GET,new String[] {"chat_id","start_epoch"},new String[] {Globals.chatId, "" + this.time},2,this);
+		new Restful(Restful.GET_CHAT_HISTORY_PATH, Restful.GET,new String[] {"chat_id","start_epoch"},new String[] {Globals.sectionId, "" + this.time},2,this);
 	}
 	public void clearList()
 	{

@@ -17,6 +17,8 @@ public class Globals
 	public static final String SENDER_ID = "584781219532";
 	public static boolean newReg = false;
 	
+	public static final int VIEW_PAGE_LOAD_COUNT = 3;
+	
 	/**
 	 * The loaders
 	 */
@@ -56,7 +58,7 @@ public class Globals
 	public static String 				passwordToken;
 	public static String 				query;
 	public static String 				token;
-	public static String 				chatId;
+	public static String 				sectionId;
 	public static String				regId;
 	public static String				colorPref;
 	public static String				startEpoch;
