@@ -62,7 +62,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	private ChatCursorAdapter adapter;
 	
 	public static ChatFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
-	{
+	{ 
 		ChatFragment fragment = new ChatFragment();
 		return fragment;
 	}

@@ -57,9 +57,9 @@
     <!-- 	Chat Layout Strings
     		These are the strings used in the chat fragment, 
     		which is the fragment responsible for seeing chat
-    		messages and sending chat messages -->
-    
-    <string name="send_message">Send</string>
+    		messages and sending chat messages -->   
+    <string name="send_button_title">Send</string>
+    <string name="upload_button_title">Upload files and images</string>
     	
     <!-- 	Chat Fragment Menu Strings
     		These are the strings used in the menu of the chat layout -->
@@ -85,6 +85,8 @@
     <string name="password_hint_text">Password</string>
     <string name="email_hint_text">Email</string>
     <string name="login_button_text">Login</string>
+    <string name="livecourse_logo_text">LiveCourse Logo</string>
+    <string name="save_creds_text">Save Credentials</string>
     
     <!-- 	Registration Layout Strings
     		These are the strings that are used in the registration

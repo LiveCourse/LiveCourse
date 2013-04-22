@@ -16,10 +16,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -35,16 +41,20 @@ import com.google.android.gcm.GCMRegistrar;
  * 
  * @author Darren Cheng
  */
-public class LoginActivity extends SherlockFragmentActivity implements OnRestCalled
+public class LoginActivity extends SherlockFragmentActivity implements OnRestCalled, OnClickListener, TextWatcher
 {
 	private final String TAG = " == LoginActivity == ";
 	
 	/**
 	 * The XML Views
 	 */
-	private EditText loginEmailEditTextView; 
-	private EditText loginPasswordEditTextView;
-	private TextView errorTextView;
+	private EditText 	loginEmailEditTextView; 
+	private EditText 	loginPasswordEditTextView;
+	private TextView 	loginLogoTextView;
+	private TextView 	errorTextView;
+	private CheckBox 	loginSaveCredsCheckBoxView;
+	private Button		loginButton;
+	private Button		regButton;
 	private ProgressDialog progressDialog;
     
 	/**
@@ -72,29 +82,54 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 			Globals.regId 			= regId;
 			Log.d(this.TAG, "GCMRegister failed, already registered");
 		}
+		
+
 		                
         /**
          * Links to the XML
          */
-        loginEmailEditTextView = (EditText) findViewById(R.id.login_email_edit_text_view);
-        loginPasswordEditTextView = (EditText) findViewById(R.id.login_password_edit_text);
-        errorTextView = (TextView) findViewById(R.id.error_text_view);
+        this.loginEmailEditTextView 	= (EditText) 	this.findViewById(R.id.login_email_edit_text_view);
+        this.loginPasswordEditTextView 	= (EditText) 	this.findViewById(R.id.login_password_edit_text);
+        this.loginSaveCredsCheckBoxView = (CheckBox) 	this.findViewById(R.id.login_save_creds_check_box);
+        this.loginLogoTextView 			= (TextView) 	this.findViewById(R.id.login_title_text_view);
+        this.errorTextView 				= (TextView) 	this.findViewById(R.id.error_text_view);
+        this.loginButton				= (Button) 		this.findViewById(R.id.login_button);
+        this.regButton					= (Button) 		this.findViewById(R.id.reg_button);
+        
+        Typeface type = Typeface.createFromAsset(getAssets(),"fonts/Cicle_Gordita.ttf"); 
+        this.loginLogoTextView.setTypeface(type);
+        this.loginLogoTextView.setTextColor(Color.WHITE);
+        this.loginEmailEditTextView.setTextColor(Color.WHITE);
+        this.loginPasswordEditTextView.setTextColor(Color.WHITE);
+        this.loginSaveCredsCheckBoxView.setTextColor(Color.WHITE);
+        this.loginButton.setTextColor(Color.WHITE);
+        this.regButton.setTextColor(Color.WHITE);
+        //TODO: make a custom style
         
         /**
          * Inits the error list
          */
-        errorList = new ArrayList<String>();
-        
-        /**
-         * Sets the activity to focus on the email EditText view
-         */
-        loginEmailEditTextView.requestFocus();
-        
+        this.errorList = new ArrayList<String>();
+        this.errorTextView.setText(" ");
+                
         /**
          * These are used for easy login for testing
          */
-        loginEmailEditTextView.setText("test1@test.com");
-        loginPasswordEditTextView.setText("123456789");  
+        SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE); 
+        
+        if(prefs.getBoolean("pref_save_cred", false))
+        {
+        	this.loginSaveCredsCheckBoxView.setChecked(true);
+        	this.loginEmailEditTextView.setText(prefs.getString("pref_save_email", ""));
+        	this.loginPasswordEditTextView.setText(prefs.getString("pref_save_password", ""));
+        }
+        
+        this.loginButton.setOnClickListener(this);
+        this.regButton.setOnClickListener(this);
+        this.loginSaveCredsCheckBoxView.setOnClickListener(this);
+        this.loginEmailEditTextView.addTextChangedListener(this);
+        this.loginPasswordEditTextView.addTextChangedListener(this);
+        
 	}
 	
 	/**
@@ -112,7 +147,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		/**
 		 * Reset the error list
 		 */
-		errorTextView.setText("");
+		errorTextView.setText(" ");
 		errorList.clear();
 		
 		/**
@@ -194,6 +229,25 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		startActivity(regIntent);
 	}
 	
+	public void onCheckClick(View v)
+	{
+		if(((CheckBox)v).isChecked())
+		{
+			SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+			
+	        prefs.edit().putBoolean	("pref_save_cred"		, true).commit();
+	        prefs.edit().putString	("pref_save_email"		, loginEmailEditTextView.getText().toString()	).commit();
+	        prefs.edit().putString	("pref_save_password"	, loginPasswordEditTextView.getText().toString()).commit();
+		}
+		else
+		{
+			SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+			
+	        prefs.edit().putBoolean	("pref_save_cred"		, false	).commit();
+	        prefs.edit().putString	("pref_save_email"		, null	).commit();
+	        prefs.edit().putString	("pref_save_password"	, null	).commit();
+		}
+	}
 	@Override
 	public void preRestExecute(String restCall) 
 	{
@@ -400,7 +454,48 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		
 		errorTextView.setText(temp);
 		errorTextView.setTextColor(Color.RED);
-		errorTextView.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onClick(View view) 
+	{
+		switch(view.getId())
+		{
+			case R.id.login_button:
+				this.onLoginClicked(view);
+				break;
+			case R.id.reg_button:
+				this.onRegClick(view);
+				break;
+			case R.id.login_save_creds_check_box:
+				this.onCheckClick(view);
+				break;
+		}
+	}
+
+	@Override
+	public void afterTextChanged(Editable arg0) 
+	{
+		SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+		
+        prefs.edit().putBoolean	("pref_save_cred"		, false	).commit();
+        prefs.edit().putString	("pref_save_email"		, null	).commit();
+        prefs.edit().putString	("pref_save_password"	, null	).commit();
+        
+        this.loginSaveCredsCheckBoxView.setChecked(false);
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+			int arg3) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
