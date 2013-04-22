@@ -402,7 +402,11 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		}
 		else if(restCall.equals(Restful.UNSUBSCRIBE_CHAT_PATH))
 		{
-			if(Globals.sectionId.equals(this.chatRoomToDelete))
+			if(Globals.sectionId == null)
+			{
+				Globals.sectionId = null;
+			}
+			else if(Globals.sectionId.equals(this.chatRoomToDelete))
 			{
 				Globals.sectionId = null;
 				Globals.chatName = null;

@@ -6,8 +6,8 @@ import com.viewpagerindicator.PageIndicator;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
 /**
@@ -16,7 +16,7 @@ import android.support.v4.view.ViewPager;
  * @author Darren
  *
  */
-public class TabsFragmentAdapter extends FragmentPagerAdapter{
+public class TabsFragmentAdapter extends FragmentStatePagerAdapter{
 	
 	/**
 	 * This is the list of the different tabs, starts with only class list and expands later
@@ -68,6 +68,14 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
     	}
     	return null;
     }
+    
+    @Override
+    public int getItemPosition(Object object)
+    {
+    	if(object == Globals.classListFragment)
+    		return PagerAdapter.POSITION_UNCHANGED;
+        return PagerAdapter.POSITION_NONE;
+    }
 
     @Override
     public int getCount() 
@@ -95,27 +103,16 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
 		{
 			this.CONTENT = new String[] { "Class List", "Chat", "Notes","Participants"};
 			this.setCount(4);
-			this.notifyDataSetChanged();		
-			this.mPager.setEnabled(true);
+			this.notifyDataSetChanged();
 		}
     }
     public void collapse()
     {
     	if(!this.CONTENT.equals(new String[] { "Class List"}))
 		{
-			this.CONTENT = new String[] { "Class List",};
-			FragmentManager fm = mActivity.getSupportFragmentManager();
-			FragmentTransaction ft = fm.beginTransaction();
-			ft.remove(Globals.chatFragment);
-			ft.remove(Globals.participantsFragment);
-			ft.commit();
+			this.CONTENT = new String[] { "Class List"};
 			this.setCount(1);
 			this.notifyDataSetChanged();
-			this.mIndicator.notifyDataSetChanged();
-			this.mPager.clearDisappearingChildren();
-			this.mPager.setCurrentItem(0);
-			this.mPager.setEnabled(false);
- 
 		}
     }
 

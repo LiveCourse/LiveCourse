@@ -344,7 +344,7 @@ public class Utility
         int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
 
-        String filePath = cursor.getString(columnIndex);			        
+        String filePath = cursor.getString(columnIndex);
 		return new File(filePath);
 	}
 }
