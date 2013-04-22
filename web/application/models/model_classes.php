@@ -21,6 +21,18 @@ class Model_Classes extends CI_Model {
 				->get();
 		return $query->result();
 	}
+	
+	/**
+	 * Fetch a list of subjects
+	 * returns a result consisting of matches.
+	 */
+	function fetch_subjects()
+	{
+		$query = $this->db
+				->from('lc_subjects')
+				->get();
+		return $query->result();
+	}
 
 	/**
 	 * Returns the integer chat ID of the chat ID string provided
