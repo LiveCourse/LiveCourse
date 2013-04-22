@@ -403,10 +403,12 @@ a.buttonLink:hover {
   float: left;
 }
 #joinroom_results {
-  width: 650px;
+  width: 665px;
+  height: 410px;
   text-align: center;
   font-size: 22px;
   float: right;
+  overflow-y: auto;
 }
 #joinroom_results ul {
   list-style-type: none;

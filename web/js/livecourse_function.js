@@ -291,11 +291,15 @@ function registration_submit()
 function joinroom_show()
 {
 	var dialog = dialog_clone("Add a Class","#dialog_joinroom",true,true);
-	$(dialog).find("input[name=classnumber]").observe_field(0.5, function( ) {
+	$(dialog).find("input[name=classnumber]").observe_field(0.6, function( ) {
 		if ($(dialog).find("input[name=classnumber]").val().length <= 0)
 		{
-			$(dialog).find("#joinroom_results").html("Please enter a course number or course name.");
-		} else {
+			$(dialog).find("#joinroom_results").html("Please enter a course number or CRN.");
+		} else if ($(dialog).find("input[name=classnumber]").val().length < 3)
+		{
+			$(dialog).find("#joinroom_results").html("Please enter a course number or CRN.");
+		} else
+		{
 			var ind = progress_indicator_show();
 			$(dialog).find("#joinroom_results").html();
 			call_api("sections/search","GET",{query: $(dialog).find("input[name=classnumber]").val()},
