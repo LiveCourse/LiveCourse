@@ -629,9 +629,6 @@ WHERE lc_chat_participants.chat_id = 1
 			case 'application/x-javascript':
 				return '.js';
 			break;
-			case default
-				return '.txt';
-			break;
 		}
 	}
 }
