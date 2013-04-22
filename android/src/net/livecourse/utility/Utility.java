@@ -19,9 +19,12 @@ import com.actionbarsherlock.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -333,5 +336,15 @@ public class Utility
 		
 		Globals.filePath = image.getAbsolutePath();
 		return image;
+	}
+	public static File fileFromURI(Uri uri)
+	{
+		String [] proj={MediaStore.Images.Media.DATA};
+        Cursor cursor = Globals.mainActivity.getContentResolver().query( uri, proj, null, null, null); 
+        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+
+        String filePath = cursor.getString(columnIndex);			        
+		return new File(filePath);
 	}
 }

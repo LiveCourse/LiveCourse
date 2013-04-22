@@ -1,6 +1,5 @@
 package net.livecourse.android;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import net.livecourse.R;
@@ -13,14 +12,12 @@ import net.livecourse.utility.Utility;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -222,7 +219,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 				Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                this.getSherlockActivity().startActivityForResult(Intent.createChooser(intent,"Select Picture"), Globals.GALLERY_RESULT);
+                this.getSherlockActivity().startActivityForResult(intent, Globals.GALLERY_RESULT);
 				break;
 			case R.id.upload_from_file_explorer_item:
 				Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -243,20 +240,15 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 			switch(request)
 			{
 				case Globals.CAMERA_RESULT:
-				    //Bitmap bm = (Bitmap) data.getExtras().get("data");
-				    //ByteArrayOutputStream bao = new ByteArrayOutputStream();
-			        //bm.compress(Bitmap.CompressFormat.JPEG, 90, bao);
-			        //byte[] byteData = bao.toByteArray();
-			        //String ba1 = Base64.encodeToString(byteData, Base64.DEFAULT);
-			        
-			        //new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message", "file"}, new String[]{Globals.chatId,"Attempting to send image taken from camera as a String", ba1}, 3, this);
-			        File image = new File(Globals.filePath);
+				    File image = new File(Globals.filePath);
 			        Log.d(this.TAG, "The file path: " + Globals.filePath);
-					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId,"Attempting to send image taken from camera as a String"}, 2, image, this);
+					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId,"Attempting to send image from camera"}, 2, image, this);
 					break;
 				case Globals.GALLERY_RESULT:
+					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId,"Attempting to send file from gallery"}, 2, Utility.fileFromURI(data.getData()), this);
 					break;
 				case Globals.EXPLORER_RESULT:
+					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId,"Attempting to send file from explorer"}, 2, Utility.fileFromURI(data.getData()), this);
 					break;
 			}
 		}
