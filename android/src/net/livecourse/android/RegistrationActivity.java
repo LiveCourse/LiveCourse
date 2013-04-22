@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -58,6 +59,9 @@ public class RegistrationActivity extends SherlockActivity implements OnClickLis
         this.errorTextView 				= (TextView) 	this.findViewById(R.id.error_text_view);
         this.regTitleTextView 			= (TextView) 	this.findViewById(R.id.reg_title_text_view);
         this.regButton					= (Button)		this.findViewById(R.id.reg_finish_button);
+        
+        Typeface type = Typeface.createFromAsset(getAssets(),"fonts/Cicle_Gordita.ttf"); 
+        this.regTitleTextView.setTypeface(type);
         
         this.regTitleTextView.setTextColor(Color.WHITE);
         this.regEmailEditTextView.setTextColor(Color.WHITE);

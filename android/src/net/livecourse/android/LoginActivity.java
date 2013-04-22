@@ -98,6 +98,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
         
         Typeface type = Typeface.createFromAsset(getAssets(),"fonts/Cicle_Gordita.ttf"); 
         this.loginLogoTextView.setTypeface(type);
+        
         this.loginLogoTextView.setTextColor(Color.WHITE);
         this.loginEmailEditTextView.setTextColor(Color.WHITE);
         this.loginEmailEditTextView.setHintTextColor(Color.argb(205, 204, 204, 204));
