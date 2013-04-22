@@ -119,7 +119,7 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	{
 		ChatroomViewHolder v = (ChatroomViewHolder) view.getTag();	
-		new Restful(Restful.JOIN_CHAT_PATH, Restful.POST, new String[]{"id"}, new String[]{v.idString}, 1, this);
+		new Restful(Restful.JOIN_CHAT_PATH, Restful.POST, new String[]{"id"}, new String[]{v.idSectionString}, 1, this);
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 			try 
 			{
 				ob = new JSONObject(response);
-				Globals.chatId = ob.getString("id_string");
+				Globals.chatId = ob.getString("class_id_string");
 				Globals.chatName = ob.getString("name");				
 			} 
 			catch (JSONException e) 

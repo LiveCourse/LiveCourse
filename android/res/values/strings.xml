@@ -98,6 +98,7 @@
     <string name="reg_password_hint_text">Enter Password</string>
     <string name="reg_re_password_hint_text">Re-enter Password</string>
     <string name="reg_button_text">Register</string>
+    <string name="reg_display_name_text">Display Name</string>
     <string name="already_registered">Device is already registered on server.</string>
     <string name="gcm_registered">From GCM: device successfully registered!</string>
     <string name="gcm_unregistered">From GCM: device successfully unregistered!</string>

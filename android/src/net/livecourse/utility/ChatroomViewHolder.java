@@ -9,4 +9,5 @@ public class ChatroomViewHolder
 	public TextView classType;
 	public TextView classInstructor;
 	public String idString;
+	public String idSectionString;
 }
