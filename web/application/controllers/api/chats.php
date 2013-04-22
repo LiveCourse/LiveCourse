@@ -637,12 +637,30 @@ class Chats extends REST_Controller
 		//Check if there was an uploaded file.
 		if (isset($_FILES['file']))
 		{
+			$max_upload = (ini_get('upload_max_filesize'));
+
+			$last = strtolower($max_upload[strlen($max_upload)-1]);
+			switch($last)
+			{
+			    case 'g':
+				$max_upload *= 1024;
+			    case 'm':
+				$max_upload *= 1024;
+			    case 'k':
+				$max_upload *= 1024;
+			}
+
+			if($_FILES['file']['size'] > $max_upload)
+			{
+				$this->response($this->rest_error(array("File too large!")), 403);
+				return;
+			}
 			$file = null;
 
 			//Generate an inputFile for S3, part of the function
 			$file = $this->Model_S3->inputFile($_FILES['file']['tmp_name']);
-			//$file_name = $_FILES['file']['name'];
-
+			$file_type = $this->Model_Classes->get_ext_by_content_type($_FILES['file']['type']);
+			$file_name .= $file_type;
 			if (!$file)
 			{
 				$this->response($this->rest_error(array("Invalid file uploaded!")), 404);
@@ -1521,4 +1539,154 @@ class Chats extends REST_Controller
 		}
 
 	}
+
+	/**
+	 * Retrieves a number of recent files from the specified chat.
+	 *
+	 * chat_id - Chat ID to fetch from
+	 * num_messages - Number of messages to fetch
+	 *
+	 * returns
+	 * 	401 if not logged in
+	 * 	200 and an array of messages upon success
+	 */
+	function fetch_recent_files_get()
+	{
+		$this->load->model('Model_Classes');
+
+		$chat_id_string = $this->get('chat_id');
+
+		$num_files = $this->get('num_files');
+
+		if (!isset($num_files) || $num_files == "")
+			$num_files = 10;
+
+		$user_id = $this->authenticated_as;
+
+		//Try to find the chat
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
+
+		//Check to make sure user is joined to this chat.
+		if (!$this->Model_Classes->is_user_subscribed($user_id,$chat_id))
+		{
+			$this->response($this->rest_error(array("You are not subscribed to this chat.")), 401);
+			return;
+		}
+
+		$files = $this->Model_Classes->get_num_latest_files($chat_id, $num_files);
+		$this->response($files, 200); //Success
+	}
+
+	/**
+	 * Retrieves all files past a certain defined message id
+	 *
+	 * chat_id - Chat ID to fetch from
+	 * msg_id - Message ID after which to grab
+	 *
+	 * returns
+	 * 	401 if not logged in
+	 * 	200 and an array of messages on success
+	 */
+	function fetch_files_since_get()
+	{
+		$this->load->model('Model_Classes');
+
+		$chat_id_string = $this->get('chat_id');
+		$msg_id = $this->get('msg_id');
+
+		$num_files = $this->get('num_files');
+
+		if (!isset($num_files) || $num_files == "")
+			$num_files = 100;
+
+		$user_id = $this->authenticated_as;
+
+		//Try to find the chat
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
+
+		//Check to make sure user is joined to this chat.
+		if (!$this->Model_Classes->is_user_subscribed($user_id, $chat_id))
+		{
+			$this->response($this->rest_error(array("You are not subscribed to this chat.")), 401);
+			return;
+		}
+
+		$files = $this->Model_Classes->get_files_after_msg_id($chat_id, $msg_id);
+		$this->response($files, 200); //Success
+	}
+
+	/**
+	 * Retrieves all files from a given room between specified time and specified time + 24 hours.
+	 * NOTE: This operates in UTC time, effectively. Client should do some conversions before requesting
+	 *       if they expect results to be arranged like their local time zone.
+	 *
+	 * chat_id - Chat ID to fetch from
+	 * start_epoch - UNIX epoch of start of the day from which to retrieve 24 hours worth of files for.
+	 *
+	 * returns
+	 * 	403 if no start epoch is given
+	 * 	401 if you are not subscribed to the chat
+	 * 	200 and an array of messages on success
+	 */
+	function fetch_files_day_get()
+	{
+		$this->load->model('Model_Classes');
+
+		$chat_id_string = $this->get('chat_id_string');
+		$start_epoch = $this->get('start_epoch');
+
+		if (!isset($start_epoch) || $start_epoch == "")
+		{
+			$this->response($this->rest_error(array("No time frame given.")), 403);
+			return;
+		}
+
+		$user_id = $this->authenticated_as;
+
+		//Try to find the chat
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
+
+		//Check to make sure user is joined to this chat.
+		if (!$this->Model_Classes->is_user_subscribed($user_id, $chat_id))
+		{
+			$this->response($this->rest_error(array("You are not subscribed to this chat.")), 401);
+			return;
+		}
+
+		$files = $this->Model_Classes->get_time_frame_files($chat_id, $start_epoch, $start_epoch+(24*60*60));
+		$this->response($files, 200); //Success
+	}
+
+	/**
+	 * Retrieves all files from a given room
+	 *
+	 * chat_id_string - Chat ID to fetch files for
+	 *
+	 * returns
+	 * 	401 if you are not subscribed to the chat
+	 * 	200 and an array of messages on success
+	 */
+	function fetch_all_files_by_class_get()
+	{
+		$this->load->model('Model_Classes');
+
+		$chat_id_string = $this->get('chat_id_string');
+
+		$user_id = $this->authenticated_as;
+
+		//Try to find the chat
+		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
+
+		//Check to make sure user is joined to this chat.
+		if (!$this->Model_Classes->is_user_subscribed($user_id,$chat_id))
+		{
+			$this->response($this->rest_error(array("You are not subscribed to this chat.")), 401);
+			return;
+		}
+
+		$files = $this->Model_Classes->get_files_by_class($chat_id);
+		$this->response($files, 200);
+	}
+
+
 }

@@ -500,4 +500,138 @@ WHERE lc_chat_participants.chat_id = 1
 			'filename' => $filename,
 		));
 	}
+
+	/**
+	 * Gets the specified number of latest files from a chat room
+	 * chat_id - ID of chat to fetch from
+	 * num_lines - Number of lines to retrieve
+	 * returns - array of results
+	 */
+	function get_num_latest_files($class_id, $num_lines = 10)
+	{
+		return $query = $this->db
+			->limit($num_lines)
+			->order_by('uploaded_at', 'asc')
+			->get('lc_chat_files')
+			->result();
+	}
+
+	/**
+	 * Gets files in the given time frame from given room.
+	 * chat_id - ID of chat to fetch from
+	 * start_time - Beginning of time window
+	 * end_time - End of time window
+	 * returns - array of results
+	 */
+	function get_time_frame_files($class_id, $start_time, $end_time)
+	{
+		$query = $this->db
+				->where('uploaded_at >=', $start_time)
+				->where('uploaded_at <=', $end_time)
+				->where('chat_id', $class_id)
+				->from('lc_chat_files')
+				->order_by('uploaded_at', 'asc')
+				->get()
+				->result();
+		return $query;
+	}
+
+	/**
+	 * Gets files from a chat room that were sent AFTER the specified message ID.
+	 * chat_id - ID of chat to fetch from
+	 * msg_id - msg ID after which to fetch chat messages
+	 * returns - array of results
+	 */
+	function get_files_after_msg_id($chat_id, $msg_id)
+	{
+		return $query = $this->db
+				->where('message_id >', $msg_id)
+				->where('chat_id', $chat_id)
+				->order_by('uploaded_at', 'asc')
+				->get('lc_chat_files')
+				->result();
+	}
+
+	/**
+	 *Retrieves all files by a specific chat
+	 *
+	 *chat_id - the numerical ID of the chat from which to recover the files
+	 *
+	 *returns the array of results
+	 */
+	function get_Files_by_class($chat_id)
+	{
+		return $query = $this->db
+				->where('chat_id', $chat_id)
+				->get('lc_chat_files')
+				->result();
+	}
+
+	/**
+	 *Switch statement on content type
+	 *
+	 *$content_type - The 'type' field returned from $_FILES
+	 *
+	 *returns the file extension of the file
+	 */
+	function get_ext_by_content_type($content_type)
+	{
+		switch($content_type)
+		{
+			case 'application/msword':
+				return '.doc';
+			break;
+			case 'application/pdf':
+				return '.pdf';
+			break;
+			case 'application/zip':
+				return '.zip';
+			break;
+			case 'audio/mpeg':
+				return '.mp3';
+			break;
+			case 'audio/x-wav':
+				return '.wav';
+			break;
+			case 'image/bmp':
+				return '.bmp';
+			break;
+			case 'image/gif':
+				return '.gif';
+			break;
+			case 'image/jpeg':
+				return '.jpg';
+			break;
+			case 'text/css':
+				return '.css';
+			break;
+			case 'text/html':
+				return '.html';
+			break;
+			case 'text/plain':
+				return '.txt';
+			break;
+			case 'video/mpeg':
+				return '.mpeg';
+			break;
+			case 'video/quicktime':
+				return '.mov';
+			break;
+			case 'application/vnd.ms-powerpoint':
+				return '.ppt';
+			break;
+			case 'application/x-gzip':
+				return '.gz';
+			break;
+			case 'application/x-gtar':
+				return '.gtar';
+			break;
+			case 'application/x-javascript':
+				return '.js';
+			break;
+			case default
+				return '.txt';
+			break;
+		}
+	}
 }

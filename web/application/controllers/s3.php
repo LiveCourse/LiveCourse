@@ -45,6 +45,7 @@ class S3 extends CI_Controller
 		<?php
 		// Get the contents of our bucket
 		$bucket_contents = $this->Model_S3->getBucket("livecourse");
+		$num = 1;
 
 		foreach ($bucket_contents as $file)
 		{
@@ -52,7 +53,8 @@ class S3 extends CI_Controller
 			$furl = "http://livecourse.s3.amazonaws.com/".$fname;
 
 			//output a link to the file
-			echo "<a href=\"$furl\">$fname</a><br />";
+			echo "$num)<a href=\"$furl\"> $fname</a><br />";
+			$num++;
 		}
 	}
 }
