@@ -41,7 +41,7 @@ public class RegistrationActivity extends SherlockActivity implements OnClickLis
     protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.registration_layout);
+        setContentView(R.layout.registration_layout_old);
         
         textEmail = (EditText) findViewById(R.id.editText1);
         textPass1 = (EditText) findViewById(R.id.editText2);

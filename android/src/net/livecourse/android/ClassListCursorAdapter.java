@@ -68,6 +68,7 @@ public class ClassListCursorAdapter extends CursorAdapter
 		v.classType.setText(type);
 		v.classInstructor.setText(instructor);
 		v.idString = cursor.getString(cursor.getColumnIndexOrThrow("id_string"));
+		v.idSectionString = cursor.getString(cursor.getColumnIndexOrThrow("section_id_string"));
 		
 		view.setTag(v);
 		

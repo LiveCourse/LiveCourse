@@ -82,6 +82,7 @@ public class ClassQueryArrayAdapter extends ArrayAdapter<Chatroom>
             }
             
             v.idString = item.getIdString();
+            v.idSectionString = item.getSectionString();
             view.setTag(v);
          }
 

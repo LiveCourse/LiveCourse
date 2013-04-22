@@ -367,8 +367,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 					
 					ob = parse.getJSONObject(x);
 					
-					statement.bindString( 1, ob.getString(	"class_id_string"	));
-					statement.bindString( 2, ob.getString(	"id_string"			));
+					statement.bindString( 1, ob.getString(	"id_string"			));
+					statement.bindString( 2, ob.getString(	"class_id_string"	));
 					statement.bindString( 3, ob.getString(	"subject_id"		));
 					statement.bindString( 4, ob.getString(	"course_number"		));
 					statement.bindString( 5, ob.getString(	"name"				));
