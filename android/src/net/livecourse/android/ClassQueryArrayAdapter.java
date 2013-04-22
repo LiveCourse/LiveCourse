@@ -44,11 +44,14 @@ public class ClassQueryArrayAdapter extends ArrayAdapter<Chatroom>
             v.classTime 		= (TextView) view.findViewById(R.id.classquery_item_class_time_text_view);
             v.classType 		= (TextView) view.findViewById(R.id.classquery_item_class_type_text_view);
     		v.classInstructor 	= (TextView) view.findViewById(R.id.classquery_item_class_instructor_text_view);
-
+    		
             
             if (v.className != null) 
             {
-            	v.className.setText(item.getName());
+            	String name = item.getName();
+        		if(name.length() > 28)
+        			name = name.substring(0, 25) + "...";
+            	v.className.setText(name);
             }
             if(v.classTime != null)
             {
@@ -78,8 +81,13 @@ public class ClassQueryArrayAdapter extends ArrayAdapter<Chatroom>
             }
             if(v.classInstructor != null)
             {
-            	v.classInstructor.setText(item.getInstructor());
+            	String instructor = item.getInstructor();
+        		if(instructor.length() > 28)
+        			instructor = instructor.substring(0,25) + "..."; 
+            	v.classInstructor.setText(instructor);
             }
+            
+            
             
             v.idString = item.getIdString();
             v.idSectionString = item.getSectionString();
