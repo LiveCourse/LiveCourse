@@ -251,6 +251,40 @@ CREATE TABLE IF NOT EXISTS `lc_wp_users` (
   `timeadded` int(11) NOT NULL COMMENT 'Time this device was registered'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sections_tmp`
+--
+
+CREATE TABLE IF NOT EXISTS `sections_tmp` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `crn` int(11) NOT NULL,
+  `subj` varchar(16) NOT NULL,
+  `course_number` int(11) NOT NULL,
+  `section` varchar(16) NOT NULL,
+  `name` varchar(256) NOT NULL,
+  `dow_monday` tinyint(1) NOT NULL,
+  `dow_tuesday` tinyint(1) NOT NULL,
+  `dow_wednesday` tinyint(1) NOT NULL,
+  `dow_thursday` tinyint(1) NOT NULL,
+  `dow_friday` tinyint(1) NOT NULL,
+  `dow_saturday` tinyint(1) NOT NULL,
+  `dow_sunday` tinyint(1) NOT NULL,
+  `time_start` int(11) NOT NULL,
+  `time_end` int(11) NOT NULL,
+  `date_start` date NOT NULL,
+  `date_end` date NOT NULL,
+  `capacity` int(11) NOT NULL,
+  `instructor` varchar(256) NOT NULL,
+  `location` varchar(128) NOT NULL,
+  `type` varchar(128) NOT NULL,
+  `notes` text NOT NULL,
+  `link_self` varchar(16) NOT NULL,
+  `link_other` varchar(16) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
