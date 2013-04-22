@@ -25,9 +25,11 @@
 	    <item name="android:background">#2e587e</item>
 	    <item name="background">#2e587e</item>
 	</style>
-	
 	<style name = "Widget.LCTheme.ActionMode" parent="Widget.Sherlock.ActionMode">
 	
     </style>
+    <style name = "Theme.LCTheme.Login" parent="Theme.Sherlock.Light.NoActionBar">
+    </style>
+
 	
 	</resources>
