@@ -168,7 +168,7 @@ class Sections extends REST_Controller
 		if (strlen($room_number) > 0)
 			$sections_query["room_number"] = $room_number;
 		
-		$sections = $this->Model_Sections->search_sections_advanced($sections_query);
+		$sections = $this->Model_Sections->search_sections_advanced($sections_query,$user_id);
 		if (count($sections) <= 0)
 		{
 			$this->response($this->rest_error(array("No matching sections could be found.")), 404);

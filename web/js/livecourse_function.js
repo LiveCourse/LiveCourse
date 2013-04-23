@@ -363,6 +363,8 @@ function joinroom_show()
 									if (data[i].dow_sunday == 1) dow+='U';
 									var item = $('<li id="'+data[i].section_id_string+'"><span class="name">'+data[i].type+'</span><br><span class="instructor">'+data[i].instructor+'</span><br><span class="time">'+dow+' from '+start_hour+':'+start_minute+' - '+end_hour+':'+end_minute+'</span><br><span class="location">'+data[i].building_short_name+' '+data[i].room_number+'</span></li>');
 									item.hide();
+									if (data[i].is_joined == 1)
+										item.addClass("joined");
 									$(dialog).find("#joinroom_results ul").append(item);
 									item.fadeIn();
 									item.click(function() {
