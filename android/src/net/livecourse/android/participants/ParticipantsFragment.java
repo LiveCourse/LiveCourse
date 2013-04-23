@@ -212,7 +212,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 		}
 		else if(restCall.equals(Restful.IGNORE_USER_PATH))
 		{
-			
+			this.updateList();
 		}
 	}
 

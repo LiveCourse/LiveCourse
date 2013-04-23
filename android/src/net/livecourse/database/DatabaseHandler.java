@@ -24,7 +24,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 {
 	private final String TAG 									= " == DatabaseHandler == ";
 
-	private static final int DATABASE_VERSION 					= 40;
+	private static final int DATABASE_VERSION 					= 41;
 	
 	/**
 	 * Database name
@@ -83,6 +83,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public static final String KEY_USER_TIME_LASTFOCUS			= "time_lastfocus";
 	public static final String KEY_USER_TIME_LASTREQUEST		= "time_lastrequest";
+	public static final String KEY_USER_IGNORED					= "ignored";
 	
 	/**
 	 * used to lock down database access
@@ -213,7 +214,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 												+ KEY_USER_DISPLAY_NAME 	+ " int(255), "
 												+ KEY_USER_EMAIL 			+ " varchar(255), "
 												+ KEY_USER_TIME_LASTFOCUS	+ " int(11), "
-												+ KEY_USER_TIME_LASTREQUEST + " int(11) "
+												+ KEY_USER_TIME_LASTREQUEST + " int(11), "
+												+ KEY_USER_IGNORED			+ " tinyint(1)"
 												+ ")";
 			
 			db.execSQL(CREATE_TABLE_PARTICIPANTS);
@@ -610,13 +612,14 @@ public class DatabaseHandler extends SQLiteOpenHelper
 				parse = new JSONArray(participants);
 				db = Globals.appDb.getWritableDatabase();
 				statement = db.compileStatement(
-						"INSERT INTO " 	+ DatabaseHandler.TABLE_PARTICIPANTS + 
-							" ( " 		+ DatabaseHandler.KEY_USER_ID + 
-							", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
-							", " 		+ DatabaseHandler.KEY_USER_EMAIL + 
-							", " 		+ DatabaseHandler.KEY_USER_TIME_LASTFOCUS + 
+						"INSERT INTO " 	+ DatabaseHandler.TABLE_PARTICIPANTS 		+ 
+							" ( " 		+ DatabaseHandler.KEY_USER_ID 				+ 
+							", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME 	+ 
+							", " 		+ DatabaseHandler.KEY_USER_EMAIL 			+ 
+							", " 		+ DatabaseHandler.KEY_USER_TIME_LASTFOCUS 	+ 
 							", " 		+ DatabaseHandler.KEY_USER_TIME_LASTREQUEST + 
-							") VALUES (?, ?, ?, ?, ?)");
+							", "		+ DatabaseHandler.KEY_USER_IGNORED 			+
+							") VALUES (?, ?, ?, ?, ?, ?)");
 				
 				db.beginTransaction();
 				for(int x = 0; x < parse.length(); x++)
@@ -630,11 +633,12 @@ public class DatabaseHandler extends SQLiteOpenHelper
 					
 					ob = parse.getJSONObject(x);
 					
-					statement.bindString(1, ob.getString("id"));
-					statement.bindString(2, ob.getString("display_name"));
-					statement.bindString(3, ob.getString("email"));
-					statement.bindString(4, ob.getString("time_lastfocus"));
-					statement.bindString(5, ob.getString("time_lastrequest"));
+					statement.bindString(1, ob.getString(	"id"				));
+					statement.bindString(2, ob.getString(	"display_name"		));
+					statement.bindString(3, ob.getString(	"email"				));
+					statement.bindString(4, ob.getString(	"time_lastfocus"	));
+					statement.bindString(5, ob.getString(	"time_lastrequest"	));
+					statement.bindString(6, ob.getString(	"ignored"			));
 					
 					statement.execute();
 				}
@@ -667,6 +671,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			tempStorage[0][3] = cursor.getString(3);
 			tempStorage[0][4] = cursor.getString(4);
 			tempStorage[0][5] = cursor.getString(5);
+			tempStorage[0][6] = cursor.getString(6);
 		}
 		else
 		{
@@ -680,6 +685,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 					tempStorage[0][3] = cursor.getString(3);
 					tempStorage[0][4] = cursor.getString(4);
 					tempStorage[0][5] = cursor.getString(5);
+					tempStorage[0][6] = cursor.getString(6);
 					cursor.moveToNext();
 				}
 				
@@ -688,7 +694,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 				tempStorage[x][2] = cursor.getString(2);
 				tempStorage[x][3] = cursor.getString(3);
 				tempStorage[x][4] = cursor.getString(4);
-				tempStorage[0][5] = cursor.getString(5);
+				tempStorage[x][5] = cursor.getString(5);
+				tempStorage[x][6] = cursor.getString(6);
 				
 				cursor.moveToNext();
 	        }

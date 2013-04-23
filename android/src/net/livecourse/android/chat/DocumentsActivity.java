@@ -31,7 +31,6 @@ public class DocumentsActivity extends SherlockFragmentActivity implements OnRes
         
         Log.d(this.TAG, "Chat ID: " + Globals.chatId + " Section ID: " + Globals.sectionId);
         new Restful(Restful.GET_ALL_FILES_PATH, Restful.GET, new String[]{"chat_id"}, new String[]{Globals.chatId}, 1, this);
-        new Restful(Restful.GET_ALL_FILES_PATH, Restful.GET, new String[]{"chat_id"}, new String[]{Globals.sectionId}, 1, this);
 	}
 	
 	@Override

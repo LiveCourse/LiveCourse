@@ -4,8 +4,10 @@ import net.livecourse.R;
 import net.livecourse.utility.Globals;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,10 +72,24 @@ public class ParticipantsCursorAdapter extends CursorAdapter
 		v.displayName.setText(name);
 		v.userId = cursor.getString(cursor.getColumnIndexOrThrow("user_id"));
 		
-		v.displayName.setTypeface(null, Typeface.NORMAL);
+		String temp = cursor.getString(cursor.getColumnIndexOrThrow("ignored"));
+		Log.d("participants cursor adapter", "Name: " + v.displayName + " Ignore: " + temp);
+		v.ignore = temp;
+				
+		/**
+		 * Sets the text to bold if it is the user's own name
+		 */
 		if(v.userId != null && v.userId.equals(Globals.userId))
 		{
 			v.displayName.setTypeface(null, Typeface.BOLD);
+		}
+		else if(v.ignore.equals("1"))
+		{
+			v.displayName.setPaintFlags(v.displayName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		}
+		else
+		{
+			v.displayName.setTypeface(null, Typeface.NORMAL);
 		}
 		view.setTag(v);
 	}
