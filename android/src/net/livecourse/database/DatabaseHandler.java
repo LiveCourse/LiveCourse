@@ -24,7 +24,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 {
 	private final String TAG 									= " == DatabaseHandler == ";
 
-	private static final int DATABASE_VERSION 					= 41;
+	private static final int DATABASE_VERSION 					= 43;
 	
 	/**
 	 * Database name
@@ -38,6 +38,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	public static final String TABLE_CHAT_MESSAGES				= "chatMessages";
 	public static final String TABLE_PARTICIPANTS				= "participants";
 	public static final String TABLE_HISTORY					= "history";
+	public static final String TABLE_DOCUMENTS					= "documents";
 	
 	/**
 	 * Fields used for the classroom object
@@ -71,7 +72,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	/**
 	 * Fields used for the message object
 	 */
-	public static final String KEY_CHAT_ID						= "chat_id";
+	public static final String KEY_MESSAGE_ID					= "chat_id";
 	public static final String KEY_USER_ID						= "user_id";
 	public static final String KEY_CHAT_SEND_TIME				= "send_time";
 	public static final String KEY_CHAT_MESSAGE_STRING			= "message_string";
@@ -86,12 +87,21 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	public static final String KEY_USER_IGNORED					= "ignored";
 	
 	/**
+	 * Fields used for the documents object
+	 */
+	public static final String KEY_DOCS_FILENAME				= "filename";
+	public static final String KEY_DOCS_ORI_FILENAME			= "original_filename";
+	public static final String KEY_DOCS_SIZE					= "size";
+	public static final String KEY_DOCS_UPLOAD_TIME				= "upload_time";
+	
+	/**
 	 * used to lock down database access
 	 */
 	private final Object classListLock							= new Object();
 	private final Object chatLock								= new Object();	
 	private final Object particiantsLock						= new Object();
 	private final Object historyLock							= new Object();
+	private final Object documentsLock							= new Object();
 	
 	/**
 	 * The constructor of the database, pass it the context.
@@ -111,10 +121,11 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void onCreate(SQLiteDatabase db) 
 	{
-		this.createChatMessages(db);
-		this.createClassEnroll(db);
-		this.createParticipants(db);
-		this.createHistory(db);
+		this.createChatMessages	(db);
+		this.createClassEnroll	(db);
+		this.createParticipants	(db);
+		this.createHistory		(db);
+		this.createDocuments	(db);
 	}
 
 	@Override
@@ -128,10 +139,11 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	 */
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
 	{
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASS_ENROLL);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASS_ENROLL	);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHAT_MESSAGES);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS	);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY		);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DOCUMENTS	);
 		
 		onCreate(db);
 		
@@ -188,7 +200,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		{
 			String CREATE_TABLE_CHAT_MESSAGES = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
 												+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-												+ KEY_CHAT_ID 				+ " int(11) UNIQUE, "
+												+ KEY_MESSAGE_ID 				+ " int(11) UNIQUE, "
 												+ KEY_USER_ID				+ " int(11),"
 												+ KEY_CHAT_SEND_TIME		+ " int(11), "
 												+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
@@ -233,13 +245,35 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			String CREATE_TABLE_HISTORY		  = "CREATE TABLE " 			+ TABLE_HISTORY 	+ "( "
 												+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
 												+ KEY_USER_ID				+ " int(11),"
-												+ KEY_CHAT_ID 				+ " int(11), "
+												+ KEY_MESSAGE_ID 			+ " int(11), "
 												+ KEY_CHAT_SEND_TIME		+ " int(11), "
 												+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
 												+ KEY_USER_EMAIL 			+ " varchar(255), "
 												+ KEY_USER_DISPLAY_NAME 	+ " varchar(255) "
 												+ ")";
 			db.execSQL(CREATE_TABLE_HISTORY);
+		}
+	}
+	
+	/**
+	 * Creates the table TABLE_DOCUMENTS
+	 * @param db
+	 */
+	private void createDocuments(SQLiteDatabase db)
+	{
+		synchronized(this.documentsLock)
+		{
+			String CREATE_TABLE_DOCUMENTS 		= "CREATE TABLE " 			+ TABLE_DOCUMENTS 	+ "( "
+												+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+												+ KEY_USER_ID				+ " int(11),"
+												+ KEY_CHAT_ID_STRING		+ " varchar(12), "
+												+ KEY_DOCS_FILENAME			+ " varchar(255), "
+												+ KEY_DOCS_ORI_FILENAME		+ " varchar(255), "
+												+ KEY_DOCS_SIZE				+ " int(11), "
+												+ KEY_MESSAGE_ID 			+ " int(11), "
+												+ KEY_DOCS_UPLOAD_TIME		+ " int(11)"
+												+ ")";
+			db.execSQL(CREATE_TABLE_DOCUMENTS);
 		}
 	}
 	/**
@@ -303,6 +337,22 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			this.createHistory(db);
 			
 	        Log.d(this.TAG, "Recreated TABLE_HISTORY");
+		}
+	}
+	
+	/**
+	 * This method recreates the table TABLE_DOCUMENTS
+	 */
+	public void recreateDocuments()
+	{
+		synchronized(this.documentsLock)
+		{
+			SQLiteDatabase db = this.getWritableDatabase();
+			
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_DOCUMENTS);
+			this.createDocuments(db);
+			
+	        Log.d(this.TAG, "Recreated TABLE_DOCUMENTS");
 		}
 	}
 	
@@ -436,7 +486,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 				db = this.getWritableDatabase();
 				statement = db.compileStatement(
 						"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
-							" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
+							" ( " 		+ DatabaseHandler.KEY_MESSAGE_ID + 
 							", "		+ DatabaseHandler.KEY_USER_ID +
 							", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
 							", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
@@ -507,7 +557,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 				db = this.getWritableDatabase();
 				statement = db.compileStatement(
 						"INSERT INTO " 	+ DatabaseHandler.TABLE_HISTORY + 
-							" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
+							" ( " 		+ DatabaseHandler.KEY_MESSAGE_ID + 
 							", "		+ DatabaseHandler.KEY_USER_ID +
 							", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
 							", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
@@ -565,7 +615,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			SQLiteDatabase db = Globals.appDb.getWritableDatabase();
 			SQLiteStatement statement = db.compileStatement(
 					"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
-						" ( " 		+ DatabaseHandler.KEY_CHAT_ID + 
+						" ( " 		+ DatabaseHandler.KEY_MESSAGE_ID + 
 						", "		+ DatabaseHandler.KEY_USER_ID +
 						", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
 						", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
@@ -656,6 +706,83 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		}
 	}
 	
+	/**
+	 * Adds a list of documents to the database from a JSON string
+	 * 
+	 * @param cancel 	The boolean given and used to cancel the execution of the database
+	 * @param messages	The list of documents in a string in JSON
+	 */
+	public void addDocumentsFromJSON(boolean cancel, String documents)
+	{
+		synchronized(this.documentsLock)
+		{
+			JSONArray parse 			= null;
+			JSONObject ob 				= null;
+			SQLiteDatabase db 			= null;
+			SQLiteStatement statement 	= null;
+			
+			if(documents.equals(""))
+				return;
+			
+			try 
+			{
+				parse = new JSONArray(documents);
+				db = Globals.appDb.getWritableDatabase();
+				statement = db.compileStatement(
+						"INSERT INTO " 	+ DatabaseHandler.TABLE_DOCUMENTS	 		+ 
+							" ( " 		+ DatabaseHandler.KEY_USER_ID 				+ 
+							", " 		+ DatabaseHandler.KEY_CHAT_ID_STRING	 	+ 
+							", " 		+ DatabaseHandler.KEY_DOCS_FILENAME			+ 
+							", " 		+ DatabaseHandler.KEY_DOCS_ORI_FILENAME	 	+ 
+							", " 		+ DatabaseHandler.KEY_DOCS_SIZE				+ 
+							", " 		+ DatabaseHandler.KEY_MESSAGE_ID			+ 
+							", "		+ DatabaseHandler.KEY_DOCS_UPLOAD_TIME 		+
+							") VALUES (?, ?, ?, ?, ?, ?, ?)");
+				
+				db.beginTransaction();
+				for(int x = 0; x < parse.length(); x++)
+				{
+					if(cancel)
+					{
+						this.closeConnections(db, statement);
+						Log.d(this.TAG, "Connection canceled while adding documents from JSON");
+						return;
+					}
+					
+					ob = parse.getJSONObject(x);
+					
+					statement.bindString(1, ob.getString(	"user_id"			));
+					statement.bindString(2, ob.getString(	"chat_id"			));
+					statement.bindString(3, ob.getString(	"filename"			));
+					statement.bindString(4, ob.getString(	"original_name"		));
+					statement.bindString(5, ob.getString(	"size"				));
+					statement.bindString(6, ob.getString(	"message_id"		));
+					statement.bindString(7, ob.getString(	"uploaded_at"		));
+					
+					statement.execute();
+				}
+				db.setTransactionSuccessful();
+			} 
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				db.endTransaction();
+			}
+			statement.close();
+		}
+	}
+	
+	/**
+	 * Formats the query from participants and returns a cursor with the formatted result,
+	 * this method will sort the participants by display name and than move the user's own
+	 * name to the top of the list
+	 * 
+	 * @param db	The database
+	 * @return		The cursor with the formatted result
+	 */
 	public Cursor queryAndFormatParticipants(SQLiteDatabase db)
 	{
 		Cursor cursor = db.query(DatabaseHandler.TABLE_PARTICIPANTS, null, null, null, null, null, DatabaseHandler.KEY_USER_DISPLAY_NAME);

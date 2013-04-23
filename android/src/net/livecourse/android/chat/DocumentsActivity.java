@@ -1,36 +1,42 @@
 package net.livecourse.android.chat;
 
-import java.util.ArrayList;
-
 import net.livecourse.R;
-import net.livecourse.android.classlist.Chatroom;
+import net.livecourse.database.DocumentsLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
+import net.livecourse.utility.Utility;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 
-public class DocumentsActivity extends SherlockFragmentActivity implements OnRestCalled
+public class DocumentsActivity extends SherlockFragmentActivity implements OnRestCalled, LoaderCallbacks<Cursor>
 {
 	private final String 	TAG	= " == Documents Activity == ";
 	
 	private ListView 				documentsListView;
-	//private ArrayList<Document> 	emptyAList;
+	private DocumentsCursorAdapter	adapter;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.documents_layout);
+        this.setContentView(R.layout.documents_layout);
+        
+        Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
         
         this.documentsListView = (ListView) this.findViewById(R.id.documents_list_view);
         
-        Log.d(this.TAG, "Chat ID: " + Globals.chatId + " Section ID: " + Globals.sectionId);
-        new Restful(Restful.GET_ALL_FILES_PATH, Restful.GET, new String[]{"chat_id"}, new String[]{Globals.chatId}, 1, this);
+        this.adapter = new DocumentsCursorAdapter(this, null, 0);
+        this.documentsListView.setAdapter(adapter);
+        
+        this.updateList();
 	}
 	
 	@Override
@@ -51,13 +57,20 @@ public class DocumentsActivity extends SherlockFragmentActivity implements OnRes
 	{
 		Log.d(this.TAG, response);
 		
+		if(restCall.equals(Restful.GET_ALL_FILES_PATH))
+		{
+			Globals.appDb.addDocumentsFromJSON(false, response);
+		}
+		
 	}
 
 	@Override
 	public void onRestPostExecutionSuccess(String restCall, String result) 
 	{
-		// TODO Auto-generated method stub
-		
+		if(restCall.equals(Restful.GET_ALL_FILES_PATH))
+		{
+			this.getSupportLoaderManager().restartLoader(Globals.DOCUMENTS_LOADER, null, this);
+		}
 	}
 
 	@Override
@@ -72,5 +85,34 @@ public class DocumentsActivity extends SherlockFragmentActivity implements OnRes
 	{
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) 
+	{
+		return new DocumentsLoader(this, Globals.appDb);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) 
+	{
+		long startTime = System.currentTimeMillis();
+		
+		adapter.notifyDataSetChanged();
+		adapter.swapCursor(cursor);
+		
+		Log.d(this.TAG, "Documents stored into listview in " + (System.currentTimeMillis() - startTime) + "ms");
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) 
+	{
+		adapter.swapCursor(null);
+	}
+	
+	public void updateList()
+	{		
+		Globals.appDb.recreateDocuments();
+        new Restful(Restful.GET_ALL_FILES_PATH, Restful.GET, new String[]{"chat_id"}, new String[]{Globals.chatId}, 1, this);
 	}
 }
