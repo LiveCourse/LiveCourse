@@ -303,11 +303,9 @@ function joinroom_show()
 					if (/^[a-zA-Z]+$/.test(request.term))
 					{
 						var responses = new Array();
-						var r = new RegExp('/'+request.term+'.*/', 'i');
-						console.log(subjects);
+						var r = new RegExp(request.term+'.*', 'i');
 						for (var s in subjects)
 						{
-							console.log(subjects[s]);
 							if (r.test(subjects[s].code))
 							{
 								console.log("MATCH");
@@ -317,33 +315,12 @@ function joinroom_show()
 						console.log(responses);
 						response( responses );
 					} else {
-						/*
-						$.ajax({
-							url: "http://ws.geonames.org/searchJSON",
-							dataType: "jsonp",
-							data: {
-								featureClass: "P",
-								style: "full",
-								maxRows: 12,
-								name_startsWith: request.term
-							},
-							success: function( data ) {
-								response( $.map( data.geonames, function( item ) {
-									return {
-										label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,
-										value: item.name
-									}
-								}));
-							}
-						});
-						*/
+						
 					}
 				},
 				minLength: 0,
 				select: function( event, ui ) {
-					log( ui.item ?
-					"Selected: " + ui.item.label :
-					"Nothing selected, input was " + this.value);
+					$(dialog).find("input[name=classnumber]").val(ui.item.label);
 				},
 				open: function() {
 					$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -363,6 +340,7 @@ function joinroom_show()
 			progress_indicator_hide(ind);
 		});
 	var dialog = dialog_clone("Add a Class","#dialog_joinroom",true,true);
+	$(dialog).find("form").submit(function() { return false; });
 	$(dialog).find("input[name=classnumber]").observe_field(0.6, function( ) {
 		if ($(dialog).find("input[name=classnumber]").val().length <= 0)
 		{

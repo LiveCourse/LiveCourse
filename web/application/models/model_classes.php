@@ -6,20 +6,26 @@ class Model_Classes extends CI_Model {
 		// Call the Model constructor
 		parent::__construct();
 	}
-
+	
 	/**
-	 * Fetch a list of available chats by searching for some broad parameters
-	 * query_string - String to search courses for
+	 * Fetch a list of available chats by searching for some parameters
+	 * query_parameters - Array of parameters to refine search
+	 * 	subject_code - Subject code
+	 * 	course_number - Course Number
 	 * returns a result consisting of matches.
 	 */
-	function search_classes($query_string)
+	function search_classes($query_parameters)
 	{
 		$query = $this->db
-				->like('course_number', $query_string)
-				->or_like('name', $query_string)
+				->select('lc_classes.id_string as class_id_string, lc_subjects.code as subject_code, lc_classes.course_number, lc_classes.name')
 				->from('lc_classes')
-				->get();
-		return $query->result();
+				->group_by(array('lc_subjects.code','lc_classes.course_number'))
+				->join('lc_subjects','lc_subjects.id = lc_classes.subject_id');
+		if (isset($query_parameters["subject_code"]))
+			$query->like('lc_subjects.code', $query_parameters["subject_code"]);
+		if (isset($query_parameters["course_number"]))
+			$query->like('lc_classes.course_number', $query_parameters["course_number"]);
+		return $query->get()->result();
 	}
 	
 	/**

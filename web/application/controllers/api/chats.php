@@ -80,10 +80,9 @@ class Chats extends REST_Controller
 	}
 
 	/**
-	 * DEPRECATED
-	 *Searches for a specific chat based on a keyword query
+	 * Searches for a specific class based on some parameters
 	 *
-	 *query - String based query of what to search for
+	 * query - String based query of what to search for
 	 *
 	 * returns
 	 *	401 if not logged in
@@ -93,14 +92,10 @@ class Chats extends REST_Controller
 	 */
 	public function search_get()
 	{
-		$this->response($this->rest_error(array("This function is deprecated Please use the section API.")), 404);
-		return;
-
-		/*
-
 		$this->load->model('Model_Classes');
-		$query_string = $this->get('query');
-
+		$subject_code = $this->get('subject_code');
+		$course_number = $this->get('course_number');
+		
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -110,23 +105,27 @@ class Chats extends REST_Controller
 			return;
 		}
 
-		if (strlen($query_string) <= 0)
+		if (strlen($subject_code) <= 0 && strlen($course_number) <= 0)
 		{
 			$this->response($this->rest_error(array("Empty queries can not be processed.")), 403);
 			return;
 		}
-
-		$chats = $this->Model_Classes->search_chats($query_string);
-		if (count($chats) <= 0)
+		
+		$classes_query = array();
+		if (strlen($subject_code) > 0)
+			$classes_query["subject_code"] = $subject_code;
+		if (strlen($course_number) > 0)
+			$classes_query["course_number"] = $course_number;
+		
+		$classes = $this->Model_Classes->search_classes($classes_query);
+		if (count($classes) <= 0)
 		{
-			$this->response($this->rest_error(array("No matching chats could be found.")), 404);
+			$this->response($this->rest_error(array("No matching classes could be found.")), 404);
 		}
 		else
 		{
-			$this->response($chats);
+			$this->response($classes);
 		}
-		*/
-
 	}
 
 	/**

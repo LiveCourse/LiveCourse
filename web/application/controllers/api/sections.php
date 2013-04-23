@@ -122,17 +122,13 @@ class Sections extends REST_Controller
 	}
 	
 	/**
-
-	 * DEPRECATED
 	 * Searches for a specific section based on a keyword query
 	 *
 	 * query - String based query of what to search for
-
 	 *
 	 * returns
 	 *	401 if not logged in
 	 *	403 if the query was empty
-
 	 *	404 if no matching chats could be found
 	 *	Array of chat information if successful
 	 */
