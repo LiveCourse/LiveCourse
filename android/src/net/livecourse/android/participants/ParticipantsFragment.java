@@ -77,8 +77,8 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
     	 */
         adapter = new ParticipantsCursorAdapter(inflater.getContext(), null, 0);
         participantsListView.setAdapter(adapter);
+        participantsListView.setOnItemClickListener(this);
         participantsListView.setOnItemLongClickListener(this);
-        participantsListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_DISABLED);
                 
         return participantsLayout;
     }
@@ -93,10 +93,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	{
-		if(parent == this.participantsListView)
-		{
-			this.startUserInfo(view);
-		}
+		this.startUserInfo(view);
 	}
 	
 

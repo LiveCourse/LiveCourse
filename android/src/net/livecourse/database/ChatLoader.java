@@ -5,11 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-public class ChatMessagesLoader extends SimpleCursorLoader
+public class ChatLoader extends SimpleCursorLoader
 {
 	private DatabaseHandler dbHandler;
 
-	public ChatMessagesLoader(Context context, DatabaseHandler dbHandler) 
+	public ChatLoader(Context context, DatabaseHandler dbHandler) 
 	{
 		super(context);
 		this.dbHandler = dbHandler;

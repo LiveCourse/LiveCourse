@@ -48,9 +48,9 @@ public class ChatroomDialog extends DialogFragment implements DialogInterface.On
 	
 	public ChatroomDialog(String sectionId, Chatroom object)
 	{
-		this.sectionId = sectionId;
-		this.flag		= this.DATA_FROM_OBJECT;
-		this.chatroom	= object;
+		this.sectionId 		= sectionId;
+		this.flag			= this.DATA_FROM_OBJECT;
+		this.chatroom		= object;
 	}
 	
 	@Override
@@ -84,7 +84,7 @@ public class ChatroomDialog extends DialogFragment implements DialogInterface.On
 	    this.chatroomNotes 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_notes_text_view		);
 	    
 	    if(this.flag == this.DATA_FROM_DATABASE)
-	    	this.getActivity().getSupportLoaderManager().restartLoader(Globals.CHATROOM_lOADER, null, this);
+	    	this.getActivity().getSupportLoaderManager().restartLoader(Globals.CHATROOM_LOADER, null, this);
 	    else if(this.flag == this.DATA_FROM_OBJECT)
 	    	this.populateDialogFromObject();
 	}
@@ -181,8 +181,11 @@ public class ChatroomDialog extends DialogFragment implements DialogInterface.On
 	}
 	private void populateDialogFromDatabase(Cursor cursor)
 	{
-		cursor.moveToFirst();
-		
+		if(!cursor.moveToFirst())
+		{
+			Log.e("Chatroom Dialog", "cursor is null");
+			return;
+		}		
 		String className 			= cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHandler.KEY_CLASS_NAME			));
 		String classSubjectCode 	= cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHandler.KEY_CLASS_SUBJECT_CODE	));
 		String classCourseNumber 	= cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHandler.KEY_CLASS_COURSE_NUMBER	));

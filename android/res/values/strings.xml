@@ -120,17 +120,23 @@
     
     <!-- 	ClassList Dialog Strings 
     		Bla bla bla etc etc -->
-	<string name="classlist_dialog_item_crn_title">			CRN:		</string>   
-	<string name="classlist_dialog_item_instructor_title">	Instructor:	</string>   
-	<string name="classlist_dialog_item_type_title">		Type:		</string>   
-	<string name="classlist_dialog_item_section_title">		Section:	</string>   
-	<string name="classlist_dialog_item_location_title">	Location:	</string>   
-	<string name="classlist_dialog_item_time_title">		Meet Times:	</string>   
-	<string name="classlist_dialog_item_start_title">		Start Date:	</string>   
-    <string name="classlist_dialog_item_end_title">			End Date:	</string>   
-    <string name="classlist_dialog_item_capacity_title">	Capacity:	</string>   
-    <string name="classlist_dialog_item_notes_title">		Notes:		</string>  
-    <string name="classlist_dialog_button_negative">		Ok			</string> 
+	<string name="classlist_dialog_item_crn_title">			CRN:			</string>   
+	<string name="classlist_dialog_item_instructor_title">	Instructor:		</string>   
+	<string name="classlist_dialog_item_type_title">		Type:			</string>   
+	<string name="classlist_dialog_item_section_title">		Section:		</string>   
+	<string name="classlist_dialog_item_location_title">	Location:		</string>   
+	<string name="classlist_dialog_item_time_title">		Meet Times:		</string>   
+	<string name="classlist_dialog_item_start_title">		Start Date:		</string>   
+    <string name="classlist_dialog_item_end_title">			End Date:		</string>   
+    <string name="classlist_dialog_item_capacity_title">	Capacity:		</string>   
+    <string name="classlist_dialog_item_notes_title">		Notes:			</string>  
+    <string name="classlist_dialog_button_negative">		OK				</string> 
+    
+    <!--  	ChatMessage Dialog Strings
+    		Bla bla bla etc etc -->
+   	<string name="chatmessage_dialog_item_file_title">		Attached File:	</string> 		
+    <string name="chatmessage_dialog_button_negative">		OK				</string> 
+    		
     
 
 </resources>

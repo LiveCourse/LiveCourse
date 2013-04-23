@@ -4,7 +4,7 @@ import java.io.File;
 
 import net.livecourse.R;
 import net.livecourse.android.TabsFragmentAdapter;
-import net.livecourse.database.ChatMessagesLoader;
+import net.livecourse.database.ChatLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -37,7 +38,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ChatFragment extends SherlockFragment implements OnClickListener, OnItemLongClickListener, ActionMode.Callback, LoaderCallbacks<Cursor>, OnRestCalled, PopupMenu.OnMenuItemClickListener
+public class ChatFragment extends SherlockFragment implements OnClickListener, OnItemClickListener, OnItemLongClickListener, ActionMode.Callback, LoaderCallbacks<Cursor>, OnRestCalled, PopupMenu.OnMenuItemClickListener
 {
 	private final String TAG = " == Chat Fragment == ";
 	
@@ -113,6 +114,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		 * Sets the listeners
 		 */
 		this.sendButtonView.setOnClickListener(this);
+		this.messageListView.setOnItemClickListener(this);
 		this.messageListView.setOnItemLongClickListener(this);
 		this.uploadButtonView.setOnClickListener(this);
 				
@@ -259,6 +261,13 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 			}
 		}
 	}
+	
+	@Override
+	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) 
+	{
+		ChatMessageDialog dialog = new ChatMessageDialog(((ChatMessageViewHolder)view.getTag()).messageId, ChatMessageDialog.DATA_FROM_CHAT_MESSAGES);
+        dialog.show(this.getSherlockActivity().getSupportFragmentManager(), "NoticeDialogFragment");
+	}
 
 	/**
 	 * Handles long click on item in the list view, currently starts action
@@ -321,7 +330,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) 
 	{
-		return new ChatMessagesLoader(this.getSherlockActivity(), Globals.appDb);
+		return new ChatLoader(this.getSherlockActivity(), Globals.appDb);
 	}
 
 	@Override
@@ -399,5 +408,4 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		// TODO Auto-generated method stub
 		
 	}
-
 }

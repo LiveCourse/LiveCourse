@@ -31,7 +31,8 @@ public class Globals
     public static final int				QUERY_LOADER						= 4;
     public static final int				HISTORY_LOADER						= 5;
     public static final int				DOCUMENTS_LOADER					= 6;
-    public static final int				CHATROOM_lOADER						= 7;
+    public static final int				CHATROOM_LOADER						= 7;
+    public static final int				CHATMESSAGE_LOADER					= 8;
 	
 	/**
 	 * Database

@@ -15,6 +15,7 @@ import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
@@ -23,7 +24,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class HistoryViewActivity extends SherlockFragmentActivity implements OnItemLongClickListener, LoaderCallbacks<Cursor>, OnRestCalled
+public class HistoryViewActivity extends SherlockFragmentActivity implements OnItemClickListener, OnItemLongClickListener, LoaderCallbacks<Cursor>, OnRestCalled
 {
 	private final String TAG = " == History View Activity == ";
 	
@@ -60,7 +61,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 		 */
 		adapter = new ChatCursorAdapter(getBaseContext(), null, 0);
 		historyListView.setAdapter(adapter);
-		
+		historyListView.setOnItemClickListener(this);
 		historyListView.setOnItemLongClickListener(this);
 		
 		this.updateList();
@@ -97,6 +98,13 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
 		}
 		
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) 
+	{
+		ChatMessageDialog dialog = new ChatMessageDialog(((ChatMessageViewHolder)view.getTag()).messageId, ChatMessageDialog.DATA_FROM_CHAT_HISTORY);
+        dialog.show(this.getSupportFragmentManager(), "NoticeDialogFragment");		
 	}
 
 	@Override

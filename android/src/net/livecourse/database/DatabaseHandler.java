@@ -200,7 +200,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		{
 			String CREATE_TABLE_CHAT_MESSAGES = "CREATE TABLE " 			+ TABLE_CHAT_MESSAGES 	+ "( "
 												+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-												+ KEY_MESSAGE_ID 				+ " int(11) UNIQUE, "
+												+ KEY_MESSAGE_ID 			+ " int(11) UNIQUE, "
 												+ KEY_USER_ID				+ " int(11),"
 												+ KEY_CHAT_SEND_TIME		+ " int(11), "
 												+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
