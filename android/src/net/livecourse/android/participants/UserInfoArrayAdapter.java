@@ -3,8 +3,8 @@ package net.livecourse.android.participants;
 import java.util.ArrayList;
 
 import net.livecourse.R;
-import net.livecourse.utility.Chatroom;
-import net.livecourse.utility.ChatroomViewHolder;
+import net.livecourse.android.classlist.Chatroom;
+import net.livecourse.android.classlist.ChatroomViewHolder;
 import net.livecourse.utility.Utility;
 
 import android.content.Context;

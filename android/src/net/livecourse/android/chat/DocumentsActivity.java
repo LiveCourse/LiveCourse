@@ -3,9 +3,9 @@ package net.livecourse.android.chat;
 import java.util.ArrayList;
 
 import net.livecourse.R;
+import net.livecourse.android.classlist.Chatroom;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
-import net.livecourse.utility.Chatroom;
 import net.livecourse.utility.Globals;
 import android.os.Bundle;
 import android.util.Log;

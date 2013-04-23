@@ -7,6 +7,7 @@ import com.actionbarsherlock.view.ActionMode;
 
 import net.livecourse.android.MainActivity;
 import net.livecourse.android.chat.ChatFragment;
+import net.livecourse.android.classlist.Chatroom;
 import net.livecourse.android.classlist.ClassListFragment;
 import net.livecourse.android.participants.ParticipantsFragment;
 import net.livecourse.database.DatabaseHandler;

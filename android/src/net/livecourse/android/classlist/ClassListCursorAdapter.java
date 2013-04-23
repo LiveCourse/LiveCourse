@@ -2,7 +2,6 @@ package net.livecourse.android.classlist;
 
 import net.livecourse.R;
 import net.livecourse.utility.Utility;
-import net.livecourse.utility.ChatroomViewHolder;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;

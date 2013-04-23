@@ -1,4 +1,4 @@
-package net.livecourse.utility;
+package net.livecourse.android.classlist;
 
 import android.widget.TextView;
 

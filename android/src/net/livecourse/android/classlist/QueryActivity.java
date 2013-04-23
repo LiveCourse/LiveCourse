@@ -24,8 +24,6 @@ import com.actionbarsherlock.widget.SearchView;
 import net.livecourse.R;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
-import net.livecourse.utility.Chatroom;
-import net.livecourse.utility.ChatroomViewHolder;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 

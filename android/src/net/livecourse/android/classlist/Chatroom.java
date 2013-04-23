@@ -1,4 +1,4 @@
-package net.livecourse.utility;
+package net.livecourse.android.classlist;
 
 import org.json.JSONException;
 import org.json.JSONObject;

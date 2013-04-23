@@ -2,7 +2,6 @@ package net.livecourse.android.participants;
 
 import net.livecourse.R;
 import net.livecourse.utility.Globals;
-import net.livecourse.utility.ParticipantViewHolder;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Typeface;
