@@ -57,6 +57,39 @@ class Model_Notes extends CI_Model {
 		return $this->_fetch_notes_recursive($class_id,0);
 	}
 	
+	function stream_note_updates_since($class_id,$last_note_id)
+	{
+		date_default_timezone_set ( "America/New_York" );
+		$start_time = mktime (0,0,0, date("n"), date("j") , date("Y") );
+		$end_time = $start_time+(24*60*60);
+		$query = $this->db
+				->from('lc_notes')
+				->where('class_id',$class_id)
+				->where('timeadded >=',$start_time)
+				->where('timeadded <=',$end_time)
+				->where('id >',$last_note_id)
+				->get()
+				->result();
+		return $query;
+	}
+	
+	function fetch_last_note($class_id)
+	{
+		date_default_timezone_set ( "America/New_York" );
+		$start_time = mktime (0,0,0, date("n"), date("j") , date("Y") );
+		$end_time = $start_time+(24*60*60);
+		$query = $this->db
+				->from('lc_notes')
+				->where('class_id',$class_id)
+				->where('timeadded >=',$start_time)
+				->where('timeadded <=',$end_time)
+				->order_by('id','desc')
+				->limit(1)
+				->get()
+				->result();
+		return $query;
+	}
+	
 	/**
 	 * Checks to see if a note exists
 	 * note_id - the ID number of the note to be checked

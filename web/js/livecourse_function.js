@@ -3,6 +3,7 @@
  */
 
 var eventsource;
+var eventsource_notes;
 
 /**
  * Shows a dialog to the user to be used for logging in.
@@ -1060,7 +1061,7 @@ function toggle_notes()
 
 function add_note(addbutton)
 {
-	var d = dialog_new("Add Notes",'<form class="large_form"><input name="note" placeholder="Note Text" /><br><input type="hidden" name="parent_note_id" value="'+ $(addbutton).parents("li").first().attr('id') + '" /><input type="submit" value="Add Note" /></form>',true,true);
+	var d = dialog_new("Add Notes",'<form class="large_form" style="text-align:center;"><input name="note" placeholder="Note Text" style="width:70%;"/><br><input type="hidden" name="parent_note_id" value="'+ $(addbutton).parents("li").first().attr('id') + '" /><input type="submit" value="Add Note" /></form>',true,true);
 	d.find("form").submit(function() {
 		var load_ind = progress_indicator_show();
 		call_api("notes/add","POST",{class_id_string: current_chat_room, parent_note_id: $(d).find("input[name=parent_note_id]").val(),text:$(d).find("input[name=note]").val() },
@@ -1077,7 +1078,7 @@ function add_note(addbutton)
 		});
 		return false;
 	});
-	dialog_show(d);
+	dialog_show(d,function() { $(d).find("input").first().focus(); });
 }
 
 /**
@@ -1095,6 +1096,18 @@ function load_notes()
 			}
 			$("#NotesFrame ul.notes").append('<li class="add top">(add section)</li>');
 			$("#NotesFrame ul.notes li.add").click(function() { add_note(this); });
+			
+			//Set up eventsource for notes
+			if (typeof eventsource_notes != "undefined") //Close existing one
+				eventsource_notes.close();
+			var event_auth_code = Sha1.hash(auth_token+auth_pass+"notes/eventsource");
+			eventsource_notes = new EventSource('index.php/api/notes/eventsource?auth_token='+auth_token+'&auth_code='+event_auth_code+'&class_id='+current_chat_room);
+			eventsource_notes.addEventListener('message', function (e) {
+				var data = JSON.parse(e.data);
+				post_note(data);
+			});
+			
+			Cufon.refresh();
 			progress_indicator_hide(load_ind);
 		},
 		function (xhr, status)
@@ -1106,15 +1119,34 @@ function load_notes()
 		});
 }
 
+function post_note(note)
+{
+	if (note.parent_note_id == 0)
+	{
+		var n = $('<li id="'+note.id+'" class="top"><span>'+note.text+'</span><ul><li class="add">(add item)</li></ul></li>');
+		n.find("li.add").click(function() { add_note(this); });
+		n.hide();
+		$("#NotesFrame ul.notes li.add").before(n);
+		n.slideDown();
+		Cufon.refresh();
+	}
+	else
+	{
+		var n = $('<li id="'+note.id+'">'+note.text+'<ul><li class="add">(add item)</li></ul></li>');
+		n.find("li.add").click(function() { add_note(this); });
+		n.hide();
+		$("#NotesFrame ul.notes #"+note.parent_note_id+" ul li.add").before(n);
+		n.slideDown();
+	}
+}
+
 function _load_notes_rec(notes)
 {
 	var ret = '';
 	for (var note in notes)
 	{
-		console.log(notes[note].parent_note_id);
 		if (notes[note].parent_note_id == 0)
 		{
-			console.log("TOP NOTE");
 			var r = '<li id="'+notes[note].id+'" class="top"><span>' + notes[note].text + '</span>';
 		}
 		else
