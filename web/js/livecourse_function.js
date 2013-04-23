@@ -303,13 +303,14 @@ function joinroom_show()
 					if (/^[a-zA-Z]+$/.test(request.term))
 					{
 						var responses = new Array();
-						var r = new RegExp('/^'+request.term+'.*$/', 'i');
+						var r = new RegExp('/'+request.term+'.*/', 'i');
 						console.log(subjects);
 						for (var s in subjects)
 						{
 							console.log(subjects[s]);
 							if (r.test(subjects[s].code))
 							{
+								console.log("MATCH");
 								responses.push(subjects[s].code);
 							}
 						}
