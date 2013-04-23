@@ -505,6 +505,7 @@ a.buttonLink:hover
 	width:640px;
 	display:none;
 	background-color:@color_secondary;
+	overflow-y:auto;
 }
 
 #NotesFrame h1
@@ -512,7 +513,39 @@ a.buttonLink:hover
 	color:@color_primary;
 	font-family:'cicle',sans-serif;
 	margin:6px 0 6px 16px;
-	font-size:38px;
+	font-size:46px;
+}
+
+#NotesFrame ul.notes li
+{
+	font-family:sans-serif;
+	font-size:16px;
+}
+
+#NotesFrame ul.notes li.top
+{
+	list-style:none;
+}
+
+#NotesFrame ul.notes li.add
+{
+	list-style:none;
+	font-size:12px;
+	opacity:0.6;
+	cursor:pointer;
+}
+
+#NotesFrame ul.notes li.add:hover
+{
+	opacity:1.0;
+}
+
+
+#NotesFrame ul.notes li.top span
+{
+	color:@color_primary;
+	font-family:'cicle',sans-serif;
+	font-size:28px;
 }
 
 #form_login

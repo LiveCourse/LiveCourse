@@ -21,7 +21,7 @@
 		<script src="<?php echo(base_url("js/livecourse_function.js")); ?>"></script>
 		
 		<script type="text/javascript">
-			Cufon.replace('#TopBar div.classTitle, #LeftSideBar h1,#RightSideBar h1,#ChatFrame h1,.DialogContainer h1,.DialogMessage .status_message,#joinroom_results ul li .name,#ChatFrame #HistoryMessages h2,#NotesFrame h1');
+			Cufon.replace('#TopBar div.classTitle, #LeftSideBar h1,#RightSideBar h1,#ChatFrame h1,.DialogContainer h1,.DialogMessage .status_message,#joinroom_results ul li .name,#ChatFrame #HistoryMessages h2,#NotesFrame h1,#NotesFrame ul.notes li.top span');
 			Cufon.replace('#TopBar div.userInfo, #ChatFrame #ChatFrameHeader #ChatHeaderMenu li a, a.buttonLink',{
 				hover: true
 			});

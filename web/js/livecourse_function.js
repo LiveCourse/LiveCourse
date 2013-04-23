@@ -1058,6 +1058,28 @@ function toggle_notes()
 	}
 }
 
+function add_note(addbutton)
+{
+	var d = dialog_new("Add Notes",'<form class="large_form"><input name="note" placeholder="Note Text" /><br><input type="hidden" name="parent_note_id" value="'+ $(addbutton).parents("li").first().attr('id') + '" /><input type="submit" value="Add Note" /></form>',true,true);
+	d.find("form").submit(function() {
+		var load_ind = progress_indicator_show();
+		call_api("notes/add","POST",{class_id_string: current_chat_room, parent_note_id: $(d).find("input[name=parent_note_id]").val(),text:$(d).find("input[name=note]").val() },
+		function (data) {
+			dialog_close(d);
+			progress_indicator_hide(load_ind);
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Adding Note","An error occurred while attempting to add your note.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+			progress_indicator_hide(load_ind);
+		});
+		return false;
+	});
+	dialog_show(d);
+}
+
 /**
  * Load notes for the current room.
  */
@@ -1071,6 +1093,8 @@ function load_notes()
 			{
 				$("#NotesFrame ul.notes").append(_load_notes_rec(data));
 			}
+			$("#NotesFrame ul.notes").append('<li class="add top">(add section)</li>');
+			$("#NotesFrame ul.notes li.add").click(function() { add_note(this); });
 			progress_indicator_hide(load_ind);
 		},
 		function (xhr, status)
@@ -1087,13 +1111,24 @@ function _load_notes_rec(notes)
 	var ret = '';
 	for (var note in notes)
 	{
-		var r = '<li id="'+notes[note].id+'">' + notes[note].text;
+		console.log(notes[note].parent_note_id);
+		if (notes[note].parent_note_id == 0)
+		{
+			console.log("TOP NOTE");
+			var r = '<li id="'+notes[note].id+'" class="top"><span>' + notes[note].text + '</span>';
+		}
+		else
+		{
+			var r = '<li id="'+notes[note].id+'">' + notes[note].text;
+		}
+		r += '<ul>';
 		if (typeof notes[note].children != "undefined" && notes[note].children.length > 0)
 		{
-			r += '<ul>';
+			
 			r += _load_notes_rec(notes[note].children);
-			r += '</ul>';
+			
 		}
+		r += '<li class="add">(add item)</li></ul>';
 		r += '</li>';
 		ret += r;
 	}
