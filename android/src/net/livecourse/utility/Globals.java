@@ -56,6 +56,7 @@ public class Globals
     public static final int 			CHAT_MESSAGES_LOADER 				= 2;
     public static final int 			PARTICIPANTS_LOADER 				= 3;
     public static final int				QUERY_LOADER						= 4;
+    public static final int				DOCUMENTS_LOADER					= 5;
     
 	
 	/**

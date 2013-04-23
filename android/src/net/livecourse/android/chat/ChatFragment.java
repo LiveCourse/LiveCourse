@@ -345,8 +345,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	public void updateList()
 	{		
 		Globals.appDb.recreateChatMessages();
-		restful = new Restful(Restful.GET_RECENT_MESSAGES_PATH,Restful.GET, new String[]{"chat_id", "num_messages"}, new String[]{Globals.chatId, Restful.MAX_MESSAGE_SIZE}, 2, this);
-		
+		restful = new Restful(Restful.GET_RECENT_MESSAGES_PATH,Restful.GET, new String[]{"chat_id", "num_messages"}, new String[]{Globals.chatId, Restful.MAX_MESSAGE_SIZE}, 2, this);		
 	}
 	
 	public void updateListNoRRecreate()
@@ -374,7 +373,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	{
 		if(restCall.equals(Restful.GET_RECENT_MESSAGES_PATH))
 		{
-			Globals.mainActivity.getSupportLoaderManager().restartLoader(2, null, this);
+			Globals.mainActivity.getSupportLoaderManager().restartLoader(Globals.CHAT_LOADER, null, this);
 		}
 		else if(restCall.equals(Restful.SEND_MESSAGE_PATH))
 		{
