@@ -38,6 +38,47 @@ class Sections extends REST_Controller
 	}
 	
 	/**
+	 * Fetches information on a specific section
+	 *
+	 * id - String form of section ID
+	 *
+	 * returns
+	 * 	401 if not logged in
+	 * 	403 if query was empty
+	 * 	404 if the specified section could not be found
+	 */
+	public function info_get()
+	{
+		$this->load->model('Model_Sections');
+		$section_id_string = $this->get('id');
+
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
+			return;
+		}
+
+		if (strlen($section_id_string) <= 0)
+		{
+			$this->response($this->rest_error(array("Empty queries can not be processed.")), 403);
+			return;
+		}
+
+		$section_id = $this->Model_Sections->get_id_from_string($section_id_string);
+		if ($section_id < 0)
+		{
+			$this->response($this->rest_error(array("Specified section could not be found.")), 404);
+			return;
+		}
+
+		$section_info = $this->Model_Sections->get_section_by_id($section_id);
+		$this->response($section_info);
+	}
+	
+	/**
 	 * DEPRECATED
 	 * Searches for a specific section based on a keyword query
 	 *
@@ -77,6 +118,68 @@ class Sections extends REST_Controller
 		else
 		{
 			$this->response($chats);
+		}
+	}
+	
+	/**
+
+	 * DEPRECATED
+	 * Searches for a specific section based on a keyword query
+	 *
+	 * query - String based query of what to search for
+
+	 *
+	 * returns
+	 *	401 if not logged in
+	 *	403 if the query was empty
+
+	 *	404 if no matching chats could be found
+	 *	Array of chat information if successful
+	 */
+	public function search_advanced_get()
+	{
+		$this->load->model('Model_Sections');
+		$crn = $this->get('crn');
+		$subject_code = $this->get('subject_code');
+		$course_number = $this->get('course_number');
+		$building_short_name = $this->get('building_short_name');
+		$room_number = $this->get('room_number');
+		
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
+			return;
+		}
+
+		if (strlen($crn) <= 0 && strlen($subject_code) <= 0 && strlen($course_number) <= 0 && strlen($building_short_name) <= 0 && strlen($room_number) <= 0)
+		{
+			$this->response($this->rest_error(array("Empty queries can not be processed.")), 403);
+			return;
+		}
+		
+		$sections_query = array();
+		if (strlen($crn) > 0)
+			$sections_query["crn"] = $crn;
+		if (strlen($subject_code) > 0)
+			$sections_query["subject_code"] = $subject_code;
+		if (strlen($course_number) > 0)
+			$sections_query["course_number"] = $course_number;
+		if (strlen($building_short_name) > 0)
+			$sections_query["building_short_name"] = $building_short_name;
+		if (strlen($room_number) > 0)
+			$sections_query["room_number"] = $room_number;
+		
+		$sections = $this->Model_Sections->search_sections_advanced($sections_query);
+		if (count($sections) <= 0)
+		{
+			$this->response($this->rest_error(array("No matching sections could be found.")), 404);
+		}
+		else
+		{
+			$this->response($sections);
 		}
 	}
 	
