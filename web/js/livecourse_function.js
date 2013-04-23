@@ -1057,6 +1057,8 @@ function toggle_notes()
 		$("#ComposeFrame").animate({"right":0,"left":256},250, "easeInQuint", null);
 		show_participant_list();
 	}
+	$("#ChatMessages").mCustomScrollbar("update");
+	$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:0}); //scroll to bottom
 }
 
 function add_note(addbutton)
