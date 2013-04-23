@@ -1712,6 +1712,4 @@ class Chats extends REST_Controller
 		$files = $this->Model_Classes->get_files_by_class($chat_id);
 		$this->response($files, 200);
 	}
-
-
 }
