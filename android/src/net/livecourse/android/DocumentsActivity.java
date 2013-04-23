@@ -3,9 +3,9 @@ package net.livecourse.android;
 import java.util.ArrayList;
 
 import net.livecourse.R;
-import net.livecourse.database.Chatroom;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
+import net.livecourse.utility.Chatroom;
 import net.livecourse.utility.Globals;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,8 +29,9 @@ public class DocumentsActivity extends SherlockFragmentActivity implements OnRes
         
         this.documentsListView = (ListView) this.findViewById(R.id.documents_list_view);
         
-        new Restful(Restful.GET_ALL_FILES_PATH, Restful.GET, new String[]{"chat_id"}, new String[]{Globals.chatId}, 1, this);
-        new Restful(Restful.GET_ALL_FILES_PATH, Restful.GET, new String[]{"chat_id"}, new String[]{Globals.sectionId}, 1, this);
+        Log.d(this.TAG, "Chat ID: " + Globals.chatId + " Section ID: " + Globals.sectionId);
+        new Restful(Restful.GET_ALL_FILES_PATH, Restful.GET, new String[]{"chat_id_string"}, new String[]{Globals.chatId}, 1, this);
+        new Restful(Restful.GET_ALL_FILES_PATH, Restful.GET, new String[]{"chat_id_string"}, new String[]{Globals.sectionId}, 1, this);
 	}
 	
 	@Override

@@ -9,7 +9,6 @@ import net.livecourse.android.ChatFragment;
 import net.livecourse.android.ClassListFragment;
 import net.livecourse.android.MainActivity;
 import net.livecourse.android.ParticipantsFragment;
-import net.livecourse.database.Chatroom;
 import net.livecourse.database.DatabaseHandler;
 
 public class Globals 
@@ -33,28 +32,29 @@ public class Globals
 	/**
 	 * Database
 	 */
-	public static DatabaseHandler appDb;
+	public static DatabaseHandler 		appDb;
 	
     /**
      * Fragments 
      */
-	public static MainActivity mainActivity;
-    public static ClassListFragment classListFragment;
-    public static ChatFragment chatFragment;
-    public static ParticipantsFragment participantsFragment;
+	public static MainActivity 			mainActivity;
+    public static ClassListFragment 	classListFragment;
+    public static ChatFragment 			chatFragment;
+    public static ParticipantsFragment 	participantsFragment;
     
     /**
      * Dialogs
      */
-    public static ProgressDialog progressDialog;
-    public static AlertDialog alertDialog;
+    public static ProgressDialog 		progressDialog;
+    public static AlertDialog 			alertDialog;
     
     /**
      * The loader numbers
      */
-    public static final int CLASS_LIST_LOADER 					= 1;
-    public static final int CHAT_MESSAGES_LOADER 				= 2;
-    public static final int PARTICIPANTS_LOADER 				= 3;
+    public static final int 			CLASS_LIST_LOADER 					= 1;
+    public static final int 			CHAT_MESSAGES_LOADER 				= 2;
+    public static final int 			PARTICIPANTS_LOADER 				= 3;
+    public static final int				QUERY_LOADER						= 4;
     
 	
 	/**

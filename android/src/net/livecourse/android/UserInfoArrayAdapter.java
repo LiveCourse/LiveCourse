@@ -3,7 +3,7 @@ package net.livecourse.android;
 import java.util.ArrayList;
 
 import net.livecourse.R;
-import net.livecourse.database.Chatroom;
+import net.livecourse.utility.Chatroom;
 import net.livecourse.utility.ChatroomViewHolder;
 import net.livecourse.utility.Utility;
 

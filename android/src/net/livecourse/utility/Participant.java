@@ -1,4 +1,4 @@
-package net.livecourse.database;
+package net.livecourse.utility;
 
 /**
  * This is the object that holds the information for Participants.

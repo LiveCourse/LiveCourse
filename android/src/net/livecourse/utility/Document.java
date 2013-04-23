@@ -1,4 +1,4 @@
-package net.livecourse.database;
+package net.livecourse.utility;
 
 public class Document 
 {
