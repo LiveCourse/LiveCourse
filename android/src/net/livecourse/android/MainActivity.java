@@ -6,12 +6,16 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 import net.livecourse.R;
+import net.livecourse.android.login.LoginActivity;
 import net.livecourse.database.DatabaseHandler;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -28,7 +32,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	private final String TAG = " == MainActivity == ";
 
 	private static final int RESULT_SETTINGS = 1;
-	public static final int VIEW_PAGE_LOAD_COUNT = 3;
 	
 	/**
 	 * Declares the required objects for the swipey tabs.
@@ -43,6 +46,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+        if(Globals.email == null || Globals.colorPref == null)
+        {
+        	Log.d(this.TAG, "Loading data from prefs");
+        	this.resumeSaveState();
+        }
         Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
         
         Globals.mainActivity = this;
@@ -60,7 +68,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
         mAdapter = new TabsFragmentAdapter(this.getSupportFragmentManager());
         
-        mPager.setOffscreenPageLimit(MainActivity.VIEW_PAGE_LOAD_COUNT);
+        mPager.setOffscreenPageLimit(Globals.VIEW_PAGE_LOAD_COUNT);
         mPager.setAdapter(mAdapter);
         
         mIndicator.setViewPager(mPager);
@@ -70,8 +78,34 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         mAdapter.setPager(mPager);
         mAdapter.setActivity(this);
         
-        
+        Globals.viewPager = this.mPager;
     }
+	
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		
+		Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
+        unregIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+        startService(unregIntent);
+        
+        Globals.newReg = false;
+        Globals.progressDialog = null;    
+        Globals.roomList = null;
+		Globals.userId = null;
+		Globals.email = null;
+		Globals.displayName = null;
+		Globals.passwordToken = null;
+		Globals.query = null;
+		Globals.token = null;
+		Globals.sectionId = null;
+		Globals.regId = null;
+		Globals.colorPref = null;
+		Globals.startEpoch = null;
+		Globals.message = null;
+		Globals.chatName = null;
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -91,55 +125,106 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 				Intent settings = new Intent(this, SettingsActivity.class);
 	            startActivityForResult(settings, RESULT_SETTINGS);
 				break;
-			case R.id.main_options_logout:
-				Toast.makeText(this, "Logging Out", Toast.LENGTH_SHORT).show();
+			case R.id.main_options_logout:				
 				Intent intent = new Intent(this, LoginActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				Globals.roomList = null;
-				Globals.userId = null;
-				Globals.email = null;
-				Globals.displayName = null;
-				Globals.passwordToken = null;
-				Globals.query = null;
-				Globals.token = null;
-				Globals.chatId = null;
-				Globals.regId = null;
-				Globals.colorPref = null;
-				Globals.startEpoch = null;
-				Globals.message = null;
-				Globals.chatName = null;
 				this.startActivity(intent);
-				break;
-			case R.id.item1:
-				Toast.makeText(this, "Menu item 1 tapped", Toast.LENGTH_SHORT).show();
-				break;
-			case R.id.subItem1:
-				Toast.makeText(this, "Sub Menu item 1 tapped", Toast.LENGTH_SHORT).show();
-				break;
-			case R.id.subItem2:
-				Toast.makeText(this, "Sub Menu item 2 tapped", Toast.LENGTH_SHORT).show();
+		        
+				this.clearPrefs();
+		        this.finish();
+				
 				break;
 		}
 		
 		return super.onOptionsItemSelected(item);
 	}
 
-	/*
+	
 	@Override
 	protected void onPause() 
 	{
 		super.onPause();
-		GCMRegistrar.unregister(this);
-	}*/
-
-	@Override
-	public void onPageScrollStateChanged(int arg0) {
-		// TODO Auto-generated method stub
+		SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
 		
+        prefs.edit().putString("pref_user_id"		, Globals.userId		).commit();
+        prefs.edit().putString("pref_email"			, Globals.email			).commit();
+        prefs.edit().putString("pref_display_name"	, Globals.displayName	).commit();
+        prefs.edit().putString("pref_password_token", Globals.passwordToken	).commit();
+        prefs.edit().putString("pref_token"			, Globals.token			).commit();
+        prefs.edit().putString("pref_chat_id"		, Globals.sectionId		).commit();
+        prefs.edit().putString("pref_reg_id"		, Globals.regId			).commit();
+        prefs.edit().putString("pref_color"			, Globals.colorPref		).commit();
+        prefs.edit().putString("pref_chat_name"		, Globals.chatName		).commit();
+        
+        Log.d(this.TAG, "saving color: " + Globals.colorPref + " the pref: " + prefs.getString("pref_color", null));
+        
+        Globals.isOnForeground = false;
+        
+        //Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
+        //unregIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+        //startService(unregIntent);
+	}
+	
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		
+		Globals.isOnForeground = true;
+	}
+	
+	private void resumeSaveState()
+	{
+		SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+		
+        Globals.userId 			= prefs.getString("pref_user_id"		, null	);
+        Globals.email 			= prefs.getString("pref_email"			, null	);
+        Globals.displayName 	= prefs.getString("pref_display_name"	, null	);
+        Globals.passwordToken 	= prefs.getString("pref_password_token"	, null	);
+        Globals.token 			= prefs.getString("pref_token"			, null	);
+        Globals.sectionId 		= prefs.getString("pref_chat_id"		, null	);
+        Globals.regId 			= prefs.getString("pref_reg_id"			, null	);
+        Globals.colorPref 		= prefs.getString("pref_color"			, null	);
+        Globals.chatName 		= prefs.getString("pref_chat_name"		, null	);
+        
+        Log.d(this.TAG, "saved color: " + Globals.colorPref + " the pref: " + prefs.getString("pref_color", null));
+        Log.d(this.TAG, "saved email: " + Globals.colorPref + " the pref: " + prefs.getString("pref_email", null));
+        
+        Intent registrationIntent = new Intent("com.google.android.c2dm.intent.REGISTER");
+		registrationIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+		registrationIntent.putExtra("sender", Globals.SENDER_ID);
+		startService(registrationIntent);
+		Globals.newReg = true;
+	}
+	
+	private void clearPrefs()
+	{
+		SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+		
+        prefs.edit().putString("pref_user_id"		, null	).commit();
+        prefs.edit().putString("pref_email"			, null	).commit();
+        prefs.edit().putString("pref_display_name"	, null	).commit();
+        prefs.edit().putString("pref_password_token", null	).commit();
+        prefs.edit().putString("pref_token"			, null	).commit();
+        prefs.edit().putString("pref_chat_id"		, null	).commit();
+        prefs.edit().putString("pref_reg_id"		, null	).commit();
+        prefs.edit().putString("pref_color"			, null	).commit();
+        prefs.edit().putString("pref_chat_name"		, null	).commit();
 	}
 
 	@Override
-	public void onPageScrolled(int arg0, float arg1, int arg2) {
+	public void onPageScrollStateChanged(int state) 
+	{
+	    if (state == ViewPager.SCROLL_STATE_IDLE)
+	    {
+	    	Utility.hideKeyboard(this);
+	    }
+	}
+
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) 
+	{
 		// TODO Auto-generated method stub
 		
 	}
@@ -164,14 +249,21 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 			case 0:
 	    		mAdapter.getItem(0).setMenuVisibility(true);
 	    		mAdapter.getItem(1).setMenuVisibility(false);
+	    		mAdapter.getItem(2).setMenuVisibility(false);
 	    		break;
 			case 1:
 	    		mAdapter.getItem(0).setMenuVisibility(false);
 	    		mAdapter.getItem(1).setMenuVisibility(true);
+	    		mAdapter.getItem(2).setMenuVisibility(false);
 	    		break;
 			case 2:
 	    		mAdapter.getItem(0).setMenuVisibility(false);
 	    		mAdapter.getItem(1).setMenuVisibility(false);
+	    		mAdapter.getItem(2).setMenuVisibility(true);
+			case 3:
+				mAdapter.getItem(0).setMenuVisibility(false);
+	    		mAdapter.getItem(1).setMenuVisibility(false);
+	    		mAdapter.getItem(2).setMenuVisibility(false);
 	    		break;
 		}		
 	}
@@ -186,16 +278,26 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		this.mAdapter = mAdapter;
 	}
 	
+	@Override
 	public void onActivityResult(int request, int result, Intent data) 
 	{
+		Log.d(this.TAG, "onActivityResult request code: " + request + " result code: " + result);
 		/**
 		 * Forwards the QR Code result
 		 */
 		switch(request)
 		{
-			
 			case IntentIntegrator.REQUEST_CODE:
 				Globals.classListFragment.onActivityResult(request, result, data);
+				break;
+			case Globals.CAMERA_RESULT:
+				Globals.chatFragment.onActivityResult(request, result, data);
+				break;
+			case Globals.GALLERY_RESULT:
+				Globals.chatFragment.onActivityResult(request, result, data);
+				break;
+			case Globals.EXPLORER_RESULT:
+				Globals.chatFragment.onActivityResult(request, result, data);
 				break;
 		}		
 		

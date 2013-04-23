@@ -1,9 +1,12 @@
 package net.livecourse.utility;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,18 +15,25 @@ import net.livecourse.R;
 import org.apache.http.HttpEntity;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 /**
- * This is the ultities class that focuses on ultity based methods as well as
- * methods that focus around the REST API calls.  All REST API calls should go here.
+ * This is the ultities class that focuses on ultity based methods.  Every
+ * method in this class should be static.
  * 
  * @author Darren
  *
@@ -167,11 +177,17 @@ public class Utility
 	 * @param title				The title
 	 * @param message			The message
 	 */
-	public static void startDialog(ProgressDialog progressDialog, String title, String message)
+	public static void startDialog(Context context, String title, String message)
 	{
-		progressDialog.setTitle(title);
-		progressDialog.setMessage(message);
-		progressDialog.show();
+		if(Globals.progressDialog == null)
+			Globals.progressDialog = new ProgressDialog(context);
+		
+		if(title != null)
+			Globals.progressDialog.setTitle(title);
+		if(message != null)
+			Globals.progressDialog.setMessage(message);
+		Globals.progressDialog.show();
+
 	}
 	
 	/**
@@ -181,13 +197,20 @@ public class Utility
 	 * @param title				The title to change, setting it to null will not change it
 	 * @param message			The message to change, setting it to null will not change it
 	 */
-	public static void changeDialog(ProgressDialog progressDialog, String title, String message)
+	public static void changeDialog(String title, String message)
 	{
-		Log.d(Utility.TAG, "Dialog: " + progressDialog + " title: " + title + " message: " + message);
+		
+		if(Globals.progressDialog == null)
+		{
+			Log.e(Utility.TAG, "progressDialog is null on changeDialog");
+			return;
+		}
+		
+		Log.d(Utility.TAG, "Dialog: " + Globals.progressDialog + " title: " + title + " message: " + message);
 		if(message != null)
-			progressDialog.setMessage(message);
+			Globals.progressDialog.setMessage(message);
 		if(title != null)
-			progressDialog.setTitle(title);
+			Globals.progressDialog.setTitle(title);
 	}
 	
 	/**
@@ -195,12 +218,17 @@ public class Utility
 	 * 
 	 * @param progressDialog	The dialog to close
 	 */
-	public static void stopDialog(ProgressDialog progressDialog)
+	public static void stopDialog()
 	{
-		if(progressDialog != null && progressDialog.isShowing())
+		if(Globals.progressDialog == null)
 		{
-			progressDialog.dismiss();
+			Log.e(Utility.TAG, "progressDialog is null on stopDialog");
+			return;
 		}
+		
+		if(Globals.progressDialog.isShowing())
+			Globals.progressDialog.dismiss();
+
 	}
 	
 	/**
@@ -234,6 +262,59 @@ public class Utility
 	}
 	
 	/**
+	 * This method converts the month given as an int into the month given as a string,
+	 * with 0 = January
+	 * 
+	 * @param month	The month of the year with 0 being January
+	 * @return		The month as a string, null if month not between 0 (inclusive) and
+	 * 				12 (exclusive)
+	 */
+	public static String convertMonthToString(int month)
+	{
+		switch(month)
+		{
+			case  0:
+				return "January";
+			case  1:
+				return "Febuary";
+			case  2:
+				return "March";
+			case  3:
+				return "April";
+			case  4:
+				return "May";
+			case  5:
+				return "June";
+			case  6:
+				return "July";
+			case  7:
+				return "August";
+			case  8:
+				return "September";
+			case  9:
+				return "October";
+			case 10:
+				return "November";
+			case 11:
+				return "December";	
+		}
+		return null;
+	}
+	
+	/**
+	 * This method takes the month, date, and year in ints and outputs the String of the date
+	 * 
+	 * @param month	The month
+	 * @param date	The date
+	 * @param year	The year
+	 * @return		The date in the format: Month Date, Year
+	 */
+	public static String convertToStringDate(int month, int date, int year)
+	{
+		return Utility.convertMonthToString(month) + " " + date + ", " + year;
+	}
+	
+	/**
 	 * This method is used to change a specified activity to a color in hex
 	 * 
 	 * @param activity	The activity whose color is to be changed
@@ -255,5 +336,76 @@ public class Utility
         
         TextView yourTextView = (TextView) activity.findViewById(titleId);
         yourTextView.setTextColor(Color.WHITE);
+	}
+	
+	/**
+	 * This method saves a picture taken from the camera
+	 * 
+	 * @return The file with the path to the picture
+	 */
+	public static File savePictureFromCamera()
+	{
+		File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "LiveCourse");  
+		storageDir.mkdir();
+			
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String imageFileName = Globals.displayName + "_" + timeStamp;
+		File image = new File(storageDir, imageFileName + ".jpg");
+		try 
+		{
+			image.createNewFile();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		Globals.filePath = image.getAbsolutePath();
+		return image;
+	}
+	
+	/**
+	 * This method will convert an URI to a full file path and return the File object
+	 * with that path
+	 * 
+	 * @param uri The URI to be converted
+	 * @return The file with the file path of the URI
+	 */
+	public static File fileFromURI(Uri uri)
+	{
+		String [] proj={MediaStore.Images.Media.DATA};
+        Cursor cursor = Globals.mainActivity.getContentResolver().query( uri, proj, null, null, null); 
+        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+
+        String filePath = cursor.getString(columnIndex);
+		return new File(filePath);
+	}
+	
+	/**
+	 * Force hides the keyboard for the given activity
+	 * 
+	 * @param activity The activity for which to hide the keyboard
+	 */
+	public static void hideKeyboard(SherlockFragmentActivity activity)
+	{
+		if(activity == null)
+		{
+			Log.e(Utility.TAG, "activity is null on hideKeyboard");
+			return;
+		}
+		else if(activity.getCurrentFocus() == null)
+		{
+			Log.e(Utility.TAG, "activity.getCurrentFocus() is null on hideKeyboard");
+			return;
+		}
+		else if(activity.getCurrentFocus().getWindowToken() == null)
+		{
+			Log.e(Utility.TAG, "activity.getCurrentFocus().getWindowToken() is null on hideKeyboard");
+			return;
+		}
+		
+		InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 	}
 }

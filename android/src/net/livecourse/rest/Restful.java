@@ -1,5 +1,6 @@
 package net.livecourse.rest;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -13,6 +14,10 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
@@ -42,41 +47,49 @@ import android.util.Log;
  */
 public class Restful extends AsyncTask <Void, String, String> 
 {
-	private final String			TAG							= " == Restful == ";
+	private final String			TAG								= " == Restful == ";
 	/**
 	 * Max number of messages that the REST API call FETCH_RECENT would get
 	 */
-	public static final String 		MAX_MESSAGE_SIZE 			= "20";
+	public static final String 		MAX_MESSAGE_SIZE 				= "100";
 
 	/**
 	 * Flags for type of command
 	 */
-	public static final int			GET							= 0;
-	public static final int			POST						= 1;
+	public static final int			GET								= 0;
+	public static final int			POST							= 1;
+	
+	/**
+	 * Flags for file type
+	 */
+	public static final int			POST_NO_FILE					= -1;
+	public static final int			POST_FILE						= 0;
 	
 	/**
 	 * Path locations for specific commands
 	 */
-	public static final String		API_PATH					= "http://livecourse.net/index.php/api/";
-	public static final String		AUTH_PATH					= "auth";
-	public static final String		VERIFY_PATH					= "auth/verify";
-	public static final String		GET_SUBSCRIBED_CHATS_PATH	= "chats";
-	public static final String		SEARCH_FOR_CHAT_PATH		= "chats/search";
-	public static final String		GET_CHAT_INFORMATION_PATH	= "chats/info";
-	public static final String		JOIN_CHAT_PATH				= "chats/join";
-	public static final String		UNSUBSCRIBE_CHAT_PATH		= "chats/leave";
-	public static final String		SEND_MESSAGE_PATH			= "chats/send";
-	public static final String		GET_RECENT_MESSAGES_PATH	= "chats/fetch_recent";
-	public static final String		GET_PARTICIPANTS_PATH		= "chats/get_participants";
-	public static final String		REGISTER_USER_PATH			= "users/add";
-	public static final String		GET_USER_PATH				= "users/index";
-	public static final String		UPDATE_COLOR_PREF_PATH		= "users/update_color";
-	public static final String		UPDATE_USER_STATUS_PATH		= "users/focus";
-	public static final String		REGISTER_ANDROID_USER_PATH	= "users/android_add";
-	public static final String		IGNORE_USER_PATH			= "users/ignore_user";
-	public static final String		UNIGNORE_USER_PATH			= "users/unignore_user";
-	public static final String		CHANGE_DISPLAY_NAME_PATH	= "users/change_display_name";
-	public static final String		FETCH_DAY					= "chats/fetch_day";
+	public static final String		API_PATH						= "http://livecourse.net/index.php/api/";
+	public static final String		AUTH_PATH						= "auth";
+	public static final String		VERIFY_PATH						= "auth/verify";
+	public static final String		GET_SUBSCRIBED_CHATS_PATH		= "chats";
+	public static final String		GET_ALL_FILES_PATH				= "chats/fetch_all_files_by_class";
+	public static final String		GET_CHAT_HISTORY_PATH			= "chats/fetch_day";
+	public static final String		GET_RECENT_MESSAGES_PATH		= "chats/fetch_recent";
+	public static final String		GET_PARTICIPANTS_PATH			= "chats/get_participants";
+	public static final String		GET_CHAT_INFORMATION_PATH		= "chats/info";
+	public static final String		UNSUBSCRIBE_CHAT_PATH			= "chats/leave";
+	public static final String		SEND_MESSAGE_PATH				= "chats/send";
+	public static final String		GET_SUBSCRIBED_SECTIONS_PATH 	= "sections";
+	public static final String		JOIN_CHAT_PATH					= "sections/join";
+	public static final String		SEARCH_FOR_CHAT_PATH			= "sections/search_advanced";
+	public static final String		REGISTER_USER_PATH				= "users/add";
+	public static final String		GET_USER_PATH					= "users/index";
+	public static final String		UPDATE_COLOR_PREF_PATH			= "users/update_color";
+	public static final String		UPDATE_USER_STATUS_PATH			= "users/focus";
+	public static final String		REGISTER_ANDROID_USER_PATH		= "users/android_add";
+	public static final String		IGNORE_USER_PATH				= "users/ignore_user";
+	public static final String		UNIGNORE_USER_PATH				= "users/unignore_user";
+	public static final String		CHANGE_DISPLAY_NAME_PATH		= "users/change_display_name";
 	
 	/**
 	 * Private variables used by Restful
@@ -87,6 +100,8 @@ public class Restful extends AsyncTask <Void, String, String>
 	private String[]				args;
 	private int						numArgs;
 	private OnRestCalled			callback;
+	private int						fileType;
+	private File					file;
 
 	private boolean 				success;
 	private int						returnCode;
@@ -116,6 +131,41 @@ public class Restful extends AsyncTask <Void, String, String>
 		this.callback 		= call;
 		this.success		= false;
 		this.returnCode		= -1;
+		this.fileType		= -1;
+		
+		this.execute();
+	}
+	
+	/**
+	 * Calling this constructor will make a Rest call to the server depending on the arguments provided
+	 * This constructor differs in that it is used to upload a byte array jpeg file, just provide the byte
+	 * array of the jpeg file
+	 * 
+	 * @param path			The path of the execution, ex. auth/verify, all paths are stored as static final
+	 * 						variables in Restful and can be called upon
+	 * @param command		The command to be called, 0 for GET and 1 for POST
+	 * @param serverArgs	The String arguments variable names for the server, ex. for the pair "email",
+	 * 						"test1@test.com", "email" would be the server argument
+	 * @param args			The client side value to be passed, following the above example, would be 
+	 * 						"test1@test.com"
+	 * @param numArgs		The number of arguments passed
+	 * @param data			The byte array to be uploaded
+	 * @param call			The OnRestCalled callback that Restful will return to
+	 */
+	public Restful(String path, int command, String[] serverArgs, String[] args, int numArgs, File file, OnRestCalled call)
+	{
+		super();
+		
+		this.path 			= path;
+		this.commandType 	= command;
+		this.serverArgs		= serverArgs;
+		this.args			= args;
+		this.numArgs		= numArgs;
+		this.callback 		= call;
+		this.success		= false;
+		this.returnCode		= -1;
+		this.file			= file;
+		this.fileType		= Restful.POST_FILE;
 		
 		this.execute();
 	}
@@ -288,17 +338,37 @@ public class Restful extends AsyncTask <Void, String, String>
 		HttpPost httpPost = new HttpPost(b.toString());
 		if(!path.equals(Restful.REGISTER_USER_PATH))
 			httpPost.addHeader("Auth", "LiveCourseAuth token="+Globals.token+" auth="+shaHead);
-		
-		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(numArgs);
-		for(int x = 0; x < numArgs; x++)
-		{
-			nameValuePairs.add(new BasicNameValuePair(serverArgs[x], args[x]));
-		}
-		
+
 		try 
 		{
-			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-		} 
+			if(this.fileType == Restful.POST_NO_FILE)
+			{
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(numArgs);
+				for(int x = 0; x < numArgs; x++)
+				{
+					nameValuePairs.add(new BasicNameValuePair(serverArgs[x], args[x]));
+				}
+				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			}
+			if(this.fileType == Restful.POST_FILE)
+			{
+				Log.d(this.TAG, "File path: " + this.file.getAbsolutePath());
+				
+				MultipartEntity ent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+				ent.addPart("file", new FileBody(this.file));
+				
+				for(int x = 0; x < numArgs; x++)
+				{
+					ent.addPart(serverArgs[x], new StringBody(args[x]));
+				}
+				httpPost.setEntity(ent);
+			}
+			if(this.fileType == Restful.POST_FILE)
+			{
+				
+			}
+
+		}
 		catch (UnsupportedEncodingException e) 
 		{
 			e.printStackTrace();

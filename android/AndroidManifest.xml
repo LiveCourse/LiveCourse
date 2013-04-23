@@ -19,18 +19,18 @@
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />     
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />     
 	<uses-permission android:name="android.permission.VIBRATE" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	
 	<application
 		android:allowBackup="true"
 		android:icon="@drawable/paperairplanewhitebluebackground"
-		android:label="@string/app_name" 
-		android:theme="@style/Theme.Sherlock.Light" >
+		android:label="@string/app_name" >
 		
 		<activity
-			android:name="net.livecourse.android.LoginActivity"
+			android:name="net.livecourse.android.login.LoginActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait" 
-			android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
+			android:theme="@style/Theme.LCTheme.Login" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -44,23 +44,24 @@
 			android:theme="@style/Theme.Sherlock.Light" >
 			<meta-data 
 				android:name="android.app.default_searchable"
-				android:value="net.livecourse.android.QueryActivity" />
+				android:value="net.livecourse.android.classlist.QueryActivity" />
 		</activity>
 		
 		<activity
-			android:name="net.livecourse.android.RegistrationActivity"
+			android:name="net.livecourse.android.login.RegistrationActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait" 
 			android:theme="@style/Theme.Sherlock.Light.NoActionBar" />
 					
 		<activity
-			android:name="net.livecourse.android.HistoryViewActivity"
+			android:name="net.livecourse.android.chat.HistoryViewActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait"
-			android:theme="@style/Theme.Sherlock.Light" />
+			android:theme="@style/Theme.Sherlock.Light" 
+			android:launchMode="singleTop" />
 		
 		<activity
-			android:name="net.livecourse.android.UserInfoActivity"
+			android:name="net.livecourse.android.participants.UserInfoActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait"
 			android:theme="@style/Theme.Sherlock.Light" />
@@ -71,12 +72,18 @@
 			android:screenOrientation="portrait"
 			android:theme="@style/Theme.Sherlock.Light" />
 		
+		<activity
+			android:name="net.livecourse.android.chat.DocumentsActivity"
+			android:label="@string/app_name"
+			android:screenOrientation="portrait"
+			android:theme="@style/Theme.Sherlock.Light" />
+		
 		<activity 
-			android:name="net.livecourse.android.QueryActivity" 
+			android:name="net.livecourse.android.classlist.QueryActivity" 
 			android:label="@string/app_name"
 			android:screenOrientation="portrait"
 			android:theme="@style/Theme.Sherlock.Light" 
-			android:launchMode="singleTop">
+			android:launchMode="singleTop" >
 			<intent-filter>
 				<action android:name="android.intent.action.SEARCH" />
 			</intent-filter>

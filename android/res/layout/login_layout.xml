@@ -1,82 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:gravity="center"
+    android:background="#2e587e" >
+    
 
-   <EditText
+	<TextView
+		android:id="@+id/login_title_text_view"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/app_name"
+		android:textSize="30sp" 
+		android:gravity="center"
+		android:padding="10dp" />
+
+	<ImageView
+	    android:id="@+id/imageView1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:contentDescription="@string/livecourse_logo_text"
+	    android:gravity="center"
+	    android:padding="10dp"
+	    android:src="@drawable/paperairplanewhitebluebackground96" />
+	
+	<TextView
+		android:id="@+id/error_text_view"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textIsSelectable="false"
+		android:visibility="visible"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:gravity="center"
+		android:padding="10dp" />
+		
+	<EditText
+		android:id="@+id/login_email_edit_text_view"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:ems="10"
+		android:hint="@string/email_hint_text"
+		android:inputType="textEmailAddress"
+		android:gravity="center"
+		android:padding="10dp" >
+		<requestFocus />
+    </EditText>
+        
+	<EditText
        android:id="@+id/login_password_edit_text"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:layout_below="@+id/login_title_text_view"
-       android:layout_centerHorizontal="true"
-       android:layout_marginTop="103dp"
        android:ems="10"
        android:hint="@string/password_hint_text"
-       android:inputType="textPassword" >
+       android:inputType="textPassword"
+       android:gravity="center"
+       android:padding="10dp" />
 
-       <requestFocus />
-   </EditText>
+	<CheckBox
+	    android:id="@+id/login_save_creds_check_box"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/save_creds_text"
+	    android:textAppearance="?android:attr/textAppearanceSmall" 
+	    android:paddingTop="10dp"
+	    android:paddingBottom="10dp" />
+	
+	<Button
+	    android:id="@+id/login_button"
+	    android:layout_width="86dp"
+	    android:layout_height="wrap_content"
+	    android:text="@string/login_button_text"
+	    android:padding="10dp"
+	    android:layout_margin="10dp"
+	    android:background="@drawable/login_button_selector" />
 
-   <EditText
-       android:id="@+id/login_email_edit_text_view"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_alignBottom="@+id/login_password_edit_text"
-       android:layout_alignRight="@+id/login_password_edit_text"
-       android:layout_marginBottom="46dp"
-       android:ems="10"
-       android:hint="@string/email_hint_text"
-       android:inputType="textEmailAddress" />
+	<Button
+		android:id="@+id/reg_button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/reg_button_text"
+		android:padding="10dp"
+		android:layout_margin="10dp"
+		android:background="@drawable/login_button_selector" />
+        
 
-   <Button
-       android:id="@+id/login_button"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_alignLeft="@+id/reg_button"
-       android:layout_alignRight="@+id/reg_button"
-       android:layout_below="@+id/login_password_edit_text"
-       android:layout_marginTop="22dp"
-       android:onClick="onLoginClicked"
-       android:text="@string/login_button_text" />
-
-   <Button
-       android:id="@+id/reg_button"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_below="@+id/login_button"
-       android:layout_centerHorizontal="true"
-       android:layout_marginTop="14dp"
-       android:onClick="onRegClick"
-       android:text="@string/reg_button_text" />
-
-   <TextView
-       android:id="@+id/error_text_view"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_below="@+id/login_title_text_view"
-       android:layout_centerHorizontal="true"
-       android:layout_marginTop="19dp"
-       android:visibility="invisible"
-       android:textAppearance="?android:attr/textAppearanceSmall" />
-
-   <ImageView
-       android:id="@+id/imageView1"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_alignBottom="@+id/login_email_edit_text_view"
-       android:layout_alignLeft="@+id/login_email_edit_text_view"
-       android:layout_toLeftOf="@+id/login_button"
-       android:src="@drawable/paperairplanewhitebluebackground" />
-
-   <TextView
-       android:id="@+id/login_title_text_view"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_alignLeft="@+id/login_button"
-       android:layout_alignParentTop="true"
-       android:layout_marginLeft="15dp"
-       android:layout_marginTop="118dp"
-       android:text="@string/app_name"
-       android:textAppearance="?android:attr/textAppearanceLarge" />
-
-</RelativeLayout>
+		
+</LinearLayout>

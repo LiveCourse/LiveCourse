@@ -17,13 +17,19 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
     
-    <style name="Theme.MyTheme" parent="Theme.Sherlock.Light">
-    	    <item name="actionBarStyle">@style/Widget.MyTheme.ActionBar</item>
+    <style name="Theme.LCTheme" parent="Theme.Sherlock.Light.DarkActionBar">
+    	    <item name="actionBarStyle">@style/Widget.LCTheme.ActionBar</item>
 	</style>
 	
-	<style name="Widget.MyTheme.ActionBar" parent="Widget.Sherlock.ActionBar">
+	<style name="Widget.LCTheme.ActionBar" parent="Widget.Sherlock.ActionBar">
 	    <item name="android:background">#2e587e</item>
 	    <item name="background">#2e587e</item>
 	</style>
+	<style name = "Widget.LCTheme.ActionMode" parent="Widget.Sherlock.ActionMode">
+	
+    </style>
+    <style name = "Theme.LCTheme.Login" parent="Theme.Sherlock.Light.NoActionBar">
+    </style>
 
-</resources>
+	
+	</resources>

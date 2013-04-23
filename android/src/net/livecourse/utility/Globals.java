@@ -1,12 +1,16 @@
 package net.livecourse.utility;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.support.v4.view.ViewPager;
+
 import com.actionbarsherlock.view.ActionMode;
 
-import net.livecourse.android.ChatFragment;
-import net.livecourse.android.ClassListFragment;
 import net.livecourse.android.MainActivity;
-import net.livecourse.android.ParticipantsFragment;
-import net.livecourse.database.Chatroom;
+import net.livecourse.android.chat.ChatFragment;
+import net.livecourse.android.classlist.Chatroom;
+import net.livecourse.android.classlist.ClassListFragment;
+import net.livecourse.android.participants.ParticipantsFragment;
 import net.livecourse.database.DatabaseHandler;
 
 public class Globals 
@@ -15,33 +19,49 @@ public class Globals
 	 * The ID from Google's GCM Console
 	 */
 	public static final String SENDER_ID = "584781219532";
+	public static boolean newReg = false;
+	
+	public static final int VIEW_PAGE_LOAD_COUNT = 3;
 	
 	/**
 	 * The loaders
 	 */
-	public static final int				CLASSLIST_LOADER		= 1;
-	public static final int				CHAT_LOADER				= 2;
-	public static final int				PARTICIPANT_LOADER 		= 3;
+	public static final int				CLASSLIST_LOADER					= 1;
+    public static final int 			CHAT_MESSAGES_LOADER 				= 2;
+    public static final int 			PARTICIPANTS_LOADER 				= 3;
+    public static final int				QUERY_LOADER						= 4;
+    public static final int				HISTORY_LOADER						= 5;
+    public static final int				DOCUMENTS_LOADER					= 6;
+    public static final int				CHATROOM_LOADER						= 7;
+    public static final int				CHATMESSAGE_LOADER					= 8;
 	
 	/**
 	 * Database
 	 */
-	public static DatabaseHandler appDb;
+	public static DatabaseHandler 		appDb;
 	
+	/**
+	 * Activity related variables
+	 */
+	public static ViewPager				viewPager;
+	public static boolean				isOnForeground;
     /**
      * Fragments 
      */
-	public static MainActivity mainActivity;
-    public static ClassListFragment classListFragment;
-    public static ChatFragment chatFragment;
-    public static ParticipantsFragment participantsFragment;
+	public static MainActivity 			mainActivity;
+    public static ClassListFragment 	classListFragment;
+    public static ChatFragment 			chatFragment;
+    public static ParticipantsFragment 	participantsFragment;
+    
     
     /**
-     * The loader numbers
+     * Dialogs
      */
-    public static final int CLASS_LIST_LOADER 					= 1;
-    public static final int CHAT_MESSAGES_LOADER 				= 2;
-    public static final int PARTICIPANTS_LOADER 				= 3;
+    public static ProgressDialog 		progressDialog;
+    public static AlertDialog 			alertDialog;
+    
+
+
     
 	
 	/**
@@ -54,7 +74,8 @@ public class Globals
 	public static String 				passwordToken;
 	public static String 				query;
 	public static String 				token;
-	public static String 				chatId;
+	public static String				chatId;
+	public static String 				sectionId;
 	public static String				regId;
 	public static String				colorPref;
 	public static String				startEpoch;
@@ -62,6 +83,8 @@ public class Globals
 	public static String				chatName;
 	
 	public static ActionMode			mode;
+	public static long					historyTime;
+	public static String				filePath;
 	
 	/**
 	 * UI Colors
@@ -82,5 +105,12 @@ public class Globals
 	public static final int				INDEX_GREEN				= 3;
 	public static final int				INDEX_CYAN				= 4;
 	public static final int				INDEX_PURPLE			= 5;	
+	
+	/**
+	 * Result values
+	 */
+	public static final int				CAMERA_RESULT			= 4567;
+	public static final int				GALLERY_RESULT			= 5678;
+	public static final int				EXPLORER_RESULT			= 6789;
 }
 

@@ -19,7 +19,7 @@
     <ListView
         android:id="@+id/message_list_view"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
+        android:layout_height="0dp"
         android:layout_weight="1" 
         android:transcriptMode="alwaysScroll">
         
@@ -29,33 +29,47 @@
     <View
         android:id="@+id/send_message_divider_view"
         android:layout_width="fill_parent"
-        android:layout_height="1dip"
+        android:layout_height="1dp"
         android:background="#dadada" />
 
 	<LinearLayout
         android:id="@+id/send_message_frame"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="5dp" >
         
+	    <ImageButton 
+            android:id="@+id/upload_button_view"
+        	android:layout_width="0dp"
+        	android:layout_height="match_parent"  
+        	android:layout_weight="1"
+        	android:layout_gravity="left"
+        	android:src="@drawable/chat_upload_button"
+        	android:background="@drawable/chats_button_selector" 
+        	android:contentDescription="@string/upload_button_title" />
+	    
         <EditText
             android:id="@+id/send_message_edit_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName" >
+            android:inputType="textCapSentences" >
 
             <requestFocus />
         </EditText>
-
-        <Button
+        
+        <ImageButton 
             android:id="@+id/send_button_view"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/send_message" />
+        	android:layout_width="0dp"
+        	android:layout_height="match_parent"
+        	android:layout_weight="1"
+        	android:layout_gravity="right"  
+        	android:src="@drawable/chat_send_button"
+        	android:background="@drawable/chats_button_selector" 
+        	android:contentDescription="@string/send_button_title" />
 
     </LinearLayout>
 </LinearLayout>

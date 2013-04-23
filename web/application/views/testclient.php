@@ -225,13 +225,19 @@
 				else
 					plain = "text";
 				var auth_code = Sha1.hash(auth_token+auth_pass+method);
+				var process = true;
+				if (type == "POST")
+					var process = false;
 				$.ajax("api/"+method,{
 					type: type,
 					headers: {
 						"Auth": "LiveCourseAuth token="+auth_token+" auth="+auth_code
 					},
 					data: data,
+					cache:false,
+					contentType: false,
 					dataType: plain,
+					processData: process,
 					success: success_callback,
 					error: error_callback
 				});
@@ -278,22 +284,41 @@
 				$("#REST").submit(function () {
 					var func = $(this).find("input[name=call]").val();
 					var method = $(this).find("select[name=method]").val();
-					var values = {};
 					var i = 0;
 					var _this = this;
+					if (method == "POST")
+					{
+						var values = new FormData();
+						values.append('file',$(this).find("input[name='file']")[0].files[0]);
+					}
+					else
+					{
+						var values = {};
+					}
 					$(this).find("input[name='key\\[\\]']").each(function() {
 						var val = $(_this).find("input[name='key\\[\\]']").eq(i).val();
 						if (val.length > 0)
 						{
-							values[$(_this).find("input[name='key\\[\\]']").eq(i).val()] = $(_this).find("input[name='value\\[\\]']").eq(i).val();
+							if (method == "POST")
+							{
+								values.append($(_this).find("input[name='key\\[\\]']").eq(i).val(),$(_this).find("input[name='value\\[\\]']").eq(i).val());
+							} else
+							{
+								values[$(_this).find("input[name='key\\[\\]']").eq(i).val()] = $(_this).find("input[name='value\\[\\]']").eq(i).val();
+							}
 						}
 						i++;
 					});
 					call_api(func,method,values,
 						function(data)
 						{
-							var content = syntaxHighlight(JSON.stringify(JSON.parse(data),undefined,4));
-							$("#ResultsFrame").html("<h1>Successful Response:</h1><br><pre>"+content+"</pre>");
+							if (data.length > 0)
+							{
+								var content = syntaxHighlight(JSON.stringify(JSON.parse(data),undefined,4));
+								$("#ResultsFrame").html("<h1>Successful Response:</h1><br><pre>"+content+"</pre>");
+							} else {
+								$("#ResultsFrame").html("<h1>Successful Response:</h1><br><pre>NO DATA RETURNED BY SERVER.</pre>");
+							}
 							Cufon.refresh();
 						},
 						function(xhr,status)
@@ -328,6 +353,7 @@
 					<option value="DELETE">DELETE</option>
 				</select>
 				<div id="keys">
+					<input type="file" name="file">
 					<input name="key[]" placeholder="Key" style="width:112px;"> <input name="value[]" placeholder="Value" style="width:112px;"><br>
 					<input name="key[]" placeholder="Key" style="width:112px;"> <input name="value[]" placeholder="Value" style="width:112px;"><br>
 					<input name="key[]" placeholder="Key" style="width:112px;"> <input name="value[]" placeholder="Value" style="width:112px;">

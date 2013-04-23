@@ -1,10 +1,17 @@
 package net.livecourse.android;
 
+import net.livecourse.android.chat.ChatFragment;
+import net.livecourse.android.classlist.ClassListFragment;
+import net.livecourse.android.notes.GroupNotesFragment;
+import net.livecourse.android.participants.ParticipantsFragment;
+import net.livecourse.utility.Globals;
+
 import com.viewpagerindicator.PageIndicator;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
 /**
@@ -13,7 +20,7 @@ import android.support.v4.view.ViewPager;
  * @author Darren
  *
  */
-public class TabsFragmentAdapter extends FragmentPagerAdapter{
+public class TabsFragmentAdapter extends FragmentStatePagerAdapter{
 	
 	/**
 	 * This is the list of the different tabs, starts with only class list and expands later
@@ -57,13 +64,21 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
     	}
     	if(position == 2)
     	{
-    		return DocumentsFragment.newInstance(CONTENT[position % CONTENT.length], this);
+    		return GroupNotesFragment.newInstance(CONTENT[position % CONTENT.length], this);
     	}
     	if(position == 3)
     	{
     		return ParticipantsFragment.newInstance(CONTENT[position % CONTENT.length], this);
     	}
     	return null;
+    }
+    
+    @Override
+    public int getItemPosition(Object object)
+    {
+    	if(object == Globals.classListFragment)
+    		return PagerAdapter.POSITION_UNCHANGED;
+        return PagerAdapter.POSITION_NONE;
     }
 
     @Override
@@ -84,6 +99,26 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
             mCount = count;
             notifyDataSetChanged();
         }
+    }
+    
+    public void expand()
+    {
+    	if(!this.CONTENT.equals(new String[] { "Class List", "Chat", "Notes", "Participants"}))
+		{
+			this.CONTENT = new String[] { "Class List", "Chat", "Notes","Participants"};
+			this.setCount(4);
+			this.notifyDataSetChanged();
+		}
+    }
+    public void collapse()
+    {
+    	if(!this.CONTENT.equals(new String[] { "Class List"}))
+		{
+			this.CONTENT = new String[] { "Class List"};
+			this.setCount(1);
+			this.notifyDataSetChanged();
+			this.mIndicator.notifyDataSetChanged();
+		}
     }
 
 	public ViewPager getPager() 

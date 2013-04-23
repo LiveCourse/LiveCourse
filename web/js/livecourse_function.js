@@ -3,6 +3,7 @@
  */
 
 var eventsource;
+var eventsource_notes;
 
 /**
  * Shows a dialog to the user to be used for logging in.
@@ -290,60 +291,127 @@ function registration_submit()
  */
 function joinroom_show()
 {
-	var dialog = dialog_clone("Add a Class","#dialog_joinroom",true,true);
-	$(dialog).find("input[name=classnumber]").observe_field(0.5, function( ) {
-		if ($(dialog).find("input[name=classnumber]").val().length <= 0)
-		{
-			$(dialog).find("#joinroom_results").html("Please enter a course number or course name.");
-		} else {
-			var ind = progress_indicator_show();
-			$(dialog).find("#joinroom_results").html();
-			call_api("chats/search","GET",{query: $(dialog).find("input[name=classnumber]").val()},
-				function (data) {
-					$(dialog).find("#joinroom_results").html('<ul></ul>');
-					for (var i in data)
+	//Fetch a list of subjects...
+	var ind = progress_indicator_show(); //Show a progress indicator for AJAX requests...
+	var subjects;
+	call_api("chats/subjects","GET",{},
+		function (data) {
+			subjects = data;
+			
+			$(dialog).find("input[name=classnumber]").autocomplete({
+				source: function( request, response ) {
+					//If we only have letters so far, match subjects.
+					if (/^[a-zA-Z]+$/.test(request.term))
 					{
-						var start_hour = Math.floor(data[i].start_time/60);
-						var start_minute = data[i].start_time%60;
-						var end_hour = Math.floor(data[i].end_time/60);
-						var end_minute = data[i].end_time%60;
-						var dow = '';
-						if (data[i].dow_monday == 1) dow+='M';
-						if (data[i].dow_tuesday == 1) dow+='T';
-						if (data[i].dow_wednesday == 1) dow+='W';
-						if (data[i].dow_thursday == 1) dow+='R';
-						if (data[i].dow_friday == 1) dow+='F';
-						if (data[i].dow_saturday == 1) dow+='S';
-						if (data[i].dow_sunday == 1) dow+='U';
-						var item = $('<li id="'+data[i].id_string+'"><span class="name">'+data[i].name+'</span><br><span class="time">'+dow+' from '+start_hour+':'+start_minute+' - '+end_hour+':'+end_minute+'</span></li>');
-						item.hide();
-						$(dialog).find("#joinroom_results ul").append(item);
-						item.fadeIn();
-						item.click(function() {
-							var _this = this;
-							class_join($(this).attr('id'),function (data) {
-									dialog_close($(_this).parents('.DialogOverlay').first());
-								}, function(xhr, status)
+						var responses = new Array();
+						var r = new RegExp(request.term+'.*', 'i');
+						for (var s in subjects)
+						{
+							if (r.test(subjects[s].code))
+							{
+								responses.push(subjects[s].code);
+							}
+						}
+						response( responses );
+					} else if (/([a-zA-Z]+)\s?([0-9]+)/.test(request.term)) {
+						//Here we look for actual classes
+						var matches = /([a-zA-Z]+)\s?([0-9]+)/.exec(request.term);
+						var responses = new Array();
+						call_api("chats/search","GET",{subject_code: matches[1],course_number: matches[2]},
+							function (data) {
+								for (var i in data)
 								{
-									var errdialog = dialog_new("Error Joining","An error occurred while attempting to join this class.",true,true);
-									errdialog.find(".DialogContainer").addClass("error");
-									dialog_show(errdialog);
-								});
-						});
+									responses.push(data[i].subject_code+data[i].course_number);
+								}
+								response( responses );
+							},
+							function (xhr, status)
+							{
+							});
 					}
-					Cufon.refresh();
-					progress_indicator_hide(ind);
 				},
-				function (xhr, status)
-				{
-					if (xhr.status == 404)
-						$(dialog).find("#joinroom_results").html("No matching classes could be found.");
-					else
-						$(dialog).find("#joinroom_results").html("There was an error processing your query.");
-					progress_indicator_hide(ind);
-				});
-		}
-	});
+				minLength: 0,
+				select: function( event, ui ) {
+					$(dialog).find("input[name=classnumber]").val(ui.item.label);
+					//Fetch matching sections
+					if (/([a-zA-Z]+)\s?([0-9]+)/.test(ui.item.label))
+					{
+						var matches = /([a-zA-Z]+)\s?([0-9]+)/.exec(ui.item.label);
+						var ind = progress_indicator_show();
+						$(dialog).find("#joinroom_results").html();
+						call_api("sections/search_advanced","GET",{subject_code: matches[1],course_number: matches[2]},
+							function (data) {
+								$(dialog).find('h1').html(data[0].name+" Sections");
+								$(dialog).find("#joinroom_results").html('<ul></ul>');
+								for (var i in data)
+								{
+									var start_hour = Math.floor(data[i].start_time/60);
+									start_hour = (('0'+(start_hour)).slice(-2));
+									var start_minute = data[i].start_time%60;
+									start_minute = (('0'+(start_minute)).slice(-2));
+									var end_hour = Math.floor(data[i].end_time/60);
+									end_hour = (('0'+(end_hour)).slice(-2));
+									var end_minute = data[i].end_time%60;
+									end_minute = (('0'+(end_minute)).slice(-2));
+									var dow = '';
+									if (data[i].dow_monday == 1) dow+='M';
+									if (data[i].dow_tuesday == 1) dow+='T';
+									if (data[i].dow_wednesday == 1) dow+='W';
+									if (data[i].dow_thursday == 1) dow+='R';
+									if (data[i].dow_friday == 1) dow+='F';
+									if (data[i].dow_saturday == 1) dow+='S';
+									if (data[i].dow_sunday == 1) dow+='U';
+									var item = $('<li id="'+data[i].section_id_string+'"><span class="name">'+data[i].type+'</span><br><span class="instructor">'+data[i].instructor+'</span><br><span class="time">'+dow+' from '+start_hour+':'+start_minute+' - '+end_hour+':'+end_minute+'</span><br><span class="location">'+data[i].building_short_name+' '+data[i].room_number+'</span></li>');
+									item.hide();
+									$(dialog).find("#joinroom_results ul").append(item);
+									item.fadeIn();
+									item.click(function() {
+										if ($(this).hasClass("joined"))
+											return;
+										var _this = this;
+										section_join($(this).attr('id'),function (data) {
+												$(_this).addClass("joined");
+												Cufon.refresh();
+											}, function(xhr, status)
+											{
+												var errdialog = dialog_new("Error Joining","An error occurred while attempting to join this class section.",true,true);
+												errdialog.find(".DialogContainer").addClass("error");
+												dialog_show(errdialog);
+											});
+									});
+								}
+								Cufon.refresh();
+								progress_indicator_hide(ind);
+							},
+							function (xhr, status)
+							{
+								if (xhr.status == 404)
+									$(dialog).find("#joinroom_results").html("No matching class sections could be found.");
+								else
+									$(dialog).find("#joinroom_results").html("There was an error processing your query.");
+								progress_indicator_hide(ind);
+							});
+					}
+				},
+				open: function() {
+					$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+				},
+				close: function() {
+					$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+				}
+			});
+			
+			progress_indicator_hide(ind);
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Fetching Subjects","An error occurred while attempting to fetch the subject listing.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+			progress_indicator_hide(ind);
+		});
+	var dialog = dialog_clone("Add a Class","#dialog_joinroom",true,true);
+	$(dialog).find("form").submit(function() { return false; });
 	dialog_show(dialog);
 }
 
@@ -453,10 +521,10 @@ function user_profile_show(user_id)
 /**
  * Joins the logged in user to the specified class
  */
-function class_join(class_idstring,success_callback,error_callback)
+function section_join(section_idstring,success_callback,error_callback)
 {
 	var join_ind = progress_indicator_show();
-	call_api("chats/join","POST",{id: class_idstring},
+	call_api("sections/join","POST",{id: section_idstring},
 		function (data) {
 			if (typeof success_callback != "undefined")
 			{
@@ -504,6 +572,15 @@ function show_participant_list()
 	$("#SideBar").css('left',tmp);
 	$("#SideBar").show();
 	$("#SideBar").animate({"left":pos},250, "easeOutQuint", null);
+}
+
+/**
+ * Hides the participants list
+ */
+function hide_participant_list()
+{
+	var tmp = parseInt($('#SideBar').css('width'), 10);
+	$("#SideBar").animate({"left":(tmp*-1)},250, "easeInQuint", function() { $("#SideBar").hide(); $("#SideBar").css('left',0); });
 }
 
 /**
@@ -680,7 +757,7 @@ function switch_chat_room(room)
 			$("#HistoryMessages ul").html(''); // Empty it
 			//Load recent chat... set loading chat contents as callback (we need participants first)
 			update_participant_list(function() {load_recent_chat_contents();});
-			
+			load_notes(); //Load this room's notes.
 			progress_indicator_hide(switch_ind);
 		},
 		function (xhr, status)
@@ -951,4 +1028,147 @@ function post_message(message,scroll,area)
 	$(area).mCustomScrollbar("update");
 	if (scroll)
 		$(area).mCustomScrollbar("scrollTo","bottom",{scrollInertia:1000}); //scroll to bottom
+}
+
+/**
+ * Shows / Hides notes frame
+ */
+function toggle_notes()
+{
+	if ($("#NotesFrame").css('display') == "none")
+	{
+		$("#switcher_notes").addClass("selected");
+		var right_pos = $("#NotesFrame").css('right');
+		var width = parseInt($('#NotesFrame').css('width'), 10);
+		$("#NotesFrame").css('right',(width*-1));
+		$("#NotesFrame").show();
+		$("#NotesFrame").animate({"right":right_pos},250, "easeOutQuint", null);
+		//Chat frame needs to slide over as well.
+		$("#ChatFrame").animate({"right":width+16,"left":0},250, "easeOutQuint", function() {
+			$("#ChatMessages").mCustomScrollbar("update");
+			$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:0}); //scroll to bottom
+		});
+		//Compose frame needs to slide over as well.
+		$("#ComposeFrame").animate({"right":width+16,"left":0},250, "easeOutQuint", null);
+		hide_participant_list();
+	} else {
+		$("#switcher_notes").removeClass("selected");
+		$("#NotesFrame").fadeOut(125);
+		//Give chat frame its room back
+		$("#ChatFrame").animate({"right":0,"left":256},250, "easeInQuint", function() {
+			$("#ChatMessages").mCustomScrollbar("update");
+			$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:0}); //scroll to bottom
+		});
+		//Give compose frame its room back
+		$("#ComposeFrame").animate({"right":0,"left":256},250, "easeInQuint", null);
+		show_participant_list();
+	}
+}
+
+function add_note(addbutton)
+{
+	var d = dialog_new("Add Notes",'<form class="large_form" style="text-align:center;"><input name="note" placeholder="Note Text" style="width:70%;"/><br><input type="hidden" name="parent_note_id" value="'+ $(addbutton).parents("li").first().attr('id') + '" /><input type="submit" value="Add Note" /></form>',true,true);
+	d.find("form").submit(function() {
+		var load_ind = progress_indicator_show();
+		call_api("notes/add","POST",{class_id_string: current_chat_room, parent_note_id: $(d).find("input[name=parent_note_id]").val(),text:$(d).find("input[name=note]").val() },
+		function (data) {
+			dialog_close(d);
+			progress_indicator_hide(load_ind);
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Adding Note","An error occurred while attempting to add your note.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+			progress_indicator_hide(load_ind);
+		});
+		return false;
+	});
+	dialog_show(d,function() { $(d).find("input").first().focus(); });
+}
+
+/**
+ * Load notes for the current room.
+ */
+function load_notes()
+{
+	var load_ind = progress_indicator_show();
+	call_api("notes","GET",{class_id_string: current_chat_room},
+		function (data) {
+			$("#NotesFrame ul.notes").html('');
+			if (data.length > 0)
+			{
+				$("#NotesFrame ul.notes").append(_load_notes_rec(data));
+			}
+			$("#NotesFrame ul.notes").append('<li class="add top">(add section)</li>');
+			$("#NotesFrame ul.notes li.add").click(function() { add_note(this); });
+			
+			//Set up eventsource for notes
+			if (typeof eventsource_notes != "undefined") //Close existing one
+				eventsource_notes.close();
+			var event_auth_code = Sha1.hash(auth_token+auth_pass+"notes/eventsource");
+			eventsource_notes = new EventSource('index.php/api/notes/eventsource?auth_token='+auth_token+'&auth_code='+event_auth_code+'&class_id='+current_chat_room);
+			eventsource_notes.addEventListener('message', function (e) {
+				var data = JSON.parse(e.data);
+				post_note(data);
+			});
+			
+			Cufon.refresh();
+			progress_indicator_hide(load_ind);
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Loading Notes","An error occurred while attempting to load your notes.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+			progress_indicator_hide(load_ind);
+		});
+}
+
+function post_note(note)
+{
+	if (note.parent_note_id == 0)
+	{
+		var n = $('<li id="'+note.id+'" class="top"><span>'+note.text+'</span><ul><li class="add">(add item)</li></ul></li>');
+		n.find("li.add").click(function() { add_note(this); });
+		n.hide();
+		$("#NotesFrame ul.notes li.add").before(n);
+		n.slideDown();
+		Cufon.refresh();
+	}
+	else
+	{
+		var n = $('<li id="'+note.id+'">'+note.text+'<ul><li class="add">(add item)</li></ul></li>');
+		n.find("li.add").click(function() { add_note(this); });
+		n.hide();
+		$("#NotesFrame ul.notes #"+note.parent_note_id+" ul li.add").before(n);
+		n.slideDown();
+	}
+}
+
+function _load_notes_rec(notes)
+{
+	var ret = '';
+	for (var note in notes)
+	{
+		if (notes[note].parent_note_id == 0)
+		{
+			var r = '<li id="'+notes[note].id+'" class="top"><span>' + notes[note].text + '</span>';
+		}
+		else
+		{
+			var r = '<li id="'+notes[note].id+'">' + notes[note].text;
+		}
+		r += '<ul>';
+		if (typeof notes[note].children != "undefined" && notes[note].children.length > 0)
+		{
+			
+			r += _load_notes_rec(notes[note].children);
+			
+		}
+		r += '<li class="add">(add item)</li></ul>';
+		r += '</li>';
+		ret += r;
+	}
+	return ret;
 }
