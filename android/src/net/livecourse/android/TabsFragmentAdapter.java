@@ -113,6 +113,7 @@ public class TabsFragmentAdapter extends FragmentStatePagerAdapter{
 			this.CONTENT = new String[] { "Class List"};
 			this.setCount(1);
 			this.notifyDataSetChanged();
+			this.mIndicator.notifyDataSetChanged();
 		}
     }
 
