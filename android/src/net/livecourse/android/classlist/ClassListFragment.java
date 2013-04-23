@@ -1,13 +1,14 @@
-package net.livecourse.android;
+package net.livecourse.android.classlist;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import net.livecourse.R;
+import net.livecourse.android.MainActivity;
+import net.livecourse.android.TabsFragmentAdapter;
 import net.livecourse.database.ClassEnrollLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
-import net.livecourse.utility.ChatroomViewHolder;
 import net.livecourse.utility.Globals;
 
 import android.app.SearchManager;

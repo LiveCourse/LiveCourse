@@ -1,4 +1,4 @@
-package net.livecourse.utility;
+package net.livecourse.android.chat;
 
 /**
  * This is the object that holds the information for ChatMessages.

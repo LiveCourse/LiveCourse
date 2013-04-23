@@ -334,7 +334,7 @@ function joinroom_show()
 						if (data[i].dow_friday == 1) dow+='F';
 						if (data[i].dow_saturday == 1) dow+='S';
 						if (data[i].dow_sunday == 1) dow+='U';
-						var item = $('<li id="'+data[i].id_string+'"><span class="name">'+data[i].name+'</span><br><span class="time">'+dow+' from '+start_hour+':'+start_minute+' - '+end_hour+':'+end_minute+'</span></li>');
+						var item = $('<li id="'+data[i].section_id_string+'"><span class="name">'+data[i].name+'</span><br><span class="time">'+dow+' from '+start_hour+':'+start_minute+' - '+end_hour+':'+end_minute+'</span></li>');
 						item.hide();
 						$(dialog).find("#joinroom_results ul").append(item);
 						item.fadeIn();

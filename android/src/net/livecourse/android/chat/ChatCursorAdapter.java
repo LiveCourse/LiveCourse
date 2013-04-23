@@ -1,9 +1,8 @@
-package net.livecourse.android;
+package net.livecourse.android.chat;
 
 import java.util.Date;
 
 import net.livecourse.R;
-import net.livecourse.utility.ChatMessageViewHolder;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;

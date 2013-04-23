@@ -1,4 +1,4 @@
-package net.livecourse.utility;
+package net.livecourse.android.chat;
 
 import android.widget.TextView;
 

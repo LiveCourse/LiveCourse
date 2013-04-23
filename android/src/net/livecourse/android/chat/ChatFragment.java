@@ -1,8 +1,9 @@
-package net.livecourse.android;
+package net.livecourse.android.chat;
 
 import java.io.File;
 
 import net.livecourse.R;
+import net.livecourse.android.TabsFragmentAdapter;
 import net.livecourse.database.ChatMessagesLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;

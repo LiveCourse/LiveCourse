@@ -1,11 +1,11 @@
-package net.livecourse.android;
+package net.livecourse.android.participants;
 
 import net.livecourse.R;
+import net.livecourse.android.TabsFragmentAdapter;
 import net.livecourse.database.ParticipantsLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
-import net.livecourse.utility.ParticipantViewHolder;
 
 import android.content.Intent;
 import android.database.Cursor;

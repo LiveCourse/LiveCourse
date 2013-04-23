@@ -1,4 +1,4 @@
-package net.livecourse.android;
+package net.livecourse.android.participants;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -21,9 +21,9 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import net.livecourse.R;
+import net.livecourse.android.classlist.Chatroom;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
-import net.livecourse.utility.Chatroom;
 import net.livecourse.utility.Utility;
 
 public class UserInfoActivity extends SherlockFragmentActivity implements OnRestCalled

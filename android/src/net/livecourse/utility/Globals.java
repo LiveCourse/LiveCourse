@@ -5,10 +5,11 @@ import android.app.ProgressDialog;
 
 import com.actionbarsherlock.view.ActionMode;
 
-import net.livecourse.android.ChatFragment;
-import net.livecourse.android.ClassListFragment;
 import net.livecourse.android.MainActivity;
-import net.livecourse.android.ParticipantsFragment;
+import net.livecourse.android.chat.ChatFragment;
+import net.livecourse.android.classlist.Chatroom;
+import net.livecourse.android.classlist.ClassListFragment;
+import net.livecourse.android.participants.ParticipantsFragment;
 import net.livecourse.database.DatabaseHandler;
 
 public class Globals 

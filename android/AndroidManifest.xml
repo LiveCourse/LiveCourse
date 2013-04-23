@@ -27,7 +27,7 @@
 		android:label="@string/app_name" >
 		
 		<activity
-			android:name="net.livecourse.android.LoginActivity"
+			android:name="net.livecourse.android.login.LoginActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait" 
 			android:theme="@style/Theme.LCTheme.Login" >
@@ -48,20 +48,20 @@
 		</activity>
 		
 		<activity
-			android:name="net.livecourse.android.RegistrationActivity"
+			android:name="net.livecourse.android.login.RegistrationActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait" 
 			android:theme="@style/Theme.Sherlock.Light.NoActionBar" />
 					
 		<activity
-			android:name="net.livecourse.android.HistoryViewActivity"
+			android:name="net.livecourse.android.chat.HistoryViewActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait"
 			android:theme="@style/Theme.Sherlock.Light" 
 			android:launchMode="singleTop" />
 		
 		<activity
-			android:name="net.livecourse.android.UserInfoActivity"
+			android:name="net.livecourse.android.participants.UserInfoActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait"
 			android:theme="@style/Theme.Sherlock.Light" />
@@ -73,7 +73,7 @@
 			android:theme="@style/Theme.Sherlock.Light" />
 		
 		<activity
-			android:name="net.livecourse.android.DocumentsActivity"
+			android:name="net.livecourse.android.chat.DocumentsActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait"
 			android:theme="@style/Theme.Sherlock.Light" />

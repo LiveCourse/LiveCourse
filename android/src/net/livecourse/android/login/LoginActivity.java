@@ -1,4 +1,4 @@
-package net.livecourse.android;
+package net.livecourse.android.login;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import net.livecourse.R;
+import net.livecourse.android.MainActivity;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;

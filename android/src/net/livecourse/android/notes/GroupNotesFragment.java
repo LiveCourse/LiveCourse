@@ -1,6 +1,7 @@
-package net.livecourse.android;
+package net.livecourse.android.notes;
 
 import net.livecourse.R;
+import net.livecourse.android.TabsFragmentAdapter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

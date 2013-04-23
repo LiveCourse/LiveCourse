@@ -1,4 +1,4 @@
-package net.livecourse.android;
+package net.livecourse.android.login;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package net.livecourse.utility;
+package net.livecourse.android.participants;
 
 import android.widget.TextView;
 
