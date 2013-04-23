@@ -75,21 +75,11 @@ namespace LiveCourse
                     MyChatRoom room = new MyChatRoom
                     {
                         C_Name = (String)(item.name),
-                        C_ID_String = (String)(item.id_string),
+                        C_ID_String = (String)(item.class_id_string),
                         C_Course_Number = (int)(item.course_number),
-                        C_Start_Time = (int)(item.start_time),
-                        C_End_Time = (int)(item.end_time),
-                        C_Start_Date = Convert.ToDateTime((String)(item.start_date)),
-                        C_End_Date = Convert.ToDateTime((String)(item.end_date)),
-                        C_DOW_Monday = ((String)(item.dow_monday)).Equals("1"),
-                        C_DOW_Tuesday = ((String)(item.dow_tuesday)).Equals("1"),
-                        C_DOW_Wednesday = ((String)(item.dow_wednesday)).Equals("1"),
-                        C_DOW_Thursday = ((String)(item.dow_thursday)).Equals("1"),
-                        C_DOW_Friday = ((String)(item.dow_friday)).Equals("1"),
-                        C_DOW_Saturday = ((String)(item.dow_saturday)).Equals("1"),
-                        C_DOW_Sunday = ((String)(item.dow_sunday)).Equals("1")
+                        C_Subject_Code = (String)(item.subject_code)
                     };
-                    String room_string_id = (String)(item.id_string);
+                    String room_string_id = (String)(item.class_id_string);
                     IEnumerable<MyChatRoom> queryRooms = from MyChatRoom in context.ChatRooms
                                                          where MyChatRoom.C_ID_String == room_string_id
                                                          select MyChatRoom;

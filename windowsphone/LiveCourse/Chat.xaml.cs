@@ -52,11 +52,6 @@ namespace LiveCourse
             loadRecentChatHistory();
             loadParticipants();
 
-            //Set up raw push event handler for new messages
-            if (App.pushChannel != null)
-            {
-                App.pushChannel.HttpNotificationReceived += pushRawChannel_HttpNotificationReceived;
-            }
             participants_timer = new DispatcherTimer();
             participants_timer.Interval = TimeSpan.FromMilliseconds(10000);
             participants_timer.Tick += new EventHandler(participants_tick);
@@ -65,14 +60,9 @@ namespace LiveCourse
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            //Set up raw push event handler for new messages
-            if (App.pushChannel != null)
-            {
-                App.pushChannel.HttpNotificationReceived -= pushRawChannel_HttpNotificationReceived;
-            }
         }
 
-        void pushRawChannel_HttpNotificationReceived(object sender, Microsoft.Phone.Notification.HttpNotificationEventArgs e)
+        public void pushRawChannel_HttpNotificationReceived(object sender, Microsoft.Phone.Notification.HttpNotificationEventArgs e)
         {
             string content;
 

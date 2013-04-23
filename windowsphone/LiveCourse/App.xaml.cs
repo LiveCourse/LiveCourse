@@ -182,6 +182,8 @@ namespace LiveCourse
                 // Bind this new channel for toast events.
                 App.pushChannel.BindToShellToast();
 
+                // Bind raw and forward these to chat page if open.
+                App.pushChannel.HttpNotificationReceived += pushChannel_HttpNotificationReceived;
             }
             else
             {
@@ -197,8 +199,13 @@ namespace LiveCourse
                 string DeviceIDAsString = Convert.ToBase64String(myDeviceID);
                 System.Diagnostics.Debug.WriteLine("Device ID: '" + DeviceIDAsString + "'");
                 System.Diagnostics.Debug.WriteLine("PUSH URI: '" + App.pushChannel.ChannelUri.ToString() + "'");
+
+                // Bind raw and forward these to chat page if open.
+                App.pushChannel.HttpNotificationReceived += pushChannel_HttpNotificationReceived;
             }
         }
+
+        
         void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
         {
             //Dispatcher.BeginInvoke(() =>
@@ -220,6 +227,18 @@ namespace LiveCourse
         void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
         {
             throw new Exception();
+        }
+
+        void pushChannel_HttpNotificationReceived(object sender, HttpNotificationEventArgs e)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                var currentPage = ((PhoneApplicationFrame)Application.Current.RootVisual).Content;
+                if (currentPage is ChatPage)
+                {
+                    ((ChatPage)(currentPage)).pushRawChannel_HttpNotificationReceived(sender, e);
+                }
+            });
         }
 
         #region Phone application initialization
