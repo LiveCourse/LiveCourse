@@ -137,10 +137,15 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	{
 		switch (item.getItemId())
 		{
-			case R.id.view_history_item:
+			case R.id.view_history_menu_item:
 				Log.d(this.TAG, "Running onOptionsItemSelected view history");
 				DialogFragment newFragment = new HistoryDatePickerFragment();
 			    newFragment.show(this.getSherlockActivity().getSupportFragmentManager(), "datePicker");
+				break;
+			case R.id.view_documents_menu_item:
+				Log.d(this.TAG, "Running onOptionsItemSelected view documents");
+				Intent a = new Intent(this.getSherlockActivity(), DocumentsActivity.class);
+				this.getSherlockActivity().startActivity(a);
 				break;
 		}
 

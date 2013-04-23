@@ -170,7 +170,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		if(parent == this.classListView)
 		{
 			Log.d(this.TAG, "Switch to chat 173");
-			this.switchToChat(((ChatroomViewHolder)view.getTag()).idSectionString, ((ChatroomViewHolder)view.getTag()).className.getText().toString());
+			this.switchToChat(((ChatroomViewHolder)view.getTag()).idString, ((ChatroomViewHolder)view.getTag()).idSectionString, ((ChatroomViewHolder)view.getTag()).className.getText().toString());
 		}
 	}
 
@@ -301,7 +301,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 
 	}
 	
-	public void switchToChat(String chatId, String chatName)
+	public void switchToChat(String chatId, String sectionId, String chatName)
 	{
 		/**
 		 * Once a class is selected it'll expand the tabs
@@ -319,8 +319,9 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		/**
 		 * Changes the sectionId
 		 */
-		Globals.sectionId = chatId;
-		Globals.chatName = chatName;
+		Globals.sectionId 	= sectionId;
+		Globals.chatId 		= chatId;
+		Globals.chatName 	= chatName;
 		
 		/**
 		 * Call to grab the chat messages from the server and populate them
@@ -380,7 +381,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			if(this.updateListCalledByQR)
 			{
 				Log.d(this.TAG, "Switch to chat 382");
-				this.switchToChat(Globals.sectionId, Globals.chatName);
+				this.switchToChat(Globals.chatId, Globals.sectionId, Globals.chatName);
 				this.updateListCalledByQR = false;
 			}
 			
@@ -388,7 +389,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			{
 				Log.d(this.TAG, "Chat Id: " + Globals.sectionId +" Chat Name: " + Globals.chatName);
 				Log.d(this.TAG, "Switch to chat 390");
-				this.switchToChat(Globals.sectionId, Globals.chatName);
+				this.switchToChat(Globals.chatId, Globals.sectionId, Globals.chatName);
 			}
 			else if(this.chatRoomToDelete != null)
 			{

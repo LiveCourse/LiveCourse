@@ -63,7 +63,8 @@
     	
     <!-- 	Chat Fragment Menu Strings
     		These are the strings used in the menu of the chat layout -->
- 	<string name="view_history_menu_item">See History</string>
+ 	<string name="view_history_menu_item">View History</string>
+ 	<string name="view_documents_menu_item">View Documents</string>
  	
  	<!-- 	Chat Fragment Context Menu Strings
  			These are the strings used in the context menu of the chat fragment -->

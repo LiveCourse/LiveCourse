@@ -67,6 +67,7 @@ public class Globals
 	public static String 				passwordToken;
 	public static String 				query;
 	public static String 				token;
+	public static String				chatId;
 	public static String 				sectionId;
 	public static String				regId;
 	public static String				colorPref;

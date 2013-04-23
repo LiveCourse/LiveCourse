@@ -39,7 +39,6 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) 
 	{
-		//Log.d("SettingsActivity", "The key: " + key + " value: " + sharedPreferences.getString(key, null));
 		Log.d("SettingsActivity", "The key: " + key);
 		
 		if(key.equals("pref_color"))
@@ -122,11 +121,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 
 	@Override
 	public void onRestPostExecutionFailed(String restCall, int code, String result) 
-	{
-		if(restCall.equals(Restful.UPDATE_COLOR_PREF_PATH))
-		{
-			
-		}		
+	{	
 		
 		Utility.stopDialog();
 	}
@@ -134,10 +129,6 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 	@Override
 	public void onRestCancelled(String restCall, String result) 
 	{
-		if(restCall.equals(Restful.UPDATE_COLOR_PREF_PATH))
-		{
-			
-		}	
 		
 		Utility.stopDialog();
 	}
