@@ -8,6 +8,6 @@ public class ChatroomViewHolder
 	public TextView classTime;
 	public TextView classType;
 	public TextView classInstructor;
-	public String idString;
-	public String idSectionString;
+	public String chatIdString;
+	public String sectionIdString;
 }
