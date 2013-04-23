@@ -71,7 +71,7 @@ public class UserInfoArrayAdapter extends ArrayAdapter<Chatroom>
             	v.classTime.setText(temp);
             }
             
-            v.idString = item.getIdString();
+            v.chatIdString = item.getChatIdString();
             view.setTag(v);
          }
 

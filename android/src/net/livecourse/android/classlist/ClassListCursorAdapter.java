@@ -1,6 +1,7 @@
 package net.livecourse.android.classlist;
 
 import net.livecourse.R;
+import net.livecourse.database.DatabaseHandler;
 import net.livecourse.utility.Utility;
 import android.content.Context;
 import android.database.Cursor;
@@ -68,12 +69,12 @@ public class ClassListCursorAdapter extends CursorAdapter
 			time += "U";		
 		time += " " + Utility.convertMinutesTo24Hour(cursor.getString(cursor.getColumnIndexOrThrow("start_time"))) + " - " + Utility.convertMinutesTo24Hour(cursor.getString(cursor.getColumnIndexOrThrow("end_time")));		
 
-		v.className.setText(name);
-		v.classTime.setText(time);
-		v.classType.setText(type);
-		v.classInstructor.setText(instructor);
-		v.idString = cursor.getString(cursor.getColumnIndexOrThrow("id_string"));
-		v.idSectionString = cursor.getString(cursor.getColumnIndexOrThrow("section_id_string"));
+		v.className			.setText(name);
+		v.classTime			.setText(time);
+		v.classType			.setText(type);
+		v.classInstructor	.setText(instructor);
+		v.chatIdString 		= cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHandler.KEY_CHAT_ID_STRING));
+		v.sectionIdString 	= cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHandler.KEY_SECTION_ID_STRING));
 		
 		view.setTag(v);
 		

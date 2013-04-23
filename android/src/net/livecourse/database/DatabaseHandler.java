@@ -22,75 +22,75 @@ import android.util.Log;
  */
 public class DatabaseHandler extends SQLiteOpenHelper
 {
-	private final String TAG = " == DatabaseHandler == ";
+	private final String TAG 									= " == DatabaseHandler == ";
 
-	private static final int DATABASE_VERSION = 39;
+	private static final int DATABASE_VERSION 					= 40;
 	
 	/**
 	 * Database name
 	 */
-	private static final String DATABASE_NAME 				= "livecourseDB";
+	private static final String DATABASE_NAME 					= "livecourseDB";
 	
 	/**
 	 * The tables we are going to use
 	 */
-	public static final String TABLE_CLASS_ENROLL 			= "classEnroll";
-	public static final String TABLE_CHAT_MESSAGES			= "chatMessages";
-	public static final String TABLE_PARTICIPANTS			= "participants";
-	public static final String TABLE_HISTORY				= "history";
+	public static final String TABLE_CLASS_ENROLL 				= "classEnroll";
+	public static final String TABLE_CHAT_MESSAGES				= "chatMessages";
+	public static final String TABLE_PARTICIPANTS				= "participants";
+	public static final String TABLE_HISTORY					= "history";
 	
 	/**
 	 * Fields used for the classroom object
 	 */
-	public static final String KEY_ID						= "_id";
-	public static final String KEY_CLASS_ID_STRING 			= "id_string";
-	public static final String KEY_SECTION_ID_STRING		= "section_id_string";
-	public static final String KEY_CLASS_SUBJECT_ID 		= "subject_id";
-	public static final String KEY_CLASS_COURSE_NUMBER 		= "course_number";
-	public static final String KEY_CLASS_NAME 				= "name";
-	public static final String KEY_CLASS_ROOM_ID 			= "room_id";
-	public static final String KEY_CLASS_ID					= "class_id";
-	public static final String KEY_CLASS_TYPE				= "class_type";
-	public static final String KEY_CLASS_CRN				= "crn";
-	public static final String KEY_CLASS_SECTION			= "section";
-	public static final String KEY_CLASS_START_TIME 		= "start_time";
-	public static final String KEY_CLASS_END_TIME 			= "end_time";
-	public static final String KEY_CLASS_START_DATE 		= "start_date";
-	public static final String KEY_CLASS_END_DATE 			= "end_date";
-	public static final String KEY_CLASS_DOW_MONDAY 		= "dow_monday";
-	public static final String KEY_CLASS_DOW_TUESDAY 		= "dow_tuesday";
-	public static final String KEY_CLASS_DOW_WEDNESDAY 		= "dow_wednesday";
-	public static final String KEY_CLASS_DOW_THURSDAY 		= "dow_thursday";
-	public static final String KEY_CLASS_DOW_FRIDAY 		= "dow_friday";
-	public static final String KEY_CLASS_DOW_SATURDAY 		= "dow_saturday";
-	public static final String KEY_CLASS_DOW_SUNDAY 		= "dow_sunday";
-	public static final String KEY_CLASS_INSTRUCTOR			= "instructor";
-	public static final String KEY_CLASS_NOTES				= "notes";
-	public static final String KEY_CLASS_CAPACITY			= "capacity";
+	public static final String KEY_ID							= "_id";
+	public static final String KEY_CHAT_ID_STRING 				= "id_string";
+	public static final String KEY_SECTION_ID_STRING			= "section_id_string";
+	public static final String KEY_CLASS_SUBJECT_CODE 			= "subject_code";
+	public static final String KEY_CLASS_COURSE_NUMBER 			= "course_number";
+	public static final String KEY_CLASS_NAME 					= "name";
+	public static final String KEY_CLASS_ROOM_NUMBER 			= "room_id";
+	public static final String KEY_CLASS_BUILDING_SHORT_NAME	= "class_id";
+	public static final String KEY_CLASS_TYPE					= "class_type";
+	public static final String KEY_CLASS_CRN					= "crn";
+	public static final String KEY_CLASS_SECTION				= "section";
+	public static final String KEY_CLASS_START_TIME 			= "start_time";
+	public static final String KEY_CLASS_END_TIME 				= "end_time";
+	public static final String KEY_CLASS_START_DATE 			= "start_date";
+	public static final String KEY_CLASS_END_DATE 				= "end_date";
+	public static final String KEY_CLASS_DOW_MONDAY 			= "dow_monday";
+	public static final String KEY_CLASS_DOW_TUESDAY 			= "dow_tuesday";
+	public static final String KEY_CLASS_DOW_WEDNESDAY 			= "dow_wednesday";
+	public static final String KEY_CLASS_DOW_THURSDAY 			= "dow_thursday";
+	public static final String KEY_CLASS_DOW_FRIDAY 			= "dow_friday";
+	public static final String KEY_CLASS_DOW_SATURDAY 			= "dow_saturday";
+	public static final String KEY_CLASS_DOW_SUNDAY 			= "dow_sunday";
+	public static final String KEY_CLASS_INSTRUCTOR				= "instructor";
+	public static final String KEY_CLASS_NOTES					= "notes";
+	public static final String KEY_CLASS_CAPACITY				= "capacity";
 	
 	/**
 	 * Fields used for the message object
 	 */
-	public static final String KEY_CHAT_ID					= "chat_id";
-	public static final String KEY_USER_ID					= "user_id";
-	public static final String KEY_CHAT_SEND_TIME			= "send_time";
-	public static final String KEY_CHAT_MESSAGE_STRING		= "message_string";
-	public static final String KEY_USER_EMAIL				= "email";
-	public static final String KEY_USER_DISPLAY_NAME		= "display_name";
+	public static final String KEY_CHAT_ID						= "chat_id";
+	public static final String KEY_USER_ID						= "user_id";
+	public static final String KEY_CHAT_SEND_TIME				= "send_time";
+	public static final String KEY_CHAT_MESSAGE_STRING			= "message_string";
+	public static final String KEY_USER_EMAIL					= "email";
+	public static final String KEY_USER_DISPLAY_NAME			= "display_name";
 	
 	/**
 	 * Fields used for the participant object
 	 */
-	public static final String KEY_USER_TIME_LASTFOCUS		= "time_lastfocus";
-	public static final String KEY_USER_TIME_LASTREQUEST	= "time_lastrequest";
+	public static final String KEY_USER_TIME_LASTFOCUS			= "time_lastfocus";
+	public static final String KEY_USER_TIME_LASTREQUEST		= "time_lastrequest";
 	
 	/**
 	 * used to lock down database access
 	 */
-	private final Object classListLock						= new Object();
-	private final Object chatLock							= new Object();	
-	private final Object particiantsLock					= new Object();
-	private final Object historyLock						= new Object();
+	private final Object classListLock							= new Object();
+	private final Object chatLock								= new Object();	
+	private final Object particiantsLock						= new Object();
+	private final Object historyLock							= new Object();
 	
 	/**
 	 * The constructor of the database, pass it the context.
@@ -145,32 +145,32 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	{
 		synchronized(this.classListLock)
 		{
-			String CREATE_TABLE_CLASS_ENROLL = 	"CREATE TABLE " 			+ TABLE_CLASS_ENROLL 	+ "( "
-												+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
-												+ KEY_CLASS_ID_STRING 		+ " varchar(12), "
-												+ KEY_SECTION_ID_STRING		+ " varchar(12), "
-												+ KEY_CLASS_SUBJECT_ID 		+ " int(11), "
-												+ KEY_CLASS_COURSE_NUMBER 	+ " smallint(6), "
-												+ KEY_CLASS_NAME 			+ " varchar(100), "
-												+ KEY_CLASS_ROOM_ID 		+ " int(11), "	
-												+ KEY_CLASS_ID				+ " int(11), "
-												+ KEY_CLASS_TYPE			+ " varchar(20), "
-												+ KEY_CLASS_CRN				+ "	int(11), "
-												+ KEY_CLASS_SECTION			+ " varchar(12), "
-												+ KEY_CLASS_START_TIME 		+ " int(5), "
-												+ KEY_CLASS_END_TIME 		+ " int(5), "	
-												+ KEY_CLASS_START_DATE 		+ " date, "
-												+ KEY_CLASS_END_DATE 		+ " date, "	
-												+ KEY_CLASS_DOW_MONDAY 		+ " tinyint(1), "
-												+ KEY_CLASS_DOW_TUESDAY 	+ " tinyint(1), "	
-												+ KEY_CLASS_DOW_WEDNESDAY 	+ " tinyint(1), "
-												+ KEY_CLASS_DOW_THURSDAY 	+ " tinyint(1), "	
-												+ KEY_CLASS_DOW_FRIDAY 		+ " tinyint(1), "
-												+ KEY_CLASS_DOW_SATURDAY 	+ " tinyint(1), "	
-												+ KEY_CLASS_DOW_SUNDAY		+ " tinyint(1), "
-												+ KEY_CLASS_INSTRUCTOR		+ " varchar(100), "
-												+ KEY_CLASS_NOTES			+ " varchar(100), "
-												+ KEY_CLASS_CAPACITY		+ " int(11)"
+			String CREATE_TABLE_CLASS_ENROLL = 	"CREATE TABLE " 				+ TABLE_CLASS_ENROLL 	+ "( "
+												+ KEY_ID						+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
+												+ KEY_CHAT_ID_STRING 			+ " varchar(12), "
+												+ KEY_SECTION_ID_STRING			+ " varchar(12), "
+												+ KEY_CLASS_SUBJECT_CODE		+ " varchar(12), "
+												+ KEY_CLASS_COURSE_NUMBER 		+ " smallint(6), "
+												+ KEY_CLASS_NAME 				+ " varchar(100), "
+												+ KEY_CLASS_ROOM_NUMBER			+ " varchar(12), "	
+												+ KEY_CLASS_BUILDING_SHORT_NAME	+ " int(11), "
+												+ KEY_CLASS_TYPE				+ " varchar(20), "
+												+ KEY_CLASS_CRN					+ "	int(11), "
+												+ KEY_CLASS_SECTION				+ " varchar(12), "
+												+ KEY_CLASS_START_TIME 			+ " int(5), "
+												+ KEY_CLASS_END_TIME 			+ " int(5), "	
+												+ KEY_CLASS_START_DATE 			+ " date, "
+												+ KEY_CLASS_END_DATE 			+ " date, "	
+												+ KEY_CLASS_DOW_MONDAY 			+ " tinyint(1), "
+												+ KEY_CLASS_DOW_TUESDAY 		+ " tinyint(1), "	
+												+ KEY_CLASS_DOW_WEDNESDAY 		+ " tinyint(1), "
+												+ KEY_CLASS_DOW_THURSDAY 		+ " tinyint(1), "	
+												+ KEY_CLASS_DOW_FRIDAY 			+ " tinyint(1), "
+												+ KEY_CLASS_DOW_SATURDAY 		+ " tinyint(1), "	
+												+ KEY_CLASS_DOW_SUNDAY			+ " tinyint(1), "
+												+ KEY_CLASS_INSTRUCTOR			+ " varchar(100), "
+												+ KEY_CLASS_NOTES				+ " varchar(100), "
+												+ KEY_CLASS_CAPACITY			+ " int(11)"
 												+ ")";
 			
 			db.execSQL(CREATE_TABLE_CLASS_ENROLL);	
@@ -328,31 +328,31 @@ public class DatabaseHandler extends SQLiteOpenHelper
 				
 				db = this.getWritableDatabase();
 				statement = db.compileStatement(
-						"INSERT INTO " 	+ TABLE_CLASS_ENROLL +
-							" ( " 		+ KEY_CLASS_ID_STRING 		+
-							", "		+ KEY_SECTION_ID_STRING		+
-							", "		+ KEY_CLASS_SUBJECT_ID 		+
-							", "		+ KEY_CLASS_COURSE_NUMBER 	+
-							", "		+ KEY_CLASS_NAME 			+
-							", "		+ KEY_CLASS_ROOM_ID 		+ 
-							", "		+ KEY_CLASS_ID		 		+ 
-							", "		+ KEY_CLASS_TYPE	 		+ 
-							", "		+ KEY_CLASS_CRN		 		+
-							", "		+ KEY_CLASS_SECTION 		+ 
-							", "		+ KEY_CLASS_START_TIME 		+
-							", "		+ KEY_CLASS_END_TIME 		+	
-							", "		+ KEY_CLASS_START_DATE 		+
-							", "		+ KEY_CLASS_END_DATE 		+
-							", "		+ KEY_CLASS_DOW_MONDAY 		+
-							", "		+ KEY_CLASS_DOW_TUESDAY 	+	
-							", "		+ KEY_CLASS_DOW_WEDNESDAY 	+
-							", "		+ KEY_CLASS_DOW_THURSDAY 	+
-							", "		+ KEY_CLASS_DOW_FRIDAY 		+
-							", "		+ KEY_CLASS_DOW_SATURDAY 	+	
-							", "		+ KEY_CLASS_DOW_SUNDAY		+
-							", "		+ KEY_CLASS_INSTRUCTOR 		+ 
-							", "		+ KEY_CLASS_NOTES	 		+ 
-							", "		+ KEY_CLASS_CAPACITY 		+ 							
+						"INSERT INTO " 	+ TABLE_CLASS_ENROLL 			+
+							" ( " 		+ KEY_CHAT_ID_STRING 			+
+							", "		+ KEY_SECTION_ID_STRING			+
+							", "		+ KEY_CLASS_SUBJECT_CODE 		+
+							", "		+ KEY_CLASS_COURSE_NUMBER 		+
+							", "		+ KEY_CLASS_NAME 				+
+							", "		+ KEY_CLASS_ROOM_NUMBER 		+ 
+							", "		+ KEY_CLASS_BUILDING_SHORT_NAME	+ 
+							", "		+ KEY_CLASS_TYPE	 			+ 
+							", "		+ KEY_CLASS_CRN		 			+
+							", "		+ KEY_CLASS_SECTION 			+ 
+							", "		+ KEY_CLASS_START_TIME 			+
+							", "		+ KEY_CLASS_END_TIME 			+	
+							", "		+ KEY_CLASS_START_DATE 			+
+							", "		+ KEY_CLASS_END_DATE 			+
+							", "		+ KEY_CLASS_DOW_MONDAY 			+
+							", "		+ KEY_CLASS_DOW_TUESDAY 		+	
+							", "		+ KEY_CLASS_DOW_WEDNESDAY 		+
+							", "		+ KEY_CLASS_DOW_THURSDAY 		+
+							", "		+ KEY_CLASS_DOW_FRIDAY 			+
+							", "		+ KEY_CLASS_DOW_SATURDAY 		+	
+							", "		+ KEY_CLASS_DOW_SUNDAY			+
+							", "		+ KEY_CLASS_INSTRUCTOR 			+ 
+							", "		+ KEY_CLASS_NOTES	 			+ 
+							", "		+ KEY_CLASS_CAPACITY 			+ 							
 							") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 				
 				db.beginTransaction();
@@ -367,30 +367,30 @@ public class DatabaseHandler extends SQLiteOpenHelper
 					
 					ob = parse.getJSONObject(x);
 					
-					statement.bindString( 1, ob.getString(	"id_string"			));
-					statement.bindString( 2, ob.getString(	"class_id_string"	));
-					statement.bindString( 3, ob.getString(	"subject_id"		));
-					statement.bindString( 4, ob.getString(	"course_number"		));
-					statement.bindString( 5, ob.getString(	"name"				));
-					statement.bindString( 6, ob.getString(	"room_id"			));
-					statement.bindString( 7, ob.getString(	"class_id"			));
-					statement.bindString( 8, ob.getString(	"type"				));
-					statement.bindString( 9, ob.getString(	"crn"				));
-					statement.bindString(10, ob.getString(	"section"			));
-					statement.bindString(11, ob.getString(	"start_time"		));
-					statement.bindString(12, ob.getString(	"end_time"			));
-					statement.bindString(13, ob.getString(	"start_date"		));
-					statement.bindString(14, ob.getString(	"end_date"			));
-					statement.bindString(15, ob.getString(	"dow_monday"		));
-					statement.bindString(16, ob.getString(	"dow_tuesday"		));
-					statement.bindString(17, ob.getString(	"dow_wednesday"		));
-					statement.bindString(18, ob.getString(	"dow_thursday"		));
-					statement.bindString(19, ob.getString(	"dow_friday"		));
-					statement.bindString(20, ob.getString(	"dow_saturday"		));
-					statement.bindString(21, ob.getString(	"dow_sunday"		));
-					statement.bindString(22, ob.getString(	"instructor"		));
-					statement.bindString(23, ob.getString(	"notes"				));
-					statement.bindString(23, ob.getString(	"capacity"			));
+					statement.bindString( 1, ob.getString(	"class_id_string"		));
+					statement.bindString( 2, ob.getString(	"section_id_string"		));
+					statement.bindString( 3, ob.getString(	"subject_code"			));
+					statement.bindString( 4, ob.getString(	"course_number"			));
+					statement.bindString( 5, ob.getString(	"name"					));
+					statement.bindString( 6, ob.getString(	"room_number"			));
+					statement.bindString( 7, ob.getString(	"building_short_name"	));
+					statement.bindString( 8, ob.getString(	"type"					));
+					statement.bindString( 9, ob.getString(	"crn"					));
+					statement.bindString(10, ob.getString(	"section"				));
+					statement.bindString(11, ob.getString(	"start_time"			));
+					statement.bindString(12, ob.getString(	"end_time"				));
+					statement.bindString(13, ob.getString(	"start_date"			));
+					statement.bindString(14, ob.getString(	"end_date"				));
+					statement.bindString(15, ob.getString(	"dow_monday"			));
+					statement.bindString(16, ob.getString(	"dow_tuesday"			));
+					statement.bindString(17, ob.getString(	"dow_wednesday"			));
+					statement.bindString(18, ob.getString(	"dow_thursday"			));
+					statement.bindString(19, ob.getString(	"dow_friday"			));
+					statement.bindString(20, ob.getString(	"dow_saturday"			));
+					statement.bindString(21, ob.getString(	"dow_sunday"			));
+					statement.bindString(22, ob.getString(	"instructor"			));
+					statement.bindString(23, ob.getString(	"notes"					));
+					statement.bindString(23, ob.getString(	"capacity"				));
 					
 					statement.execute();
 				}

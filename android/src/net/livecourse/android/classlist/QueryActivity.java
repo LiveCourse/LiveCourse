@@ -117,7 +117,7 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	{
 		ChatroomViewHolder v = (ChatroomViewHolder) view.getTag();	
-		new Restful(Restful.JOIN_CHAT_PATH, Restful.POST, new String[]{"id"}, new String[]{v.idSectionString}, 1, this);
+		new Restful(Restful.JOIN_CHAT_PATH, Restful.POST, new String[]{"id"}, new String[]{v.sectionIdString}, 1, this);
 	}
 	
 	@Override

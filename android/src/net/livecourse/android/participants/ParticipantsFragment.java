@@ -194,7 +194,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	public void updateList()
 	{
 		Globals.appDb.recreateParticipants();
-		new Restful(Restful.GET_PARTICIPANTS_PATH, Restful.GET, new String[]{"id"}, new String[]{Globals.sectionId}, 1, this);
+		new Restful(Restful.GET_PARTICIPANTS_PATH, Restful.GET, new String[]{"id"}, new String[]{Globals.chatId}, 1, this);
 	}
 	
 	public void clearList()

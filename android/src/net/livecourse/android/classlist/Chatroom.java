@@ -10,7 +10,7 @@ import org.json.JSONObject;
  */
 public class Chatroom 
 {
-	private String id_string;
+	private String chat_id_string;
 	private String section_string;
 	private String subject_id;
 	private String course_number;
@@ -39,8 +39,8 @@ public class Chatroom
 	{
     	try 
     	{
-		this.setIdString(ob.getString(		"class_id_string"));
-		this.setSectionString(ob.getString(	"id_string"));
+		this.setChatIdString(ob.getString(		"class_id_string"));
+		this.setSectionIdString(ob.getString(	"id_string"));
     	this.setSubjectId(ob.getString(		"subject_id"));
     	this.setCourseNumber(ob.getString(	"course_number"));
     	this.setName(ob.getString(			"name"));
@@ -72,7 +72,7 @@ public class Chatroom
 	}
 	public String toString()
 	{
-		String temp = 	"ID String: " 		+ id_string 	+
+		String temp = 	"ID String: " 		+ chat_id_string 	+
 						" SectionString: "	+ section_string+
 						" Course Number: " 	+ course_number + 
 						" Name: " 			+ name 			+ 
@@ -97,11 +97,11 @@ public class Chatroom
 						" Capacity: "		+ capacity;
 		return temp;
 	}
-	public String getSectionString()
+	public String getSectionIdString()
 	{
 		return section_string;
 	}
-	public void setSectionString(String sectionString)
+	public void setSectionIdString(String sectionString)
 	{
 		this.section_string = sectionString;
 	}
@@ -201,13 +201,13 @@ public class Chatroom
 	{
 		this.dow_sunday = dow_sunday;
 	}
-	public String getIdString() 
+	public String getChatIdString() 
 	{
-		return id_string;
+		return chat_id_string;
 	}
-	public void setIdString(String id_string) 
+	public void setChatIdString(String id_string) 
 	{
-		this.id_string = id_string;
+		this.chat_id_string = id_string;
 	}
 	public String getSubjectId() 
 	{
