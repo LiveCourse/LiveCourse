@@ -10,27 +10,27 @@ import org.json.JSONObject;
  */
 public class Chatroom 
 {
-	private String chat_id_string;
-	private String section_string;
-	private String subject_id;
-	private String course_number;
+	private String chatIdString;
+	private String sectionString;
+	private String subjectCode;
+	private String courseNumber;
 	private String name;
-	private String room_id;
-	private String class_id;
-	private String class_type;
+	private String roomNumber;
+	private String buildingName;
+	private String classType;
 	private String crn;
 	private String section;
-	private String start_time;
-	private String end_time;
-	private String start_date;
-	private String end_date;
-	private String dow_monday;
-	private String dow_tuesday;
-	private String dow_wednesday;
-	private String dow_thursday;
-	private String dow_friday;
-	private String dow_saturday;
-	private String dow_sunday;
+	private String startTime;
+	private String endTime;
+	private String startDate;
+	private String endDate;
+	private String dowMonday;
+	private String dowTuesday;
+	private String dowWednesday;
+	private String dowThursday;
+	private String dowFriday;
+	private String dowSaturday;
+	private String dowSunday;
 	private String instructor;
 	private String notes;
 	private String capacity;
@@ -39,31 +39,31 @@ public class Chatroom
 	{
     	try 
     	{
-		this.setChatIdString(ob.getString(		"class_id_string"));
-		this.setSectionIdString(ob.getString(	"id_string"));
-    	this.setSubjectId(ob.getString(		"subject_id"));
-    	this.setCourseNumber(ob.getString(	"course_number"));
-    	this.setName(ob.getString(			"name"));
-    	this.setStartTime(ob.getString(		"start_time"));	            	
-    	this.setRoomId(ob.getString(		"room_id"));	
-    	this.setClassId(ob.getString(		"class_id"));
-    	this.setClassType(ob.getString(		"type"));
-    	this.setCrn(ob.getString(			"crn"));
-    	this.setSection(ob.getString(		"section"));
-    	this.setStartTime(ob.getString(		"start_time"));
-    	this.setEndTime(ob.getString(		"end_time"));
-    	this.setStartDate(ob.getString(		"start_date"));
-    	this.setEndDate(ob.getString(		"end_date"));
-    	this.setDowMonday(ob.getString(		"dow_monday"));
-    	this.setDowTuesday(ob.getString(	"dow_tuesday"));
-    	this.setDowWednesday(ob.getString(	"dow_wednesday"));
-    	this.setDowThursday(ob.getString(	"dow_thursday"));
-    	this.setDowFriday(ob.getString(		"dow_friday"));
-    	this.setDowSaturday(ob.getString(	"dow_saturday"));
-    	this.setDowSunday(ob.getString(		"dow_sunday"));
-    	this.setInstructor(ob.getString(	"instructor"));
-    	this.setNotes(ob.getString(			"notes"));
-    	this.setCapacity(ob.getString(		"capacity"));   	
+			this.setChatIdString	(ob.getString("class_id_string"		));
+			this.setSectionIdString	(ob.getString("section_id_string"	));
+	    	this.setCrn				(ob.getString("crn"					));
+	    	this.setSubjectCode		(ob.getString("subject_code"		));
+	    	this.setCourseNumber	(ob.getString("course_number"		));
+	    	this.setName			(ob.getString("name"				));
+	    	this.setClassType		(ob.getString("type"				));
+	    	this.setSection			(ob.getString("section"				));
+	    	this.setBuildingName	(ob.getString("building_short_name"	));
+	    	this.setRoomNumber		(ob.getString("room_number"			));	
+	    	this.setDowMonday		(ob.getString("dow_monday"			));
+	    	this.setDowTuesday		(ob.getString("dow_tuesday"			));
+	    	this.setDowWednesday	(ob.getString("dow_wednesday"		));
+	    	this.setDowThursday		(ob.getString("dow_thursday"		));
+	    	this.setDowFriday		(ob.getString("dow_friday"			));
+	    	this.setDowSaturday		(ob.getString("dow_saturday"		));
+	    	this.setDowSunday		(ob.getString("dow_sunday"			));
+	    	this.setStartTime		(ob.getString("start_time"			));	            	
+	    	this.setStartTime		(ob.getString("start_time"			));
+	    	this.setEndTime			(ob.getString("end_time"			));
+	    	this.setStartDate		(ob.getString("start_date"			));
+	    	this.setEndDate			(ob.getString("end_date"			));
+	    	this.setCapacity		(ob.getString("capacity"			));   	
+	    	this.setInstructor		(ob.getString("instructor"			));
+	    	this.setNotes			(ob.getString("notes"				));
 		} 
     	catch (JSONException e) 
     	{
@@ -72,26 +72,26 @@ public class Chatroom
 	}
 	public String toString()
 	{
-		String temp = 	"ID String: " 		+ chat_id_string 	+
-						" SectionString: "	+ section_string+
-						" Course Number: " 	+ course_number + 
+		String temp = 	"ID String: " 		+ chatIdString 	+
+						" SectionString: "	+ sectionString	+
+						" Course Number: " 	+ courseNumber 	+ 
 						" Name: " 			+ name 			+ 
-						" Room ID: " 		+ room_id 		+
-						" Class ID: "		+ class_id		+
-						" Class Type: "		+ class_type 	+
+						" Room ID: " 		+ roomNumber 	+
+						" Class ID: "		+ buildingName	+
+						" Class Type: "		+ classType 	+
 						" CRN: "			+ crn 			+
 						" Section: "		+ section 		+
-						" Start Time: " 	+ start_time 	+
-						" End Time: " 		+ end_time 		+ 
-						" Start Date: " 	+ start_date 	+ 
-						" End Date: " 		+ end_date 		+ 
-						" Dow Monday: " 	+ dow_monday 	+ 
-						" Dow Tuesday: " 	+ dow_tuesday 	+ 
-						" Dow Wednesday: " 	+ dow_wednesday + 
-						" Dow Thursday: " 	+ dow_thursday 	+ 
-						" Dow Friday: " 	+ dow_friday 	+
-						" Dow Saturday: " 	+ dow_saturday 	+
-						" Dow Sunday: " 	+ dow_sunday	+
+						" Start Time: " 	+ startTime 	+
+						" End Time: " 		+ endTime 		+ 
+						" Start Date: " 	+ startDate 	+ 
+						" End Date: " 		+ endDate 		+ 
+						" Dow Monday: " 	+ dowMonday 	+ 
+						" Dow Tuesday: " 	+ dowTuesday 	+ 
+						" Dow Wednesday: " 	+ dowWednesday 	+ 
+						" Dow Thursday: " 	+ dowThursday 	+ 
+						" Dow Friday: " 	+ dowFriday 	+
+						" Dow Saturday: " 	+ dowSaturday 	+
+						" Dow Sunday: " 	+ dowSunday		+
 						" Instructor: "		+ instructor	+
 						" Notes: "			+ notes			+
 						" Capacity: "		+ capacity;
@@ -99,11 +99,11 @@ public class Chatroom
 	}
 	public String getSectionIdString()
 	{
-		return section_string;
+		return sectionString;
 	}
-	public void setSectionIdString(String sectionString)
+	public void setSectionIdString(String sectionIdString)
 	{
-		this.section_string = sectionString;
+		this.sectionString = sectionIdString;
 	}
 	public String getInstructor() 
 	{
@@ -123,107 +123,107 @@ public class Chatroom
 	}
 	public String getEndTime() 
 	{
-		return end_time;
+		return endTime;
 	}
-	public void setEndTime(String end_time) 
+	public void setEndTime(String endTime) 
 	{
-		this.end_time = end_time;
+		this.endTime = endTime;
 	}
 	public String getStartDate() 
 	{
-		return start_date;
+		return startDate;
 	}
-	public void setStartDate(String start_date) 
+	public void setStartDate(String startDate) 
 	{
-		this.start_date = start_date;
+		this.startDate = startDate;
 	}
 	public String getEndDate() 
 	{
-		return end_date;
+		return endDate;
 	}
-	public void setEndDate(String end_date) 
+	public void setEndDate(String endDate) 
 	{
-		this.end_date = end_date;
+		this.endDate = endDate;
 	}
 	public String getDowMonday() 
 	{
-		return dow_monday;
+		return dowMonday;
 	}
-	public void setDowMonday(String dow_monday) 
+	public void setDowMonday(String dowMonday) 
 	{
-		this.dow_monday = dow_monday;
+		this.dowMonday = dowMonday;
 	}
 	public String getDowTuesday() 
 	{
-		return dow_tuesday;
+		return dowTuesday;
 	}
-	public void setDowTuesday(String dow_tuesday) 
+	public void setDowTuesday(String dowTuesday) 
 	{
-		this.dow_tuesday = dow_tuesday;
+		this.dowTuesday = dowTuesday;
 	}
 	public String getDowWednesday() 
 	{
-		return dow_wednesday;
+		return dowWednesday;
 	}
-	public void setDowWednesday(String dow_wednesday) 
+	public void setDowWednesday(String dowWednesday) 
 	{
-		this.dow_wednesday = dow_wednesday;
+		this.dowWednesday = dowWednesday;
 	}
 	public String getDowThursday() 
 	{
-		return dow_thursday;
+		return dowThursday;
 	}
-	public void setDowThursday(String dow_thursday) 
+	public void setDowThursday(String dowThursday) 
 	{
-		this.dow_thursday = dow_thursday;
+		this.dowThursday = dowThursday;
 	}
 	public String getDowFriday() 
 	{
-		return dow_friday;
+		return dowFriday;
 	}
-	public void setDowFriday(String dow_friday) 
+	public void setDowFriday(String dowFriday) 
 	{
-		this.dow_friday = dow_friday;
+		this.dowFriday = dowFriday;
 	}
 	public String getDowSaturday() 
 	{
-		return dow_saturday;
+		return dowSaturday;
 	}
-	public void setDowSaturday(String dow_saturday) 
+	public void setDowSaturday(String dowSaturday) 
 	{
-		this.dow_saturday = dow_saturday;
+		this.dowSaturday = dowSaturday;
 	}
 	public String getDowSunday() 
 	{
-		return dow_sunday;
+		return dowSunday;
 	}
-	public void setDowSunday(String dow_sunday) 
+	public void setDowSunday(String dowSunday) 
 	{
-		this.dow_sunday = dow_sunday;
+		this.dowSunday = dowSunday;
 	}
 	public String getChatIdString() 
 	{
-		return chat_id_string;
+		return chatIdString;
 	}
-	public void setChatIdString(String id_string) 
+	public void setChatIdString(String chatIdString) 
 	{
-		this.chat_id_string = id_string;
+		this.chatIdString = chatIdString;
 	}
-	public String getSubjectId() 
+	public String getSubjectCode() 
 	{
-		return subject_id;
+		return subjectCode;
 	}
-	public void setSubjectId(String subject_id) 
+	public void setSubjectCode(String subjectCode) 
 	{
-		this.subject_id = subject_id;
+		this.subjectCode = subjectCode;
 	}
 	public String getCourseNumber() 
 	{
-		return course_number;
+		return courseNumber;
 	}
-	public void setCourseNumber(String course_number) 
+	public void setCourseNumber(String courseNumber) 
 	{
-		this.course_number = course_number;
+		this.courseNumber = courseNumber;
 	}
 	public String getName() 
 	{
@@ -233,37 +233,37 @@ public class Chatroom
 	{
 		this.name = name;
 	}
-	public String getRoomId() 
+	public String getRoomNumber() 
 	{
-		return room_id;
+		return roomNumber;
 	}
-	public void setRoomId(String room_id) 
+	public void setRoomNumber(String roomNumber) 
 	{
-		this.room_id = room_id;
+		this.roomNumber = roomNumber;
 	}
 	public String getStartTime() 
 	{
-		return start_time;
+		return startTime;
 	}
-	public void setStartTime(String start_time) 
+	public void setStartTime(String startTime) 
 	{
-		this.start_time = start_time;
+		this.startTime = startTime;
 	}
-	public String getClassId() 
+	public String getBuildingName() 
 	{
-		return class_id;
+		return buildingName;
 	}
-	public void setClassId(String class_id) 
+	public void setBuildingName(String buildingName) 
 	{
-		this.class_id = class_id;
+		this.buildingName = buildingName;
 	}
 	public String getClassType() 
 	{
-		return class_type;
+		return classType;
 	}
-	public void setClassType(String class_type) 
+	public void setClassType(String classType) 
 	{
-		this.class_type = class_type;
+		this.classType = classType;
 	}
 	public String getCrn() 
 	{
@@ -281,10 +281,12 @@ public class Chatroom
 	{
 		this.section = section;
 	}
-	public String getCapacity() {
+	public String getCapacity() 
+	{
 		return capacity;
 	}
-	public void setCapacity(String capacity) {
+	public void setCapacity(String capacity) 
+	{
 		this.capacity = capacity;
 	}
 }

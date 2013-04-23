@@ -19,23 +19,38 @@ import android.widget.TextView;
 
 public class ChatroomDialog extends DialogFragment implements DialogInterface.OnClickListener, LoaderCallbacks<Cursor>
 {
-	private String sectionId;
+	public final int 	DATA_FROM_DATABASE 	= 1;
+	public final int 	DATA_FROM_OBJECT	= 2;
 	
-	private TextView chatroomCrn;
-	private TextView chatroomInstructor;
-	private TextView chatroomType;
-	private TextView chatroomSection;
-	private TextView chatroomLocation;
-	private TextView chatroomTime;
-	private TextView chatroomStart;
-	private TextView chatroomEnd;
-	private TextView chatroomCapacity;
-	private TextView chatroomNotes;
+	private String 		sectionId;
+	private int			flag;
+
+	Chatroom			chatroom;
+	
+	private TextView 	chatroomCrn;
+	private TextView 	chatroomInstructor;
+	private TextView 	chatroomType;
+	private TextView 	chatroomSection;
+	private TextView 	chatroomLocation;
+	private TextView 	chatroomTime;
+	private TextView 	chatroomStart;
+	private TextView 	chatroomEnd;
+	private TextView 	chatroomCapacity;
+	private TextView 	chatroomNotes;
+	
 
 	
 	public ChatroomDialog(String sectionId)
 	{
+		this.sectionId 		= sectionId;
+		this.flag 			= this.DATA_FROM_DATABASE;
+	}
+	
+	public ChatroomDialog(String sectionId, Chatroom object)
+	{
 		this.sectionId = sectionId;
+		this.flag		= this.DATA_FROM_OBJECT;
+		this.chatroom	= object;
 	}
 	
 	@Override
@@ -68,8 +83,10 @@ public class ChatroomDialog extends DialogFragment implements DialogInterface.On
 	    this.chatroomCapacity 	= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_capacity_text_view	);
 	    this.chatroomNotes 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_notes_text_view		);
 	    
-		this.getActivity().getSupportLoaderManager().restartLoader(Globals.CHATROOM_lOADER, null, this);
-		
+	    if(this.flag == this.DATA_FROM_DATABASE)
+	    	this.getActivity().getSupportLoaderManager().restartLoader(Globals.CHATROOM_lOADER, null, this);
+	    else if(this.flag == this.DATA_FROM_OBJECT)
+	    	this.populateDialogFromObject();
 	}
 
 	@Override
@@ -85,7 +102,7 @@ public class ChatroomDialog extends DialogFragment implements DialogInterface.On
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) 
 	{
-		this.populateDialog(cursor);
+		this.populateDialogFromDatabase(cursor);
 	}
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) 
@@ -94,7 +111,75 @@ public class ChatroomDialog extends DialogFragment implements DialogInterface.On
 		
 	}
 	
-	private void populateDialog(Cursor cursor)
+	private void populateDialogFromObject()
+	{
+		String className 			= this.chatroom.getName();
+		String classSubjectCode 	= this.chatroom.getSubjectCode();
+		String classCourseNumber 	= this.chatroom.getCourseNumber();
+		String classRoomNumber 		= this.chatroom.getRoomNumber();
+		String classBuilding 		= this.chatroom.getBuildingName();
+		String classType 			= this.chatroom.getClassType();
+		String classCrn 			= this.chatroom.getCrn();
+		String classSection 		= this.chatroom.getSection();
+		String classStartTime		= this.chatroom.getStartTime();
+		String classEndTime 		= this.chatroom.getEndTime();
+		String classStartDate 		= this.chatroom.getStartDate();
+		String classEndDate 		= this.chatroom.getEndDate();
+		String classInstructor 		= this.chatroom.getInstructor();
+		String classNotes 			= this.chatroom.getNotes();
+		String classCapacity 		= this.chatroom.getCapacity();
+		
+		String classTitle			= classSubjectCode + classCourseNumber + " " + className;
+		String classLocation 		= classBuilding + " " + classRoomNumber;
+		
+		String classTime = "";
+    	
+    	if(this.chatroom.getDowMonday()		.equals("1"))
+    		classTime += "M";
+    	if(this.chatroom.getDowTuesday()	.equals("1"))
+    		classTime += "T";
+    	if(this.chatroom.getDowWednesday()	.equals("1"))
+    		classTime += "W";
+    	if(this.chatroom.getDowThursday()	.equals("1"))
+    		classTime += "R";
+    	if(this.chatroom.getDowFriday()		.equals("1"))
+    		classTime += "F";
+    	if(this.chatroom.getDowSaturday()	.equals("1"))
+    		classTime += "S";
+    	if(this.chatroom.getDowSunday()		.equals("1"))
+    		classTime += "U";
+    	classTime += " " + Utility.convertMinutesTo24Hour(this.chatroom.getStartTime()) + " - " + Utility.convertMinutesTo24Hour(this.chatroom.getEndTime());
+		
+    	Log.d("Chatroom dialog", 	" ClassName: " 			+ className 		+
+				" ClassSubjectCode: " 	+ classSubjectCode 	+
+				" ClassCourseNumber: " 	+ classCourseNumber +
+				" ClassRoomNumber: " 	+ classRoomNumber 	+
+				" ClassBuilding: " 		+ classBuilding 	+
+				" ClassType: " 			+ classType 		+
+				" ClassCrn: " 			+ classCrn 			+
+				" ClassSection: " 		+ classSection 		+
+				" ClassStartTime: " 	+ classStartTime 	+
+				" ClassEndTime: " 		+ classEndTime 		+
+				" ClassStartDate: " 	+ classStartDate 	+
+				" ClassEndDate: " 		+ classEndDate 		+
+				" ClassInstructor: " 	+ classInstructor 	+
+				" ClassNotes: " 		+ classNotes		+
+				" ClassCapacity:" 		+ classCapacity);
+    	
+    	this.getDialog()			.setTitle(classTitle	);
+		
+		this.chatroomCrn			.setText(classCrn		);
+		this.chatroomInstructor		.setText(classInstructor);
+		this.chatroomType			.setText(classType		);
+		this.chatroomLocation		.setText(classLocation	);
+		this.chatroomSection		.setText(classSection	);
+		this.chatroomTime			.setText(classTime		);
+		this.chatroomStart			.setText(classStartDate	);
+		this.chatroomEnd			.setText(classEndDate	);
+		this.chatroomCapacity		.setText(classCapacity	);
+		this.chatroomNotes			.setText(classNotes		);
+	}
+	private void populateDialogFromDatabase(Cursor cursor)
 	{
 		cursor.moveToFirst();
 		

@@ -49,8 +49,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	public static final String KEY_CLASS_SUBJECT_CODE 			= "subject_code";
 	public static final String KEY_CLASS_COURSE_NUMBER 			= "course_number";
 	public static final String KEY_CLASS_NAME 					= "name";
-	public static final String KEY_CLASS_ROOM_NUMBER 			= "room_id";
-	public static final String KEY_CLASS_BUILDING_NAME			= "class_id";
+	public static final String KEY_CLASS_ROOM_NUMBER 			= "room_number";
+	public static final String KEY_CLASS_BUILDING_NAME			= "building_name";
 	public static final String KEY_CLASS_TYPE					= "class_type";
 	public static final String KEY_CLASS_CRN					= "crn";
 	public static final String KEY_CLASS_SECTION				= "section";

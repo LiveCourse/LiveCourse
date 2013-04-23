@@ -1,6 +1,8 @@
 package net.livecourse.android.classlist;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -27,7 +30,7 @@ import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 
-public class QueryActivity extends SherlockFragmentActivity implements SearchView.OnQueryTextListener, OnItemClickListener, OnRestCalled
+public class QueryActivity extends SherlockFragmentActivity implements SearchView.OnQueryTextListener, OnItemClickListener, OnRestCalled, OnItemLongClickListener
 {
 	private final String TAG = " == QueryActivity == ";
 	
@@ -35,6 +38,8 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	private ListView 				queryListView;
 	private ClassQueryArrayAdapter 	adapter;
 	private ArrayList<Chatroom> 	emptyAList;
+	
+	private String					longPressChatRoomSectionId;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -53,6 +58,7 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
         
         this.queryListView.setAdapter(this.adapter);
         this.queryListView.setOnItemClickListener(this);
+        this.queryListView.setOnItemLongClickListener(this);
         
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) 
@@ -86,8 +92,30 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	}
 	
 	private void processQuery(String query)
-	{
-		new Restful(Restful.SEARCH_FOR_CHAT_PATH,Restful.GET, new String[]{"query"}, new String[]{this.query}, 1, this);
+	{	
+		/**
+		 * For CRNs
+		 */
+		Pattern pattern = Pattern.compile("(^[0-9]{5}$)");
+		Matcher matcher = pattern.matcher(query);
+		if (matcher.find())
+		{
+			Log.d(this.TAG, "Matcher: " + matcher.group(1));
+			new Restful(Restful.SEARCH_FOR_CHAT_PATH, Restful.GET, new String[]{"crn"}, new String[]{matcher.group(1)}, 1, this);
+		    return;
+		}
+		
+		/**
+		 * For classes
+		 */
+		pattern = Pattern.compile("(^[a-zA-Z]+)([0-9]+$)");
+		matcher = pattern.matcher(query);
+		if (matcher.find())
+		{
+			Log.d(this.TAG, "Matcher: " + matcher.group(1) + " " + matcher.group(2));
+			new Restful(Restful.SEARCH_FOR_CHAT_PATH, Restful.GET, new String[]{"subject_code", "course_number"}, new String[]{matcher.group(1), matcher.group(2)}, 2, this);
+		    return;
+		}		
 	}
 	
 	public ClassQueryArrayAdapter getAdapter() 
@@ -118,6 +146,17 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	{
 		ChatroomViewHolder v = (ChatroomViewHolder) view.getTag();	
 		new Restful(Restful.JOIN_CHAT_PATH, Restful.POST, new String[]{"id"}, new String[]{v.sectionIdString}, 1, this);
+	}
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) 
+	{
+		this.longPressChatRoomSectionId = ( (ChatroomViewHolder)view.getTag() ).sectionIdString;
+		
+		ChatroomDialog dialog = new ChatroomDialog(this.longPressChatRoomSectionId, this.emptyAList.get(position));
+        dialog.show(this.getSupportFragmentManager(), "NoticeDialogFragment");
+
+		return true;
 	}
 	
 	@Override
@@ -222,4 +261,6 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	{
 		
 	}
+
+
 }
