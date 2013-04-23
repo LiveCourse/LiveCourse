@@ -78,6 +78,7 @@ class Model_Sections extends CI_Model {
 		$query = $this->db
 				->select('lc_classes.id_string as class_id_string, lc_sections.id_string as section_id_string, lc_sections.crn, lc_subjects.code as subject_code, lc_classes.course_number, lc_classes.name, lc_buildings.short_name as building_short_name, lc_rooms.room_number, lc_sections.dow_monday, lc_sections.dow_tuesday, lc_sections.dow_wednesday, lc_sections.dow_thursday, lc_sections.dow_friday, lc_sections.dow_saturday, lc_sections.dow_sunday, lc_sections.start_time, lc_sections.end_time, lc_sections.start_date, lc_sections.end_date, lc_sections.capacity, lc_sections.instructor, lc_sections.notes')
 				->from('lc_sections')
+				->join('lc_section_participants','lc_section_participants.section_id = lc_sections.id')
 				->join('lc_classes','lc_classes.id = lc_sections.class_id')
 				->join('lc_subjects','lc_subjects.id = lc_classes.subject_id')
 				->join('lc_rooms','lc_rooms.id = lc_sections.room_id')
