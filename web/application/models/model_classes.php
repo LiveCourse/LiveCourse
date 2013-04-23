@@ -559,7 +559,7 @@ WHERE lc_chat_participants.chat_id = 1
 	 *
 	 *returns the array of results
 	 */
-	function get_Files_by_class($chat_id)
+	function get_files_by_class($chat_id)
 	{
 		return $query = $this->db
 				->where('chat_id', $chat_id)
