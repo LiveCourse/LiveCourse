@@ -287,6 +287,22 @@ CREATE TABLE IF NOT EXISTS `sections_tmp` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lc_notes`
+--
+
+CREATE TABLE IF NOT EXISTS `lc_notes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `class_id` int(11) NOT NULL,
+  `parent_note_id` int(11) NOT NULL DEFAULT '0',
+  `linked_message_id` int(11) NOT NULL DEFAULT '0',
+  `text` text NOT NULL,
+  `timeadded` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
