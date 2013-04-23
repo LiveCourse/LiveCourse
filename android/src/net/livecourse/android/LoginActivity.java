@@ -11,7 +11,6 @@ import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -55,7 +54,6 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 	private CheckBox 	loginSaveCredsCheckBoxView;
 	private Button		loginButton;
 	private Button		regButton;
-	private ProgressDialog progressDialog;
     
 	/**
 	 * This ArrayList holds errors that occur when the user attempts to login
@@ -131,8 +129,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
         this.regButton.setOnClickListener(this);
         this.loginSaveCredsCheckBoxView.setOnClickListener(this);
         this.loginEmailEditTextView.addTextChangedListener(this);
-        this.loginPasswordEditTextView.addTextChangedListener(this);
-        
+        this.loginPasswordEditTextView.addTextChangedListener(this);  
 	}
 	
 	/**
@@ -256,7 +253,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 	{
 		if(restCall.equals(Restful.AUTH_PATH))
 		{
-			this.startAuthDialog();
+			Utility.startDialog(this, "Authenticating...", "Logging In");
 		}
 	}
 
@@ -342,23 +339,21 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		 */
 		if(restCall.equals(Restful.AUTH_PATH))
 		{
-			this.changeAuthDialog("Verifying...");
+			Utility.changeDialog(null, "Verifying...");
 			new Restful(Restful.VERIFY_PATH, Restful.GET, null, null, 0, this);
 		}
 		else if(restCall.equals(Restful.VERIFY_PATH))
 		{
-			this.changeAuthDialog("Registering Android Device...");
+			Utility.changeDialog(null, "Registering Android Device...");
 			
 			Log.d(this.TAG, "Current Reg ID: " + Globals.regId);
-			Log.d(this.TAG, "Current Device ID: " + Secure.getString(this.getContentResolver(),
-                    Secure.ANDROID_ID));
+			Log.d(this.TAG, "Current Device ID: " + Secure.getString(this.getContentResolver(), Secure.ANDROID_ID));
 			
-			new Restful(Restful.REGISTER_ANDROID_USER_PATH, Restful.POST, new String[]{"email","name","reg_id","device_id"}, new String[]{Globals.email,Globals.displayName,Globals.regId, Secure.getString(this.getContentResolver(),
-                    Secure.ANDROID_ID)}, 4, this);
+			new Restful(Restful.REGISTER_ANDROID_USER_PATH, Restful.POST, new String[]{"email","name","reg_id","device_id"}, new String[]{Globals.email,Globals.displayName,Globals.regId, Secure.getString(this.getContentResolver(), Secure.ANDROID_ID)}, 4, this);
 		}
 		else if(restCall.equals(Restful.REGISTER_ANDROID_USER_PATH))
 		{
-			this.stopAuthDialog();
+			Utility.stopDialog();
 			Intent mainIntent = new Intent(this, MainActivity.class);
 			this.startActivity(mainIntent);	
 		}
@@ -413,35 +408,17 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 					this.startActivity(mainIntent);	
 					break;
 			}
+			errorList.add("Login Failed");
 		}
 		
-		this.stopAuthDialog();
+		Utility.stopDialog();
 		this.showErrors();
 	}
 	
 	@Override
 	public void onRestCancelled(String restCall, String result) 
 	{
-		this.stopAuthDialog();
-	}
-	
-	private void startAuthDialog()
-	{
-		this.progressDialog = new ProgressDialog(this);
-		this.progressDialog.setMessage("Authenticating...");
-		this.progressDialog.setTitle("Logging In");
-		this.progressDialog.show();
-	}
-	private void changeAuthDialog(String message)
-	{
-		this.progressDialog.setMessage(message);
-	}
-	private void stopAuthDialog()
-	{
-		if(this.progressDialog.isShowing())
-		{
-			this.progressDialog.dismiss();
-		}
+		Utility.stopDialog();
 	}
 	
 	/**
@@ -489,15 +466,14 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 	}
 
 	@Override
-	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-			int arg3) {
-		// TODO Auto-generated method stub
+	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) 
+	{
 		
 	}
 
 	@Override
-	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
+	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) 
+	{
 		
 	}
 

@@ -1,6 +1,5 @@
 package net.livecourse.android;
 
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 public class SettingsActivity extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener, OnRestCalled
 {
 	private final String TAG = " == Settings Activity ==";
-	private ProgressDialog progressDialog;
 	private String	tempChangeStorage;
 	
 	@SuppressWarnings("deprecation")
@@ -36,8 +34,6 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
         
         ListPreference listPreference = (ListPreference) findPreference("pref_color");
         listPreference.setValueIndex(Integer.parseInt(Globals.colorPref));
-        
-        progressDialog = new ProgressDialog(this);
 	}
 
 	@Override
@@ -85,11 +81,11 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 	{
 		if(restCall.equals(Restful.UPDATE_COLOR_PREF_PATH))
 		{
-			Utility.startDialog(progressDialog, "Updating Preferences", "Updating Color...");
+			Utility.startDialog(this, "Updating Preferences", "Updating Color...");
 		}
 		else if(restCall.equals(Restful.CHANGE_DISPLAY_NAME_PATH))
 		{
-			Utility.startDialog(progressDialog, "Updating Preferences", "Updating Name...");
+			Utility.startDialog(this, "Updating Preferences", "Updating Name...");
 		}
 	}
 
@@ -121,7 +117,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 				Log.e(this.TAG, "Variable TempChangeStorage is null at updating color");
 		}
 		
-		Utility.stopDialog(progressDialog);
+		Utility.stopDialog();
 	}
 
 	@Override
@@ -132,7 +128,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 			
 		}		
 		
-		Utility.stopDialog(progressDialog);
+		Utility.stopDialog();
 	}
 
 	@Override
@@ -143,6 +139,6 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 			
 		}	
 		
-		Utility.stopDialog(progressDialog);
+		Utility.stopDialog();
 	}
 }

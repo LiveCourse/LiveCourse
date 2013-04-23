@@ -1,5 +1,8 @@
 package net.livecourse.utility;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+
 import com.actionbarsherlock.view.ActionMode;
 
 import net.livecourse.android.ChatFragment;
@@ -39,6 +42,12 @@ public class Globals
     public static ClassListFragment classListFragment;
     public static ChatFragment chatFragment;
     public static ParticipantsFragment participantsFragment;
+    
+    /**
+     * Dialogs
+     */
+    public static ProgressDialog progressDialog;
+    public static AlertDialog alertDialog;
     
     /**
      * The loader numbers

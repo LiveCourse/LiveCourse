@@ -76,8 +76,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         mAdapter.setIndicator(mIndicator);
         mAdapter.setPager(mPager);
         mAdapter.setActivity(this);
-        
-        
     }
 	
 	@Override
@@ -204,10 +202,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	}
 
 	@Override
-	public void onPageScrollStateChanged(int arg0) 
+	public void onPageScrollStateChanged(int state) 
 	{
-		// TODO Auto-generated method stub
-		
+	    if (state == ViewPager.SCROLL_STATE_IDLE)
+	    {
+	    	Utility.hideKeyboard(this);
+	    }
 	}
 
 	@Override
