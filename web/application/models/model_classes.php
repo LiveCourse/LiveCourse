@@ -92,11 +92,12 @@ class Model_Classes extends CI_Model {
 				->result();
 		*/
 		$query = $this->db
-				->select('lc_classes.*')
+				->select('lc_classes.id_string as class_id_string, lc_subjects.code as subject_code, lc_classes.course_number, lc_classes.name')
 				->distinct()
 				->from('lc_sections')
 				->join('lc_section_participants','lc_sections.id = lc_section_participants.section_id')
 				->join('lc_classes','lc_classes.id = lc_sections.class_id')
+				->join('lc_subjects','lc_subjects.id = lc_classes.subject_id');
 				->where('lc_section_participants.user_id',$user_id)
 				->get()
 				->result();
