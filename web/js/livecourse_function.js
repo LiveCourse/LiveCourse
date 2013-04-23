@@ -1044,7 +1044,10 @@ function toggle_notes()
 		$("#NotesFrame").show();
 		$("#NotesFrame").animate({"right":right_pos},250, "easeOutQuint", null);
 		//Chat frame needs to slide over as well.
-		$("#ChatFrame").animate({"right":width+16,"left":0},250, "easeOutQuint", null);
+		$("#ChatFrame").animate({"right":width+16,"left":0},250, "easeOutQuint", function() {
+			$("#ChatMessages").mCustomScrollbar("update");
+			$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:0}); //scroll to bottom
+		});
 		//Compose frame needs to slide over as well.
 		$("#ComposeFrame").animate({"right":width+16,"left":0},250, "easeOutQuint", null);
 		hide_participant_list();
@@ -1052,13 +1055,14 @@ function toggle_notes()
 		$("#switcher_notes").removeClass("selected");
 		$("#NotesFrame").fadeOut(125);
 		//Give chat frame its room back
-		$("#ChatFrame").animate({"right":0,"left":256},250, "easeInQuint", null);
+		$("#ChatFrame").animate({"right":0,"left":256},250, "easeInQuint", function() {
+			$("#ChatMessages").mCustomScrollbar("update");
+			$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:0}); //scroll to bottom
+		});
 		//Give compose frame its room back
 		$("#ComposeFrame").animate({"right":0,"left":256},250, "easeInQuint", null);
 		show_participant_list();
 	}
-	$("#ChatMessages").mCustomScrollbar("update");
-	$("#ChatMessages").mCustomScrollbar("scrollTo","bottom",{scrollInertia:0}); //scroll to bottom
 }
 
 function add_note(addbutton)
