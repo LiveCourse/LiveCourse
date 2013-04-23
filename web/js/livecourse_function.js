@@ -596,9 +596,9 @@ function update_chat_list()
 				$('#CourseList li').slideUp(300,function() {$(this).remove();});
 				for (i in data)
 				{
-					var listitem = $('<li id="'+data[i].id_string+'"><span class="title">'+data[i].name+'</span><br /><span class="subTitle">0 members, 0 online</span></li>');
+					var listitem = $('<li id="'+data[i].class_id_string+'"><span class="title">'+data[i].name+'</span><br /><span class="subTitle">0 members, 0 online</span></li>');
 					listitem.hide();
-					if (data[i].id_string == current_chat_room)
+					if (data[i].class_id_string == current_chat_room)
 						listitem.addClass("selected");
 					$('#CourseList').append(listitem);
 					listitem.slideDown();
@@ -610,7 +610,7 @@ function update_chat_list()
 				//Switch to the first one if we have no room selected yet.
 				if (current_chat_room.length <= 0)
 				{
-					switch_chat_room(data[0].id_string);
+					switch_chat_room(data[0].class_id_string);
 				}
 			}
 			progress_indicator_hide(upd_ind);
