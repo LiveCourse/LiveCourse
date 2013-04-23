@@ -1,4 +1,4 @@
-package net.livecourse.android;
+package net.livecourse.android.participants;
 
 import net.livecourse.R;
 import net.livecourse.utility.Globals;

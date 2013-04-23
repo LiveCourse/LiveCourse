@@ -394,6 +394,16 @@ public class Utility
 			Log.e(Utility.TAG, "activity is null on hideKeyboard");
 			return;
 		}
+		else if(activity.getCurrentFocus() == null)
+		{
+			Log.e(Utility.TAG, "activity.getCurrentFocus() is null on hideKeyboard");
+			return;
+		}
+		else if(activity.getCurrentFocus().getWindowToken() == null)
+		{
+			Log.e(Utility.TAG, "activity.getCurrentFocus().getWindowToken() is null on hideKeyboard");
+			return;
+		}
 		
 		InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
