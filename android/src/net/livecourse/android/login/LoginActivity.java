@@ -66,24 +66,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 	{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
-        
-        GCMRegistrar.checkDevice(this);
-		GCMRegistrar.checkManifest(this);
-		
-		final String regId = GCMRegistrar.getRegistrationId(this);
-		
-		if (regId.equals("")) 
-		{
-			GCMRegistrar.register(this, Globals.SENDER_ID);
-		} 
-		else 
-		{
-			Globals.regId 			= regId;
-			Log.d(this.TAG, "GCMRegister failed, already registered");
-		}
-		
-
-		                
+        		                
         /**
          * Links to the XML
          */
@@ -131,6 +114,30 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
         this.loginSaveCredsCheckBoxView.setOnClickListener(this);
         this.loginEmailEditTextView.addTextChangedListener(this);
         this.loginPasswordEditTextView.addTextChangedListener(this);  
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+	}
+	
+	public void registerGCM()
+	{
+        GCMRegistrar.checkDevice(this);
+		GCMRegistrar.checkManifest(this);
+		
+		final String regId = GCMRegistrar.getRegistrationId(this);
+		
+		if (regId.equals("")) 
+		{
+			GCMRegistrar.register(this, Globals.SENDER_ID);
+		} 
+		else 
+		{
+			Globals.regId 			= regId;
+			Log.d(this.TAG, "GCMRegister failed, already registered");
+		}
 	}
 	
 	/**
@@ -341,6 +348,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		if(restCall.equals(Restful.AUTH_PATH))
 		{
 			Utility.changeDialog(null, "Verifying...");
+			this.registerGCM();
 			new Restful(Restful.VERIFY_PATH, Restful.GET, null, null, 0, this);
 		}
 		else if(restCall.equals(Restful.VERIFY_PATH))
@@ -357,6 +365,8 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 			Utility.stopDialog();
 			Intent mainIntent = new Intent(this, MainActivity.class);
 			this.startActivity(mainIntent);	
+			
+			this.finish();
 		}
 	}
 
@@ -407,9 +417,12 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 				case 409: 
 					Intent mainIntent = new Intent(this, MainActivity.class);
 					this.startActivity(mainIntent);	
+					this.finish();
 					break;
 			}
 			errorList.add("Login Failed");
+			
+			//this.registerGCM();
 		}
 		
 		Utility.stopDialog();

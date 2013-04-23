@@ -77,6 +77,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         mAdapter.setIndicator(mIndicator);
         mAdapter.setPager(mPager);
         mAdapter.setActivity(this);
+        
+        Globals.viewPager = this.mPager;
     }
 	
 	@Override
@@ -87,7 +89,22 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
         unregIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
         startService(unregIntent);
+        
         Globals.newReg = false;
+        Globals.progressDialog = null;    
+        Globals.roomList = null;
+		Globals.userId = null;
+		Globals.email = null;
+		Globals.displayName = null;
+		Globals.passwordToken = null;
+		Globals.query = null;
+		Globals.token = null;
+		Globals.sectionId = null;
+		Globals.regId = null;
+		Globals.colorPref = null;
+		Globals.startEpoch = null;
+		Globals.message = null;
+		Globals.chatName = null;
 	}
 	
 	@Override
@@ -108,43 +125,13 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 				Intent settings = new Intent(this, SettingsActivity.class);
 	            startActivityForResult(settings, RESULT_SETTINGS);
 				break;
-			case R.id.main_options_logout:
-				
-				Toast.makeText(this, "Logging Out", Toast.LENGTH_SHORT).show();
+			case R.id.main_options_logout:				
 				Intent intent = new Intent(this, LoginActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				
-				Globals.roomList = null;
-				Globals.userId = null;
-				Globals.email = null;
-				Globals.displayName = null;
-				Globals.passwordToken = null;
-				Globals.query = null;
-				Globals.token = null;
-				Globals.sectionId = null;
-				Globals.regId = null;
-				Globals.colorPref = null;
-				Globals.startEpoch = null;
-				Globals.message = null;
-				Globals.chatName = null;
-				
-				SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
-				
-		        prefs.edit().putString("pref_user_id"		, null	).commit();
-		        prefs.edit().putString("pref_email"			, null	).commit();
-		        prefs.edit().putString("pref_display_name"	, null	).commit();
-		        prefs.edit().putString("pref_password_token", null	).commit();
-		        prefs.edit().putString("pref_token"			, null	).commit();
-		        prefs.edit().putString("pref_chat_id"		, null	).commit();
-		        prefs.edit().putString("pref_reg_id"		, null	).commit();
-		        prefs.edit().putString("pref_color"			, null	).commit();
-		        prefs.edit().putString("pref_chat_name"		, null	).commit();
-		        
-		        Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
-		        unregIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
-		        startService(unregIntent);
-		        
 				this.startActivity(intent);
+		        
+				this.clearPrefs();
+		        this.finish();
 				
 				break;
 		}
@@ -169,6 +156,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         prefs.edit().putString("pref_color"			, Globals.colorPref		).commit();
         prefs.edit().putString("pref_chat_name"		, Globals.chatName		).commit();
         
+        Log.d(this.TAG, "saving color: " + Globals.colorPref + " the pref: " + prefs.getString("pref_color", null));
+        
+        Globals.isOnForeground = false;
+        
         //Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
         //unregIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
         //startService(unregIntent);
@@ -179,6 +170,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	protected void onResume()
 	{
 		super.onResume();
+		
+		Globals.isOnForeground = true;
 	}
 	
 	private void resumeSaveState()
@@ -190,16 +183,34 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         Globals.displayName 	= prefs.getString("pref_display_name"	, null	);
         Globals.passwordToken 	= prefs.getString("pref_password_token"	, null	);
         Globals.token 			= prefs.getString("pref_token"			, null	);
-        Globals.sectionId 			= prefs.getString("pref_chat_id"		, null	);
+        Globals.sectionId 		= prefs.getString("pref_chat_id"		, null	);
         Globals.regId 			= prefs.getString("pref_reg_id"			, null	);
         Globals.colorPref 		= prefs.getString("pref_color"			, null	);
         Globals.chatName 		= prefs.getString("pref_chat_name"		, null	);
+        
+        Log.d(this.TAG, "saved color: " + Globals.colorPref + " the pref: " + prefs.getString("pref_color", null));
+        Log.d(this.TAG, "saved email: " + Globals.colorPref + " the pref: " + prefs.getString("pref_email", null));
         
         Intent registrationIntent = new Intent("com.google.android.c2dm.intent.REGISTER");
 		registrationIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
 		registrationIntent.putExtra("sender", Globals.SENDER_ID);
 		startService(registrationIntent);
 		Globals.newReg = true;
+	}
+	
+	private void clearPrefs()
+	{
+		SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+		
+        prefs.edit().putString("pref_user_id"		, null	).commit();
+        prefs.edit().putString("pref_email"			, null	).commit();
+        prefs.edit().putString("pref_display_name"	, null	).commit();
+        prefs.edit().putString("pref_password_token", null	).commit();
+        prefs.edit().putString("pref_token"			, null	).commit();
+        prefs.edit().putString("pref_chat_id"		, null	).commit();
+        prefs.edit().putString("pref_reg_id"		, null	).commit();
+        prefs.edit().putString("pref_color"			, null	).commit();
+        prefs.edit().putString("pref_chat_name"		, null	).commit();
 	}
 
 	@Override

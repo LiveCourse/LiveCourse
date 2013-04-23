@@ -2,6 +2,7 @@ package net.livecourse.utility;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.support.v4.view.ViewPager;
 
 import com.actionbarsherlock.view.ActionMode;
 
@@ -39,6 +40,11 @@ public class Globals
 	 */
 	public static DatabaseHandler 		appDb;
 	
+	/**
+	 * Activity related variables
+	 */
+	public static ViewPager				viewPager;
+	public static boolean				isOnForeground;
     /**
      * Fragments 
      */
@@ -46,6 +52,7 @@ public class Globals
     public static ClassListFragment 	classListFragment;
     public static ChatFragment 			chatFragment;
     public static ParticipantsFragment 	participantsFragment;
+    
     
     /**
      * Dialogs

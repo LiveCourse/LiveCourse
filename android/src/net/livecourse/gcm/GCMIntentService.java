@@ -61,7 +61,7 @@ public class GCMIntentService extends GCMBaseIntentService implements OnRestCall
 		if(!intent.getStringExtra("chat_id").equals(Globals.chatId))
 			return;
 		
-		if(!intent.getStringExtra("user_id").equals(Globals.userId))
+		if(!intent.getStringExtra("user_id").equals(Globals.userId) && (!Globals.isOnForeground || Globals.viewPager.getCurrentItem() != 1))
 		{
 			Bitmap notPic = BitmapFactory.decodeResource(context.getResources(),R.drawable.paperairplanewhite);
 			notPic = Bitmap.createScaledBitmap(notPic, 48, 48, false); 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+  		android:clickable="true"
+	    android:layout_marginTop="5dp"
+		android:layout_marginBottom="5dp"
+	    android:layout_marginLeft="20dp"
+	    android:layout_marginRight="20dp" >
+    
+	    <TextView
+				android:id="@+id/chatmessage_dialog_item_user_text_view"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textIsSelectable="false"
+				android:layout_weight="1"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
+	    
+	    <TextView
+				android:id="@+id/chatmessage_dialog_item_time_view"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textIsSelectable="false"
+				android:layout_gravity="right"
+				android:layout_weight="1"
+				android:textAppearance="?android:attr/textAppearanceSmall" />
+	    
+	    </LinearLayout>
+    
+    <TextView
+		android:id="@+id/chatmessage_dialog_item_message_text_view"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:textIsSelectable="false"
+		android:layout_marginTop="5dp"
+		android:layout_marginBottom="5dp"
+		android:layout_marginLeft="20dp"
+	    android:layout_marginRight="20dp"
+		android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+		android:clickable="true"
+		android:visibility="gone"
+	    android:layout_marginTop="5dp"
+		android:layout_marginBottom="5dp"
+	    android:layout_marginLeft="20dp"
+	    android:layout_marginRight="20dp" >
+    
+	    <TextView
+				android:id="@+id/chatmessage_dialog_item_file_title_text_view"
+				android:layout_width="100dp"
+				android:layout_height="wrap_content"
+				android:textIsSelectable="false"
+				android:lines="1"
+				android:ellipsize="end"
+				android:textAppearance="?android:attr/textAppearanceSmall"
+				android:text="@string/chatmessage_dialog_item_file_title" />
+	    
+	    <TextView
+				android:id="@+id/chatmessage_dialog_item_file_text_view"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textIsSelectable="false"
+				android:textAppearance="?android:attr/textAppearanceSmall" />
+	    
+	    </LinearLayout>
+</LinearLayout>
