@@ -433,6 +433,14 @@ a.buttonLink:hover {
   display: block;
   float: left;
 }
+#joinroom_results ul li.joined {
+  border: 3px solid #b8c9e5 !important;
+  color: #2e587e !important;
+  background-color: #b8c9e5 !important;
+}
+#joinroom_results ul li.joined .name {
+  color: #2e587e !important;
+}
 #joinroom_results ul li:hover {
   border-color: #fff;
 }

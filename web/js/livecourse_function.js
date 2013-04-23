@@ -308,19 +308,89 @@ function joinroom_show()
 						{
 							if (r.test(subjects[s].code))
 							{
-								console.log("MATCH");
 								responses.push(subjects[s].code);
 							}
 						}
-						console.log(responses);
 						response( responses );
-					} else {
-						
+					} else if (/([a-zA-Z]+)\s?([0-9]+)/.test(request.term)) {
+						//Here we look for actual classes
+						var matches = /([a-zA-Z]+)\s?([0-9]+)/.exec(request.term);
+						var responses = new Array();
+						call_api("chats/search","GET",{subject_code: matches[1],course_number: matches[2]},
+							function (data) {
+								for (var i in data)
+								{
+									responses.push(data[i].subject_code+data[i].course_number);
+								}
+								response( responses );
+							},
+							function (xhr, status)
+							{
+							});
 					}
 				},
 				minLength: 0,
 				select: function( event, ui ) {
 					$(dialog).find("input[name=classnumber]").val(ui.item.label);
+					//Fetch matching sections
+					if (/([a-zA-Z]+)\s?([0-9]+)/.test(ui.item.label))
+					{
+						var matches = /([a-zA-Z]+)\s?([0-9]+)/.exec(ui.item.label);
+						var ind = progress_indicator_show();
+						$(dialog).find("#joinroom_results").html();
+						call_api("sections/search_advanced","GET",{subject_code: matches[1],course_number: matches[2]},
+							function (data) {
+								$(dialog).find('h1').html(data[0].name+" Sections");
+								$(dialog).find("#joinroom_results").html('<ul></ul>');
+								for (var i in data)
+								{
+									var start_hour = Math.floor(data[i].start_time/60);
+									start_hour = (('0'+(start_hour)).slice(-2));
+									var start_minute = data[i].start_time%60;
+									start_minute = (('0'+(start_minute)).slice(-2));
+									var end_hour = Math.floor(data[i].end_time/60);
+									end_hour = (('0'+(end_hour)).slice(-2));
+									var end_minute = data[i].end_time%60;
+									end_minute = (('0'+(end_minute)).slice(-2));
+									var dow = '';
+									if (data[i].dow_monday == 1) dow+='M';
+									if (data[i].dow_tuesday == 1) dow+='T';
+									if (data[i].dow_wednesday == 1) dow+='W';
+									if (data[i].dow_thursday == 1) dow+='R';
+									if (data[i].dow_friday == 1) dow+='F';
+									if (data[i].dow_saturday == 1) dow+='S';
+									if (data[i].dow_sunday == 1) dow+='U';
+									var item = $('<li id="'+data[i].section_id_string+'"><span class="name">'+data[i].type+'</span><br><span class="instructor">'+data[i].instructor+'</span><br><span class="time">'+dow+' from '+start_hour+':'+start_minute+' - '+end_hour+':'+end_minute+'</span><br><span class="location">'+data[i].building_short_name+' '+data[i].room_number+'</span></li>');
+									item.hide();
+									$(dialog).find("#joinroom_results ul").append(item);
+									item.fadeIn();
+									item.click(function() {
+										if ($(this).hasClass("joined"))
+											return;
+										var _this = this;
+										section_join($(this).attr('id'),function (data) {
+												$(_this).addClass("joined");
+												Cufon.refresh();
+											}, function(xhr, status)
+											{
+												var errdialog = dialog_new("Error Joining","An error occurred while attempting to join this class section.",true,true);
+												errdialog.find(".DialogContainer").addClass("error");
+												dialog_show(errdialog);
+											});
+									});
+								}
+								Cufon.refresh();
+								progress_indicator_hide(ind);
+							},
+							function (xhr, status)
+							{
+								if (xhr.status == 404)
+									$(dialog).find("#joinroom_results").html("No matching class sections could be found.");
+								else
+									$(dialog).find("#joinroom_results").html("There was an error processing your query.");
+								progress_indicator_hide(ind);
+							});
+					}
 				},
 				open: function() {
 					$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -341,64 +411,6 @@ function joinroom_show()
 		});
 	var dialog = dialog_clone("Add a Class","#dialog_joinroom",true,true);
 	$(dialog).find("form").submit(function() { return false; });
-	$(dialog).find("input[name=classnumber]").observe_field(0.6, function( ) {
-		if ($(dialog).find("input[name=classnumber]").val().length <= 0)
-		{
-			$(dialog).find("#joinroom_results").html("Please enter a course number or CRN.");
-		} else if ($(dialog).find("input[name=classnumber]").val().length < 3)
-		{
-			$(dialog).find("#joinroom_results").html("Please enter a course number or CRN.");
-		} else
-		{
-			var ind = progress_indicator_show();
-			$(dialog).find("#joinroom_results").html();
-			call_api("sections/search","GET",{query: $(dialog).find("input[name=classnumber]").val()},
-				function (data) {
-					$(dialog).find("#joinroom_results").html('<ul></ul>');
-					for (var i in data)
-					{
-						var start_hour = Math.floor(data[i].start_time/60);
-						var start_minute = data[i].start_time%60;
-						var end_hour = Math.floor(data[i].end_time/60);
-						var end_minute = data[i].end_time%60;
-						var dow = '';
-						if (data[i].dow_monday == 1) dow+='M';
-						if (data[i].dow_tuesday == 1) dow+='T';
-						if (data[i].dow_wednesday == 1) dow+='W';
-						if (data[i].dow_thursday == 1) dow+='R';
-						if (data[i].dow_friday == 1) dow+='F';
-						if (data[i].dow_saturday == 1) dow+='S';
-						if (data[i].dow_sunday == 1) dow+='U';
-						item.hide();
-						var item = $('<li id="'+data[i].section_id_string+'"><span class="name">'+data[i].name+'</span><br><span class="time">'+dow+' from '+start_hour+':'+start_minute+' - '+end_hour+':'+end_minute+'</span></li>');
-						$(dialog).find("#joinroom_results ul").append(item);
-						item.fadeIn();
-						item.click(function() {
-							var _this = this;
-							section_join($(this).attr('id'),function (data) {
-									dialog_close($(_this).parents('.DialogOverlay').first());
-								}, function(xhr, status)
-								{
-									var errdialog = dialog_new("Error Joining","An error occurred while attempting to join this class section.",true,true);
-									errdialog.find(".DialogContainer").addClass("error");
-									dialog_show(errdialog);
-								});
-						});
-					}
-					Cufon.refresh();
-					progress_indicator_hide(ind);
-				},
-				function (xhr, status)
-				{
-					if (xhr.status == 404)
-						$(dialog).find("#joinroom_results").html("No matching class sections could be found.");
-					else
-						$(dialog).find("#joinroom_results").html("There was an error processing your query.");
-					progress_indicator_hide(ind);
-				});
-		}
-	});
-	
 	dialog_show(dialog);
 }
 
