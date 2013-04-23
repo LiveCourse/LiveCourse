@@ -99,7 +99,7 @@ button:active {
   opacity: 0.8;
 }
 #TopBar ul.switcher li.selected {
-  opacity: 1.0;
+  opacity: 1.0 !important;
 }
 #TopBar ul.options {
   list-style-type: none;
@@ -385,6 +385,22 @@ a.buttonLink:hover {
   font-size: 16px;
   padding: 8px;
   font-family: sans-serif;
+}
+#NotesFrame {
+  position: fixed;
+  padding: 16px;
+  top: 64px;
+  right: 0px;
+  bottom: 0px;
+  width: 640px;
+  display: none;
+  background-color: #b8c9e5;
+}
+#NotesFrame h1 {
+  color: #2e587e;
+  font-family: 'cicle', sans-serif;
+  margin: 6px 0 6px 16px;
+  font-size: 38px;
 }
 #form_login {
   text-align: center;

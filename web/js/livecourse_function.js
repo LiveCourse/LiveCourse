@@ -574,6 +574,15 @@ function show_participant_list()
 }
 
 /**
+ * Hides the participants list
+ */
+function hide_participant_list()
+{
+	var tmp = parseInt($('#SideBar').css('width'), 10);
+	$("#SideBar").animate({"left":(tmp*-1)},250, "easeInQuint", function() { $("#SideBar").hide(); $("#SideBar").css('left',0); });
+}
+
+/**
  * Update chat room list
  */
 function update_chat_list()
@@ -747,7 +756,7 @@ function switch_chat_room(room)
 			$("#HistoryMessages ul").html(''); // Empty it
 			//Load recent chat... set loading chat contents as callback (we need participants first)
 			update_participant_list(function() {load_recent_chat_contents();});
-			
+			load_notes(); //Load this room's notes.
 			progress_indicator_hide(switch_ind);
 		},
 		function (xhr, status)
@@ -1018,4 +1027,75 @@ function post_message(message,scroll,area)
 	$(area).mCustomScrollbar("update");
 	if (scroll)
 		$(area).mCustomScrollbar("scrollTo","bottom",{scrollInertia:1000}); //scroll to bottom
+}
+
+/**
+ * Shows / Hides notes frame
+ */
+function toggle_notes()
+{
+	if ($("#NotesFrame").css('display') == "none")
+	{
+		$("#switcher_notes").addClass("selected");
+		var right_pos = $("#NotesFrame").css('right');
+		var width = parseInt($('#NotesFrame').css('width'), 10);
+		$("#NotesFrame").css('right',(width*-1));
+		$("#NotesFrame").show();
+		$("#NotesFrame").animate({"right":right_pos},250, "easeOutQuint", null);
+		//Chat frame needs to slide over as well.
+		$("#ChatFrame").animate({"right":width+16,"left":0},250, "easeOutQuint", null);
+		//Compose frame needs to slide over as well.
+		$("#ComposeFrame").animate({"right":width+16,"left":0},250, "easeOutQuint", null);
+		hide_participant_list();
+	} else {
+		$("#switcher_notes").removeClass("selected");
+		$("#NotesFrame").fadeOut(125);
+		//Give chat frame its room back
+		$("#ChatFrame").animate({"right":0,"left":256},250, "easeInQuint", null);
+		//Give compose frame its room back
+		$("#ComposeFrame").animate({"right":0,"left":256},250, "easeInQuint", null);
+		show_participant_list();
+	}
+}
+
+/**
+ * Load notes for the current room.
+ */
+function load_notes()
+{
+	var load_ind = progress_indicator_show();
+	call_api("notes","GET",{class_id_string: current_chat_room},
+		function (data) {
+			$("#NotesFrame ul.notes").html('');
+			if (data.length > 0)
+			{
+				$("#NotesFrame ul.notes").append(_load_notes_rec(data));
+			}
+			progress_indicator_hide(load_ind);
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Loading Notes","An error occurred while attempting to load your notes.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+			progress_indicator_hide(load_ind);
+		});
+}
+
+function _load_notes_rec(notes)
+{
+	var ret = '';
+	for (var note in notes)
+	{
+		var r = '<li id="'+notes[note].id+'">' + notes[note].text;
+		if (typeof notes[note].children != "undefined" && notes[note].children.length > 0)
+		{
+			r += '<ul>';
+			r += _load_notes_rec(notes[note].children);
+			r += '</ul>';
+		}
+		r += '</li>';
+		ret += r;
+	}
+	return ret;
 }

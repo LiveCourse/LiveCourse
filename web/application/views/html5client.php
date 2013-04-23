@@ -21,7 +21,7 @@
 		<script src="<?php echo(base_url("js/livecourse_function.js")); ?>"></script>
 		
 		<script type="text/javascript">
-			Cufon.replace('#TopBar div.classTitle, #LeftSideBar h1,#RightSideBar h1,#ChatFrame h1,.DialogContainer h1,.DialogMessage .status_message,#joinroom_results ul li .name,#ChatFrame #HistoryMessages h2');
+			Cufon.replace('#TopBar div.classTitle, #LeftSideBar h1,#RightSideBar h1,#ChatFrame h1,.DialogContainer h1,.DialogMessage .status_message,#joinroom_results ul li .name,#ChatFrame #HistoryMessages h2,#NotesFrame h1');
 			Cufon.replace('#TopBar div.userInfo, #ChatFrame #ChatFrameHeader #ChatHeaderMenu li a, a.buttonLink',{
 				hover: true
 			});
@@ -91,6 +91,7 @@
 			<ul class="switcher">
 				<li id="switcher_chat" class="selected"><a href="javascript:;" onclick="select_chat_tab();"><img src="img/icon_chat.png" alt="Chat"></a></li>
 				<li id="switcher_cal"><a href="javascript:;" onclick="select_history_tab();"><img src="img/icon_cal.png" alt="History"></a></li>
+				<li id="switcher_notes"><a href="javascript:;" onclick="toggle_notes();"><img src="img/icon_pencil.png" alt="History"></a></li>
 			</ul>
 			<ul class="options">
 				<li><a href="javascript:;" onclick="prefs_show();"><img src="img/icon_gear_20.png" alt="Preferences"></a></li>
@@ -145,6 +146,12 @@
 						This is a user
 					</li>
 				-->
+			</ul>
+		</div>
+		
+		<div id="NotesFrame">
+			<h1>Notes</h1>
+			<ul class="notes">
 			</ul>
 		</div>
 		
