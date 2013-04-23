@@ -296,6 +296,62 @@ function joinroom_show()
 	call_api("chats/subjects","GET",{},
 		function (data) {
 			subjects = data;
+			
+			$(dialog).find("input[name=classnumber]").autocomplete({
+				source: function( request, response ) {
+					//If we only have letters so far, match subjects.
+					if (/^[a-zA-Z]+$/.test(request.term))
+					{
+						var responses = new Array();
+						var r = new RegExp('/^'+request.term+'.*$/', 'i');
+						console.log(subjects);
+						for (var s in subjects)
+						{
+							console.log(subjects[s]);
+							if (r.test(subjects[s].code))
+							{
+								responses.push(subjects[s].code);
+							}
+						}
+						console.log(responses);
+						response( responses );
+					} else {
+						/*
+						$.ajax({
+							url: "http://ws.geonames.org/searchJSON",
+							dataType: "jsonp",
+							data: {
+								featureClass: "P",
+								style: "full",
+								maxRows: 12,
+								name_startsWith: request.term
+							},
+							success: function( data ) {
+								response( $.map( data.geonames, function( item ) {
+									return {
+										label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,
+										value: item.name
+									}
+								}));
+							}
+						});
+						*/
+					}
+				},
+				minLength: 0,
+				select: function( event, ui ) {
+					log( ui.item ?
+					"Selected: " + ui.item.label :
+					"Nothing selected, input was " + this.value);
+				},
+				open: function() {
+					$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+				},
+				close: function() {
+					$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+				}
+			});
+			
 			progress_indicator_hide(ind);
 		},
 		function (xhr, status)
@@ -334,8 +390,8 @@ function joinroom_show()
 						if (data[i].dow_friday == 1) dow+='F';
 						if (data[i].dow_saturday == 1) dow+='S';
 						if (data[i].dow_sunday == 1) dow+='U';
-						var item = $('<li id="'+data[i].section_id_string+'"><span class="name">'+data[i].name+'</span><br><span class="time">'+dow+' from '+start_hour+':'+start_minute+' - '+end_hour+':'+end_minute+'</span></li>');
 						item.hide();
+						var item = $('<li id="'+data[i].section_id_string+'"><span class="name">'+data[i].name+'</span><br><span class="time">'+dow+' from '+start_hour+':'+start_minute+' - '+end_hour+':'+end_minute+'</span></li>');
 						$(dialog).find("#joinroom_results ul").append(item);
 						item.fadeIn();
 						item.click(function() {
@@ -363,6 +419,7 @@ function joinroom_show()
 				});
 		}
 	});
+	
 	dialog_show(dialog);
 }
 
