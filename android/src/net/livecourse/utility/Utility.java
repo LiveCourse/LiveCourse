@@ -179,15 +179,13 @@ public class Utility
 	 */
 	public static void startDialog(Context context, String title, String message)
 	{
-		if(Globals.progressDialog == null)
-			Globals.progressDialog = new ProgressDialog(context);
+		Globals.progressDialog = new ProgressDialog(context);
 		
 		if(title != null)
 			Globals.progressDialog.setTitle(title);
 		if(message != null)
 			Globals.progressDialog.setMessage(message);
 		Globals.progressDialog.show();
-
 	}
 	
 	/**

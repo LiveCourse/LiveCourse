@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
-import android.widget.Toast;
 /**
  * 
  * The MainActivity class is the base activity for our Android project.  It handles the ActionBar and the swipey tabs.
@@ -131,11 +130,9 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 				this.startActivity(intent);
 		        
 				this.clearPrefs();
-		        this.finish();
-				
+		        this.finish();		
 				break;
 		}
-		
 		return super.onOptionsItemSelected(item);
 	}
 

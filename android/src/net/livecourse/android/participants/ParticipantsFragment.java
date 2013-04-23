@@ -63,13 +63,12 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
     {
     	Globals.participantsFragment = this;
-		Globals.appDb.recreateParticipants();
-		/**
+    	
+    	/**
 		 * Connects the list to the XML
 		 */
 		participantsLayout = inflater.inflate(R.layout.participants_layout, container, false);
 		participantsListView = (ListView) participantsLayout.findViewById(R.id.participants_list_view);
-    	
     	
     	/** 
     	 * Create the adapter and populate the view, set the
@@ -218,6 +217,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	{
 		if(restCall.equals(Restful.GET_PARTICIPANTS_PATH))
 		{
+			this.getSherlockActivity().getSupportLoaderManager().destroyLoader(Globals.PARTICIPANTS_LOADER);
 			this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.PARTICIPANTS_LOADER, null, this);
 		}
 		

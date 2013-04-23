@@ -316,23 +316,17 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		/**
 		 * If it's the same room as before, do nothing, otherwise clear the database table
 		 */
-		if(chatId != Globals.sectionId)
+
+		if(chatId != Globals.chatId)
 		{
-			Globals.appDb.recreateChatMessages();		
+			Globals.chatId 		= chatId;
+			Globals.chatName 	= chatName;
+			
+			Globals.chatFragment.updateList();
+			Globals.participantsFragment.updateList();		
 		}
 		
-		/**
-		 * Changes the sectionId
-		 */
 		Globals.sectionId 	= sectionId;
-		Globals.chatId 		= chatId;
-		Globals.chatName 	= chatName;
-		
-		/**
-		 * Call to grab the chat messages from the server and populate them
-		 */
-		Globals.chatFragment.updateList();
-		Globals.participantsFragment.updateList();
 		
 		/**
 		 * And direct us to the chat for the class we are in as well as change the

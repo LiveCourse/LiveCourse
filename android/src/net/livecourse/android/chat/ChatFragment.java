@@ -382,6 +382,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	{
 		if(restCall.equals(Restful.GET_RECENT_MESSAGES_PATH))
 		{
+			this.getSherlockActivity().getSupportLoaderManager().destroyLoader(Globals.CHAT_MESSAGES_LOADER);
 			this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.CHAT_MESSAGES_LOADER, null, this);
 		}
 		else if(restCall.equals(Restful.SEND_MESSAGE_PATH))
