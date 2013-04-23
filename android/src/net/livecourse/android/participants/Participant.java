@@ -12,6 +12,7 @@ public class Participant
 	private String email;
 	private String time_lastfocus;
 	private String time_lastrequest;
+	private String ignored;
 	
 	public String toString()
 	{
@@ -52,5 +53,11 @@ public class Participant
 	}
 	public void setTime_lastrequest(String time_lastrequest) {
 		this.time_lastrequest = time_lastrequest;
+	}
+	public String getIgnored() {
+		return ignored;
+	}
+	public void setIgnored(String ignored) {
+		this.ignored = ignored;
 	}
 }

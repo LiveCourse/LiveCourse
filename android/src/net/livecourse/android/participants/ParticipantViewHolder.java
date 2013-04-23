@@ -6,4 +6,5 @@ public class ParticipantViewHolder
 {
 	public TextView displayName;
 	public String userId;
+	public String ignore;
 }
