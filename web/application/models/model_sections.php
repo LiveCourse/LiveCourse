@@ -123,7 +123,7 @@ class Model_Sections extends CI_Model {
 				->join('lc_rooms','lc_rooms.id = lc_sections.room_id')
 				->join('lc_buildings','lc_buildings.id = lc_rooms.building_id')
 				->like('lc_classes.course_number', $query_string,'after')
-				->or_like('lc_classes.name', $query_string,'none')
+				->or_like('lc_classes.name', $query_string)
 				->get()
 				->result();
 		return $query;
@@ -151,7 +151,7 @@ class Model_Sections extends CI_Model {
 		if (isset($query_parameters["crn"]))
 			$query->like('lc_sections.crn', $query_parameters["crn"],'after');
 		if (isset($query_parameters["subject_code"]))
-			$query->like('lc_subjects.code', $query_parameters["subject_code"],'after');
+			$query->like('lc_subjects.code', $query_parameters["subject_code"],'none');
 		if (isset($query_parameters["course_number"]))
 			$query->like('lc_classes.course_number', $query_parameters["course_number"],'after');
 		if (isset($query_parameters["building_short_name"]))
