@@ -1,4 +1,4 @@
-package net.livecourse.database;
+package net.livecourse.utility;
 
 import org.json.JSONException;
 import org.json.JSONObject;
