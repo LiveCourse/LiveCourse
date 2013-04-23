@@ -122,8 +122,8 @@ class Model_Sections extends CI_Model {
 				->join('lc_subjects','lc_subjects.id = lc_classes.subject_id')
 				->join('lc_rooms','lc_rooms.id = lc_sections.room_id')
 				->join('lc_buildings','lc_buildings.id = lc_rooms.building_id')
-				->like('lc_classes.course_number', $query_string)
-				->or_like('lc_classes.name', $query_string)
+				->like('lc_classes.course_number', $query_string,'after')
+				->or_like('lc_classes.name', $query_string,'none')
 				->get()
 				->result();
 		return $query;
@@ -149,16 +149,16 @@ class Model_Sections extends CI_Model {
 				->join('lc_rooms','lc_rooms.id = lc_sections.room_id')
 				->join('lc_buildings','lc_buildings.id = lc_rooms.building_id');
 		if (isset($query_parameters["crn"]))
-			$query->like('lc_sections.crn', $query_parameters["crn"]);
+			$query->like('lc_sections.crn', $query_parameters["crn"],'after');
 		if (isset($query_parameters["subject_code"]))
-			$query->like('lc_subjects.code', $query_parameters["subject_code"]);
+			$query->like('lc_subjects.code', $query_parameters["subject_code"],'after');
 		if (isset($query_parameters["course_number"]))
-			$query->like('lc_classes.course_number', $query_parameters["course_number"]);
+			$query->like('lc_classes.course_number', $query_parameters["course_number"],'after');
 		if (isset($query_parameters["building_short_name"]))
 		{
-			$query->like('lc_buildings.short_name', $query_parameters["building_short_name"]);
+			$query->like('lc_buildings.short_name', $query_parameters["building_short_name"],'after');
 			if (isset($query_parameters["room_number"]))
-				$query->like('lc_rooms.room_number', $query_parameters["room_number"]);
+				$query->like('lc_rooms.room_number', $query_parameters["room_number"],'after');
 		}
 		return $query->get()->result();
 	}
