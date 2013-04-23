@@ -662,7 +662,8 @@ class Chats extends REST_Controller
 		if (isset($_FILES['file']))
 		{
 			$max_upload = (ini_get('upload_max_filesize'));
-
+			$size = $_FILES['file']['size'];
+			$original = $_FILES['file']['name'];
 			$last = strtolower($max_upload[strlen($max_upload)-1]);
 			switch($last)
 			{
@@ -674,7 +675,7 @@ class Chats extends REST_Controller
 				$max_upload *= 1024;
 			}
 
-			if($_FILES['file']['size'] > $max_upload)
+			if($size > $max_upload)
 			{
 				$this->response($this->rest_error(array("File too large!")), 403);
 				return;
@@ -683,8 +684,8 @@ class Chats extends REST_Controller
 
 			//Generate an inputFile for S3, part of the function
 			$file = $this->Model_S3->inputFile($_FILES['file']['tmp_name']);
-			$file_type = $this->Model_Classes->get_ext_by_content_type($_FILES['file']['type']);
-			$file_name .= $file_type;
+			$file_type = pathinfo($original, PATHINFO_EXTENSION);
+			$file_name .= '.'.$file_type;
 			if (!$file)
 			{
 				$this->response($this->rest_error(array("Invalid file uploaded!")), 404);
@@ -692,7 +693,7 @@ class Chats extends REST_Controller
 			}
 
 			//Upload the file to S3
-			$upload = $this->Model_Classes->add_file($user_id, $chat_id, $file_name, $message_id);
+			$upload = $this->Model_Classes->add_file($user_id, $chat_id, $file_name, $original, $size, $message_id);
 			if (!$upload)
 			{
 				$this->response($this->rest_error(array("Error adding file entry to database!")), 404);
@@ -1367,7 +1368,7 @@ class Chats extends REST_Controller
 	{
 		$this->load->model('Model_Classes');
 
-		$chat_id_string = $this->get('id');
+		$chat_id_string = $this->get('chat_id');
 
 		//Make sure we requested a chat ID
 		if (strlen($chat_id_string) <= 0)
@@ -1391,7 +1392,7 @@ class Chats extends REST_Controller
 
 	/* This function retrieves a file object
 	 *
-	 * chat_id_string - The String for the Chat in which the file was uploaded
+	 * chat_id - The String for the Chat in which the file was uploaded
 	 * message_id - ID of the message linked to the file
 	 *
 	 * returns
@@ -1418,7 +1419,7 @@ class Chats extends REST_Controller
 		$this->load->model('Model_Auth');
 
 		//Get Variables
-		$chat_id_string = $this->get('chat_id_string');
+		$chat_id_string = $this->get('chat_id');
 		$message_id = $this->get('message_id');
 
 		//Make sure we requested a chat ID
@@ -1472,7 +1473,7 @@ class Chats extends REST_Controller
 
 	/* This function removes a file
 	 *
-	 * chat_id_string - The String for the Chat in which the file was uploaded
+	 * chat_id - The String for the Chat in which the file was uploaded
 	 * message_id - ID of the message linked to the file
 	 *
 	 * returns
@@ -1501,7 +1502,7 @@ class Chats extends REST_Controller
 		$this->load->model('Model_Auth');
 
 		//Get Post Variables
-		$chat_id_string = $this->post('chat_id_string');
+		$chat_id_string = $this->post('chat_id');
 		$message_id = $this->post('message_id');
 
 		//Make sure we requested a chat ID
@@ -1684,7 +1685,7 @@ class Chats extends REST_Controller
 	/**
 	 * Retrieves all files from a given room
 	 *
-	 * chat_id_string - Chat ID to fetch files for
+	 * chat_id - Chat ID to fetch files for
 	 *
 	 * returns
 	 * 	401 if you are not subscribed to the chat
@@ -1694,7 +1695,7 @@ class Chats extends REST_Controller
 	{
 		$this->load->model('Model_Classes');
 
-		$chat_id_string = $this->get('chat_id_string');
+		$chat_id_string = $this->get('chat_id');
 
 		$user_id = $this->authenticated_as;
 
