@@ -117,5 +117,20 @@
     <!-- 	History Activity Menu Strings
     		These are the strings that are used in the options menu of the history activity -->
     <string name="change_history_date_menu_item">Change Date</string>   
+    
+    <!-- 	ClassList Dialog Strings 
+    		Bla bla bla etc etc -->
+	<string name="classlist_dialog_item_crn_title">			CRN:		</string>   
+	<string name="classlist_dialog_item_instructor_title">	Instructor:	</string>   
+	<string name="classlist_dialog_item_type_title">		Type:		</string>   
+	<string name="classlist_dialog_item_section_title">		Section:	</string>   
+	<string name="classlist_dialog_item_location_title">	Location:	</string>   
+	<string name="classlist_dialog_item_time_title">		Meet Times:	</string>   
+	<string name="classlist_dialog_item_start_title">		Start Date:	</string>   
+    <string name="classlist_dialog_item_end_title">			End Date:	</string>   
+    <string name="classlist_dialog_item_capacity_title">	Capacity:	</string>   
+    <string name="classlist_dialog_item_notes_title">		Notes:		</string>  
+    <string name="classlist_dialog_button_negative">		Ok			</string> 
+    
 
 </resources>

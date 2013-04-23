@@ -24,7 +24,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 {
 	private final String TAG 									= " == DatabaseHandler == ";
 
-	private static final int DATABASE_VERSION 					= 43;
+	private static final int DATABASE_VERSION 					= 44;
 	
 	/**
 	 * Database name
@@ -50,7 +50,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	public static final String KEY_CLASS_COURSE_NUMBER 			= "course_number";
 	public static final String KEY_CLASS_NAME 					= "name";
 	public static final String KEY_CLASS_ROOM_NUMBER 			= "room_id";
-	public static final String KEY_CLASS_BUILDING_SHORT_NAME	= "class_id";
+	public static final String KEY_CLASS_BUILDING_NAME			= "class_id";
 	public static final String KEY_CLASS_TYPE					= "class_type";
 	public static final String KEY_CLASS_CRN					= "crn";
 	public static final String KEY_CLASS_SECTION				= "section";
@@ -166,7 +166,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 												+ KEY_CLASS_COURSE_NUMBER 		+ " smallint(6), "
 												+ KEY_CLASS_NAME 				+ " varchar(100), "
 												+ KEY_CLASS_ROOM_NUMBER			+ " varchar(12), "	
-												+ KEY_CLASS_BUILDING_SHORT_NAME	+ " int(11), "
+												+ KEY_CLASS_BUILDING_NAME		+ " int(11), "
 												+ KEY_CLASS_TYPE				+ " varchar(20), "
 												+ KEY_CLASS_CRN					+ "	int(11), "
 												+ KEY_CLASS_SECTION				+ " varchar(12), "
@@ -387,7 +387,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 							", "		+ KEY_CLASS_COURSE_NUMBER 		+
 							", "		+ KEY_CLASS_NAME 				+
 							", "		+ KEY_CLASS_ROOM_NUMBER 		+ 
-							", "		+ KEY_CLASS_BUILDING_SHORT_NAME	+ 
+							", "		+ KEY_CLASS_BUILDING_NAME		+ 
 							", "		+ KEY_CLASS_TYPE	 			+ 
 							", "		+ KEY_CLASS_CRN		 			+
 							", "		+ KEY_CLASS_SECTION 			+ 
@@ -442,7 +442,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 					statement.bindString(21, ob.getString(	"dow_sunday"			));
 					statement.bindString(22, ob.getString(	"instructor"			));
 					statement.bindString(23, ob.getString(	"notes"					));
-					statement.bindString(23, ob.getString(	"capacity"				));
+					statement.bindString(24, ob.getString(	"capacity"				));
 					
 					statement.execute();
 				}

@@ -350,7 +350,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	
 	public void updateListNoRRecreate()
 	{
-		Globals.mainActivity.getSupportLoaderManager().restartLoader(Globals.CHAT_LOADER, null, this);
+		this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.CHAT_MESSAGES_LOADER, null, this);
 	}
 
 	@Override
@@ -373,7 +373,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	{
 		if(restCall.equals(Restful.GET_RECENT_MESSAGES_PATH))
 		{
-			Globals.mainActivity.getSupportLoaderManager().restartLoader(Globals.CHAT_LOADER, null, this);
+			this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.CHAT_MESSAGES_LOADER, null, this);
 		}
 		else if(restCall.equals(Restful.SEND_MESSAGE_PATH))
 		{

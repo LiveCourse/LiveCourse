@@ -4,11 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class ClassEnrollLoader extends SimpleCursorLoader
+public class ClassListLoader extends SimpleCursorLoader
 {
 	private DatabaseHandler dbHandler;
 
-	public ClassEnrollLoader(Context context, DatabaseHandler dbHandler) 
+	public ClassListLoader(Context context, DatabaseHandler dbHandler) 
 	{
 		super(context);
 		this.dbHandler = dbHandler;

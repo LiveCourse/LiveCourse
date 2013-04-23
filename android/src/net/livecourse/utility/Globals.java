@@ -25,10 +25,13 @@ public class Globals
 	/**
 	 * The loaders
 	 */
-	public static final int				CLASSLIST_LOADER		= 1;
-	public static final int				CHAT_LOADER				= 2;
-	public static final int				PARTICIPANT_LOADER 		= 3;
-	public static final int				HISTORY_LOADER			= 4;
+	public static final int				CLASSLIST_LOADER					= 1;
+    public static final int 			CHAT_MESSAGES_LOADER 				= 2;
+    public static final int 			PARTICIPANTS_LOADER 				= 3;
+    public static final int				QUERY_LOADER						= 4;
+    public static final int				HISTORY_LOADER						= 5;
+    public static final int				DOCUMENTS_LOADER					= 6;
+    public static final int				CHATROOM_lOADER						= 7;
 	
 	/**
 	 * Database
@@ -49,14 +52,8 @@ public class Globals
     public static ProgressDialog 		progressDialog;
     public static AlertDialog 			alertDialog;
     
-    /**
-     * The loader numbers
-     */
-    public static final int 			CLASS_LIST_LOADER 					= 1;
-    public static final int 			CHAT_MESSAGES_LOADER 				= 2;
-    public static final int 			PARTICIPANTS_LOADER 				= 3;
-    public static final int				QUERY_LOADER						= 4;
-    public static final int				DOCUMENTS_LOADER					= 5;
+
+
     
 	
 	/**

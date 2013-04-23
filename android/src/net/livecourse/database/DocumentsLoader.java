@@ -21,7 +21,7 @@ public class DocumentsLoader extends SimpleCursorLoader
 		 long startTime = System.currentTimeMillis();
 		 
          SQLiteDatabase db = dbHandler.getReadableDatabase();         
-         Cursor cursor = db.query(DatabaseHandler.TABLE_DOCUMENTS, null, null, null, null, null, null, null);
+         Cursor cursor = db.query(DatabaseHandler.TABLE_DOCUMENTS, null, null, null, null, null, null);
          Log.d(" == Documents Loader == ", "Loaded from database in " + (System.currentTimeMillis() - startTime) + "ms");
          return cursor;
      }

@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import net.livecourse.R;
 import net.livecourse.android.MainActivity;
 import net.livecourse.android.TabsFragmentAdapter;
-import net.livecourse.database.ClassEnrollLoader;
+import net.livecourse.database.ClassListLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
@@ -218,6 +218,10 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	{
 		switch(item.getItemId())
 		{
+			case R.id.class_details_menu_item:
+				 ChatroomDialog dialog = new ChatroomDialog(this.chatRoomToDelete);
+			        dialog.show(this.getSherlockActivity().getSupportFragmentManager(), "NoticeDialogFragment");
+				break;
 			case R.id.delete_class_menu_item:
 			    new Restful(Restful.UNSUBSCRIBE_CHAT_PATH, Restful.POST, new String[]{"id"},new String[]{this.chatRoomToDelete}, 1, this);
 			    break;
@@ -284,9 +288,9 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	}
 
 	@Override
-	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) 
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) 
 	{
-		return new ClassEnrollLoader(this.getSherlockActivity(), Globals.appDb);
+		return new ClassListLoader(this.getSherlockActivity(), Globals.appDb);
 	}
 
 	@Override
@@ -377,7 +381,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	{
 		if(restCall.equals(Restful.GET_SUBSCRIBED_SECTIONS_PATH))
 		{
-			this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.CLASS_LIST_LOADER, null, this);	
+			this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.CLASSLIST_LOADER, null, this);	
 
 			if(this.updateListCalledByQR)
 			{

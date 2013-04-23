@@ -221,7 +221,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	{
 		if(restCall.equals(Restful.GET_PARTICIPANTS_PATH))
 		{
-			this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.PARTICIPANT_LOADER, null, this);
+			this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.PARTICIPANTS_LOADER, null, this);
 		}
 		
 	}
