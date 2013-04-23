@@ -72,11 +72,13 @@ public class Restful extends AsyncTask <Void, String, String>
 	public static final String		AUTH_PATH						= "auth";
 	public static final String		VERIFY_PATH						= "auth/verify";
 	public static final String		GET_SUBSCRIBED_CHATS_PATH		= "chats";
+	public static final String		GET_ALL_FILES_PATH				= "chats/fetch_all_files_by_class";
+	public static final String		GET_CHAT_HISTORY_PATH			= "chats/fetch_day";
+	public static final String		GET_RECENT_MESSAGES_PATH		= "chats/fetch_recent";
+	public static final String		GET_PARTICIPANTS_PATH			= "chats/get_participants";
 	public static final String		GET_CHAT_INFORMATION_PATH		= "chats/info";
 	public static final String		UNSUBSCRIBE_CHAT_PATH			= "chats/leave";
 	public static final String		SEND_MESSAGE_PATH				= "chats/send";
-	public static final String		GET_RECENT_MESSAGES_PATH		= "chats/fetch_recent";
-	public static final String		GET_PARTICIPANTS_PATH			= "chats/get_participants";
 	public static final String		GET_SUBSCRIBED_SECTIONS_PATH 	= "sections";
 	public static final String		JOIN_CHAT_PATH					= "sections/join";
 	public static final String		SEARCH_FOR_CHAT_PATH			= "sections/search";
@@ -88,7 +90,6 @@ public class Restful extends AsyncTask <Void, String, String>
 	public static final String		IGNORE_USER_PATH				= "users/ignore_user";
 	public static final String		UNIGNORE_USER_PATH				= "users/unignore_user";
 	public static final String		CHANGE_DISPLAY_NAME_PATH		= "users/change_display_name";
-	public static final String		GET_CHAT_HISTORY_PATH			= "chats/fetch_day";
 	
 	/**
 	 * Private variables used by Restful

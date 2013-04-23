@@ -189,7 +189,7 @@
 		<!-- Add a class dialog -->
 		<div id="dialog_joinroom" style="display:none;">
 			<form id="form_joinroom" class="large_form">
-				<input name="classnumber" type="text" placeholder="Course Number" />
+				<input name="classnumber" type="text" placeholder="Course # or CRN" />
 			</form>
 			<div id="joinroom_results">
 			</div>

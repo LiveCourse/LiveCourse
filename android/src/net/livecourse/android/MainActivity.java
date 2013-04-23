@@ -31,7 +31,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	private final String TAG = " == MainActivity == ";
 
 	private static final int RESULT_SETTINGS = 1;
-	public static final int VIEW_PAGE_LOAD_COUNT = 3;
 	
 	/**
 	 * Declares the required objects for the swipey tabs.
@@ -68,7 +67,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
         mAdapter = new TabsFragmentAdapter(this.getSupportFragmentManager());
         
-        mPager.setOffscreenPageLimit(MainActivity.VIEW_PAGE_LOAD_COUNT);
+        mPager.setOffscreenPageLimit(Globals.VIEW_PAGE_LOAD_COUNT);
         mPager.setAdapter(mAdapter);
         
         mIndicator.setViewPager(mPager);
@@ -77,8 +76,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         mAdapter.setIndicator(mIndicator);
         mAdapter.setPager(mPager);
         mAdapter.setActivity(this);
-        
-        
     }
 	
 	@Override
@@ -123,7 +120,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 				Globals.passwordToken = null;
 				Globals.query = null;
 				Globals.token = null;
-				Globals.chatId = null;
+				Globals.sectionId = null;
 				Globals.regId = null;
 				Globals.colorPref = null;
 				Globals.startEpoch = null;
@@ -166,7 +163,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         prefs.edit().putString("pref_display_name"	, Globals.displayName	).commit();
         prefs.edit().putString("pref_password_token", Globals.passwordToken	).commit();
         prefs.edit().putString("pref_token"			, Globals.token			).commit();
-        prefs.edit().putString("pref_chat_id"		, Globals.chatId		).commit();
+        prefs.edit().putString("pref_chat_id"		, Globals.sectionId		).commit();
         prefs.edit().putString("pref_reg_id"		, Globals.regId			).commit();
         prefs.edit().putString("pref_color"			, Globals.colorPref		).commit();
         prefs.edit().putString("pref_chat_name"		, Globals.chatName		).commit();
@@ -192,7 +189,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         Globals.displayName 	= prefs.getString("pref_display_name"	, null	);
         Globals.passwordToken 	= prefs.getString("pref_password_token"	, null	);
         Globals.token 			= prefs.getString("pref_token"			, null	);
-        Globals.chatId 			= prefs.getString("pref_chat_id"		, null	);
+        Globals.sectionId 			= prefs.getString("pref_chat_id"		, null	);
         Globals.regId 			= prefs.getString("pref_reg_id"			, null	);
         Globals.colorPref 		= prefs.getString("pref_color"			, null	);
         Globals.chatName 		= prefs.getString("pref_chat_name"		, null	);
@@ -205,10 +202,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	}
 
 	@Override
-	public void onPageScrollStateChanged(int arg0) 
+	public void onPageScrollStateChanged(int state) 
 	{
-		// TODO Auto-generated method stub
-		
+	    if (state == ViewPager.SCROLL_STATE_IDLE)
+	    {
+	    	Utility.hideKeyboard(this);
+	    }
 	}
 
 	@Override

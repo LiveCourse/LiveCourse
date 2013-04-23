@@ -290,12 +290,31 @@ function registration_submit()
  */
 function joinroom_show()
 {
+	//Fetch a list of subjects...
+	var ind = progress_indicator_show(); //Show a progress indicator for AJAX requests...
+	var subjects;
+	call_api("chats/subjects","GET",{},
+		function (data) {
+			subjects = data;
+			progress_indicator_hide(ind);
+		},
+		function (xhr, status)
+		{
+			var errdialog = dialog_new("Error Fetching Subjects","An error occurred while attempting to fetch the subject listing.",true,true);
+			errdialog.find(".DialogContainer").addClass("error");
+			dialog_show(errdialog);
+			progress_indicator_hide(ind);
+		});
 	var dialog = dialog_clone("Add a Class","#dialog_joinroom",true,true);
-	$(dialog).find("input[name=classnumber]").observe_field(0.5, function( ) {
+	$(dialog).find("input[name=classnumber]").observe_field(0.6, function( ) {
 		if ($(dialog).find("input[name=classnumber]").val().length <= 0)
 		{
-			$(dialog).find("#joinroom_results").html("Please enter a course number or course name.");
-		} else {
+			$(dialog).find("#joinroom_results").html("Please enter a course number or CRN.");
+		} else if ($(dialog).find("input[name=classnumber]").val().length < 3)
+		{
+			$(dialog).find("#joinroom_results").html("Please enter a course number or CRN.");
+		} else
+		{
 			var ind = progress_indicator_show();
 			$(dialog).find("#joinroom_results").html();
 			call_api("sections/search","GET",{query: $(dialog).find("input[name=classnumber]").val()},

@@ -33,10 +33,10 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 {
 	private final String TAG = " == QueryActivity == ";
 	
-	private String query;
-	private ListView queryListView;
-	private ClassQueryArrayAdapter adapter;
-	private ArrayList<Chatroom> emptyAList;
+	private String 					query;
+	private ListView 				queryListView;
+	private ClassQueryArrayAdapter 	adapter;
+	private ArrayList<Chatroom> 	emptyAList;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -48,20 +48,20 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
         
         Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
                 
-        queryListView = (ListView) this.findViewById(R.id.query_list_view);
+        this.queryListView = (ListView) this.findViewById(R.id.query_list_view);
         
-        emptyAList = new ArrayList<Chatroom>(10);
-        adapter = new ClassQueryArrayAdapter(this,R.layout.classlist_item_layout, emptyAList);
+        this.emptyAList = new ArrayList<Chatroom>(10);
+        this.adapter = new ClassQueryArrayAdapter(this,R.layout.classlist_item_layout, emptyAList);
         
-        queryListView.setAdapter(adapter);
-        queryListView.setOnItemClickListener(this);
+        this.queryListView.setAdapter(this.adapter);
+        this.queryListView.setOnItemClickListener(this);
         
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) 
         {
-          query = intent.getStringExtra(SearchManager.QUERY);
-          this.processQuery(query);
-        }
+        	this.query = intent.getStringExtra(SearchManager.QUERY);
+        	this.processQuery(this.query);
+        }        
 	}
 	
 	@Override
@@ -80,10 +80,10 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
         searchView.setQuery(this.query, false);
         searchView.setFocusable(true);
         searchView.setIconified(false);
-        searchView.requestFocus();
-        searchView.requestFocusFromTouch();
+        //searchView.requestFocus();
+        //searchView.requestFocusFromTouch();
         searchView.setOnQueryTextListener(this);
-		
+        
 		return true;
 	}
 	
@@ -119,7 +119,20 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	{
 		ChatroomViewHolder v = (ChatroomViewHolder) view.getTag();	
-		new Restful(Restful.JOIN_CHAT_PATH, Restful.POST, new String[]{"id"}, new String[]{v.idString}, 1, this);
+		new Restful(Restful.JOIN_CHAT_PATH, Restful.POST, new String[]{"id"}, new String[]{v.idSectionString}, 1, this);
+	}
+	
+	@Override
+	public void preRestExecute(String restCall) 
+	{
+		if(restCall.equals(Restful.JOIN_CHAT_PATH))
+		{
+			Utility.startDialog(this, "Joining Chat", "Attempting to join chat...");
+		}
+		else if(restCall.equals(Restful.SEARCH_FOR_CHAT_PATH))
+		{
+			Utility.startDialog(this, "Searching", "Querying server...");
+		}
 	}
 
 	@Override
@@ -134,7 +147,7 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 			try 
 			{
 				ob = new JSONObject(response);
-				Globals.chatId = ob.getString("id_string");
+				Globals.sectionId = ob.getString("class_id_string");
 				Globals.chatName = ob.getString("name");				
 			} 
 			catch (JSONException e) 
@@ -168,13 +181,17 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	@Override
 	public void onRestPostExecutionSuccess(String restCall, String result) 
 	{
+    	Utility.stopDialog();
+    	Utility.hideKeyboard(this);
+
 		if(restCall.equals(Restful.SEARCH_FOR_CHAT_PATH))
 		{
 			this.adapter.clear();
         	this.adapter.addAll(this.emptyAList);
         	this.adapter.notifyDataSetChanged();
         	
-        	Log.d(this.TAG, "Updating Query List View");
+        	
+        	Log.d(this.TAG, "Updating Query List View");        	
 		}
 		else if(restCall.equals(Restful.JOIN_CHAT_PATH))
 		{
@@ -182,7 +199,6 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 			Globals.classListFragment.updateList();
 			this.finish();
 		}
-
 	}
 
 	@Override
@@ -190,17 +206,22 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	{
 		Log.d(this.TAG, "Rest call: " + restCall + "failed with status code: " + code);
 		Log.d(this.TAG,"Result from server is:\n" + result);
+    	
+		Utility.stopDialog();
+
+		if(restCall.equals(Restful.SEARCH_FOR_CHAT_PATH))
+		{
+			
+		}
+		else if(restCall.equals(Restful.SEARCH_FOR_CHAT_PATH))
+		{
+
+		}
 	}
 
 	@Override
-	public void preRestExecute(String restCall) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onRestCancelled(String restCall, String result) {
-		// TODO Auto-generated method stub
+	public void onRestCancelled(String restCall, String result) 
+	{
 		
 	}
 }

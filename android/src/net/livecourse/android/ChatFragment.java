@@ -62,7 +62,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	private ChatCursorAdapter adapter;
 	
 	public static ChatFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
-	{
+	{ 
 		ChatFragment fragment = new ChatFragment();
 		return fragment;
 	}
@@ -137,10 +137,15 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	{
 		switch (item.getItemId())
 		{
-			case R.id.view_history_item:
+			case R.id.view_history_menu_item:
 				Log.d(this.TAG, "Running onOptionsItemSelected view history");
 				DialogFragment newFragment = new HistoryDatePickerFragment();
 			    newFragment.show(this.getSherlockActivity().getSupportFragmentManager(), "datePicker");
+				break;
+			case R.id.view_documents_menu_item:
+				Log.d(this.TAG, "Running onOptionsItemSelected view documents");
+				Intent a = new Intent(this.getSherlockActivity(), DocumentsActivity.class);
+				this.getSherlockActivity().startActivity(a);
 				break;
 		}
 
@@ -183,7 +188,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 				 */
 				
 				Globals.message = sendMessageEditTextView.getText().toString();
-				new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId, Globals.message}, 2, this);
+				new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.sectionId, Globals.message}, 2, this);
 				
 		        adapter.notifyDataSetChanged();
 				sendMessageEditTextView.setText("");
@@ -242,13 +247,13 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 				case Globals.CAMERA_RESULT:
 				    File image = new File(Globals.filePath);
 			        Log.d(this.TAG, "The file path: " + Globals.filePath);
-					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId,"Attempting to send image from camera"}, 2, image, this);
+					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.sectionId,"Attempting to send image from camera"}, 2, image, this);
 					break;
 				case Globals.GALLERY_RESULT:
-					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId,"Attempting to send file from gallery"}, 2, Utility.fileFromURI(data.getData()), this);
+					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.sectionId,"Attempting to send file from gallery"}, 2, Utility.fileFromURI(data.getData()), this);
 					break;
 				case Globals.EXPLORER_RESULT:
-					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId,"Attempting to send file from explorer"}, 2, Utility.fileFromURI(data.getData()), this);
+					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.sectionId,"Attempting to send file from explorer"}, 2, Utility.fileFromURI(data.getData()), this);
 					break;
 			}
 		}
@@ -339,7 +344,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	public void updateList()
 	{		
 		Globals.appDb.recreateChatMessages();
-		restful = new Restful(Restful.GET_RECENT_MESSAGES_PATH,Restful.GET, new String[]{"chat_id", "num_messages"}, new String[]{Globals.chatId, Restful.MAX_MESSAGE_SIZE}, 2, this);
+		restful = new Restful(Restful.GET_RECENT_MESSAGES_PATH,Restful.GET, new String[]{"chat_id", "num_messages"}, new String[]{Globals.sectionId, Restful.MAX_MESSAGE_SIZE}, 2, this);
 		
 	}
 	

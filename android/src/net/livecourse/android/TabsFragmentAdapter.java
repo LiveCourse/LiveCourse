@@ -1,10 +1,13 @@
 package net.livecourse.android;
 
+import net.livecourse.utility.Globals;
+
 import com.viewpagerindicator.PageIndicator;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
 /**
@@ -13,7 +16,7 @@ import android.support.v4.view.ViewPager;
  * @author Darren
  *
  */
-public class TabsFragmentAdapter extends FragmentPagerAdapter{
+public class TabsFragmentAdapter extends FragmentStatePagerAdapter{
 	
 	/**
 	 * This is the list of the different tabs, starts with only class list and expands later
@@ -65,6 +68,14 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
     	}
     	return null;
     }
+    
+    @Override
+    public int getItemPosition(Object object)
+    {
+    	if(object == Globals.classListFragment)
+    		return PagerAdapter.POSITION_UNCHANGED;
+        return PagerAdapter.POSITION_NONE;
+    }
 
     @Override
     public int getCount() 
@@ -88,11 +99,21 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter{
     
     public void expand()
     {
-    	if(!this.CONTENT.equals(new String[] { "Class List", "Chat", "Group Notes", "Participants"}))
+    	if(!this.CONTENT.equals(new String[] { "Class List", "Chat", "Notes", "Participants"}))
 		{
-			this.CONTENT = new String[] { "Class List", "Chat", "Group Notes","Participants"};
+			this.CONTENT = new String[] { "Class List", "Chat", "Notes","Participants"};
 			this.setCount(4);
-			this.notifyDataSetChanged();		
+			this.notifyDataSetChanged();
+		}
+    }
+    public void collapse()
+    {
+    	if(!this.CONTENT.equals(new String[] { "Class List"}))
+		{
+			this.CONTENT = new String[] { "Class List"};
+			this.setCount(1);
+			this.notifyDataSetChanged();
+			this.mIndicator.notifyDataSetChanged();
 		}
     }
 

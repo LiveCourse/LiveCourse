@@ -21,6 +21,18 @@ class Model_Classes extends CI_Model {
 				->get();
 		return $query->result();
 	}
+	
+	/**
+	 * Fetch a list of subjects
+	 * returns a result consisting of matches.
+	 */
+	function fetch_subjects()
+	{
+		$query = $this->db
+				->from('lc_subjects')
+				->get();
+		return $query->result();
+	}
 
 	/**
 	 * Returns the integer chat ID of the chat ID string provided
@@ -75,6 +87,7 @@ class Model_Classes extends CI_Model {
 		*/
 		$query = $this->db
 				->select('lc_classes.*')
+				->distinct()
 				->from('lc_sections')
 				->join('lc_section_participants','lc_sections.id = lc_section_participants.section_id')
 				->join('lc_classes','lc_classes.id = lc_sections.class_id')
@@ -420,6 +433,7 @@ WHERE lc_chat_participants.chat_id = 1
 	{
 		$users = $this->db
 				->select('lc_users.id, lc_users.display_name, lc_users.jointime, lc_users.email, lc_users.time_lastfocus, lc_users.time_lastrequest, (lc_users_ignored.ignore_id IS NOT NULL) AS ignored')
+				->distinct()
 				->from('lc_section_participants')
 				->join('lc_users','lc_users.id = lc_section_participants.user_id')
 				->join('lc_sections','lc_sections.id = lc_section_participants.section_id')

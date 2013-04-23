@@ -225,6 +225,9 @@
 				else
 					plain = "text";
 				var auth_code = Sha1.hash(auth_token+auth_pass+method);
+				var process = true;
+				if (type == "POST")
+					var process = false;
 				$.ajax("api/"+method,{
 					type: type,
 					headers: {
@@ -234,7 +237,7 @@
 					cache:false,
 					contentType: false,
 					dataType: plain,
-					processData: false,
+					processData: process,
 					success: success_callback,
 					error: error_callback
 				});
@@ -281,17 +284,28 @@
 				$("#REST").submit(function () {
 					var func = $(this).find("input[name=call]").val();
 					var method = $(this).find("select[name=method]").val();
-					//var values = {};
 					var i = 0;
 					var _this = this;
-					var values = new FormData();
-					values.append('file',$(this).find("input[name='file']")[0].files[0]);
+					if (method == "POST")
+					{
+						var values = new FormData();
+						values.append('file',$(this).find("input[name='file']")[0].files[0]);
+					}
+					else
+					{
+						var values = {};
+					}
 					$(this).find("input[name='key\\[\\]']").each(function() {
 						var val = $(_this).find("input[name='key\\[\\]']").eq(i).val();
 						if (val.length > 0)
 						{
-							//values[$(_this).find("input[name='key\\[\\]']").eq(i).val()] = $(_this).find("input[name='value\\[\\]']").eq(i).val();
-							values.append($(_this).find("input[name='key\\[\\]']").eq(i).val(),$(_this).find("input[name='value\\[\\]']").eq(i).val());
+							if (method == "POST")
+							{
+								values.append($(_this).find("input[name='key\\[\\]']").eq(i).val(),$(_this).find("input[name='value\\[\\]']").eq(i).val());
+							} else
+							{
+								values[$(_this).find("input[name='key\\[\\]']").eq(i).val()] = $(_this).find("input[name='value\\[\\]']").eq(i).val();
+							}
 						}
 						i++;
 					});

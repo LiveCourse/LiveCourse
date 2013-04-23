@@ -194,7 +194,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	public void updateList()
 	{
 		Globals.appDb.recreateParticipants();
-		new Restful(Restful.GET_PARTICIPANTS_PATH, Restful.GET, new String[]{"id"}, new String[]{Globals.chatId}, 1, this);
+		new Restful(Restful.GET_PARTICIPANTS_PATH, Restful.GET, new String[]{"id"}, new String[]{Globals.sectionId}, 1, this);
 	}
 	
 	public void clearList()
@@ -207,6 +207,7 @@ public class ParticipantsFragment extends SherlockFragment implements OnItemLong
 	{		
 		if(restCall.equals(Restful.GET_PARTICIPANTS_PATH))
 		{	
+			Log.d(this.TAG, "OnRestHandlerResponse for path GET PARTICIPANTS reached with response: " + response);
 			Globals.appDb.addParticipantsFromJSON(false, response);
 		}
 		else if(restCall.equals(Restful.IGNORE_USER_PATH))

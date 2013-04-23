@@ -1,5 +1,8 @@
 package net.livecourse.utility;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+
 import com.actionbarsherlock.view.ActionMode;
 
 import net.livecourse.android.ChatFragment;
@@ -16,6 +19,8 @@ public class Globals
 	 */
 	public static final String SENDER_ID = "584781219532";
 	public static boolean newReg = false;
+	
+	public static final int VIEW_PAGE_LOAD_COUNT = 3;
 	
 	/**
 	 * The loaders
@@ -39,6 +44,12 @@ public class Globals
     public static ParticipantsFragment participantsFragment;
     
     /**
+     * Dialogs
+     */
+    public static ProgressDialog progressDialog;
+    public static AlertDialog alertDialog;
+    
+    /**
      * The loader numbers
      */
     public static final int CLASS_LIST_LOADER 					= 1;
@@ -56,7 +67,8 @@ public class Globals
 	public static String 				passwordToken;
 	public static String 				query;
 	public static String 				token;
-	public static String 				chatId;
+	public static String				chatId;
+	public static String 				sectionId;
 	public static String				regId;
 	public static String				colorPref;
 	public static String				startEpoch;

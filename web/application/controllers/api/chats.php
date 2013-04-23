@@ -129,6 +129,30 @@ class Chats extends REST_Controller
 
 	}
 
+	/**
+	 * Returns a list of all available subjects.
+	 * 
+	 * returns
+	 * 	200 on success
+	 *	401 on unauthorized
+	 */
+	public function subjects_get()
+	{
+		$this->load->model('Model_Classes');
+
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
+			return;
+		}
+		
+		$subjs = $this->Model_Classes->fetch_subjects();
+		$this->response($subjs);
+	}
+
 	/*
 	* Flags a file as innapropriate
 	*

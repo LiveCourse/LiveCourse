@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
@@ -40,7 +39,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 {
 	private final String TAG = " == Class List Fragment == ";
 	private static final String KEY_CONTENT = "TestFragment:Content";
-	private String chatRoomToDelete = "";
+	private String chatRoomToDelete = null;
 	
 	/**
 	 * This is used to add the other tabs once a class is selected
@@ -170,7 +169,8 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	{
 		if(parent == this.classListView)
 		{
-			this.switchToChat(((ChatroomViewHolder)view.getTag()).idString, ((ChatroomViewHolder)view.getTag()).className.getText().toString());
+			Log.d(this.TAG, "Switch to chat 173");
+			this.switchToChat(((ChatroomViewHolder)view.getTag()).idString, ((ChatroomViewHolder)view.getTag()).idSectionString, ((ChatroomViewHolder)view.getTag()).className.getText().toString());
 		}
 	}
 
@@ -182,7 +182,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) 
 	{
 		Globals.mode = this.getSherlockActivity().startActionMode(this);
-		this.chatRoomToDelete = ( (ChatroomViewHolder)view.getTag() ).idString;
+		this.chatRoomToDelete = ( (ChatroomViewHolder)view.getTag() ).idSectionString;
 		return true;
 	}
 
@@ -218,7 +218,6 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		switch(item.getItemId())
 		{
 			case R.id.delete_class_menu_item:
-				Toast.makeText(this.getSherlockActivity(), "Course Removed", Toast.LENGTH_SHORT).show();
 			    new Restful(Restful.UNSUBSCRIBE_CHAT_PATH, Restful.POST, new String[]{"id"},new String[]{this.chatRoomToDelete}, 1, this);
 			    break;
 		}
@@ -302,7 +301,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 
 	}
 	
-	public void switchToChat(String chatId, String chatName)
+	public void switchToChat(String chatId, String sectionId, String chatName)
 	{
 		/**
 		 * Once a class is selected it'll expand the tabs
@@ -312,16 +311,17 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		/**
 		 * If it's the same room as before, do nothing, otherwise clear the database table
 		 */
-		if(chatId != Globals.chatId)
+		if(chatId != Globals.sectionId)
 		{
 			Globals.appDb.recreateChatMessages();		
 		}
 		
 		/**
-		 * Changes the chatId
+		 * Changes the sectionId
 		 */
-		Globals.chatId = chatId;
-		Globals.chatName = chatName;
+		Globals.sectionId 	= sectionId;
+		Globals.chatId 		= chatId;
+		Globals.chatName 	= chatName;
 		
 		/**
 		 * Call to grab the chat messages from the server and populate them
@@ -360,7 +360,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 				try 
 				{
 					JSONObject ob = new JSONObject(response);
-					Globals.chatId = ob.getString("id_string");
+					Globals.sectionId = ob.getString("id_string");
 					Globals.chatName = ob.getString("name");
 				} 
 				catch (JSONException e) 
@@ -380,14 +380,20 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 
 			if(this.updateListCalledByQR)
 			{
-				this.switchToChat(Globals.chatId, Globals.chatName);
+				Log.d(this.TAG, "Switch to chat 382");
+				this.switchToChat(Globals.chatId, Globals.sectionId, Globals.chatName);
 				this.updateListCalledByQR = false;
 			}
 			
-			if(Globals.chatId != null)
+			if(Globals.sectionId != null && this.chatRoomToDelete == null)
 			{
-				Log.d(this.TAG, "Chat Id: " + Globals.chatId +" Chat Name: " + Globals.chatName);
-				this.switchToChat(Globals.chatId, Globals.chatName);
+				Log.d(this.TAG, "Chat Id: " + Globals.sectionId +" Chat Name: " + Globals.chatName);
+				Log.d(this.TAG, "Switch to chat 390");
+				this.switchToChat(Globals.chatId, Globals.sectionId, Globals.chatName);
+			}
+			else if(this.chatRoomToDelete != null)
+			{
+				this.chatRoomToDelete = null;
 			}
 			
 		}
@@ -397,6 +403,16 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		}
 		else if(restCall.equals(Restful.UNSUBSCRIBE_CHAT_PATH))
 		{
+			if(Globals.sectionId == null)
+			{
+				Globals.sectionId = null;
+			}
+			else if(Globals.sectionId.equals(this.chatRoomToDelete))
+			{
+				Globals.sectionId = null;
+				Globals.chatName = null;
+				this.tabsAdapter.collapse();
+			}
 			this.updateList();
 		}
 	}
@@ -413,10 +429,15 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			{
 				this.updateListCalledByQR = false;
 			}
+			this.chatRoomToDelete = null;
 		}
 		else if(restCall.equals(Restful.JOIN_CHAT_PATH))
 		{
 			
+		}
+		else if(restCall.equals(Restful.UNSUBSCRIBE_CHAT_PATH))
+		{
+			this.chatRoomToDelete = null;
 		}
 	}
 
