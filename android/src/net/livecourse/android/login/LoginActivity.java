@@ -315,7 +315,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		        prefs.edit().putString("pref_display_name", Globals.displayName).commit();
 		        
 		        
-		        Log.d(this.TAG, "The Color Pref: " + prefs.getString("pref_color", "0"));
+		        Log.d(this.TAG, "The Global Color: " + Globals.colorPref + " The Color Pref: " + prefs.getString("pref_color", "0"));
 			} 
 			catch (JSONException e) 
 			{

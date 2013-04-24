@@ -1,6 +1,7 @@
 package net.livecourse.utility;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.support.v4.view.ViewPager;
 
@@ -10,10 +11,11 @@ import net.livecourse.android.MainActivity;
 import net.livecourse.android.chat.ChatFragment;
 import net.livecourse.android.classlist.Chatroom;
 import net.livecourse.android.classlist.ClassListFragment;
+import net.livecourse.android.notes.NotesFragment;
 import net.livecourse.android.participants.ParticipantsFragment;
 import net.livecourse.database.DatabaseHandler;
 
-public class Globals 
+public class Globals extends Application
 {
 	/**
 	 * The ID from Google's GCM Console
@@ -51,6 +53,7 @@ public class Globals
 	public static MainActivity 			mainActivity;
     public static ClassListFragment 	classListFragment;
     public static ChatFragment 			chatFragment;
+    public static NotesFragment			notesFragment;
     public static ParticipantsFragment 	participantsFragment;
     
     
