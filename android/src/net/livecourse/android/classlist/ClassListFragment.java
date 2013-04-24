@@ -321,10 +321,10 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		{
 			Globals.chatId 		= chatId;
 			Globals.chatName 	= chatName;
-			
-			Globals.chatFragment.updateList();
-			Globals.participantsFragment.updateList();		
 		}
+		Globals.chatFragment.updateList();
+		Globals.participantsFragment.updateList();		
+
 		
 		Globals.sectionId 	= sectionId;
 		
