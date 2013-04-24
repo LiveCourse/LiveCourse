@@ -22,9 +22,9 @@ class Model_Classes extends CI_Model {
 				->group_by(array('lc_subjects.code','lc_classes.course_number'))
 				->join('lc_subjects','lc_subjects.id = lc_classes.subject_id');
 		if (isset($query_parameters["subject_code"]))
-			$query->like('lc_subjects.code', $query_parameters["subject_code"],'none');
+			$query->like('lc_subjects.code', $query_parameters["subject_code"]);
 		if (isset($query_parameters["course_number"]))
-			$query->like('lc_classes.course_number', $query_parameters["course_number"],'after');
+			$query->like('lc_classes.course_number', $query_parameters["course_number"]);
 		return $query->get()->result();
 	}
 	
@@ -590,4 +590,69 @@ WHERE lc_chat_participants.chat_id = 1
 				->get('lc_chat_files')
 				->result();
 	}
+	
+	/**
+	*Switch statement on content type
+	*
+	*$content_type - The 'type' field returned from $_FILES
+	*
+	*returns the file extension of the file
+	*/
+       function get_ext_by_content_type($content_type)
+       {
+	   switch($content_type)
+	   {
+	       case 'application/msword':
+		   return '.doc';
+	       break;
+	       case 'application/pdf':
+		   return '.pdf';
+	       break;
+	       case 'application/zip':
+		   return '.zip';
+	       break;
+	       case 'audio/mpeg':
+		   return '.mp3';
+	       break;
+	       case 'audio/x-wav':
+		   return '.wav';
+	       break;
+	       case 'image/bmp':
+		   return '.bmp';
+	       break;
+	       case 'image/gif':
+		   return '.gif';
+	       break;
+	       case 'image/jpeg':
+		   return '.jpg';
+	       break;
+	       case 'text/css':
+		   return '.css';
+	       break;
+	       case 'text/html':
+		   return '.html';
+	       break;
+	       case 'text/plain':
+		   return '.txt';
+	       break;
+	       case 'video/mpeg':
+		   return '.mpeg';
+	       break;
+	       case 'video/quicktime':
+		   return '.mov';
+	       break;
+	       case 'application/vnd.ms-powerpoint':
+		   return '.ppt';
+	       break;
+	       case 'application/x-gzip':
+		   return '.gz';
+	       break;
+	       case 'application/x-gtar':
+		   return '.gtar';
+	       break;
+	       case 'application/x-javascript':
+		   return '.js';
+	       break;
+	   }
+       }
 }
