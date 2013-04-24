@@ -11,6 +11,7 @@ import net.livecourse.android.MainActivity;
 import net.livecourse.android.chat.ChatFragment;
 import net.livecourse.android.classlist.Chatroom;
 import net.livecourse.android.classlist.ClassListFragment;
+import net.livecourse.android.login.LoginActivity;
 import net.livecourse.android.notes.NotesFragment;
 import net.livecourse.android.participants.ParticipantsFragment;
 import net.livecourse.database.DatabaseHandler;
@@ -22,6 +23,7 @@ public class Globals extends Application
 	 */
 	public static final String SENDER_ID = "584781219532";
 	public static boolean newReg = false;
+	public static boolean regCalledFromLogin = false;
 	
 	public static final int VIEW_PAGE_LOAD_COUNT = 3;
 	
@@ -51,6 +53,7 @@ public class Globals extends Application
     /**
      * Fragments 
      */
+	public static LoginActivity			loginActivity;
 	public static MainActivity 			mainActivity;
     public static ClassListFragment 	classListFragment;
     public static ChatFragment 			chatFragment;
