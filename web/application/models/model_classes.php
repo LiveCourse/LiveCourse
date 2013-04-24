@@ -93,6 +93,7 @@ class Model_Classes extends CI_Model {
 		*/
 		$query = $this->db
 				->select('lc_classes.id_string as class_id_string, lc_subjects.code as subject_code, lc_classes.course_number, lc_classes.name')
+				->select('(SELECT COUNT(user_id) FROM lc_section_participants WHERE lc_sections.id = lc_section_participants.section_id) as participant_count')
 				->distinct()
 				->from('lc_sections')
 				->join('lc_section_participants','lc_sections.id = lc_section_participants.section_id')

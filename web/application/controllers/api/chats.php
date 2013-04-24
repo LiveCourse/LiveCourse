@@ -660,6 +660,7 @@ class Chats extends REST_Controller
 		//Check if there was an uploaded file.
 		if (isset($_FILES['file']))
 		{
+			// TODO: Change to Filename as unique identifier for file API
 			$max_upload = (ini_get('upload_max_filesize'));
 			$size = $_FILES['file']['size'];
 			$original = $_FILES['file']['name'];
@@ -1404,6 +1405,7 @@ class Chats extends REST_Controller
 	 */
 	function retrieve_file_get()
 	{
+		// TODO: Change to Filename as unique identifier for file API
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -1487,6 +1489,7 @@ class Chats extends REST_Controller
 	 */
 	function remove_file_post()
 	{
+		// TODO: Change to Filename as unique identifier for file API
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -1576,6 +1579,7 @@ class Chats extends REST_Controller
 	 */
 	function fetch_recent_files_get()
 	{
+		// TODO: Change to Filename as unique identifier for file API
 		$this->load->model('Model_Classes');
 
 		$chat_id_string = $this->get('chat_id');
@@ -1613,6 +1617,7 @@ class Chats extends REST_Controller
 	 */
 	function fetch_files_since_get()
 	{
+		// TODO: Change to Filename as unique identifier for file API
 		$this->load->model('Model_Classes');
 
 		$chat_id_string = $this->get('chat_id');
@@ -1654,6 +1659,7 @@ class Chats extends REST_Controller
 	 */
 	function fetch_files_day_get()
 	{
+		// TODO: Change to Filename as unique identifier for file API
 		$this->load->model('Model_Classes');
 
 		$chat_id_string = $this->get('chat_id_string');
@@ -1692,6 +1698,8 @@ class Chats extends REST_Controller
 	 */
 	function fetch_all_files_by_class_get()
 	{
+		
+		// TODO: Change to Filename as unique identifier for file API
 		$this->load->model('Model_Classes');
 
 		$chat_id_string = $this->get('chat_id');

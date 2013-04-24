@@ -596,7 +596,7 @@ function update_chat_list()
 				$('#CourseList li').slideUp(300,function() {$(this).remove();});
 				for (i in data)
 				{
-					var listitem = $('<li id="'+data[i].class_id_string+'"><span class="title">'+data[i].name+'</span><br /><span class="subTitle">0 members, 0 online</span></li>');
+					var listitem = $('<li id="'+data[i].class_id_string+'"><span class="title">'+data[i].name+'</span><br /><span class="subTitle">'+data[i].participant_count+' members, 0 online</span></li>');
 					listitem.hide();
 					if (data[i].class_id_string == current_chat_room)
 						listitem.addClass("selected");
