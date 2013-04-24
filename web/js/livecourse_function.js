@@ -908,7 +908,17 @@ function send_message(message_string,clear_me)
 		},
 		function (xhr, status)
 		{
-			var errdialog = dialog_new("Error Sending Message","An error occurred while attempting to send your message.",true,true);
+			var err_msg = "An error occurred while attempting to send your message.";
+			var err = null;
+			if (xhr.responseText.length > 0)
+			{
+				err = JSON.parse(xhr.responseText);
+				if (err.errors != null && err.errors[0].length > 0)
+				{
+					err_msg = err.errors[0];
+				}
+			}
+			var errdialog = dialog_new("Error Sending Message",err_msg,true,true);
 			errdialog.find(".DialogContainer").addClass("error");
 			dialog_show(errdialog);
 			if (typeof _clear_me != "undefined")
