@@ -205,6 +205,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		Globals.query = null;
 		Globals.token = null;
 		Globals.sectionId = null;
+		Globals.chatId = null;
 		Globals.regId = null;
 		Globals.colorPref = null;
 		Globals.startEpoch = null;
