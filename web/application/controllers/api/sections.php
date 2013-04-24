@@ -236,4 +236,40 @@ class Sections extends REST_Controller
 
 		$this->response($chatinfo, 200);
 	}
+	
+	/**
+	* This function will generate a QR code and return the URL to be embedded as an image.
+	*
+	* id - ID of the chat to join
+	*
+	* returns
+	*	400 if no chat id provided
+	*	404 if chat does not exist
+	*	a URL and 200 on success
+	*/
+	function generate_qr_get()
+	{
+		$this->load->model('Model_Sections');
+
+		$chat_id_string = $this->get('chat_id');
+
+		//Make sure we requested a chat ID
+		if (strlen($chat_id_string) <= 0)
+		{
+			$this->response($this->rest_error(array("No chat ID was specified.")), 400);
+			return;
+		}
+
+		//Try to find the chat
+		$chat_id = $this->Model_Sections->get_id_from_string($chat_id_string);
+
+		if ($chat_id < 0)
+		{
+			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
+			return;
+		}
+
+		$url = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=livecourse.net/join/" . $chat_id_string;
+		header("Location: " . $url);
+	}
 }

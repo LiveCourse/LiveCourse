@@ -335,6 +335,7 @@ class Model_Users extends CI_Model {
 	{
 		$users = $this->db
 				->select('lc_wp_users.user_id, lc_wp_users.device_id, lc_wp_users.push_url')
+				->distinct()
 				->from('lc_wp_users')
 				->join('lc_section_participants', 'lc_section_participants.user_id = lc_wp_users.user_id' )
 				->join('lc_sections','lc_sections.id = lc_section_participants.section_id')

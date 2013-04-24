@@ -681,10 +681,20 @@ class Chats extends REST_Controller
 				return;
 			}
 			$file = null;
-
+			$file_type = null;
 			//Generate an inputFile for S3, part of the function
 			$file = $this->Model_S3->inputFile($_FILES['file']['tmp_name']);
 			$file_type = pathinfo($original, PATHINFO_EXTENSION);
+			if ($file_type === null && isset($_FILES['file']['type']))
+			{
+				$file_type = $this->Model_Classes->get_ext_by_content_type($_FILES['file']['type']);
+			}
+			else
+			{
+				$this->response($this->rest_error(array("No file type! Cannot tell what file is!")), 403);
+				return;
+			}
+			
 			$file_name .= '.'.$file_type;
 			if (!$file)
 			{
@@ -1354,42 +1364,7 @@ class Chats extends REST_Controller
 			return;
 		}
 	}
-	/**
-	* This function will generate a QR code and return the URL to be embedded as an image.
-	*
-	* id - ID of the chat to join
-	*
-	* returns
-	*	400 if no chat id provided
-	*	404 if chat does not exist
-	*	a URL and 200 on success
-	*/
-	function generate_qr_get()
-	{
-		$this->load->model('Model_Classes');
-
-		$chat_id_string = $this->get('chat_id');
-
-		//Make sure we requested a chat ID
-		if (strlen($chat_id_string) <= 0)
-		{
-			$this->response($this->rest_error(array("No chat ID was specified.")), 400);
-			return;
-		}
-
-		//Try to find the chat
-		$chat_id = $this->Model_Classes->get_id_from_string($chat_id_string);
-
-		if ($chat_id < 0)
-		{
-			$this->response($this->rest_error(array("Specified chat does not exist.")), 404);
-			return;
-		}
-
-		$url = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=livecourse.net/join/" . $chat_id_string;
-		header("Location: " . $url);
-	}
-
+	
 	/* This function retrieves a file object
 	 *
 	 * chat_id - The String for the Chat in which the file was uploaded
@@ -1405,7 +1380,6 @@ class Chats extends REST_Controller
 	 */
 	function retrieve_file_get()
 	{
-		// TODO: Change to Filename as unique identifier for file API
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -1489,7 +1463,6 @@ class Chats extends REST_Controller
 	 */
 	function remove_file_post()
 	{
-		// TODO: Change to Filename as unique identifier for file API
 		//Check to see if they are authenticated
 		$user_id = $this->authenticated_as;
 
@@ -1579,8 +1552,6 @@ class Chats extends REST_Controller
 	 */
 	function fetch_recent_files_get()
 	{
-		
-		// TODO: Change to Filename as unique identifier for file API
 		$this->load->model('Model_Classes');
 
 		$chat_id_string = $this->get('chat_id');
@@ -1618,7 +1589,6 @@ class Chats extends REST_Controller
 	 */
 	function fetch_files_since_get()
 	{
-		// TODO: Change to Filename as unique identifier for file API
 		$this->load->model('Model_Classes');
 
 		$chat_id_string = $this->get('chat_id');
@@ -1660,7 +1630,6 @@ class Chats extends REST_Controller
 	 */
 	function fetch_files_day_get()
 	{
-		// TODO: Change to Filename as unique identifier for file API
 		$this->load->model('Model_Classes');
 
 		$chat_id_string = $this->get('chat_id_string');
@@ -1699,8 +1668,6 @@ class Chats extends REST_Controller
 	 */
 	function fetch_all_files_by_class_get()
 	{
-		
-		// TODO: Change to Filename as unique identifier for file API
 		$this->load->model('Model_Classes');
 
 		$chat_id_string = $this->get('chat_id');
