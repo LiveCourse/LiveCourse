@@ -29,6 +29,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 
 /**
@@ -405,5 +406,24 @@ public class Utility
 		
 		InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+	}
+	
+	/**
+	 * Returns the MINE content type o the file given as a string
+	 * 
+	 * @param fileUrl	The url or filename of the file
+	 * @return			The MINE content type as a string
+	 */
+	public static String getMimeType(String fileUrl) 
+	{
+		int start = fileUrl.lastIndexOf(".");
+		
+		if(start == -1 || start == fileUrl.length()-1)
+			return null;
+		
+	    String extension = fileUrl.substring(start, fileUrl.length());
+	    Log.d(Utility.TAG, "File URI: " + fileUrl + " Extension: " + extension + " Start char: " + fileUrl.lastIndexOf(".") + " Length: " + fileUrl.length());
+	    
+	    return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.substring(1,extension.length()));
 	}
 }
