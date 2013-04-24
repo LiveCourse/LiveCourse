@@ -94,6 +94,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		this.setHasOptionsMenu(true);
 		this.setMenuVisibility(true);
 		
+		
 		/**
 		 * Connects the views to their XML equivalent
 		 */

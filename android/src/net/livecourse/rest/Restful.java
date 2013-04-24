@@ -352,15 +352,22 @@ public class Restful extends AsyncTask <Void, String, String>
 			}
 			if(this.fileType == Restful.POST_FILE)
 			{
+				String contentType = Utility.getMimeType(this.file.getName());
 				Log.d(this.TAG, "File path: " + this.file.getAbsolutePath());
+				Log.d(this.TAG, "The content type: " + 	contentType);
 				
 				MultipartEntity ent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-				ent.addPart("file", new FileBody(this.file));
+				
+				if(contentType != null)
+					ent.addPart("file", new FileBody(this.file, Utility.getMimeType(this.file.getName())));
+				else
+					ent.addPart("file", new FileBody(this.file));
 				
 				for(int x = 0; x < numArgs; x++)
 				{
 					ent.addPart(serverArgs[x], new StringBody(args[x]));
 				}
+				
 				httpPost.setEntity(ent);
 			}
 			if(this.fileType == Restful.POST_FILE)
