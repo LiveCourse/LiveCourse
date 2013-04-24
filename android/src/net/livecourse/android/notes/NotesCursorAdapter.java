@@ -43,6 +43,8 @@ public class NotesCursorAdapter extends CursorAdapter
 		NoteViewHolder v 	= (NoteViewHolder) view.getTag();
 		
 		String message 		= cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHandler.KEY_NOTES_MESSAGE));
+		String parentId		= cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHandler.KEY_NOTES_PARENT_ID));
+		String noteId 		= cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHandler.KEY_NOTES_ID));
 		int depth			= cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHandler.KEY_NOTES_DEPTH));
 		
 		v.message.setText(message);
@@ -57,6 +59,9 @@ public class NotesCursorAdapter extends CursorAdapter
 			v.message.setTextAppearance(context, android.R.style.TextAppearance_Medium);
 		else
 			v.message.setTextAppearance(context, android.R.style.TextAppearance_Small);
+		
+		v.noteId = noteId;
+		v.parentId = parentId;
 		
 		view.setTag(v);
 	}

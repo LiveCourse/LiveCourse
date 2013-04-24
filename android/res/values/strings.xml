@@ -137,6 +137,13 @@
    	<string name="chatmessage_dialog_item_file_title">		Attached File:	</string> 		
     <string name="chatmessage_dialog_button_negative">		OK				</string> 
     		
-    
+    <!-- 	Notes Fragment Strings -->
+   	<string name="notes_list_view_footer_title">			(Add Section)	</string> 
+   	
+   	<!-- 	Notes Add Notes Dialog Strings -->
+   	<string name="notes_add_note_dialog_edit_text_hint">	Notes			</string> 
+    <string name="notes_add_dialog_button_positive">		OK				</string> 
+    <string name="notes_add_dialog_button_negative">		Cancel			</string> 
+   			    
 
 </resources>

@@ -6,4 +6,5 @@ public class NoteViewHolder
 {
 	public TextView message;
 	public String noteId;
+	public String parentId;
 }

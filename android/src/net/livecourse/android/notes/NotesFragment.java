@@ -14,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -36,7 +37,8 @@ public class NotesFragment extends SherlockFragment implements OnRestCalled, Act
 	
 	private View notesLayout;
 	private ListView notesListView;
-	
+	private View notesFooterView;
+		
 	private NotesCursorAdapter adapter;
 	
 	public static NotesFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
@@ -71,11 +73,15 @@ public class NotesFragment extends SherlockFragment implements OnRestCalled, Act
 		this.notesLayout = inflater.inflate(R.layout.notes_layout, container, false);
 		this.notesListView = (ListView) this.notesLayout.findViewById(R.id.notes_list_view);
 		
+		this.notesFooterView = this.getSherlockActivity().getLayoutInflater().inflate(R.layout.notes_footer_layout, null);
+		this.notesListView.addFooterView(this.notesFooterView, null, true);
+				
 		this.adapter = new NotesCursorAdapter(this.getSherlockActivity(), null, 0);
-		this.notesListView.setAdapter(adapter);
+		this.notesListView.setAdapter(this.adapter);
 		
 		this.notesListView.setOnItemClickListener(this);
 		this.notesListView.setOnItemLongClickListener(this);
+		
 		
 		return notesLayout;
 	}
@@ -123,16 +129,23 @@ public class NotesFragment extends SherlockFragment implements OnRestCalled, Act
 	
 	
 	@Override
+	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) 
+	{
+		switch(view.getId())
+		{
+			case R.id.notes_list_view_footer:
+				NoteViewHolder v = (NoteViewHolder) view.getTag();
+				NotesAddNotesDialog dialog = new NotesAddNotesDialog();
+		        dialog.show(this.getSherlockActivity().getSupportFragmentManager(), "NoticeDialogFragment");
+				break;
+		}
+	}
+	
+	
+	@Override
 	public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-
-	@Override
-	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	
@@ -222,7 +235,8 @@ public class NotesFragment extends SherlockFragment implements OnRestCalled, Act
 	@Override
 	public void onRestPostExecutionFailed(String restCall, int code,String result) 
 	{
-		// TODO Auto-generated method stub
+		Log.d(this.TAG, "Rest call: " + restCall + "failed with status code: " + code);
+		Log.d(this.TAG,"Result from server is:\n" + result);
 		
 	}
 

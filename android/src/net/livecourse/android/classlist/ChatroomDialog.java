@@ -57,8 +57,7 @@ public class ChatroomDialog extends DialogFragment implements DialogInterface.On
 	public Dialog onCreateDialog(Bundle savedInstanceState) 
 	{
 	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	    LayoutInflater inflater = this.getActivity().getLayoutInflater();
-	    
+	    LayoutInflater inflater = this.getActivity().getLayoutInflater();	    
 	    	    
 	    builder.setView(inflater.inflate(R.layout.classlist_dialog_layout, null))
 	           .setNegativeButton(R.string.classlist_dialog_button_negative, this)
