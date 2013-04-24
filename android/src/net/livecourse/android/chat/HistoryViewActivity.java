@@ -55,6 +55,7 @@ public class HistoryViewActivity extends SherlockFragmentActivity implements OnI
          * Connects the view to the XML
          */
         historyListView = (ListView) findViewById(R.id.history_list_view);
+        historyListView.setEmptyView(this.findViewById(R.id.history_list_empty_text_view));
 		
 		/**
 		 * Adds the adapter to the list and sends the temporary list to it

@@ -11,5 +11,15 @@
         android:layout_weight="1" >
     </ListView>
     
+    <TextView 
+        android:id="@+id/documents_list_empty_text_view"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="5dp"
+	    android:textSize="15sp"
+	    android:layout_weight="1"
+	    android:gravity="center_horizontal"
+	    android:layout_gravity="center_horizontal"
+	    android:text="@string/no_documents" />
 
 </LinearLayout>

@@ -32,6 +32,7 @@ public class DocumentsActivity extends SherlockFragmentActivity implements OnRes
         Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
         
         this.documentsListView = (ListView) this.findViewById(R.id.documents_list_view);
+        this.documentsListView.setEmptyView(this.findViewById(R.id.documents_list_empty_text_view));
         
         this.adapter = new DocumentsCursorAdapter(this, null, 0);
         this.documentsListView.setAdapter(adapter);
