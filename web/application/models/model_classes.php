@@ -177,9 +177,10 @@ class Model_Classes extends CI_Model {
 	function get_num_latest_messages($class_id,$num_lines = 100)
 	{
 		$q = 'SELECT * FROM (
-				SELECT lc_chat_messages.id, lc_classes.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name FROM `lc_chat_messages`
+				SELECT lc_chat_messages.id, lc_classes.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name, lc_chat_files.filename, lc_chat_files.original_name FROM `lc_chat_messages`
 				JOIN lc_users ON lc_users.id = lc_chat_messages.user_id
 				JOIN lc_classes ON lc_classes.id = lc_chat_messages.class_id
+				LEFT OUTER JOIN lc_chat_files ON lc_chat_messages.id = lc_chat_files.message_id
 				WHERE lc_chat_messages.class_id = ' . $class_id . '
 				ORDER BY lc_chat_messages.send_time
 				DESC LIMIT ' . $num_lines . '
@@ -189,7 +190,7 @@ class Model_Classes extends CI_Model {
 				->result();
 		return $query;
 	}
-
+	
 	/**
 	 * Gets messages in the given time frame from given room.
 	 * chat_id - ID of chat to fetch from
@@ -200,13 +201,14 @@ class Model_Classes extends CI_Model {
 	function get_time_frame_messages($class_id,$start_time,$end_time)
 	{
 		$query = $this->db
-				->select('lc_chat_messages.id, lc_classes.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name')
+				->select('lc_chat_messages.id, lc_classes.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name, lc_chat_files.filename, lc_chat_files.original_name')
 				->where('lc_chat_messages.class_id',$class_id)
 				->where('lc_chat_messages.send_time >=',$start_time)
 				->where('lc_chat_messages.send_time <=',$end_time)
 				->from('lc_chat_messages')
 				->join('lc_users','lc_users.id = lc_chat_messages.user_id')
 				->join('lc_classes','lc_classes.id = lc_chat_messages.class_id')
+				->join('lc_chat_files', 'lc_chat_messages.id = lc_chat_files.message_id', 'left outer')
 				->order_by("send_time", "asc")
 				->get()
 				->result();
@@ -222,12 +224,13 @@ class Model_Classes extends CI_Model {
 	function get_messages_after_msg_id($chat_id,$msg_id)
 	{
 		$query = $this->db
-				->select('lc_chat_messages.id, lc_classes.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name')
+				->select('lc_chat_messages.id, lc_classes.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name, lc_chat_files.filename, lc_chat_files.original_name')
 				->where('lc_chat_messages.class_id',$chat_id)
 				->where('lc_chat_messages.id >',$msg_id)
 				->from('lc_chat_messages')
 				->join('lc_users','lc_users.id = lc_chat_messages.user_id')
 				->join('lc_classes','lc_classes.id = lc_chat_messages.class_id')
+				->join('lc_chat_files', 'lc_chat_messages.id = lc_chat_files.message_id', 'left outer')
 				->order_by("send_time", "asc")
 				->get()
 				->result();
@@ -275,9 +278,9 @@ class Model_Classes extends CI_Model {
 	}
 
 	/**
-	 *Adds a new chat to the database
-	 *chat_info - Array of chat information to be added into the database.
-	 *returns - NULL or FALSE if failed.
+	 * Adds a new chat to the database
+	 * chat_info - Array of chat information to be added into the database.
+	 * returns - NULL or FALSE if failed.
 	 */
 	function add_class($chat_info)
 	{
@@ -296,11 +299,12 @@ class Model_Classes extends CI_Model {
 
 		return $this->db->insert('lc_classes', $chat_info);
 	}
+	
 	/**
-	 *Checks to see if a user has already reported a message
-	 *reporter_id - the ID number of the reporter in question
-	 *message_id - the ID number of the message in question
-	 *returns true if the reporter has reported this message, false if it hasnt
+	 * Checks to see if a user has already reported a message
+	 * reporter_id - the ID number of the reporter in question
+	 * message_id - the ID number of the message in question
+	 * returns true if the reporter has reported this message, false if it hasnt
 	 */
 	function check_reporter($reporter_id, $message_id){
 
@@ -321,9 +325,9 @@ class Model_Classes extends CI_Model {
 	}
 
 	/**
-	 *Checks to see if a message exists
-	 *message_id - the ID number of the message to be checked
-	 *returns true if the message exists, or false if it doesnt
+	 * Checks to see if a message exists
+	 * message_id - the ID number of the message to be checked
+	 * returns true if the message exists, or false if it doesnt
 	 */
 	function check_message($message_id)
 	{
@@ -491,6 +495,10 @@ WHERE lc_chat_participants.chat_id = 1
 	}
 	*/
 
+	
+	/**
+	 * Adds a file entry to the database
+	 */
 	function add_file($user_id, $chat_id, $filename, $original, $size, $message_id, $time = '')
 	{
 		if($time == '')
@@ -507,7 +515,10 @@ WHERE lc_chat_participants.chat_id = 1
 		return $this->db->insert('lc_chat_files', $data);
 
 	}
-
+	
+	/**
+	 * This function returns all the related file information for a file linked to a message id
+	 */
 	function get_file_info($message_id)
 	{
 		return $this->db
@@ -515,7 +526,10 @@ WHERE lc_chat_participants.chat_id = 1
 			->get('lc_chat_files')
 			->row_array();
 	}
-
+	
+	/**
+	 * Removes a file entry from the database
+	 */
 	function remove_file($user_id, $chat_id, $filename)
 	{
 		return $this->db->delete('lc_chat_files', array(

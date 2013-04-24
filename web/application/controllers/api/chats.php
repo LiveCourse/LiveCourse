@@ -1579,6 +1579,7 @@ class Chats extends REST_Controller
 	 */
 	function fetch_recent_files_get()
 	{
+		
 		// TODO: Change to Filename as unique identifier for file API
 		$this->load->model('Model_Classes');
 
