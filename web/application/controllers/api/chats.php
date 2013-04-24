@@ -685,15 +685,15 @@ class Chats extends REST_Controller
 			//Generate an inputFile for S3, part of the function
 			$file = $this->Model_S3->inputFile($_FILES['file']['tmp_name']);
 			$file_type = pathinfo($original, PATHINFO_EXTENSION);
-			if ($file_type === null && isset($_FILES['file']['type']))
-			{
-				$file_type = $this->Model_Classes->get_ext_by_content_type($_FILES['file']['type']);
-			}
-			else
-			{
-				$this->response($this->rest_error(array("No file type! Cannot tell what file is!")), 403);
-				return;
-			}
+			//if ($file_type === null && isset($_FILES['file']['type']))
+			//{
+				//$file_type = $this->Model_Classes->get_ext_by_content_type($_FILES['file']['type']);
+			//}
+			//else
+			//{
+			//	$this->response($this->rest_error(array("No file type! Cannot tell what file is!")), 403);
+			//	return;
+			//}
 			
 			$file_name .= '.'.$file_type;
 			if (!$file)
