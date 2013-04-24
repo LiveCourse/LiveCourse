@@ -44,13 +44,7 @@ public class ClassListCursorAdapter extends CursorAdapter
 		
 		String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
 		String type = cursor.getString(cursor.getColumnIndexOrThrow("class_type"));
-		String instructor = cursor.getString(cursor.getColumnIndexOrThrow("instructor"));
-		
-		if(name.length() > 28)
-			name = name.substring(0, 25) + "...";
-		if(instructor.length() > 28)
-			instructor = instructor.substring(0,25) + "..."; 
-			
+		String instructor = cursor.getString(cursor.getColumnIndexOrThrow("instructor"));	
 		
 		String time = "";
 		if(cursor.getString(cursor.getColumnIndexOrThrow("dow_monday")).equals("1"))
