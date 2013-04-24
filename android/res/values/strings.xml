@@ -7,6 +7,7 @@
     
     <!-- 	General Purpose Strings -->
     <string name="no_results">No Results</string>
+    <string name="no_chats">Empty Chat</string>
     
     <!-- 	Settings Activity Strings -->
     <string name="user_profile_picture">User Profile Picture</string>

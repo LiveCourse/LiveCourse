@@ -110,6 +110,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		this.adapter = new ChatCursorAdapter(this.getSherlockActivity(),null,0);
 		this.messageListView.setAdapter(adapter);
 		
+		this.messageListView.setEmptyView(this.chatLayout.findViewById(R.id.message_list_empty_text_view));
 
 		/**
 		 * Sets the listeners

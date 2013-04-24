@@ -60,6 +60,8 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
         this.queryListView.setOnItemClickListener(this);
         this.queryListView.setOnItemLongClickListener(this);
         
+        this.queryListView.setEmptyView(this.findViewById(R.id.query_list_empty_text_view));
+        
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) 
         {
