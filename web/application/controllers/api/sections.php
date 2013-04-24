@@ -167,7 +167,7 @@ class Sections extends REST_Controller
 			$sections_query["building_short_name"] = $building_short_name;
 		if (strlen($room_number) > 0)
 			$sections_query["room_number"] = $room_number;
-		
+		$sections = array();
 		$sections = $this->Model_Sections->search_sections_advanced($sections_query,$user_id);
 		if (count($sections) <= 0)
 		{
@@ -245,13 +245,13 @@ class Sections extends REST_Controller
 	* returns
 	*	400 if no chat id provided
 	*	404 if chat does not exist
-	*	a URL and 200 on success
+	*	Should redirect to the QR code on success
 	*/
 	function generate_qr_get()
 	{
 		$this->load->model('Model_Sections');
 
-		$chat_id_string = $this->get('chat_id');
+		$chat_id_string = $this->get('section_id');
 
 		//Make sure we requested a chat ID
 		if (strlen($chat_id_string) <= 0)
@@ -270,6 +270,6 @@ class Sections extends REST_Controller
 		}
 
 		$url = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=livecourse.net/join/" . $chat_id_string;
-		header("Location: " . $url);
+		$this->response($url, 200);
 	}
 }

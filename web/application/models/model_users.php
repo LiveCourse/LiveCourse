@@ -441,6 +441,7 @@ class Model_Users extends CI_Model {
 	{
 		$users = $this->db
 				->select('lc_gcm_users.user_id, lc_gcm_users.gcm_regid')
+				->distinct()
 				->from('lc_gcm_users')
 				->join('lc_section_participants', 'lc_section_participants.user_id = lc_gcm_users.user_id' ) // AND lc_chat_participants.chat_id = ' . $chat_id
 				->join('lc_sections','lc_sections.id = lc_section_participants.section_id')
