@@ -121,6 +121,14 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 				
 		return chatLayout;
 	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		
+		Utility.hideKeyboard(this.getSherlockActivity());
+	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) 

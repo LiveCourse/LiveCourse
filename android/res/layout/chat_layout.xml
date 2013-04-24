@@ -56,7 +56,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textCapSentences" >
+            android:inputType="textCapSentences|textShortMessage" >
 
             <requestFocus />
         </EditText>
