@@ -86,7 +86,7 @@ public class Restful extends AsyncTask <Void, String, String>
 	public static final String		GET_NOTES_PATH					= "notes"									;
 	public static final String		ADD_NOTE_PATH					= "notes/add"								;
 	public static final String		GET_SUBSCRIBED_SECTIONS_PATH 	= "sections"								;
-	public static final String		JOIN_CHAT_PATH					= "sections/join"							;
+	public static final String		JOIN_SECTION_PATH				= "sections/join"							;
 	public static final String		SEARCH_FOR_CHAT_PATH			= "sections/search_advanced"				;
 	public static final String		REGISTER_USER_PATH				= "users/add"								;
 	public static final String		GET_USER_PATH					= "users/index"								;

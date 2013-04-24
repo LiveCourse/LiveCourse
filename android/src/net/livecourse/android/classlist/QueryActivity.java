@@ -145,7 +145,7 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	{
 		ChatroomViewHolder v = (ChatroomViewHolder) view.getTag();	
-		new Restful(Restful.JOIN_CHAT_PATH, Restful.POST, new String[]{"id"}, new String[]{v.sectionIdString}, 1, this);
+		new Restful(Restful.JOIN_SECTION_PATH, Restful.POST, new String[]{"id"}, new String[]{v.sectionIdString}, 1, this);
 	}
 	
 	@Override
@@ -162,7 +162,7 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	@Override
 	public void preRestExecute(String restCall) 
 	{
-		if(restCall.equals(Restful.JOIN_CHAT_PATH))
+		if(restCall.equals(Restful.JOIN_SECTION_PATH))
 		{
 			Utility.startDialog(this, "Joining Chat", "Attempting to join chat...");
 		}
@@ -179,13 +179,14 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 		JSONArray parse;
 		JSONObject ob;
 		
-		if(restCall.equals(Restful.JOIN_CHAT_PATH))
+		if(restCall.equals(Restful.JOIN_SECTION_PATH))
 		{
 			try 
 			{
 				ob = new JSONObject(response);
-				Globals.sectionId = ob.getString("class_id_string");
-				Globals.chatName = ob.getString("name");				
+				Globals.chatId = ob.getString("class_id_string");
+				Globals.chatName = ob.getString("name");	
+				Globals.sectionId = this.longPressChatRoomSectionId;
 			} 
 			catch (JSONException e) 
 			{
@@ -219,7 +220,6 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
 	public void onRestPostExecutionSuccess(String restCall, String result) 
 	{
     	Utility.stopDialog();
-    	Utility.hideKeyboard(this);
 
 		if(restCall.equals(Restful.SEARCH_FOR_CHAT_PATH))
 		{
@@ -230,7 +230,7 @@ public class QueryActivity extends SherlockFragmentActivity implements SearchVie
         	
         	Log.d(this.TAG, "Updating Query List View");        	
 		}
-		else if(restCall.equals(Restful.JOIN_CHAT_PATH))
+		else if(restCall.equals(Restful.JOIN_SECTION_PATH))
 		{
 			Globals.appDb.recreateClassEnroll();
 			Globals.classListFragment.updateList();
