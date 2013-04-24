@@ -35,79 +35,6 @@ namespace LiveCourse
                 list_chatrooms.ItemsSource = context.ChatRooms.ToList();
                 updateChatRoomList();
             }
-
-            initToastNotifications();
-        }
-
-        public void initToastNotifications()
-        {
-            /// Holds the push channel that is created or found.
-            HttpNotificationChannel pushToastChannel;
-
-            // The name of our push channel.
-            string channelName = "ChatToastNotifications";
-
-            // Try to find the push channel.
-            pushToastChannel = HttpNotificationChannel.Find(channelName);
-
-            // If the channel was not found, then create a new connection to the push service.
-            if (pushToastChannel == null)
-            {
-                pushToastChannel = new HttpNotificationChannel(channelName);
-
-                // Register for all the events before attempting to open the channel.
-                pushToastChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
-                pushToastChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
-
-                // Register for this notification only if you need to receive the notifications while your application is running.
-                // pushToastChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
-
-                pushToastChannel.Open();
-
-                // Bind this new channel for toast events.
-                pushToastChannel.BindToShellToast();
-
-            }
-            else
-            {
-                // The channel was already open, so just register for all the events.
-                pushToastChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
-                pushToastChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
-
-                // Register for this notification only if you need to receive the notifications while your application is running.
-                // pushToastChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
-
-                // Display the URI for testing purposes. Normally, the URI would be passed back to your web service at this point.
-                byte[] myDeviceID = (byte[])Microsoft.Phone.Info.DeviceExtendedProperties.GetValue("DeviceUniqueId");
-                string DeviceIDAsString = Convert.ToBase64String(myDeviceID);
-                System.Diagnostics.Debug.WriteLine("Device ID: '" + DeviceIDAsString + "'");
-                System.Diagnostics.Debug.WriteLine("PUSH URI: '" + pushToastChannel.ChannelUri.ToString() + "'");
-            }
-        }
-
-        void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
-        {
-            Dispatcher.BeginInvoke(() =>
-            {
-                byte[] myDeviceID = (byte[])Microsoft.Phone.Info.DeviceExtendedProperties.GetValue("DeviceUniqueId");
-                string DeviceIDAsString = Convert.ToBase64String(myDeviceID);
-                System.Diagnostics.Debug.WriteLine("Device ID: '"+DeviceIDAsString+"'");
-                System.Diagnostics.Debug.WriteLine("PUSH URI: '"+e.ChannelUri.ToString()+"'");
-
-                Dictionary<String, String> wpvars = new Dictionary<String, String>();
-                wpvars.Add("dev_id", DeviceIDAsString);
-                wpvars.Add("url", e.ChannelUri.ToString());
-                REST chatroomREST = new REST("users/wp_add", "POST", wpvars);
-                chatroomREST.call(null, null);
-            });
-        }
-        void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
-        {
-            // Error handling logic for your particular application would be here.
-            Dispatcher.BeginInvoke(() =>
-                MessageBox.Show(String.Format("A push notification {0} error occurred.  {1} ({2}) {3}",
-                    e.ErrorType, e.Message, e.ErrorCode, e.ErrorAdditionalData))
-                    );
         }
 
         private void updateChatRoomList()
@@ -148,21 +75,11 @@ namespace LiveCourse
                     MyChatRoom room = new MyChatRoom
                     {
                         C_Name = (String)(item.name),
-                        C_ID_String = (String)(item.id_string),
+                        C_ID_String = (String)(item.class_id_string),
                         C_Course_Number = (int)(item.course_number),
-                        C_Start_Time = (int)(item.start_time),
-                        C_End_Time = (int)(item.end_time),
-                        C_Start_Date = Convert.ToDateTime((String)(item.start_date)),
-                        C_End_Date = Convert.ToDateTime((String)(item.end_date)),
-                        C_DOW_Monday = ((String)(item.dow_monday)).Equals("1"),
-                        C_DOW_Tuesday = ((String)(item.dow_tuesday)).Equals("1"),
-                        C_DOW_Wednesday = ((String)(item.dow_wednesday)).Equals("1"),
-                        C_DOW_Thursday = ((String)(item.dow_thursday)).Equals("1"),
-                        C_DOW_Friday = ((String)(item.dow_friday)).Equals("1"),
-                        C_DOW_Saturday = ((String)(item.dow_saturday)).Equals("1"),
-                        C_DOW_Sunday = ((String)(item.dow_sunday)).Equals("1")
+                        C_Subject_Code = (String)(item.subject_code)
                     };
-                    String room_string_id = (String)(item.id_string);
+                    String room_string_id = (String)(item.class_id_string);
                     IEnumerable<MyChatRoom> queryRooms = from MyChatRoom in context.ChatRooms
                                                          where MyChatRoom.C_ID_String == room_string_id
                                                          select MyChatRoom;

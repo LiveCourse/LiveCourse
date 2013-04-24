@@ -11,12 +11,16 @@ using Microsoft.Phone.Shell;
 using LiveCourse.Resources;
 using LiveCourse.ViewModels;
 using System.IO.IsolatedStorage;
+using Microsoft.Phone.Notification;
+using System.Windows.Threading;
 
 namespace LiveCourse
 {
     public partial class App : Application
     {
         public static MyChatRoom currentRoom;
+
+        public static HttpNotificationChannel pushChannel = null;
 
         private static MainViewModel viewModel = null;
 
@@ -93,16 +97,19 @@ namespace LiveCourse
                     REST.auth_pass = ((string)appSettings["auth_pass"]);
                     REST.auth_token = ((string)appSettings["auth_token"]);
                     RootFrame.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+                    initPush();
                 }
                 else
                 {
                     RootFrame.Navigate(new Uri("/LogIn.xaml", UriKind.Relative));
                 }
             }
-            catch (KeyNotFoundException exception)
+            catch (KeyNotFoundException)
             {
                 RootFrame.Navigate(new Uri("/LogIn.xaml", UriKind.Relative));
             }
+
+            
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -114,6 +121,7 @@ namespace LiveCourse
             {
                 App.ViewModel.LoadData();
             }
+            initPush();
         }
 
         // Code to execute when the application is deactivated (sent to background)
@@ -147,6 +155,90 @@ namespace LiveCourse
                 // An unhandled exception has occurred; break into the debugger
                 Debugger.Break();
             }
+        }
+
+        public void initPush()
+        {
+            // The name of our push channel.
+            string channelName = "PushNotifications";
+
+            // Try to find the push channel.
+            App.pushChannel = HttpNotificationChannel.Find(channelName);
+
+            // If the channel was not found, then create a new connection to the push service.
+            if (App.pushChannel == null)
+            {
+                App.pushChannel = new HttpNotificationChannel(channelName);
+
+                // Register for all the events before attempting to open the channel.
+                App.pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+                App.pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+
+                // Register for this notification only if you need to receive the notifications while your application is running.
+                // pushToastChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+
+                App.pushChannel.Open();
+
+                // Bind this new channel for toast events.
+                App.pushChannel.BindToShellToast();
+
+                // Bind raw and forward these to chat page if open.
+                App.pushChannel.HttpNotificationReceived += pushChannel_HttpNotificationReceived;
+            }
+            else
+            {
+                // The channel was already open, so just register for all the events.
+                App.pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+                App.pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+
+                // Register for this notification only if you need to receive the notifications while your application is running.
+                // pushToastChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+
+                // Display the URI for testing purposes. Normally, the URI would be passed back to your web service at this point.
+                byte[] myDeviceID = (byte[])Microsoft.Phone.Info.DeviceExtendedProperties.GetValue("DeviceUniqueId");
+                string DeviceIDAsString = Convert.ToBase64String(myDeviceID);
+                System.Diagnostics.Debug.WriteLine("Device ID: '" + DeviceIDAsString + "'");
+                System.Diagnostics.Debug.WriteLine("PUSH URI: '" + App.pushChannel.ChannelUri.ToString() + "'");
+
+                // Bind raw and forward these to chat page if open.
+                App.pushChannel.HttpNotificationReceived += pushChannel_HttpNotificationReceived;
+            }
+        }
+
+        
+        void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
+        {
+            //Dispatcher.BeginInvoke(() =>
+            //{
+                byte[] myDeviceID = (byte[])Microsoft.Phone.Info.DeviceExtendedProperties.GetValue("DeviceUniqueId");
+                string DeviceIDAsString = Convert.ToBase64String(myDeviceID);
+                System.Diagnostics.Debug.WriteLine("Device ID: '" + DeviceIDAsString + "'");
+                System.Diagnostics.Debug.WriteLine("PUSH URI: '" + e.ChannelUri.ToString() + "'");
+
+                Dictionary<String, String> wpvars = new Dictionary<String, String>();
+                wpvars.Add("dev_id", DeviceIDAsString);
+                wpvars.Add("url", e.ChannelUri.ToString());
+                wpvars.Add("channel", "0");
+                REST chatroomREST = new REST("users/wp_add", "POST", wpvars);
+                chatroomREST.call(null, null);
+            //});
+        }
+
+        void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
+        {
+            throw new Exception();
+        }
+
+        void pushChannel_HttpNotificationReceived(object sender, HttpNotificationEventArgs e)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                var currentPage = ((PhoneApplicationFrame)Application.Current.RootVisual).Content;
+                if (currentPage is ChatPage)
+                {
+                    ((ChatPage)(currentPage)).pushRawChannel_HttpNotificationReceived(sender, e);
+                }
+            });
         }
 
         #region Phone application initialization

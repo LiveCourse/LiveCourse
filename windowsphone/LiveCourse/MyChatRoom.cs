@@ -35,67 +35,7 @@ namespace LiveCourse
             set;
         }
         [Column]
-        public int C_Start_Time
-        {
-            get;
-            set;
-        }
-        [Column]
-        public int C_End_Time
-        {
-            get;
-            set;
-        }
-        [Column(CanBeNull = true)]
-        public DateTime C_Start_Date
-        {
-            get;
-            set;
-        }
-        [Column(CanBeNull = true)]
-        public DateTime C_End_Date
-        {
-            get;
-            set;
-        }
-        [Column]
-        public bool C_DOW_Monday
-        {
-            get;
-            set;
-        }
-        [Column]
-        public bool C_DOW_Tuesday
-        {
-            get;
-            set;
-        }
-        [Column]
-        public bool C_DOW_Wednesday
-        {
-            get;
-            set;
-        }
-        [Column]
-        public bool C_DOW_Thursday
-        {
-            get;
-            set;
-        }
-        [Column]
-        public bool C_DOW_Friday
-        {
-            get;
-            set;
-        }
-        [Column]
-        public bool C_DOW_Saturday
-        {
-            get;
-            set;
-        }
-        [Column]
-        public bool C_DOW_Sunday
+        public String C_Subject_Code
         {
             get;
             set;

@@ -51,7 +51,7 @@ namespace LiveCourse
             variables = myVariables;
         }
 
-        public async void call(RestSuccess successDelegate, RestFailure failureDelegate)
+        public void call(RestSuccess successDelegate, RestFailure failureDelegate)
         {
             var client = new RestClient("http://livecourse.net/api/"); //Initialize REST
 
@@ -83,10 +83,8 @@ namespace LiveCourse
                     response.StatusCode == System.Net.HttpStatusCode.ResetContent ||
                     response.StatusCode == System.Net.HttpStatusCode.PartialContent)
                 {
-                    System.Diagnostics.Debug.WriteLine("Begin serialize");
                     if (successDelegate != null)
                         successDelegate(response.StatusCode, JsonConvert.DeserializeObject<dynamic>(response.Content));
-                    System.Diagnostics.Debug.WriteLine("End serialize");
                 }
                 else
                 {

@@ -84,6 +84,7 @@ namespace LiveCourse
             button_register.IsEnabled = true;
             NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
             NavigationService.RemoveBackEntry();
+            ((App)(Application.Current)).initPush();
         }
 
         public void verify_failure(System.Net.HttpStatusCode code, dynamic data)

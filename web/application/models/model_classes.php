@@ -22,9 +22,9 @@ class Model_Classes extends CI_Model {
 				->group_by(array('lc_subjects.code','lc_classes.course_number'))
 				->join('lc_subjects','lc_subjects.id = lc_classes.subject_id');
 		if (isset($query_parameters["subject_code"]))
-			$query->like('lc_subjects.code', $query_parameters["subject_code"]);
+			$query->like('lc_subjects.code', $query_parameters["subject_code"],'none');
 		if (isset($query_parameters["course_number"]))
-			$query->like('lc_classes.course_number', $query_parameters["course_number"]);
+			$query->like('lc_classes.course_number', $query_parameters["course_number"],'after');
 		return $query->get()->result();
 	}
 	

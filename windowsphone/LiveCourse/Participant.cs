@@ -9,7 +9,7 @@ using System.Data.Linq.Mapping;
 namespace LiveCourse
 {
     [Table]
-    class Participant
+    public class Participant
     {
         [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity")]
         public int id

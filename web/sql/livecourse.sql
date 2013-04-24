@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `lc_classes` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Room ID, primary index',
   `id_string` varchar(12) NOT NULL COMMENT 'Randomized string for identifying the room to the client',
   `subject_id` int(11) NOT NULL COMMENT 'ID of subject this room belongs to',
-  `course_number` smallint(6) NOT NULL COMMENT 'Course number',
+  `course_number` int(11) NOT NULL COMMENT 'Course number',
   `name` varchar(100) NOT NULL COMMENT 'Name of the room / class',
   `institution_id` int(11) NOT NULL COMMENT 'identifier of the institution this room is offered at',
   PRIMARY KEY (`id`)

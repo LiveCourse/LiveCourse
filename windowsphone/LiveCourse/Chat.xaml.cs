@@ -10,6 +10,8 @@ using Microsoft.Phone.Shell;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using Newtonsoft.Json;
+using Microsoft.Devices;
 
 namespace LiveCourse
 {
@@ -17,8 +19,8 @@ namespace LiveCourse
     {
         ProgressIndicator progress_history;
         ProgressIndicator progress_participants;
-        ObservableCollection<ChatMessage> chat_messages;
-        ObservableCollection<Participant> chat_participants;
+        public ObservableCollection<ChatMessage> chat_messages;
+        public ObservableCollection<Participant> chat_participants;
 
         DispatcherTimer participants_timer;
         DispatcherTimer chat_timer;
@@ -54,6 +56,48 @@ namespace LiveCourse
             participants_timer.Interval = TimeSpan.FromMilliseconds(10000);
             participants_timer.Tick += new EventHandler(participants_tick);
             participants_timer.Start();
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+        }
+
+        public void pushRawChannel_HttpNotificationReceived(object sender, Microsoft.Phone.Notification.HttpNotificationEventArgs e)
+        {
+            string content;
+
+            using (System.IO.StreamReader reader = new System.IO.StreamReader(e.Notification.Body))
+            {
+                content = reader.ReadToEnd();
+            }
+            dynamic m = JsonConvert.DeserializeObject<dynamic>(content);
+
+            if (!((String)(m.chat_id)).Equals(App.currentRoom.C_ID_String)) //If this isn't for our current room, ignore it.
+                return;
+
+            ChatMessage msg = new ChatMessage
+            {
+                msg_id = (int)(m.message_id),
+                sender_id = (int)(m.user_id),
+                sender_name = (String)(m.display_name),
+                msg_string = (String)(m.message_string),
+                chatroom_id = App.currentRoom.C_ID
+            };
+            Dispatcher.BeginInvoke(() => addMessage(msg));
+            using (ChatRoomDataContext context = new ChatRoomDataContext(MainPage.Con_String))
+            {
+                context.ChatMessages.InsertOnSubmit(msg);
+                context.SubmitChanges();
+            }
+            //throw new NotImplementedException();
+        }
+
+        public void addMessage(ChatMessage m)
+        {
+            chat_messages.Add(m);
+            list_messages.ScrollTo(chat_messages.Last());
+            VibrateController vib = VibrateController.Default;
+            vib.Start(TimeSpan.FromMilliseconds(150));
         }
 
         void participants_tick(object sender, EventArgs e)
@@ -159,7 +203,7 @@ namespace LiveCourse
                         sender_id = (int)(item.user_id),
                         sender_name = (String)(item.display_name),
                         msg_string = (String)(item.message_string),
-                        chatroom_id = (int)(item.chat_id)
+                        chatroom_id = (int)(App.currentRoom.C_ID)
                     };
                     chat_messages.Add(msg);
                     using (ChatRoomDataContext context = new ChatRoomDataContext(MainPage.Con_String))
@@ -170,11 +214,6 @@ namespace LiveCourse
                 }
                 list_messages.ScrollTo(chat_messages.Last());
             }
-            
-            //progress_history.IsVisible = false;
-            chat_timer.Interval = TimeSpan.FromMilliseconds(2000);
-            chat_timer.Stop();
-            chat_timer.Start();
         }
 
         public void rest_load_new_chat_failure(System.Net.HttpStatusCode code, dynamic data)
@@ -220,14 +259,16 @@ namespace LiveCourse
                 historyREST.call(rest_load_history_success, rest_load_history_failure);
             } else {
                 progress_history.IsVisible = false;
-                chat_timer = new DispatcherTimer();
-                chat_timer.Interval = TimeSpan.FromMilliseconds(2000);
-                chat_timer.Tick += new EventHandler(chat_tick);
-                chat_timer.Start();
+                //Switching to PUSH for this.
+                //chat_timer = new DispatcherTimer();
+                //chat_timer.Interval = TimeSpan.FromMilliseconds(2000);
+                //chat_timer.Tick += new EventHandler(chat_tick);
+                //chat_timer.Start();
                 DispatcherTimer scroll_timer = new DispatcherTimer();
                 scroll_timer.Interval = TimeSpan.FromMilliseconds(100);
                 scroll_timer.Tick += new EventHandler(scrollChatToBottom);
                 scroll_timer.Start();
+                loadNewChat();
             }
         }
 

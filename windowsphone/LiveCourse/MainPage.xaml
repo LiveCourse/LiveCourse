@@ -82,6 +82,7 @@
                             <ListBoxItem>
                                 <StackPanel x:Name="chat_room_listing" Margin="0,-6,0,12">
                                     <TextBlock Text="{Binding C_Name}" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeLarge}" TextTrimming="WordEllipsis"/>
+                                    <!--
                                     <StackPanel Margin="12,0,0,0" Orientation="Horizontal">
                                         <TextBlock Text="M" Visibility="{Binding C_DOW_Monday, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                         <TextBlock Text="T" Visibility="{Binding C_DOW_Tuesday, Converter={StaticResource BooleanToVisibilityConverter}}" />
@@ -91,6 +92,7 @@
                                         <TextBlock Text="S" Visibility="{Binding C_DOW_Saturday, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                         <TextBlock Text="U" Visibility="{Binding C_DOW_Sunday, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                     </StackPanel>
+                                    -->
                                 </StackPanel>
                             </ListBoxItem>
                         </DataTemplate>
