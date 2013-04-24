@@ -83,9 +83,6 @@ public class DocumentsCursorAdapter extends CursorAdapter
 		documentUploadTime 			= new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(Long.parseLong(documentUploadTime)));
 		documentSize				= documentSize + " bytes";
 		
-		if(documentName.length() > 28)
-			documentName = documentName.substring(0, 25) + "...";
-		
 		v.documentName				.setText(documentName		);
 		v.documentSize				.setText(documentSize		);
 		v.documentUploadTime		.setText(documentUploadTime	);
