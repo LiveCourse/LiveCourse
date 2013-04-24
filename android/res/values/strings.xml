@@ -140,6 +140,10 @@
     <!-- 	Notes Fragment Strings -->
    	<string name="notes_list_view_footer_title">			(Add Section)	</string> 
    	
+   	<!-- 	Notes Dialog strings -->
+   	<string name="notes_dialog_button_positive">			Add Sub Note	</string> 
+    <string name="notes_dialog_button_negative">			OK				</string> 
+   	
    	<!-- 	Notes Add Notes Dialog Strings -->
    	<string name="notes_add_note_dialog_edit_text_hint">	Notes			</string> 
     <string name="notes_add_dialog_button_positive">		OK				</string> 

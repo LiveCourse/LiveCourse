@@ -9,10 +9,7 @@ import net.livecourse.utility.Utility;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.EditText;
@@ -31,7 +28,7 @@ public class NotesAddNotesDialog extends SherlockDialogFragment implements OnRes
 	private String 			parentId;
 	private String 			message;
 	
-	private EditText notesAdd;
+	private EditText 		notesAdd;
 	
 	public NotesAddNotesDialog()
 	{

@@ -14,7 +14,6 @@ import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -131,13 +130,16 @@ public class NotesFragment extends SherlockFragment implements OnRestCalled, Act
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) 
 	{
-		switch(view.getId())
+		if(view.getId() == R.id.notes_list_view_footer)
 		{
-			case R.id.notes_list_view_footer:
-				NoteViewHolder v = (NoteViewHolder) view.getTag();
-				NotesAddNotesDialog dialog = new NotesAddNotesDialog();
-		        dialog.show(this.getSherlockActivity().getSupportFragmentManager(), "NoticeDialogFragment");
-				break;
+			NotesAddNotesDialog dialog = new NotesAddNotesDialog();
+	        dialog.show(this.getSherlockActivity().getSupportFragmentManager(), "NoticeDialogFragment");
+		}
+		else
+		{
+			NoteViewHolder v = (NoteViewHolder) view.getTag();
+			NoteDialog dialog = new NoteDialog(v.noteId, v.message.getText().toString());
+	        dialog.show(this.getSherlockActivity().getSupportFragmentManager(), "NoticeDialogFragment");
 		}
 	}
 	
