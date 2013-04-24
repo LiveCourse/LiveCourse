@@ -36,6 +36,7 @@ public class Globals extends Application
     public static final int				DOCUMENTS_LOADER					= 6;
     public static final int				CHATROOM_LOADER						= 7;
     public static final int				CHATMESSAGE_LOADER					= 8;
+    public static final int				NOTES_LOADER						= 9;
 	
 	/**
 	 * Database

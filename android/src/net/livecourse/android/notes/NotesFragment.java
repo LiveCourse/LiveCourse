@@ -2,31 +2,42 @@ package net.livecourse.android.notes;
 
 import net.livecourse.R;
 import net.livecourse.android.TabsFragmentAdapter;
+import net.livecourse.database.NotesLoader;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class NotesFragment extends SherlockFragment implements OnRestCalled
+public class NotesFragment extends SherlockFragment implements OnRestCalled, ActionMode.Callback, LoaderCallbacks<Cursor>, OnItemClickListener, OnItemLongClickListener
 {
-	@SuppressWarnings("unused")
 	private final String TAG = " == Documents Fragment == ";
 	
 	private static final String KEY_CONTENT = "TestFragment:Content";
 	private String mContent = "???";
 	private String CURRENT_CLASS = "";
 	
-	private View documentsLayout;
+	private View notesLayout;
+	private ListView notesListView;
+	
+	private NotesCursorAdapter adapter;
 	
 	public static NotesFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
 	{
@@ -57,10 +68,16 @@ public class NotesFragment extends SherlockFragment implements OnRestCalled
 		 */
 		this.setHasOptionsMenu(true);
 		
-		documentsLayout = inflater.inflate(R.layout.documents_layout, container, false);
+		this.notesLayout = inflater.inflate(R.layout.notes_layout, container, false);
+		this.notesListView = (ListView) this.notesLayout.findViewById(R.id.notes_list_view);
 		
+		this.adapter = new NotesCursorAdapter(this.getSherlockActivity(), null, 0);
+		this.notesListView.setAdapter(adapter);
 		
-		return documentsLayout;
+		this.notesListView.setOnItemClickListener(this);
+		this.notesListView.setOnItemLongClickListener(this);
+		
+		return notesLayout;
 	}
 	
 	@Override
@@ -100,10 +117,80 @@ public class NotesFragment extends SherlockFragment implements OnRestCalled
 	
 	public void updateList()
 	{
+		Globals.appDb.recreateNotes();
 		new Restful(Restful.GET_NOTES_PATH,Restful.GET, new String[]{"class_id_string"}, new String[]{Globals.chatId}, 1, this);		
+	}
+	
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 
+	@Override
+	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) 
+	{
+		return new NotesLoader(this.getSherlockActivity(), Globals.appDb);
+	}
+
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) 
+	{
+		adapter.notifyDataSetChanged();
+		adapter.swapCursor(cursor);
+	}
+
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public boolean onCreateActionMode(ActionMode mode, Menu menu) 
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean onPrepareActionMode(ActionMode mode, Menu menu) 
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean onActionItemClicked(ActionMode mode, MenuItem item) 
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public void onDestroyActionMode(ActionMode mode) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 	@Override
 	public void preRestExecute(String restCall) 
 	{
@@ -111,13 +198,13 @@ public class NotesFragment extends SherlockFragment implements OnRestCalled
 		
 	}
 
-
 	@Override
 	public void onRestHandleResponseSuccess(String restCall, String response) 
 	{
 		if(restCall.equals(Restful.GET_NOTES_PATH))
 		{
 			Log.d(this.TAG, "OnRestHandlerResponse for path GET NOTES reached with response: " + response);
+			Globals.appDb.addNotesFromJSON(false, response);
 		}
 	}
 
@@ -125,8 +212,10 @@ public class NotesFragment extends SherlockFragment implements OnRestCalled
 	@Override
 	public void onRestPostExecutionSuccess(String restCall, String result) 
 	{
-		// TODO Auto-generated method stub
-		
+		if(restCall.equals(Restful.GET_NOTES_PATH))
+		{
+			this.getSherlockActivity().getSupportLoaderManager().restartLoader(Globals.NOTES_LOADER, null, this);
+		}
 	}
 
 

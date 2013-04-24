@@ -357,8 +357,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) 
 	{
-		adapter.swapCursor(null);
-		
+		adapter.swapCursor(null);	
 	}
 	public void updateList()
 	{		

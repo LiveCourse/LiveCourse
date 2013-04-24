@@ -25,10 +25,6 @@ import org.apache.http.protocol.HttpContext;
 
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
