@@ -33,17 +33,20 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
         Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
         
         ListPreference listPreference = (ListPreference) findPreference("pref_color");
-        listPreference.setValueIndex(Integer.parseInt(Globals.colorPref));
+        listPreference.setValueIndex(Integer.parseInt(Globals.colorPref));       
 	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) 
 	{
-		Log.d("SettingsActivity", "The key: " + key);
+		Log.d(this.TAG, "The key: " + key);
 		
 		if(key.equals("pref_color"))
 		{
 			this.tempChangeStorage = sharedPreferences.getString(key, "0");
+			Log.d(this.TAG, "Temp Change Storage for color: " + this.tempChangeStorage);
+			Log.d(this.TAG, "Global Email: " + Globals.email);
+			
 			if(this.tempChangeStorage != null)
 			{				
 				new Restful(Restful.UPDATE_COLOR_PREF_PATH, Restful.POST,new String[]{"color"}, new String[]{this.tempChangeStorage}, 1, this);
@@ -81,6 +84,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 		if(restCall.equals(Restful.UPDATE_COLOR_PREF_PATH))
 		{
 			Utility.startDialog(this, "Updating Preferences", "Updating Color...");
+			Log.d(this.TAG, "The current color pref: " + Globals.colorPref);
 		}
 		else if(restCall.equals(Restful.CHANGE_DISPLAY_NAME_PATH))
 		{
@@ -122,6 +126,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 	@Override
 	public void onRestPostExecutionFailed(String restCall, int code, String result) 
 	{	
+		Log.d(this.TAG, "Rest call: " + restCall + "failed with status code: " + code);
+		Log.d(this.TAG,"Result from server is:\n" + result);
 		
 		Utility.stopDialog();
 	}

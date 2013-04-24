@@ -514,7 +514,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		        	statement.bindString(6, ob.getString("display_name"));
 		        	
 		        	statement.execute();
-		        	Log.d(this.TAG, "Message id: " + ob.getString("id") + " with message: "  + ob.getString("message_string"));
+		        	//Log.d(this.TAG, "Message id: " + ob.getString("id") + " with message: "  + ob.getString("message_string"));
 		        }
 				db.setTransactionSuccessful();	
 			} 

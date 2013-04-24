@@ -2,7 +2,12 @@ package net.livecourse.android.notes;
 
 import net.livecourse.R;
 import net.livecourse.android.TabsFragmentAdapter;
+import net.livecourse.rest.OnRestCalled;
+import net.livecourse.rest.Restful;
+import net.livecourse.utility.Globals;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +17,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class GroupNotesFragment extends SherlockFragment
+public class NotesFragment extends SherlockFragment implements OnRestCalled
 {
 	@SuppressWarnings("unused")
 	private final String TAG = " == Documents Fragment == ";
@@ -23,9 +28,9 @@ public class GroupNotesFragment extends SherlockFragment
 	
 	private View documentsLayout;
 	
-	public static GroupNotesFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
+	public static NotesFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
 	{
-		GroupNotesFragment fragment = new GroupNotesFragment();
+		NotesFragment fragment = new NotesFragment();
 		return fragment;
 	}
 	
@@ -44,6 +49,8 @@ public class GroupNotesFragment extends SherlockFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
+		Globals.notesFragment = this;
+		
 		/**
 		 * Settings for the fragment
 		 * Allows adding stuff for the options menu
@@ -89,5 +96,52 @@ public class GroupNotesFragment extends SherlockFragment
 	public void setCurrentClass(String className)
 	{
 		CURRENT_CLASS = className;
+	}
+	
+	public void updateList()
+	{
+		new Restful(Restful.GET_NOTES_PATH,Restful.GET, new String[]{"class_id_string"}, new String[]{Globals.chatId}, 1, this);		
+	}
+
+
+	@Override
+	public void preRestExecute(String restCall) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onRestHandleResponseSuccess(String restCall, String response) 
+	{
+		if(restCall.equals(Restful.GET_NOTES_PATH))
+		{
+			Log.d(this.TAG, "OnRestHandlerResponse for path GET NOTES reached with response: " + response);
+		}
+	}
+
+
+	@Override
+	public void onRestPostExecutionSuccess(String restCall, String result) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onRestPostExecutionFailed(String restCall, int code,String result) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onRestCancelled(String restCall, String result) 
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
