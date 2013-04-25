@@ -27,6 +27,7 @@ import net.livecourse.utility.ProgressMultipartEntity;
 import net.livecourse.utility.Utility;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
 /**
@@ -140,7 +141,10 @@ public class Restful extends AsyncTask <Void, String, String>
 		if(this.path == Restful.GET_FILE_PATH)
 			this.fileType = Restful.HAS_FILE;
 		
-		this.execute();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			this.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		else
+			this.execute();
 	}
 	
 	/**
@@ -223,7 +227,7 @@ public class Restful extends AsyncTask <Void, String, String>
 			responseStr = Utility.getASCIIContentFromEntity(entity);
 			this.returnCode = Restful.getResponseCodeFromHttpResponse(response);
 			Log.d(this.TAG, "Status Code: " + this.returnCode);
-			if(returnCode/100 == 2)
+			if(this.returnCode/100 == 2)
 			{
 				this.success = true;
 				callback.onRestHandleResponseSuccess(path, responseStr);
@@ -375,7 +379,7 @@ public class Restful extends AsyncTask <Void, String, String>
 				ProgressMultipartEntity ent = new ProgressMultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE, "Uploading " + file.getName(), this.fileSize);
 				
 				if(contentType != null)
-					ent.addPart("file", new FileBody(this.file, Utility.getMimeType(this.file.getName())));
+					ent.addPart("file", new FileBody(this.file, Utility.getMimeType(this.file.getName()) + "; charset=utf-8"));
 				else
 					ent.addPart("file", new FileBody(this.file));
 								
@@ -383,6 +387,8 @@ public class Restful extends AsyncTask <Void, String, String>
 				{
 					ent.addPart(serverArgs[x], new StringBody(args[x]));
 				}
+				Log.d(this.TAG, "Content Type: " + ent.getContentType());
+				
 				httpPost.setEntity(ent);
 			}
 			if(this.fileType == Restful.HAS_FILE)
