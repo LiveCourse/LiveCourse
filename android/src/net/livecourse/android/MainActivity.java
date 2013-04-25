@@ -12,9 +12,12 @@ import net.livecourse.rest.OnRestCalled;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 
+import android.app.DownloadManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -77,6 +80,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         mAdapter.setIndicator(mIndicator);
         mAdapter.setPager(mPager);
         mAdapter.setActivity(this);
+
+        Globals.downloadManager = (DownloadManager)getSystemService(DOWNLOAD_SERVICE);
+        this.registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        this.registerReceiver(onNotificationClick, new IntentFilter(DownloadManager.ACTION_NOTIFICATION_CLICKED));
+        
         
         Globals.viewPager = this.mPager;
     }
@@ -334,5 +342,20 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		
 	}
 	
-	
+	BroadcastReceiver onComplete = new BroadcastReceiver() 
+	{
+		public void onReceive(Context ctxt, Intent intent) 
+		{
+			Log.d("Main Activity", "Download Complete: " + intent.getData());
+		}
+	};
+
+	BroadcastReceiver onNotificationClick = new BroadcastReceiver() 
+	{
+		public void onReceive(Context ctxt, Intent intent) 
+		{
+			Log.d("Main Activity", "Download CLicked");
+		}
+	};
+
 }

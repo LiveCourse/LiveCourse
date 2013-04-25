@@ -25,8 +25,11 @@ import org.apache.http.protocol.HttpContext;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.ProgressMultipartEntity;
 import net.livecourse.utility.Utility;
+import android.app.DownloadManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Environment;
 import android.util.Log;
 
 /**
@@ -62,8 +65,8 @@ public class Restful extends AsyncTask <Void, String, String>
 	/**
 	 * Flags for file type
 	 */
-	public static final int			POST_NO_FILE					= -1;
-	public static final int			POST_FILE						= 0;
+	public static final int			NO_FILE							= -1;
+	public static final int			HAS_FILE						= 0;
 	
 	/**
 	 * Path locations for specific commands
@@ -78,6 +81,7 @@ public class Restful extends AsyncTask <Void, String, String>
 	public static final String		GET_PARTICIPANTS_PATH			= "chats/get_participants"					;
 	public static final String		GET_CHAT_INFORMATION_PATH		= "chats/info"								;
 	public static final String		UNSUBSCRIBE_CHAT_PATH			= "chats/leave"								;
+	public static final String		GET_FILE_PATH					= "chats/retrieve_file"						;
 	public static final String		SEND_MESSAGE_PATH				= "chats/send"								;
 	public static final String		GET_NOTES_PATH					= "notes"									;
 	public static final String		ADD_NOTE_PATH					= "notes/add"								;
@@ -136,13 +140,16 @@ public class Restful extends AsyncTask <Void, String, String>
 		this.returnCode		= -1;
 		this.fileType		= -1;
 		
+		if(this.path == Restful.GET_FILE_PATH)
+			this.fileType = Restful.HAS_FILE;
+		
 		this.execute();
 	}
 	
 	/**
 	 * Calling this constructor will make a Rest call to the server depending on the arguments provided
-	 * This constructor differs in that it is used to upload a byte array jpeg file, just provide the byte
-	 * array of the jpeg file
+	 * This constructor differs in that it is used to upload a file, just provide the file object that 
+	 * needs to be uploaded.
 	 * 
 	 * @param path			The path of the execution, ex. auth/verify, all paths are stored as static final
 	 * 						variables in Restful and can be called upon
@@ -169,7 +176,7 @@ public class Restful extends AsyncTask <Void, String, String>
 		this.returnCode		= -1;
 		this.file			= file;
 		this.fileSize		= file.length();
-		this.fileType		= Restful.POST_FILE;
+		this.fileType		= Restful.HAS_FILE;
 		
 		this.execute();
 	}
@@ -249,14 +256,14 @@ public class Restful extends AsyncTask <Void, String, String>
 		if(this.success)
 		{
 			this.callback.onRestPostExecutionSuccess(this.path, results);
-			if(this.fileType == Restful.POST_FILE && this.path == Restful.SEND_MESSAGE_PATH)
-				Utility.finishProgressNotification(Globals.mainActivity, "Uploading", "Completed");
+			if(this.fileType == Restful.HAS_FILE && this.path == Restful.SEND_MESSAGE_PATH)
+				Utility.finishUploadProgressNotification(Globals.mainActivity, "Uploading", "Completed");
 		}
 		else
 		{
 			this.callback.onRestPostExecutionFailed(this.path, this.returnCode, results);
-			if(this.fileType == Restful.POST_FILE && this.path == Restful.SEND_MESSAGE_PATH)
-				Utility.finishProgressNotification(Globals.mainActivity, "Uploading", "Failed");
+			if(this.fileType == Restful.HAS_FILE && this.path == Restful.SEND_MESSAGE_PATH)
+				Utility.finishUploadProgressNotification(Globals.mainActivity, "Uploading", "Failed");
 		}
 	}
 	
@@ -353,7 +360,7 @@ public class Restful extends AsyncTask <Void, String, String>
 
 		try 
 		{
-			if(this.fileType == Restful.POST_NO_FILE)
+			if(this.fileType == Restful.NO_FILE)
 			{
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(numArgs);
 				for(int x = 0; x < numArgs; x++)
@@ -362,7 +369,7 @@ public class Restful extends AsyncTask <Void, String, String>
 				}
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			}
-			if(this.fileType == Restful.POST_FILE)
+			if(this.fileType == Restful.HAS_FILE)
 			{
 				String contentType = Utility.getMimeType(this.file.getName());
 				Log.d(this.TAG, "File path: " + this.file.getAbsolutePath());
@@ -381,7 +388,7 @@ public class Restful extends AsyncTask <Void, String, String>
 				}
 				httpPost.setEntity(ent);
 			}
-			if(this.fileType == Restful.POST_FILE)
+			if(this.fileType == Restful.HAS_FILE)
 			{
 				
 			}

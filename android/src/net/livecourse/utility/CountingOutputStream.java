@@ -4,10 +4,9 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import android.util.Log;
-
 public class CountingOutputStream extends FilterOutputStream
 {
+	@SuppressWarnings("unused")
 	private final String TAG = " == Counting Output Stream == ";
 	private final int MAX_SIZE = 100;
 	private long fileSize;
@@ -23,7 +22,7 @@ public class CountingOutputStream extends FilterOutputStream
         this.lastPercent = 0;
         this.title = title;
         
-        Utility.startProgressNotification(Globals.mainActivity, this.title, "0%", this.MAX_SIZE);
+        Utility.startUploadProgressNotification(Globals.mainActivity, this.title, "0%", this.MAX_SIZE);
 	}
 	
 	@Override
@@ -44,7 +43,7 @@ public class CountingOutputStream extends FilterOutputStream
         int percentage = (int)(sizeWritten * 100.0 / fileSize + 0.5);
         if(percentage - this.lastPercent > 1)
         {
-        	Utility.updateProgressNotification(Globals.mainActivity, this.title, percentage + "%", percentage, this.MAX_SIZE);
+        	Utility.updateUploadProgressNotification(Globals.mainActivity, this.title, percentage + "%", percentage, this.MAX_SIZE);
         	this.lastPercent = percentage;
         }
     }
@@ -59,7 +58,7 @@ public class CountingOutputStream extends FilterOutputStream
         int percentage = (int)(sizeWritten * 100.0 / fileSize + 0.5);
         if(percentage - this.lastPercent > 1)
         {
-        	Utility.updateProgressNotification(Globals.mainActivity, this.title, percentage + "%", percentage, this.MAX_SIZE);
+        	Utility.updateUploadProgressNotification(Globals.mainActivity, this.title, percentage + "%", percentage, this.MAX_SIZE);
         	this.lastPercent = percentage;
         }
     }

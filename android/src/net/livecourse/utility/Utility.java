@@ -429,7 +429,7 @@ public class Utility
 	    return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.substring(1,extension.length()));
 	}
 	
-	public static void startProgressNotification(Context context, String title, String content, int maxProgress)
+	public static void startUploadProgressNotification(Context context, String title, String content, int maxProgress)
 	{
 		Globals.notiManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		Globals.notiProgress = new NotificationCompat.Builder(context);
@@ -439,10 +439,10 @@ public class Utility
 		Globals.notiProgress.setProgress(maxProgress, 0, false);
 		Globals.notiProgress.build();
 		
-		Globals.notiManager.notify(Globals.PROGRESS_NOTIFICATION, Globals.notiProgress.build());
+		Globals.notiManager.notify(Globals.UPLOAD_PROGRESS_NOTIFICATION, Globals.notiProgress.build());
 	}
 	
-	public static void updateProgressNotification(Context context, String title, String content, int progress, int maxProgress)
+	public static void updateUploadProgressNotification(Context context, String title, String content, int progress, int maxProgress)
 	{
 		if(Globals.notiProgress == null)
 		{
@@ -455,10 +455,10 @@ public class Utility
 		Globals.notiProgress.setContentText(content);
 		Globals.notiProgress.setProgress(maxProgress, progress, false);
 		
-		Globals.notiManager.notify(Globals.PROGRESS_NOTIFICATION, Globals.notiProgress.build());
+		Globals.notiManager.notify(Globals.UPLOAD_PROGRESS_NOTIFICATION, Globals.notiProgress.build());
 	}
 	
-	public static void finishProgressNotification(Context context, String title, String content)
+	public static void finishUploadProgressNotification(Context context, String title, String content)
 	{
 		if(Globals.notiProgress == null)
 		{
@@ -471,6 +471,11 @@ public class Utility
 		Globals.notiProgress.setContentText(content);
 		Globals.notiProgress.setProgress(0, 0, false);
 		
-		Globals.notiManager.notify(Globals.PROGRESS_NOTIFICATION, Globals.notiProgress.build());
+		Globals.notiManager.notify(Globals.UPLOAD_PROGRESS_NOTIFICATION, Globals.notiProgress.build());
+	}
+	
+	public static void addToDownloads(int id)
+	{
+		Globals.downloads.add(id);
 	}
 }

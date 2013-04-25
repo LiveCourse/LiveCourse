@@ -1,7 +1,10 @@
 package net.livecourse.utility;
 
+import java.util.ArrayList;
+
 import android.app.AlertDialog;
 import android.app.Application;
+import android.app.DownloadManager;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.support.v4.app.NotificationCompat;
@@ -74,6 +77,12 @@ public class Globals extends Application
      */
     public static NotificationCompat.Builder 	notiProgress;
     public static NotificationManager			notiManager;
+    
+    /**
+     * Downloads
+     */
+    public static DownloadManager downloadManager;
+    public static HashTable<Integer, >
 
     
 	
@@ -130,6 +139,6 @@ public class Globals extends Application
 	 * Notification ids
 	 */
 	public static final int				MESSAGE_NOTIFICATION	= 9876;
-	public static final int				PROGRESS_NOTIFICATION	= 8765;
+	public static final int				UPLOAD_PROGRESS_NOTIFICATION	= 8765;
 }
 
