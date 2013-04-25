@@ -630,28 +630,6 @@ class Chats extends REST_Controller
 			return;
 		}
 
-
-		$send_time = time();
-		if ($send_time - $this->Model_Classes->get_time_newest($user_id) > 2)
-		{
-			$message_data = $this->Model_Classes->send_message($user_id, $chat_id, $message, $send_time);
-		}
-
-		else
-		{
-			$this->response($this->rest_error(array("Please wait a few seconds before sending another message.")), 403);
-			return;
-		}
-
-
-		if (!$message_data)
-		{
-			$this->response($this->rest_errror(array("ERROR adding the message!")), 403);
-			return;
-		}
-
-		$message_id = $this->db->insert_id();
-
 		$this->load->model('Model_S3');
 		$this->load->model('Model_Auth');
 
@@ -703,14 +681,6 @@ class Chats extends REST_Controller
 				return;
 			}
 
-			//Upload the file to S3
-			$upload = $this->Model_Classes->add_file($user_id, $chat_id, $file_name, $original, $size, $message_id);
-			if (!$upload)
-			{
-				$this->response($this->rest_error(array("Error adding file entry to database!")), 404);
-				return;
-			}
-
 			//Set the authentication keys and SSL mode for S3
 			$this->Model_S3->setAuth($this->config->item('access_key'), $this->config->item('secret_key'));
 
@@ -720,7 +690,38 @@ class Chats extends REST_Controller
 				$this->response($this->rest_error(array("Error uploading the file!")), 500);
 				return;
 			}
+			//Add to database later, AFTER we get a message ID.
 
+		}
+
+		//Send the message!
+		$send_time = time();
+		if ($send_time - $this->Model_Classes->get_time_newest($user_id) > 2)
+		{
+			$message_data = $this->Model_Classes->send_message($user_id, $chat_id, $message, $send_time);
+		}
+		else
+		{
+			$this->response($this->rest_error(array("Please wait a few seconds before sending another message.")), 403);
+			return;
+		}
+		if (!$message_data)
+		{
+			$this->response($this->rest_errror(array("ERROR adding the message!")), 403);
+			return;
+		}
+		$message_id = $this->db->insert_id();
+
+		//A file has been uploaded, we need to link it to this message and add it to the database.
+		if (isset($_FILES['file']))
+		{
+			//Add file to database.
+			$upload = $this->Model_Classes->add_file($user_id, $chat_id, $file_name, $original, $size, $message_id);
+			if (!$upload)
+			{
+				$this->response($this->rest_error(array("Error adding file entry to database!")), 404);
+				return;
+			}
 		}
 
 		//Sending push notifications to the android users who are subscribed to this chat
