@@ -1,5 +1,7 @@
 package net.livecourse.android;
 
+import java.io.File;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.*;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -13,13 +15,20 @@ import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
 
 import android.app.DownloadManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
@@ -84,7 +93,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         Globals.downloadManager = (DownloadManager)getSystemService(DOWNLOAD_SERVICE);
         this.registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         this.registerReceiver(onNotificationClick, new IntentFilter(DownloadManager.ACTION_NOTIFICATION_CLICKED));
-        
         
         Globals.viewPager = this.mPager;
     }
@@ -346,7 +354,36 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	{
 		public void onReceive(Context ctxt, Intent intent) 
 		{
-			Log.d("Main Activity", "Download Complete: " + intent.getData());
+			Long dwnId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
+			Cursor c = Globals.downloadManager.query(new DownloadManager.Query().setFilterById(dwnId)); 
+			c.moveToFirst();
+			Log.d("Main Activity", "Download Complete: " + 	c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS)));
+			c.close();
+			
+			Intent launchIntent = new Intent(Intent.ACTION_VIEW);
+			Log.d("Main Activity", Utility.getMimeType(Globals.currentDownloadName));
+			launchIntent.setDataAndType(Uri.fromFile(Environment.getExternalStoragePublicDirectory(Globals.currentDownloadLocation + "/" + Globals.currentDownloadName)), Utility.getMimeType(Globals.currentDownloadName));
+			TaskStackBuilder stackBuilder = TaskStackBuilder.create(Globals.mainActivity);
+			stackBuilder.addNextIntent(launchIntent);
+			
+			PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+			
+			Globals.notiManager = (NotificationManager) Globals.mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationCompat.Builder notiBuilder = new NotificationCompat.Builder(Globals.mainActivity);
+			notiBuilder.setContentTitle(Globals.currentDownloadName);
+			notiBuilder.setContentText(Globals.currentDownloadLocation);
+			notiBuilder.setSmallIcon(R.drawable.av_download);
+			notiBuilder.setContentIntent(resultPendingIntent);
+			
+			Notification noti =notiBuilder.build();
+			noti.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+			
+			
+			Globals.notiManager.notify(Globals.DOWNLOAD_NOTIFICATION, noti);
+			
+			Globals.currentDownloadLocation = null;
+			Globals.currentDownloadName = null;
 		}
 	};
 

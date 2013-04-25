@@ -9,6 +9,7 @@ import net.livecourse.utility.Utility;
 import android.app.DownloadManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -130,9 +131,19 @@ public class DocumentsActivity extends SherlockFragmentActivity implements OnRes
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) 
 	{
 		DocumentViewHolder v = (DocumentViewHolder) view.getTag();
-		this.downloadFile(v.documentName.getText().toString(), "http://livecourse.s3.amazonaws.com/" + v.documentFile);
-		
-		//http://livecourse.s3.amazonaws.com/UIQPBr2Og7TELzvW.mp3
+		if(Globals.currentDownloadLocation == null)
+		{
+			String saveLocation = Environment.DIRECTORY_DOWNLOADS + "/LiveCourse";
+			String fileName = v.documentName.getText().toString(); 
+			String location = "http://livecourse.s3.amazonaws.com/" + v.documentFile;
+			this.downloadFile(fileName, location, saveLocation);
+			Globals.currentDownloadLocation = saveLocation;
+			Globals.currentDownloadName = fileName;
+		}
+		else
+		{
+			//alert only one download at a time
+		}
 	}
 
 	@Override
@@ -141,14 +152,20 @@ public class DocumentsActivity extends SherlockFragmentActivity implements OnRes
 		return false;
 	}
 	
-	private void downloadFile(String fileName, String location)
+	@SuppressWarnings("deprecation")
+	private void downloadFile(String fileName, String location, String saveLocation)
 	{
 		DownloadManager dm = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
 		DownloadManager.Request request = new DownloadManager.Request(Uri.parse(location));
-		request.setTitle("Downloading " + fileName);
+		request.setTitle(fileName);
+		request.setDescription(location);
 		request.allowScanningByMediaScanner();
-		request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/LiveCourse", fileName);
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+		else
+			request.setShowRunningNotification(true);
+		
+		request.setDestinationInExternalPublicDir(saveLocation, fileName);
 		dm.enqueue(request);
 	}
 

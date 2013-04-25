@@ -1,7 +1,5 @@
 package net.livecourse.utility;
 
-import java.util.ArrayList;
-
 import android.app.AlertDialog;
 import android.app.Application;
 import android.app.DownloadManager;
@@ -81,9 +79,9 @@ public class Globals extends Application
     /**
      * Downloads
      */
-    public static DownloadManager downloadManager;
-    public static HashTable<Integer, >
-
+    public static DownloadManager 				downloadManager;
+    public static String 						currentDownloadName;
+    public static String						currentDownloadLocation;
     
 	
 	/**
@@ -138,7 +136,8 @@ public class Globals extends Application
 	/**
 	 * Notification ids
 	 */
-	public static final int				MESSAGE_NOTIFICATION	= 9876;
+	public static final int				MESSAGE_NOTIFICATION			= 9876;
 	public static final int				UPLOAD_PROGRESS_NOTIFICATION	= 8765;
+	public static final int				DOWNLOAD_NOTIFICATION 			= 7654;
 }
 

@@ -473,9 +473,4 @@ public class Utility
 		
 		Globals.notiManager.notify(Globals.UPLOAD_PROGRESS_NOTIFICATION, Globals.notiProgress.build());
 	}
-	
-	public static void addToDownloads(int id)
-	{
-		Globals.downloads.add(id);
-	}
 }

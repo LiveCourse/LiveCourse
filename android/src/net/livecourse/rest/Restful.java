@@ -25,11 +25,8 @@ import org.apache.http.protocol.HttpContext;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.ProgressMultipartEntity;
 import net.livecourse.utility.Utility;
-import android.app.DownloadManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
 
 /**
