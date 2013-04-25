@@ -6,7 +6,10 @@ import java.io.OutputStream;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 
-
+/**
+ * This class extends the MultipartEntity and is used in this application
+ * to check progress on uploads.
+ */
 public class ProgressMultipartEntity extends MultipartEntity
 {
 	private long fileSize;

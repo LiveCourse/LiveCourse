@@ -4,6 +4,11 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * This class extends FilterOutputStream and is used in this application
+ * to count the bytes being written to the output to see the progress done
+ * when uploading files.
+ */
 public class CountingOutputStream extends FilterOutputStream
 {
 	@SuppressWarnings("unused")

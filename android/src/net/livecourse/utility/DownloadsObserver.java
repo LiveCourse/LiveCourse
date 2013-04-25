@@ -8,6 +8,8 @@ import android.util.Log;
  * http://stackoverflow.com/questions/7824835/android-downloadmanager-progress
  *
  * All credits go to him etc etc
+ * 
+ * This class will be used in the future to streamline the downloads more fluidly
  */
 public class DownloadsObserver extends FileObserver {
 

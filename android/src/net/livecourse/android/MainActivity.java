@@ -167,6 +167,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		Globals.isOnForeground = true;
 	}
 	
+	/**
+	 * This method will grab all the preferences and store them back into
+	 * Global variables
+	 */
 	private void resumeSaveState()
 	{
 		SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
@@ -191,6 +195,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		Globals.newReg = true;
 	}
 	
+	/**
+	 * This method will clear the preferences of the user, should only be used
+	 * when the user decides to logout.
+	 */
 	private void clearPrefs()
 	{
 		SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
@@ -293,6 +301,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	}
 	
 	@Override
+	/**
+	 * The results from other activites will end up here, it is then
+	 * forwarded to their respective fragments
+	 */
 	public void onActivityResult(int request, int result, Intent data) 
 	{
 		Log.d(this.TAG, "onActivityResult request code: " + request + " result code: " + result);
@@ -348,6 +360,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 		
 	}
 	
+	/**
+	 * Upon completion of a download, the application will put up is own
+	 * notification that is clickable and will open the file upon clicking it.
+	 */
 	BroadcastReceiver onComplete = new BroadcastReceiver() 
 	{
 		public void onReceive(Context ctxt, Intent intent) 

@@ -35,10 +35,11 @@ import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 
 /**
- * This is the ultities class that focuses on ultity based methods.  Every
- * method in this class should be static.
- * 
- * @author Darren
+ * This is the utilities class, it's purpose is to contain general purpose 
+ * static methods that are used or can be used throughout the program by
+ * any class.  All methods in this class must be static.  This class should
+ * not contain any global variables.  For application wide global variables,
+ * please refer to the Globals class.
  *
  */
 public class Utility 
@@ -49,9 +50,9 @@ public class Utility
 	 * This method checks the email string to see if it is a valid email string.
 	 * Uses regex to check.
 	 * 
-	 * @param email The email to be checked
-	 * @return 	True is email fits the regex
-	 * 			False otherwise
+	 * @param email 	The email to be checked
+	 * @return 			True is email fits the regex
+	 * 					False otherwise
 	 */
 	public static boolean isEmailValid(String email)
 	{
@@ -80,14 +81,14 @@ public class Utility
 	}
 	
 	/**
-	 * Checks if password is the same, and then check if password one keeps to
+	 * This method checks if password is the same, and then check if password one keeps to
 	 * the character limits.
 	 * 
-	 * @param pass1 First password
-	 * @param pass2 Second password
-	 * @return	0 if ok
-	 * 			1 if wrong lengthes
-	 * 			2 if doesn't match
+	 * @param pass1 	First password
+	 * @param pass2 	Second password
+	 * @return			0 if ok
+	 * 					1 if wrong lengthes
+	 * 					2 if doesn't match
 	 */
 	public static int isPasswordSame(String pass1, String pass2)
 	{
@@ -112,10 +113,11 @@ public class Utility
 	}
 	
 	/**
-	 * Converts string into SHA-1 hash
-	 * @param input
-	 * @return
-	 * @throws NoSuchAlgorithmException 
+	 * This method SHA-1 hashs the given string
+	 * 
+	 * @param input 	The string to be hashed
+	 * @return			The hashed string
+	 * @throws 			NoSuchAlgorithmException 
 	 */
 	public static String convertStringToSha1(String input)
 	{
@@ -148,10 +150,11 @@ public class Utility
 	/**
 	 * Grabs the String content from an HttpEntity
 	 * 
-	 * @param entity
-	 * @return The String in the entity
-	 * @throws IllegalStateException
-	 * @throws IOException
+	 * @param entity 	The entity for which to grab the content
+	 * 					NOTE: The content will get comsumed
+	 * @return 			The String in the entity
+	 * @throws 			IllegalStateException
+	 * @throws 			IOException
 	 */
 	public static String getASCIIContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException 
 	{
@@ -266,9 +269,9 @@ public class Utility
 	 * This method converts the month given as an int into the month given as a string,
 	 * with 0 = January
 	 * 
-	 * @param month	The month of the year with 0 being January
-	 * @return		The month as a string, null if month not between 0 (inclusive) and
-	 * 				12 (exclusive)
+	 * @param month		The month of the year with 0 being January
+	 * @return			The month as a string, null if month not between 0 (inclusive) and
+	 * 					12 (exclusive)
 	 */
 	public static String convertMonthToString(int month)
 	{
@@ -305,10 +308,10 @@ public class Utility
 	/**
 	 * This method takes the month, date, and year in ints and outputs the String of the date
 	 * 
-	 * @param month	The month
-	 * @param date	The date
-	 * @param year	The year
-	 * @return		The date in the format: Month Date, Year
+	 * @param month		The month
+	 * @param date		The date
+	 * @param year		The year
+	 * @return			The date in the format: Month Date, Year
 	 */
 	public static String convertToStringDate(int month, int date, int year)
 	{
@@ -342,7 +345,7 @@ public class Utility
 	/**
 	 * This method saves a picture taken from the camera
 	 * 
-	 * @return The file with the path to the picture
+	 * @return 			The file with the path to the picture
 	 */
 	public static File savePictureFromCamera()
 	{
@@ -369,8 +372,8 @@ public class Utility
 	 * This method will convert an URI to a full file path and return the File object
 	 * with that path
 	 * 
-	 * @param uri The URI to be converted
-	 * @return The file with the file path of the URI
+	 * @param uri 		The URI to be converted
+	 * @return 			The file with the file path of the URI
 	 */
 	public static File fileFromURI(Uri uri)
 	{
@@ -386,7 +389,7 @@ public class Utility
 	/**
 	 * Force hides the keyboard for the given activity
 	 * 
-	 * @param activity The activity for which to hide the keyboard
+	 * @param activity 		The activity for which to hide the keyboard
 	 */
 	public static void hideKeyboard(SherlockFragmentActivity activity)
 	{
@@ -413,8 +416,8 @@ public class Utility
 	/**
 	 * Returns the MINE content type o the file given as a string
 	 * 
-	 * @param fileUrl	The url or filename of the file
-	 * @return			The MINE content type as a string
+	 * @param fileUrl		The url or filename of the file
+	 * @return				The MINE content type as a string
 	 */
 	public static String getMimeType(String fileUrl) 
 	{
@@ -429,6 +432,14 @@ public class Utility
 	    return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.substring(1,extension.length()));
 	}
 	
+	/**
+	 * This method starts the upload progress notification by showing it
+	 * 
+	 * @param context		The context
+	 * @param title			The title of the progress bar
+	 * @param content		The content of the progress bar
+	 * @param maxProgress	The maximum value the progress bar holds
+	 */
 	public static void startUploadProgressNotification(Context context, String title, String content, int maxProgress)
 	{
 		Globals.notiManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -442,6 +453,15 @@ public class Utility
 		Globals.notiManager.notify(Globals.UPLOAD_PROGRESS_NOTIFICATION, Globals.notiProgress.build());
 	}
 	
+	/**
+	 * This method updates the upload progress notification by changing its percentage value
+	 * 
+	 * @param context		The context
+	 * @param title			The title of the progress bar
+	 * @param content		Tje content of the progress bar
+	 * @param progress		The progress of the progress bar
+	 * @param maxProgress	The maximum value the progress bar holds
+	 */
 	public static void updateUploadProgressNotification(Context context, String title, String content, int progress, int maxProgress)
 	{
 		if(Globals.notiProgress == null)
@@ -458,6 +478,14 @@ public class Utility
 		Globals.notiManager.notify(Globals.UPLOAD_PROGRESS_NOTIFICATION, Globals.notiProgress.build());
 	}
 	
+	/**
+	 * This method finishs the upload progress notification by changing it's message to
+	 * the content
+	 * 
+	 * @param context		The context
+	 * @param title			The title of the progress bar
+	 * @param content		The content of the progress bar
+	 */
 	public static void finishUploadProgressNotification(Context context, String title, String content)
 	{
 		if(Globals.notiProgress == null)
