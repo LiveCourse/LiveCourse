@@ -1032,7 +1032,7 @@ function post_message(message,scroll,area)
 	append_html += '<div class="messageContainer"><div class="timestamp">'+timestamp+'<a class="flag" href="javascript:;" onclick="show_flag_message('+message.id+');"><img src="img/icon_flag.png" alt="Flag"></a></div><div class="message">'+escapeHtml(message.message_string).parseURL();
 	if (message.filename != null)
 	{
-		append_html += '<br><a class="file" href="http://livecourse.s3.amazonaws.com/'+message.filename+'">'+message.original_name+'</a>';
+		append_html += '<br><a class="file" href="http://s3.amazonaws.com/livecourse/'+message.filename+'">'+message.original_name+'</a>';
 	}
 	append_html += '</div></div><div style="clear:both;"></div></li>';
 	
