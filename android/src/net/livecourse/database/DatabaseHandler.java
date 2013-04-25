@@ -535,13 +535,13 @@ public class DatabaseHandler extends SQLiteOpenHelper
 				parse = new JSONArray(messages);	
 				db = this.getWritableDatabase();
 				statement = db.compileStatement(
-						"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
-							" ( " 		+ DatabaseHandler.KEY_MESSAGE_ID + 
-							", "		+ DatabaseHandler.KEY_USER_ID +
-							", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
-							", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
-							", " 		+ DatabaseHandler.KEY_USER_EMAIL + 
-							", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
+						"INSERT OR IGNORE INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
+							" ( " 					+ DatabaseHandler.KEY_MESSAGE_ID + 
+							", "					+ DatabaseHandler.KEY_USER_ID +
+							", " 					+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
+							", " 					+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
+							", " 					+ DatabaseHandler.KEY_USER_EMAIL + 
+							", " 					+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
 							") VALUES (?, ?, ?, ?, ?, ?)");
 	
 				db.beginTransaction();
@@ -664,12 +664,12 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		{
 			SQLiteDatabase db = Globals.appDb.getWritableDatabase();
 			SQLiteStatement statement = db.compileStatement(
-					"INSERT INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
-						" ( " 		+ DatabaseHandler.KEY_MESSAGE_ID + 
-						", "		+ DatabaseHandler.KEY_USER_ID +
-						", " 		+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
-						", " 		+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
-						", " 		+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
+					"INSERT OR IGNORE INTO " 	+ DatabaseHandler.TABLE_CHAT_MESSAGES + 
+						" ( " 					+ DatabaseHandler.KEY_MESSAGE_ID + 
+						", "					+ DatabaseHandler.KEY_USER_ID +
+						", " 					+ DatabaseHandler.KEY_CHAT_SEND_TIME + 
+						", " 					+ DatabaseHandler.KEY_CHAT_MESSAGE_STRING + 
+						", " 					+ DatabaseHandler.KEY_USER_DISPLAY_NAME + 
 						") VALUES (?, ?, ?, ?, ?)");
 	
 			db.beginTransaction();
@@ -953,6 +953,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 				cursor.moveToNext();
 	        }
 		}
+		cursor.close();
+		
 		MatrixCursor returnCursor = new MatrixCursor(cursor.getColumnNames(), cursor.getCount());
 		
 		for(int x = 0; x < cursor.getCount(); x++)

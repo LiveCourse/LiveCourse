@@ -21,7 +21,7 @@ public class ChatLoader extends SimpleCursorLoader
 		 long startTime = System.currentTimeMillis();
 		 
          SQLiteDatabase db = dbHandler.getReadableDatabase();         
-         Cursor cursor = db.query(DatabaseHandler.TABLE_CHAT_MESSAGES, null, null, null, null, null, null);
+         Cursor cursor = db.query(DatabaseHandler.TABLE_CHAT_MESSAGES, null, null, null, null, null, DatabaseHandler.KEY_MESSAGE_ID);
          Log.d(" == Chat Message Loader == ", "Loaded from database in " + (System.currentTimeMillis() - startTime) + "ms");
          return cursor;
      }
