@@ -339,7 +339,7 @@ public class Restful extends AsyncTask <Void, String, String>
 		
 		HttpPost httpPost = new HttpPost(b.toString());
 		if(!path.equals(Restful.REGISTER_USER_PATH))
-			httpPost.addHeader("Auth", "LiveCourseAuth token="+Globals.token+" auth="+shaHead);
+			httpPost.setHeader("Auth", "LiveCourseAuth token="+Globals.token+" auth="+shaHead);
 
 		try 
 		{
@@ -369,8 +369,7 @@ public class Restful extends AsyncTask <Void, String, String>
 				{
 					ent.addPart(serverArgs[x], new StringBody(args[x]));
 				}
-				
-				httpPost.setEntity(ent);
+				httpPost.setEntity(ent);				
 			}
 			if(this.fileType == Restful.POST_FILE)
 			{
