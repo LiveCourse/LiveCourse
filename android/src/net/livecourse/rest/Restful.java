@@ -179,7 +179,10 @@ public class Restful extends AsyncTask <Void, String, String>
 		this.fileSize		= file.length();
 		this.fileType		= Restful.HAS_FILE;
 		
-		this.execute();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			this.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		else
+			this.execute();
 	}
 	
 	@Override
