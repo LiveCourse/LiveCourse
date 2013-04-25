@@ -2,7 +2,9 @@ package net.livecourse.utility;
 
 import android.app.AlertDialog;
 import android.app.Application;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 
 import com.actionbarsherlock.view.ActionMode;
@@ -67,7 +69,11 @@ public class Globals extends Application
     public static ProgressDialog 		progressDialog;
     public static AlertDialog 			alertDialog;
     
-
+    /**
+     * Notification
+     */
+    public static NotificationCompat.Builder 	notiProgress;
+    public static NotificationManager			notiManager;
 
     
 	
@@ -119,5 +125,11 @@ public class Globals extends Application
 	public static final int				CAMERA_RESULT			= 4567;
 	public static final int				GALLERY_RESULT			= 5678;
 	public static final int				EXPLORER_RESULT			= 6789;
+	
+	/**
+	 * Notification ids
+	 */
+	public static final int				MESSAGE_NOTIFICATION	= 9876;
+	public static final int				PROGRESS_NOTIFICATION	= 8765;
 }
 

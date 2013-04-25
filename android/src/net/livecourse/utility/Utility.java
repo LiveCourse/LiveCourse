@@ -18,6 +18,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
@@ -27,6 +28,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
@@ -425,5 +427,50 @@ public class Utility
 	    Log.d(Utility.TAG, "File URI: " + fileUrl + " Extension: " + extension + " Start char: " + fileUrl.lastIndexOf(".") + " Length: " + fileUrl.length());
 	    
 	    return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.substring(1,extension.length()));
+	}
+	
+	public static void startProgressNotification(Context context, String title, String content, int maxProgress)
+	{
+		Globals.notiManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		Globals.notiProgress = new NotificationCompat.Builder(context);
+		Globals.notiProgress.setContentTitle(title);
+		Globals.notiProgress.setContentText(content);
+		Globals.notiProgress.setSmallIcon(R.drawable.ic_menu_refresh);
+		Globals.notiProgress.setProgress(maxProgress, 0, false);
+		Globals.notiProgress.build();
+		
+		Globals.notiManager.notify(Globals.PROGRESS_NOTIFICATION, Globals.notiProgress.build());
+	}
+	
+	public static void updateProgressNotification(Context context, String title, String content, int progress, int maxProgress)
+	{
+		if(Globals.notiProgress == null)
+		{
+			Log.e(Utility.TAG, "Notification Progress is null at updateProgressNotification");
+			return;
+		}
+		//Log.e(Utility.TAG, "Size: " + progress + " Max: " + maxProgress);
+
+		Globals.notiProgress.setContentTitle(title);
+		Globals.notiProgress.setContentText(content);
+		Globals.notiProgress.setProgress(maxProgress, progress, false);
+		
+		Globals.notiManager.notify(Globals.PROGRESS_NOTIFICATION, Globals.notiProgress.build());
+	}
+	
+	public static void finishProgressNotification(Context context, String title, String content)
+	{
+		if(Globals.notiProgress == null)
+		{
+			Log.e(Utility.TAG, "Notification Progress is null at finishProgressNotification");
+			return;
+		}
+		Log.d(Utility.TAG, "Finishing notification");
+		
+		Globals.notiProgress.setContentTitle(title);
+		Globals.notiProgress.setContentText(content);
+		Globals.notiProgress.setProgress(0, 0, false);
+		
+		Globals.notiManager.notify(Globals.PROGRESS_NOTIFICATION, Globals.notiProgress.build());
 	}
 }

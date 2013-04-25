@@ -90,7 +90,7 @@ public class GCMIntentService extends GCMBaseIntentService implements OnRestCall
 			not.flags = Notification.FLAG_AUTO_CANCEL;
 			
 			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			mNotificationManager.notify(71237, not);
+			mNotificationManager.notify(Globals.MESSAGE_NOTIFICATION, not);
 		}
 			
 		Globals.appDb.addChatMessageFromIntent(false, intent);

@@ -15,7 +15,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -24,6 +23,7 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
 import net.livecourse.utility.Globals;
+import net.livecourse.utility.ProgressMultipartEntity;
 import net.livecourse.utility.Utility;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -104,6 +104,7 @@ public class Restful extends AsyncTask <Void, String, String>
 	private OnRestCalled			callback;
 	private int						fileType;
 	private File					file;
+	private long					fileSize;
 
 	private boolean 				success;
 	private int						returnCode;
@@ -167,6 +168,7 @@ public class Restful extends AsyncTask <Void, String, String>
 		this.success		= false;
 		this.returnCode		= -1;
 		this.file			= file;
+		this.fileSize		= file.length();
 		this.fileType		= Restful.POST_FILE;
 		
 		this.execute();
@@ -245,9 +247,17 @@ public class Restful extends AsyncTask <Void, String, String>
 		 * is successful or not
 		 */
 		if(this.success)
+		{
 			this.callback.onRestPostExecutionSuccess(this.path, results);
+			if(this.fileType == Restful.POST_FILE && this.path == Restful.SEND_MESSAGE_PATH)
+				Utility.finishProgressNotification(Globals.mainActivity, "Uploading", "Completed");
+		}
 		else
+		{
 			this.callback.onRestPostExecutionFailed(this.path, this.returnCode, results);
+			if(this.fileType == Restful.POST_FILE && this.path == Restful.SEND_MESSAGE_PATH)
+				Utility.finishProgressNotification(Globals.mainActivity, "Uploading", "Failed");
+		}
 	}
 	
 	@Override
@@ -358,18 +368,18 @@ public class Restful extends AsyncTask <Void, String, String>
 				Log.d(this.TAG, "File path: " + this.file.getAbsolutePath());
 				Log.d(this.TAG, "The content type: " + 	contentType);
 				
-				MultipartEntity ent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+				ProgressMultipartEntity ent = new ProgressMultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE, "Uploading " + file.getName(), this.fileSize);
 				
 				if(contentType != null)
 					ent.addPart("file", new FileBody(this.file, Utility.getMimeType(this.file.getName())));
 				else
 					ent.addPart("file", new FileBody(this.file));
-				
+								
 				for(int x = 0; x < numArgs; x++)
 				{
 					ent.addPart(serverArgs[x], new StringBody(args[x]));
 				}
-				httpPost.setEntity(ent);				
+				httpPost.setEntity(ent);
 			}
 			if(this.fileType == Restful.POST_FILE)
 			{
@@ -385,8 +395,10 @@ public class Restful extends AsyncTask <Void, String, String>
 		Log.d(this.TAG, "Created HttpPost with URI: " + httpPost.getURI().toString());
 
 		HttpResponse response = null;
-		try {
+		try 
+		{
 			response = httpClient.execute(httpPost,localContext);
+			
 		} 
 		catch (ClientProtocolException e) 
 		{
