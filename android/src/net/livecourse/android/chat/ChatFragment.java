@@ -351,6 +351,11 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	}
 
 	@Override
+	/**
+	 * After loading chat messages from the database, the adapter will
+	 * populate them and then set the view to the bottom, as the chat
+	 * scrolls upwards
+	 */
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) 
 	{
 		long startTime = System.currentTimeMillis();

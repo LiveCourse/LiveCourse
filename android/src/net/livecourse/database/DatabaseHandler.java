@@ -928,8 +928,14 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		}
 		else
 		{
-			for(int x = 0; x < cursor.getCount(); x++)
+			for(int x = 1; x < cursor.getCount() + 1; x++)
 			{
+				Log.d(this.TAG, "========");
+				Log.d(this.TAG, "X: " + x);
+				
+				if( tempStorage[0][1] != null && x == cursor.getCount())
+					break;
+				
 				if(cursor.getString(1).equals(Globals.userId))
 				{
 					Log.d(this.TAG, "Got the userId: " + Globals.userId);
@@ -942,20 +948,21 @@ public class DatabaseHandler extends SQLiteOpenHelper
 					tempStorage[0][5] = cursor.getString(5);
 					tempStorage[0][6] = cursor.getString(6);
 					
-					if(x == cursor.getCount() -1)
+					if( x == cursor.getCount())
 						break;
+					
 					cursor.moveToNext();
 				}
 				
 				Log.d(this.TAG, "Participant: " + cursor.getString(1) + " User Id: " + Globals.userId);
 				
-				tempStorage[x + 1][0] = cursor.getString(0);
-				tempStorage[x + 1][1] = cursor.getString(1);
-				tempStorage[x + 1][2] = cursor.getString(2);
-				tempStorage[x + 1][3] = cursor.getString(3);
-				tempStorage[x + 1][4] = cursor.getString(4);
-				tempStorage[x + 1][5] = cursor.getString(5);
-				tempStorage[x + 1][6] = cursor.getString(6);
+				tempStorage[x][0] = cursor.getString(0);
+				tempStorage[x][1] = cursor.getString(1);
+				tempStorage[x][2] = cursor.getString(2);
+				tempStorage[x][3] = cursor.getString(3);
+				tempStorage[x][4] = cursor.getString(4);
+				tempStorage[x][5] = cursor.getString(5);
+				tempStorage[x][6] = cursor.getString(6);
 				
 				cursor.moveToNext();
 	        }

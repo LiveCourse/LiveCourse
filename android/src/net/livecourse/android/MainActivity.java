@@ -99,6 +99,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	protected void onDestroy()
 	{
 		super.onDestroy();		
+		this.unregisterReceiver(onComplete);
+		this.unregisterReceiver(onNotificationClick);
 		Log.d(this.TAG, "onDestroy");
 	}
 	

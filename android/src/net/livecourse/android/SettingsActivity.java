@@ -14,6 +14,10 @@ import net.livecourse.utility.Utility;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
+/**
+ * This class controls the settings for the main activity and the application
+ * in general.
+ */
 public class SettingsActivity extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener, OnRestCalled
 {
 	private final String TAG = " == Settings Activity ==";
@@ -37,6 +41,9 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 	}
 
 	@Override
+	/**
+	 * Updates setting if they are changed
+	 */
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) 
 	{
 		Log.d(this.TAG, "The key: " + key);
