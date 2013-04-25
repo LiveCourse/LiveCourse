@@ -24,6 +24,10 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 
+/**
+ * This activity handles the viewing and downloading of documents for the chat
+ * the user is currently in.
+ */
 public class DocumentsActivity extends SherlockFragmentActivity implements OnRestCalled, LoaderCallbacks<Cursor>, OnItemClickListener, OnItemLongClickListener
 {
 	private final String 	TAG	= " == Documents Activity == ";
@@ -128,6 +132,9 @@ public class DocumentsActivity extends SherlockFragmentActivity implements OnRes
 	}
 	
 	@Override
+	/**
+	 * Upong clicking on a file, the system will attempt to download it
+	 */
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) 
 	{
 		DocumentViewHolder v = (DocumentViewHolder) view.getTag();
@@ -153,6 +160,14 @@ public class DocumentsActivity extends SherlockFragmentActivity implements OnRes
 	}
 	
 	@SuppressWarnings("deprecation")
+	/**
+	 * This method will call Android's download manager and attempt to download
+	 * the file selected by the user
+	 * 
+	 * @param fileName		The file name to be downloaded
+	 * @param location		The location of the file on the web
+	 * @param saveLocation	The location on the device to be saved
+	 */
 	private void downloadFile(String fileName, String location, String saveLocation)
 	{
 		DownloadManager dm = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);

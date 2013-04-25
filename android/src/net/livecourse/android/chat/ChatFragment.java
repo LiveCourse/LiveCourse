@@ -38,30 +38,35 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+/**
+ * This fragment shows the user the messages currently being displayed in the chat
+ * as well as hold options to view the history and document; upload files via
+ * camera, gallery, file system; and send messages
+ */
 public class ChatFragment extends SherlockFragment implements OnClickListener, OnItemClickListener, OnItemLongClickListener, ActionMode.Callback, LoaderCallbacks<Cursor>, OnRestCalled, PopupMenu.OnMenuItemClickListener
 {
-	private final String TAG = " == Chat Fragment == ";
+	private final String 		TAG = " == Chat Fragment == ";
 	
-	public Restful restful;
+	public Restful 				restful;
 
 	private static final String KEY_CONTENT = "TestFragment:Content";
-	private String CURRENT_CLASS = "";
-	private String mContent = "???";
+	private String 				CURRENT_CLASS = "";
+	private String 				mContent = "???";
 	
 	/**
 	 * This section declares all the views that this fragment handles Could
 	 * probably do with better names lol
 	 */
-	private View chatLayout;
-	private ListView messageListView;
-	private ImageButton sendButtonView;
-	private EditText sendMessageEditTextView;
-	private ImageButton uploadButtonView;
+	private View 				chatLayout;
+	private ListView 			messageListView;
+	private ImageButton 		sendButtonView;
+	private EditText 			sendMessageEditTextView;
+	private ImageButton 		uploadButtonView;
 	
 	/**
 	 * This is the adapter used for the message list.
 	 */
-	private ChatCursorAdapter adapter;
+	private ChatCursorAdapter 	adapter;
 	
 	public static ChatFragment newInstance(String content, TabsFragmentAdapter tabsAdapter) 
 	{ 
@@ -175,31 +180,19 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		CURRENT_CLASS = className;
 	}
 	
-	/**
-	 * Handles the send button. The button itself will most likely be
-	 * replaced with a cooler looking image And there probably is a better
-	 * way to implement a listener than this but I will need to look that up
-	 * later
-	 */
+	
 	@Override
 	public void onClick(View v)
 	{
 		/**
-		 * This is the Send Button
+		 * Handles the send button, will send the current message to the server,
+		 * The client will not update the chat view until it recieves a push
+		 * notification from the server
 		 */
 		if(v.getId() == R.id.send_button_view)
 		{
-			/**
-			 * Checks to see if there are any text in the send message box, if there are no
-			 * text, don't send any
-			 */
 			if(!sendMessageEditTextView.getText().toString().equals(""))
 			{
-				/**
-				 * Update the list and sends update the adapter, then change
-				 * EditText back to blank
-				 */
-				
 				Globals.message = sendMessageEditTextView.getText().toString();
 				new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId, Globals.message}, 2, this);
 				
@@ -208,7 +201,8 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 			}
 		}
 		/**
-		 * This is the Upload Button
+		 * This is the upload button, clicking on it will open a menu with
+		 * different upload options
 		 */
 		if(v.getId() == R.id.upload_button_view)
 		{
@@ -221,24 +215,37 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	}
 	
 	@Override
-	/**
-	 * Handles the popup menu used for upload
-	 */
 	public boolean onMenuItemClick(android.view.MenuItem item) 
 	{
 		switch(item.getItemId())
 		{
+			/**
+			 * Uploading from camera, will open the camera application and
+			 * save it the disk
+			 */
 			case R.id.upload_from_camera_item:
 				Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 				cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(Utility.savePictureFromCamera()));
 				this.getSherlockActivity().startActivityForResult(cameraIntent, Globals.CAMERA_RESULT);
 				break;
+			/**
+			 * Uploading from gallery, will open up any application that can
+			 * view images, if there are multiple such applications on the 
+			 * device, the system will ask the user to pick if one is not
+			 * already set as the default
+			 */
 			case R.id.upload_from_gallery_item:
 				Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 this.getSherlockActivity().startActivityForResult(intent, Globals.GALLERY_RESULT);
 				break;
+			/**
+			 * Uploading from file system, will open up any application that
+			 * can view files, if there are multiple such applications on the
+			 * device, the system will ask the user to pick if one is not
+			 * already set as the default
+			 */
 			case R.id.upload_from_file_explorer_item:
 				Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
 			    fileIntent.setType("file/*");
@@ -257,15 +264,27 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		{
 			switch(request)
 			{
+				/**
+				 * Upon finishing taking a picture form the camera, the application
+				 * will attempt to upload it to the server
+				 */
 				case Globals.CAMERA_RESULT:
 				    File image = new File(Globals.filePath);
 			        Log.d(this.TAG, "The file path: " + Globals.filePath);
 			        Log.d(this.TAG, "Chat Id: " + Globals.chatId);
 					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId,"Attempting to send image from camera"}, 2, image, this);
 					break;
+				/**
+				 * Upon finishing selection an image form the gallery, the application
+				 * will attempt to upload it to the server
+				 */
 				case Globals.GALLERY_RESULT:
 					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId,"Attempting to send file from gallery"}, 2, Utility.fileFromURI(data.getData()), this);
 					break;
+				/**
+				 * Upon finishing selection an image form the file browser, the 
+				 * application will attempt to upload it to the server
+				 */
 				case Globals.EXPLORER_RESULT:
 					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId,"Attempting to send file from explorer"}, 2, Utility.fileFromURI(data.getData()), this);
 					break;
@@ -274,15 +293,18 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 	}
 	
 	@Override
+	/**
+	 * Shows detailed information of the chat message if a chat message is clicked,
+	 * links in the message will be shown here and is clickable
+	 */
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) 
 	{
 		ChatMessageDialog dialog = new ChatMessageDialog(((ChatMessageViewHolder)view.getTag()).messageId, ChatMessageDialog.DATA_FROM_CHAT_MESSAGES);
-        dialog.show(this.getSherlockActivity().getSupportFragmentManager(), "NoticeDialogFragment");
+		dialog.show(this.getSherlockActivity().getSupportFragmentManager(), "NoticeDialogFragment");
 	}
-
+	
 	/**
-	 * Handles long click on item in the list view, currently starts action
-	 * menu
+	 * Handles long click on item in the list view and starts the action menu
 	 */
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
@@ -291,50 +313,34 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		
 		return true;
 	}
-
-	/**
-	 * Handles when an contextual action mode item is clicked.
-	 * For more details look at the Android information document
-	 * in google docs.
-	 */
+	
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) 
 	{
-		// TODO Auto-generated method stub
-		
 		Globals.mode.finish();
 		return true;
 	}
-
-	/**
-	 * Runs when the contextual action mode is created
-	 */
+	
 	@Override
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) 
 	{
 		MenuInflater inflater = mode.getMenuInflater();
-	    inflater.inflate(R.menu.chat_action_menu, menu);
-	    
-	    
+		inflater.inflate(R.menu.chat_action_menu, menu);
+		
 		return true;
 	}
 	
-	/**
-	 * Runs when the contextual action mode is destroyed
-	 */
+	
 	@Override
 	public void onDestroyActionMode(ActionMode mode) 
 	{
-
+		//Do nothing
 	}
 	
-	/**
-	 * Runs when the contextual action mode gets invalidated
-	 */
+	
 	@Override
 	public boolean onPrepareActionMode(ActionMode mode, Menu menu) 
 	{
-		// TODO Auto-generated method stub
 		return false;
 	}
 
