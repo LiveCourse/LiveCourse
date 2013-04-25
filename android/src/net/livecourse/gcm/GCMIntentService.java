@@ -95,7 +95,8 @@ public class GCMIntentService extends GCMBaseIntentService implements OnRestCall
 			
 		Globals.appDb.addChatMessageFromIntent(false, intent);
 		
-		Globals.chatFragment.updateListNoRRecreate();
+		if(Globals.mainActivity != null)
+			Globals.chatFragment.updateListNoRRecreate();
 	}
 	 
 	@Override
