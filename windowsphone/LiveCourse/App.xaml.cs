@@ -121,7 +121,7 @@ namespace LiveCourse
             {
                 App.ViewModel.LoadData();
             }
-            initPush();
+            // initPush(); //This messes things up...?
         }
 
         // Code to execute when the application is deactivated (sent to background)
@@ -183,6 +183,7 @@ namespace LiveCourse
                 App.pushChannel.BindToShellToast();
 
                 // Bind raw and forward these to chat page if open.
+                App.pushChannel.HttpNotificationReceived -= pushChannel_HttpNotificationReceived;
                 App.pushChannel.HttpNotificationReceived += pushChannel_HttpNotificationReceived;
             }
             else
@@ -201,6 +202,7 @@ namespace LiveCourse
                 System.Diagnostics.Debug.WriteLine("PUSH URI: '" + App.pushChannel.ChannelUri.ToString() + "'");
 
                 // Bind raw and forward these to chat page if open.
+                App.pushChannel.HttpNotificationReceived -= pushChannel_HttpNotificationReceived;
                 App.pushChannel.HttpNotificationReceived += pushChannel_HttpNotificationReceived;
             }
         }
@@ -231,6 +233,7 @@ namespace LiveCourse
 
         void pushChannel_HttpNotificationReceived(object sender, HttpNotificationEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("RAW NOTIFCATION RECEIVED :o");
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
                 var currentPage = ((PhoneApplicationFrame)Application.Current.RootVisual).Content;

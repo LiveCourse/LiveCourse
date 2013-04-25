@@ -128,7 +128,37 @@ namespace LiveCourse
 
         }
 
+        /**
+         * Signs out of LiveCourse, deleting the database and authentication information from the device.
+         */
         private void SignOut_Click(object sender, EventArgs e)
+        {
+            //Show progress bar
+            progress_chatlist = new ProgressIndicator
+            {
+                IsVisible = true,
+                IsIndeterminate = true,
+                Text = "Signing Out..."
+            };
+            SystemTray.SetProgressIndicator(this, progress_chatlist);
+            progress_chatlist.IsVisible = true;
+
+            //Stop the push notifications.
+            //Get device ID
+            byte[] myDeviceID = (byte[])Microsoft.Phone.Info.DeviceExtendedProperties.GetValue("DeviceUniqueId");
+            string DeviceIDAsString = Convert.ToBase64String(myDeviceID);
+
+            Dictionary<String, String> pushvars = new Dictionary<String, String>();
+            pushvars.Add("dev_id", DeviceIDAsString);
+            pushvars.Add("channel", "0");
+            REST push = new REST("users/wp_remove", "POST", pushvars);
+            push.call(rest_signout_success, rest_signout_failure);
+        }
+
+        /**
+         * Called to sign out after we've successfully disabled PUSH notifications.
+         */
+        public void rest_signout_success(System.Net.HttpStatusCode code, dynamic data)
         {
             IsolatedStorageSettings appSettings = IsolatedStorageSettings.ApplicationSettings;
             appSettings.Remove("auth_pass");
@@ -136,6 +166,21 @@ namespace LiveCourse
             NavigationService.Navigate(new Uri("/LogIn.xaml", UriKind.Relative));
             IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication();
             storage.DeleteFile("livecourse.sdf");
+            if (App.pushChannel != null)
+            {
+                App.pushChannel.Close();
+                App.pushChannel = null;
+            }
+            progress_chatlist.IsVisible = false;
+        }
+
+        /**
+         * Called when there is a failure to disable PUSH notifications.
+         */
+        public void rest_signout_failure(System.Net.HttpStatusCode code, dynamic data)
+        {
+            progress_chatlist.IsVisible = false;
+            MessageBox.Show("An error occurred contacting the server while attempting to sign out.");
         }
     }
 }
