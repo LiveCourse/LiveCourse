@@ -689,7 +689,7 @@ class Chats extends REST_Controller
 			{
 				$file_type = $this->Model_Classes->get_ext_by_content_type($_FILES['file']['type']);
 			}
-			else
+			else if($file_type === null)
 			{
 				$this->response($this->rest_error(array("No file type! Cannot tell what file is!")), 403);
 				return;

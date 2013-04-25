@@ -260,6 +260,7 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 				case Globals.CAMERA_RESULT:
 				    File image = new File(Globals.filePath);
 			        Log.d(this.TAG, "The file path: " + Globals.filePath);
+			        Log.d(this.TAG, "Chat Id: " + Globals.chatId);
 					new Restful(Restful.SEND_MESSAGE_PATH, Restful.POST, new String[]{"chat_id", "message"}, new String[]{Globals.chatId,"Attempting to send image from camera"}, 2, image, this);
 					break;
 				case Globals.GALLERY_RESULT:
