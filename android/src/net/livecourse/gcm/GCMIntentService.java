@@ -35,10 +35,11 @@ public class GCMIntentService extends GCMBaseIntentService implements OnRestCall
 	{
 		Log.i(TAG, "Device registered: regId = " + registrationId);
 		
-		Globals.regId 			= registrationId;
-		if(Globals.newReg)
+		Globals.regId = registrationId;
+		
+		if(Globals.newReg && Globals.regCalledFromLogin)
 		{
-			new Restful(Restful.REGISTER_ANDROID_USER_PATH, Restful.POST, new String[]{"email","name","reg_id","device_id"}, new String[]{Globals.email,Globals.displayName,Globals.regId, Secure.getString(this.getContentResolver(),Secure.ANDROID_ID)}, 4, this);
+			new Restful(Restful.REGISTER_ANDROID_USER_PATH, Restful.POST, new String[]{"email","name","reg_id","device_id"}, new String[]{Globals.email,Globals.displayName,Globals.regId, Secure.getString(this.getContentResolver(),Secure.ANDROID_ID)}, 4, Globals.loginActivity);
 		}
 	}
 	 

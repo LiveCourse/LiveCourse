@@ -47,8 +47,6 @@ public class ClassQueryArrayAdapter extends ArrayAdapter<Chatroom>
             if (v.className != null) 
             {
             	String name = item.getName();
-        		if(name.length() > 28)
-        			name = name.substring(0, 25) + "...";
             	v.className.setText(name);
             }
             if(v.classTime != null)
@@ -80,12 +78,8 @@ public class ClassQueryArrayAdapter extends ArrayAdapter<Chatroom>
             if(v.classInstructor != null)
             {
             	String instructor = item.getInstructor();
-        		if(instructor.length() > 28)
-        			instructor = instructor.substring(0,25) + "..."; 
             	v.classInstructor.setText(instructor);
             }
-            
-            
             
             v.chatIdString 		= item.getChatIdString();
             v.sectionIdString 	= item.getSectionIdString();

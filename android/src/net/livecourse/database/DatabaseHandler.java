@@ -24,7 +24,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 {
 	private final String TAG 									= " == DatabaseHandler == ";
 
-	private static final int DATABASE_VERSION 					= 45;
+	private static final int DATABASE_VERSION 					= 47;
 	
 	/**
 	 * Database name
@@ -39,6 +39,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	public static final String TABLE_PARTICIPANTS				= "participants";
 	public static final String TABLE_HISTORY					= "history";
 	public static final String TABLE_DOCUMENTS					= "documents";
+	public static final String TABLE_NOTES						= "notes";
 	
 	/**
 	 * Fields used for the classroom object
@@ -95,6 +96,15 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	public static final String KEY_DOCS_UPLOAD_TIME				= "upload_time";
 	
 	/**
+	 * Fields used for notes
+	 */
+	public static final String KEY_NOTES_ID						= "note_id";
+	public static final String KEY_NOTES_PARENT_ID				= "parent_id";
+	public static final String KEY_NOTES_MESSAGE				= "text";
+	public static final String KEY_NOTES_TIME_ADDED				= "time_added";
+	public static final String KEY_NOTES_DEPTH					= "depth";
+	
+	/**
 	 * used to lock down database access
 	 */
 	private final Object classListLock							= new Object();
@@ -102,6 +112,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 	private final Object particiantsLock						= new Object();
 	private final Object historyLock							= new Object();
 	private final Object documentsLock							= new Object();
+	private final Object notesLock								= new Object();
 	
 	/**
 	 * The constructor of the database, pass it the context.
@@ -126,6 +137,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		this.createParticipants	(db);
 		this.createHistory		(db);
 		this.createDocuments	(db);
+		this.createNotes		(db);
 	}
 
 	@Override
@@ -144,6 +156,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTICIPANTS	);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY		);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DOCUMENTS	);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES		);
 		
 		onCreate(db);
 		
@@ -164,14 +177,14 @@ public class DatabaseHandler extends SQLiteOpenHelper
 												+ KEY_SECTION_ID_STRING			+ " varchar(12), "
 												+ KEY_CLASS_SUBJECT_CODE		+ " varchar(12), "
 												+ KEY_CLASS_COURSE_NUMBER 		+ " int(11), "
-												+ KEY_CLASS_NAME 				+ " varchar(100), "
+												+ KEY_CLASS_NAME 				+ " varchar(255), "
 												+ KEY_CLASS_ROOM_NUMBER			+ " varchar(12), "	
 												+ KEY_CLASS_BUILDING_NAME		+ " int(11), "
-												+ KEY_CLASS_TYPE				+ " varchar(20), "
+												+ KEY_CLASS_TYPE				+ " varchar(100), "
 												+ KEY_CLASS_CRN					+ "	int(11), "
 												+ KEY_CLASS_SECTION				+ " varchar(12), "
-												+ KEY_CLASS_START_TIME 			+ " int(5), "
-												+ KEY_CLASS_END_TIME 			+ " int(5), "	
+												+ KEY_CLASS_START_TIME 			+ " int(11), "
+												+ KEY_CLASS_END_TIME 			+ " int(11), "	
 												+ KEY_CLASS_START_DATE 			+ " date, "
 												+ KEY_CLASS_END_DATE 			+ " date, "	
 												+ KEY_CLASS_DOW_MONDAY 			+ " tinyint(1), "
@@ -181,8 +194,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
 												+ KEY_CLASS_DOW_FRIDAY 			+ " tinyint(1), "
 												+ KEY_CLASS_DOW_SATURDAY 		+ " tinyint(1), "	
 												+ KEY_CLASS_DOW_SUNDAY			+ " tinyint(1), "
-												+ KEY_CLASS_INSTRUCTOR			+ " varchar(100), "
-												+ KEY_CLASS_NOTES				+ " varchar(100), "
+												+ KEY_CLASS_INSTRUCTOR			+ " varchar(255), "
+												+ KEY_CLASS_NOTES				+ " varchar(255), "
 												+ KEY_CLASS_CAPACITY			+ " int(11)"
 												+ ")";
 			
@@ -205,7 +218,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 												+ KEY_CHAT_SEND_TIME		+ " int(11), "
 												+ KEY_CHAT_MESSAGE_STRING 	+ " varchar(2048), "
 												+ KEY_USER_EMAIL 			+ " varchar(255), "
-												+ KEY_USER_DISPLAY_NAME 	+ " int(255) "
+												+ KEY_USER_DISPLAY_NAME 	+ " varchar(255) "
 												+ ")";
 	
 			db.execSQL(CREATE_TABLE_CHAT_MESSAGES);
@@ -223,7 +236,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			String CREATE_TABLE_PARTICIPANTS  = "CREATE TABLE " 			+ TABLE_PARTICIPANTS 	+ "( "
 												+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
 												+ KEY_USER_ID				+ " int(11) UNIQUE, "
-												+ KEY_USER_DISPLAY_NAME 	+ " int(255), "
+												+ KEY_USER_DISPLAY_NAME 	+ " varchar(255), "
 												+ KEY_USER_EMAIL 			+ " varchar(255), "
 												+ KEY_USER_TIME_LASTFOCUS	+ " int(11), "
 												+ KEY_USER_TIME_LASTREQUEST + " int(11), "
@@ -274,6 +287,27 @@ public class DatabaseHandler extends SQLiteOpenHelper
 												+ KEY_DOCS_UPLOAD_TIME		+ " int(11)"
 												+ ")";
 			db.execSQL(CREATE_TABLE_DOCUMENTS);
+		}
+	}
+	
+	/**
+	 * Creates the table TABLE_NOTES
+	 * @param db
+	 */
+	private void createNotes(SQLiteDatabase db)
+	{
+		synchronized(this.notesLock)
+		{
+			String CREATE_TABLE_NOTES		= "CREATE TABLE " 			+ TABLE_NOTES 	+ "( "
+											+ KEY_ID					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+											+ KEY_NOTES_ID				+ " int(11), "
+											+ KEY_CHAT_ID_STRING		+ " varchar(255), "
+											+ KEY_NOTES_PARENT_ID		+ " int(11), "
+											+ KEY_NOTES_MESSAGE			+ " varchar(2048), "
+											+ KEY_NOTES_TIME_ADDED		+ " int(11), "
+											+ KEY_NOTES_DEPTH 			+ " int(11) "
+											+ ")";
+			db.execSQL(CREATE_TABLE_NOTES);
 		}
 	}
 	/**
@@ -353,6 +387,22 @@ public class DatabaseHandler extends SQLiteOpenHelper
 			this.createDocuments(db);
 			
 	        Log.d(this.TAG, "Recreated TABLE_DOCUMENTS");
+		}
+	}
+	
+	/**
+	 * This method recreates the table TABLE_NOTES
+	 */
+	public void recreateNotes()
+	{
+		synchronized(this.notesLock)
+		{
+			SQLiteDatabase db = this.getWritableDatabase();
+			
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES);
+			this.createNotes(db);
+			
+	        Log.d(this.TAG, "Recreated TABLE_NOTES");
 		}
 	}
 	
@@ -514,7 +564,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
 		        	statement.bindString(6, ob.getString("display_name"));
 		        	
 		        	statement.execute();
-		        	Log.d(this.TAG, "Message id: " + ob.getString("id") + " with message: "  + ob.getString("message_string"));
+		        	//Log.d(this.TAG, "Message id: " + ob.getString("id") + " with message: "  + ob.getString("message_string"));
 		        }
 				db.setTransactionSuccessful();	
 			} 
@@ -772,6 +822,82 @@ public class DatabaseHandler extends SQLiteOpenHelper
 				db.endTransaction();
 			}
 			statement.close();
+		}
+	}
+	
+	public void addNotesFromJSON(boolean cancel, String notes)
+	{
+		synchronized(this.documentsLock)
+		{
+			JSONArray parse 			= null;
+			SQLiteDatabase db 			= null;
+			SQLiteStatement statement 	= null;
+			
+			if(notes.equals(""))
+				return;
+			
+			try 
+			{
+				parse = new JSONArray(notes);
+				db = Globals.appDb.getWritableDatabase();
+				statement = db.compileStatement(
+						"INSERT INTO " 	+ DatabaseHandler.TABLE_NOTES	 			+ 
+							" ( " 		+ DatabaseHandler.KEY_NOTES_ID 				+ 
+							", " 		+ DatabaseHandler.KEY_CHAT_ID_STRING	 	+ 
+							", " 		+ DatabaseHandler.KEY_NOTES_PARENT_ID	 	+ 
+							", " 		+ DatabaseHandler.KEY_NOTES_MESSAGE			+ 
+							", " 		+ DatabaseHandler.KEY_NOTES_TIME_ADDED	 	+ 
+							", " 		+ DatabaseHandler.KEY_NOTES_DEPTH			+ 
+							") VALUES (?, ?, ?, ?, ?, ?)");
+				
+				db.beginTransaction();
+				recursiveAddNotesFromJSONArray(cancel, db, statement, parse, 0);
+				db.setTransactionSuccessful();
+			} 
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				db.endTransaction();
+			}
+			statement.close();
+		}
+	}
+	
+	private void recursiveAddNotesFromJSONArray(boolean cancel, SQLiteDatabase db, SQLiteStatement statement, JSONArray array, int depth) throws JSONException
+	{
+		JSONObject ob 				= null;
+		JSONArray parse				= null;
+
+		for(int x = 0; x < array.length(); x++)
+		{
+			if(cancel)
+			{
+				this.closeConnections(db, statement);
+				Log.d(this.TAG, "Connection canceled while adding notes from JSON");
+				return;
+			}
+			
+			ob = array.getJSONObject(x);
+			
+			statement.bindString(1, ob.getString(	"id"				));
+			statement.bindString(2, ob.getString(	"class_id"			));
+			statement.bindString(3, ob.getString(	"parent_note_id"	));
+			statement.bindString(4, ob.getString(	"text"				));
+			statement.bindString(5, ob.getString(	"timeadded"			));
+			
+			statement.bindLong	(6, depth);
+			
+			statement.execute();
+			
+			Log.d(this.TAG, "Adding note: " + ob.getString("id") 
+					+ " Text: " + ob.getString("text") + " Depth: " + depth);
+			
+			parse = ob.getJSONArray("children");
+			if(parse.length() != 0)
+				this.recursiveAddNotesFromJSONArray(cancel, db, statement, parse, depth + 1);
 		}
 	}
 	

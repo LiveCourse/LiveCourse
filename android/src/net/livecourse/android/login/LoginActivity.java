@@ -122,7 +122,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		super.onResume();
 	}
 	
-	public void registerGCM()
+	public boolean registerGCM()
 	{
         GCMRegistrar.checkDevice(this);
 		GCMRegistrar.checkManifest(this);
@@ -132,11 +132,13 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		if (regId.equals("")) 
 		{
 			GCMRegistrar.register(this, Globals.SENDER_ID);
+			return true;
 		} 
 		else 
 		{
 			Globals.regId 			= regId;
 			Log.d(this.TAG, "GCMRegister failed, already registered");
+			return false;
 		}
 	}
 	
@@ -256,6 +258,12 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 	        prefs.edit().putString	("pref_save_password"	, null	).commit();
 		}
 	}
+	
+	public void regGCMAndroid()
+	{
+		new Restful(Restful.REGISTER_ANDROID_USER_PATH, Restful.POST, new String[]{"email","name","reg_id","device_id"}, new String[]{Globals.email,Globals.displayName,Globals.regId, Secure.getString(this.getContentResolver(), Secure.ANDROID_ID)}, 4, this);
+	}
+	
 	@Override
 	public void preRestExecute(String restCall) 
 	{
@@ -315,7 +323,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 		        prefs.edit().putString("pref_display_name", Globals.displayName).commit();
 		        
 		        
-		        Log.d(this.TAG, "The Color Pref: " + prefs.getString("pref_color", "0"));
+		        Log.d(this.TAG, "The Global Color: " + Globals.colorPref + " The Color Pref: " + prefs.getString("pref_color", "0"));
 			} 
 			catch (JSONException e) 
 			{
@@ -358,10 +366,13 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 			Log.d(this.TAG, "Current Reg ID: " + Globals.regId);
 			Log.d(this.TAG, "Current Device ID: " + Secure.getString(this.getContentResolver(), Secure.ANDROID_ID));
 			
-			new Restful(Restful.REGISTER_ANDROID_USER_PATH, Restful.POST, new String[]{"email","name","reg_id","device_id"}, new String[]{Globals.email,Globals.displayName,Globals.regId, Secure.getString(this.getContentResolver(), Secure.ANDROID_ID)}, 4, this);
+			Globals.regCalledFromLogin = true;
+			if(this.registerGCM() == false)
+				new Restful(Restful.REGISTER_ANDROID_USER_PATH, Restful.POST, new String[]{"email","name","reg_id","device_id"}, new String[]{Globals.email,Globals.displayName,Globals.regId, Secure.getString(this.getContentResolver(), Secure.ANDROID_ID)}, 4, this);
 		}
 		else if(restCall.equals(Restful.REGISTER_ANDROID_USER_PATH))
 		{
+			Globals.regCalledFromLogin = false;
 			Utility.stopDialog();
 			Intent mainIntent = new Intent(this, MainActivity.class);
 			this.startActivity(mainIntent);	
@@ -425,6 +436,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 			//this.registerGCM();
 		}
 		
+		Globals.regCalledFromLogin = false;
 		Utility.stopDialog();
 		this.showErrors();
 	}
@@ -433,6 +445,7 @@ public class LoginActivity extends SherlockFragmentActivity implements OnRestCal
 	public void onRestCancelled(String restCall, String result) 
 	{
 		Utility.stopDialog();
+		Globals.regCalledFromLogin = false;
 	}
 	
 	/**

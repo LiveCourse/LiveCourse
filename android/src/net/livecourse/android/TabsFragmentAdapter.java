@@ -2,7 +2,7 @@ package net.livecourse.android;
 
 import net.livecourse.android.chat.ChatFragment;
 import net.livecourse.android.classlist.ClassListFragment;
-import net.livecourse.android.notes.GroupNotesFragment;
+import net.livecourse.android.notes.NotesFragment;
 import net.livecourse.android.participants.ParticipantsFragment;
 import net.livecourse.utility.Globals;
 
@@ -64,7 +64,7 @@ public class TabsFragmentAdapter extends FragmentStatePagerAdapter{
     	}
     	if(position == 2)
     	{
-    		return GroupNotesFragment.newInstance(CONTENT[position % CONTENT.length], this);
+    		return NotesFragment.newInstance(CONTENT[position % CONTENT.length], this);
     	}
     	if(position == 3)
     	{

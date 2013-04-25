@@ -38,9 +38,10 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class ClassListFragment extends SherlockFragment implements OnItemClickListener,OnItemLongClickListener, ActionMode.Callback, SearchView.OnQueryTextListener,  LoaderCallbacks<Cursor>, OnRestCalled
 {
-	private final String TAG = " == Class List Fragment == ";
-	private static final String KEY_CONTENT = "TestFragment:Content";
-	private String longPressChatRoomSectionId = null;
+	private final String 		TAG 						= " == Class List Fragment == ";
+	private static final String KEY_CONTENT 				= "TestFragment:Content";
+	private String 				longPressChatRoomSectionId 	= null;
+	private String 				longPressChatRoomChatId 	= null;
 	
 	/**
 	 * This is used to add the other tabs once a class is selected
@@ -50,9 +51,9 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	/**
 	 * The XML views
 	 */
-	private View classListLayout;
-	private ListView classListView;
-	private MenuItem searchViewMenuItem;
+	private View 				classListLayout;
+	private ListView 			classListView;
+	private MenuItem 			searchViewMenuItem;
 	
 	/**
 	 * Adapter used for the class list
@@ -184,6 +185,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 	{
 		Globals.mode = this.getSherlockActivity().startActionMode(this);
 		this.longPressChatRoomSectionId = ( (ChatroomViewHolder)view.getTag() ).sectionIdString;
+		this.longPressChatRoomChatId 	= ( (ChatroomViewHolder)view.getTag() ).chatIdString;
 		return true;
 	}
 
@@ -223,7 +225,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			        dialog.show(this.getSherlockActivity().getSupportFragmentManager(), "NoticeDialogFragment");
 				break;
 			case R.id.delete_class_menu_item:
-			    new Restful(Restful.UNSUBSCRIBE_CHAT_PATH, Restful.POST, new String[]{"id"},new String[]{this.longPressChatRoomSectionId}, 1, this);
+			    new Restful(Restful.UNSUBSCRIBE_CHAT_PATH, Restful.POST, new String[]{"id"},new String[]{this.longPressChatRoomChatId}, 1, this);
 			    break;
 		}
 		
@@ -269,7 +271,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		    }
 	
 		    this.updateListCalledByQR = true;
-		    new Restful(Restful.JOIN_CHAT_PATH, Restful.POST, new String[]{"id"},new String[]{chatRoom}, 1, this);
+		    new Restful(Restful.JOIN_SECTION_PATH, Restful.POST, new String[]{"id"},new String[]{chatRoom}, 1, this);
 		}
 	}
 
@@ -323,9 +325,9 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			Globals.chatName 	= chatName;
 		}
 		Globals.chatFragment.updateList();
-		Globals.participantsFragment.updateList();		
-
-		
+		Globals.notesFragment.updateList();
+		Globals.participantsFragment.updateList();
+			
 		Globals.sectionId 	= sectionId;
 		
 		/**
@@ -352,7 +354,7 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		{	
 			Globals.appDb.addClassesFromJSON(false, response);
 		}
-		else if(restCall.equals(Restful.JOIN_CHAT_PATH))
+		else if(restCall.equals(Restful.JOIN_SECTION_PATH))
 		{
 			if(this.updateListCalledByQR)
 			{
@@ -383,20 +385,16 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 				this.switchToChat(Globals.chatId, Globals.sectionId, Globals.chatName);
 				this.updateListCalledByQR = false;
 			}
-			
-			if(Globals.sectionId != null && this.longPressChatRoomSectionId == null)
+			Log.d(this.TAG, "Section Id: " + Globals.sectionId + " Long Press Id: " + this.longPressChatRoomSectionId);
+			Log.d(this.TAG, "Chat Id: " + Globals.chatId + " Long Press Id: " + this.longPressChatRoomChatId);
+
+			if(Globals.chatId != null && this.longPressChatRoomChatId == null)
 			{
-				Log.d(this.TAG, "Chat Id: " + Globals.sectionId +" Chat Name: " + Globals.chatName);
 				Log.d(this.TAG, "Switch to chat 390");
 				this.switchToChat(Globals.chatId, Globals.sectionId, Globals.chatName);
-			}
-			else if(this.longPressChatRoomSectionId != null)
-			{
-				this.longPressChatRoomSectionId = null;
-			}
-			
+			}	
 		}
-		else if(restCall.equals(Restful.JOIN_CHAT_PATH))
+		else if(restCall.equals(Restful.JOIN_SECTION_PATH))
 		{
 			this.updateList();
 		}
@@ -408,12 +406,16 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			}
 			else if(Globals.sectionId.equals(this.longPressChatRoomSectionId))
 			{
-				Globals.sectionId = null;
-				Globals.chatName = null;
+				Globals.sectionId 	= null;
+				Globals.chatId 		= null;
+				Globals.chatName 	= null;
 				this.tabsAdapter.collapse();
 			}
 			this.updateList();
 		}
+		
+		this.longPressChatRoomSectionId = null;
+		this.longPressChatRoomChatId 	= null;
 	}
 
 	@Override
@@ -430,14 +432,17 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 			}
 			this.longPressChatRoomSectionId = null;
 		}
-		else if(restCall.equals(Restful.JOIN_CHAT_PATH))
+		else if(restCall.equals(Restful.JOIN_SECTION_PATH))
 		{
 			
 		}
 		else if(restCall.equals(Restful.UNSUBSCRIBE_CHAT_PATH))
 		{
-			this.longPressChatRoomSectionId = null;
+			
 		}
+		
+		this.longPressChatRoomSectionId = null;
+		this.longPressChatRoomChatId 	= null;
 	}
 
 	@Override

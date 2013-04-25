@@ -1,6 +1,7 @@
 package net.livecourse.utility;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.support.v4.view.ViewPager;
 
@@ -10,16 +11,19 @@ import net.livecourse.android.MainActivity;
 import net.livecourse.android.chat.ChatFragment;
 import net.livecourse.android.classlist.Chatroom;
 import net.livecourse.android.classlist.ClassListFragment;
+import net.livecourse.android.login.LoginActivity;
+import net.livecourse.android.notes.NotesFragment;
 import net.livecourse.android.participants.ParticipantsFragment;
 import net.livecourse.database.DatabaseHandler;
 
-public class Globals 
+public class Globals extends Application
 {
 	/**
 	 * The ID from Google's GCM Console
 	 */
 	public static final String SENDER_ID = "584781219532";
 	public static boolean newReg = false;
+	public static boolean regCalledFromLogin = false;
 	
 	public static final int VIEW_PAGE_LOAD_COUNT = 3;
 	
@@ -34,6 +38,7 @@ public class Globals
     public static final int				DOCUMENTS_LOADER					= 6;
     public static final int				CHATROOM_LOADER						= 7;
     public static final int				CHATMESSAGE_LOADER					= 8;
+    public static final int				NOTES_LOADER						= 9;
 	
 	/**
 	 * Database
@@ -48,9 +53,11 @@ public class Globals
     /**
      * Fragments 
      */
+	public static LoginActivity			loginActivity;
 	public static MainActivity 			mainActivity;
     public static ClassListFragment 	classListFragment;
     public static ChatFragment 			chatFragment;
+    public static NotesFragment			notesFragment;
     public static ParticipantsFragment 	participantsFragment;
     
     

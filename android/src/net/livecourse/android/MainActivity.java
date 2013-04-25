@@ -50,6 +50,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         	Log.d(this.TAG, "Loading data from prefs");
         	this.resumeSaveState();
         }
+        
         Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
         
         Globals.mainActivity = this;
@@ -83,27 +84,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
 	@Override
 	protected void onDestroy()
 	{
-		super.onDestroy();
-		
-		Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
-        unregIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
-        startService(unregIntent);
-        
-        Globals.newReg = false;
-        Globals.progressDialog = null;    
-        Globals.roomList = null;
-		Globals.userId = null;
-		Globals.email = null;
-		Globals.displayName = null;
-		Globals.passwordToken = null;
-		Globals.query = null;
-		Globals.token = null;
-		Globals.sectionId = null;
-		Globals.regId = null;
-		Globals.colorPref = null;
-		Globals.startEpoch = null;
-		Globals.message = null;
-		Globals.chatName = null;
+		super.onDestroy();		
+		Log.d(this.TAG, "onDestroy");
 	}
 	
 	@Override
@@ -208,6 +190,27 @@ public class MainActivity extends SherlockFragmentActivity implements OnPageChan
         prefs.edit().putString("pref_reg_id"		, null	).commit();
         prefs.edit().putString("pref_color"			, null	).commit();
         prefs.edit().putString("pref_chat_name"		, null	).commit();
+        
+        Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
+        unregIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+        startService(unregIntent);
+        
+        Globals.newReg = false;
+        Globals.progressDialog = null;    
+        Globals.roomList = null;
+		Globals.userId = null;
+		Globals.email = null;
+		Globals.displayName = null;
+		Globals.passwordToken = null;
+		Globals.query = null;
+		Globals.token = null;
+		Globals.sectionId = null;
+		Globals.chatId = null;
+		Globals.regId = null;
+		Globals.colorPref = null;
+		Globals.startEpoch = null;
+		Globals.message = null;
+		Globals.chatName = null;
 	}
 
 	@Override
