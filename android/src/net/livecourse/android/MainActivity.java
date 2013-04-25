@@ -1,7 +1,5 @@
 package net.livecourse.android;
 
-import java.util.concurrent.Executors;
-
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.*;
 import com.google.zxing.integration.android.IntentIntegrator;

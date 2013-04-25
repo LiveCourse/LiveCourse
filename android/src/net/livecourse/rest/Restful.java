@@ -160,6 +160,7 @@ public class Restful extends AsyncTask <Void, String, String>
 	 * @param args			The client side value to be passed, following the above example, would be 
 	 * 						"test1@test.com"
 	 * @param numArgs		The number of arguments passed
+	 * @param file			The to be uploaded
 	 * @param data			The byte array to be uploaded
 	 * @param call			The OnRestCalled callback that Restful will return to
 	 */
