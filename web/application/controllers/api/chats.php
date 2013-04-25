@@ -589,6 +589,7 @@ class Chats extends REST_Controller
 	 */
 	public function send_post()
 	{
+		set_time_limit(120);
 		$this->load->model('Model_Classes');
 
 		$chat_id_string = $this->post('chat_id');
