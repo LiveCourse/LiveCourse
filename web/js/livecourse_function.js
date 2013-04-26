@@ -1012,8 +1012,9 @@ function load_recent_chat_contents()
 			eventsource = new EventSource('index.php/api/chats/eventsource?auth_token='+auth_token+'&auth_code='+event_auth_code+'&chat_id='+current_chat_room);
 			eventsource.addEventListener('message', function (e) {
 				var data = JSON.parse(e.data);
-				post_message(data);
-				if ($('body').hasClass("hidden"))
+				var posted;
+				posted = post_message(data);
+				if ($('body').hasClass("hidden") && posted != false)
 				{
 					waiting_notifications++;
 					setNotifications(waiting_notifications);
@@ -1071,7 +1072,7 @@ function post_message(message,scroll,area)
 	//Ignore messages from ignored users.
 	if ($.inArray(message.user_id,ignored_users) >= 0)
 	{
-		return;
+		return false;
 	}
 	
 	//Parse the time stamp.
