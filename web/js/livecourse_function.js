@@ -782,7 +782,7 @@ function switch_chat_room(room)
 	call_api("chats/info","GET",{id: room},
 		function (data) {
 			// Set global variable
-			if ($("#SideBar").css('display') == "none")
+			if ($("#SideBar").css('display') == "none" && $("#NotesFrame").css('display') == "none")
 			{
 				show_participant_list();
 			}
