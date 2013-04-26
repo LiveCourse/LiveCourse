@@ -27,17 +27,17 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 	@Override
 	/**
 	 * Using the deprecated method for now as the other method is long and annoying
-	 * and not supported by ABS
+	 * and not supported by ABS AFAIK
 	 */
     protected void onCreate(Bundle savedInstanceState) 
 	{
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.layout.settings_layout);  
-        
-        Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
-        
-        ListPreference listPreference = (ListPreference) findPreference("pref_color");
-        listPreference.setValueIndex(Integer.parseInt(Globals.colorPref));       
+		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.layout.settings_layout);  
+		
+		Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
+		
+		ListPreference listPreference = (ListPreference) findPreference("pref_color");
+		listPreference.setValueIndex(Integer.parseInt(Globals.colorPref));       
 	}
 
 	@Override
@@ -55,17 +55,13 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 			Log.d(this.TAG, "Global Email: " + Globals.email);
 			
 			if(this.tempChangeStorage != null)
-			{				
 				new Restful(Restful.UPDATE_COLOR_PREF_PATH, Restful.POST,new String[]{"color"}, new String[]{this.tempChangeStorage}, 1, this);
-			}
 		}
 		if(key.equals("pref_display_name"))
 		{
 			this.tempChangeStorage = sharedPreferences.getString(key, null);
 			if(this.tempChangeStorage != null)
-			{				
-		        new Restful(Restful.CHANGE_DISPLAY_NAME_PATH, Restful.POST,new String[]{"name"}, new String[]{this.tempChangeStorage}, 1, this);
-			}
+				new Restful(Restful.CHANGE_DISPLAY_NAME_PATH, Restful.POST,new String[]{"name"}, new String[]{this.tempChangeStorage}, 1, this);
 		}
 	}
 	
@@ -73,16 +69,16 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 	@Override
 	protected void onResume() 
 	{
-	    super.onResume();
-	    getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+		super.onResume();
+		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPause() 
 	{
-	    super.onPause();
-	    getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+		super.onPause();
+		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 	}
 	
 	@Override
@@ -115,7 +111,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 				Globals.colorPref = this.tempChangeStorage;
 			else
 				Log.e(this.TAG, "Variable TempChangeStorage is null at updating color");
-
+			
 			Utility.changeActivityColorBasedOnPref(Globals.mainActivity, Globals.mainActivity.getSupportActionBar());
 			Utility.changeActivityColorBasedOnPref(this, this.getSupportActionBar());
 		}		

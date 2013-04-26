@@ -22,7 +22,7 @@ public class ChatCursorAdapter extends CursorAdapter
 	/**
 	 * The context
 	 */
-	private Context mContext;
+	private Context	mContext;
 	
 	/**
 	 * The constructor, it takes in the current context, the cursor that is used to populate the list view,
