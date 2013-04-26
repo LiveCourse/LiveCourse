@@ -779,6 +779,7 @@ function switch_chat_room(room)
 	$("#ChatMessages").attr('last_message_id',0);
 	$("#ChatMessages").attr('last_sender',-1);
 	$.cookie("lc_last_msg", $("#ChatMessages").attr('last_message_id')); //Set last message id
+	select_chat_tab();
 	call_api("chats/info","GET",{id: room},
 		function (data) {
 			// Set global variable
