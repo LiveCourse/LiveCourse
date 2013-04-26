@@ -177,7 +177,7 @@ class Model_Classes extends CI_Model {
 	function get_num_latest_messages($class_id,$num_lines = 100)
 	{
 		$q = 'SELECT * FROM (
-				SELECT lc_chat_messages.id, lc_classes.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name, lc_chat_files.filename, lc_chat_files.original_name FROM `lc_chat_messages`
+				SELECT lc_chat_messages.id, lc_classes.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name, lc_chat_files.filename, lc_chat_files.extension, lc_chat_files.original_name FROM `lc_chat_messages`
 				JOIN lc_users ON lc_users.id = lc_chat_messages.user_id
 				JOIN lc_classes ON lc_classes.id = lc_chat_messages.class_id
 				LEFT OUTER JOIN lc_chat_files ON lc_chat_messages.id = lc_chat_files.message_id
@@ -201,7 +201,7 @@ class Model_Classes extends CI_Model {
 	function get_time_frame_messages($class_id,$start_time,$end_time)
 	{
 		$query = $this->db
-				->select('lc_chat_messages.id, lc_classes.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name, lc_chat_files.filename, lc_chat_files.original_name')
+				->select('lc_chat_messages.id, lc_classes.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name, lc_chat_files.filename, lc_chat_files.extension, lc_chat_files.original_name')
 				->where('lc_chat_messages.class_id',$class_id)
 				->where('lc_chat_messages.send_time >=',$start_time)
 				->where('lc_chat_messages.send_time <=',$end_time)
@@ -224,7 +224,7 @@ class Model_Classes extends CI_Model {
 	function get_messages_after_msg_id($chat_id,$msg_id)
 	{
 		$query = $this->db
-				->select('lc_chat_messages.id, lc_classes.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name, lc_chat_files.filename, lc_chat_files.original_name')
+				->select('lc_chat_messages.id, lc_classes.id_string, lc_chat_messages.send_time, lc_chat_messages.message_string, lc_chat_messages.user_id, lc_users.email, lc_users.display_name, lc_chat_files.filename, lc_chat_files.extension, lc_chat_files.original_name')
 				->where('lc_chat_messages.class_id',$chat_id)
 				->where('lc_chat_messages.id >',$msg_id)
 				->from('lc_chat_messages')
@@ -499,7 +499,7 @@ WHERE lc_chat_participants.chat_id = 1
 	/**
 	 * Adds a file entry to the database
 	 */
-	function add_file($user_id, $chat_id, $filename, $original, $size, $message_id, $time = '')
+	function add_file($user_id, $chat_id, $filename, $extension, $original, $size, $message_id, $time = '')
 	{
 		if($time == '')
 			$time = time();
@@ -507,6 +507,7 @@ WHERE lc_chat_participants.chat_id = 1
 			'user_id' => $user_id,
 			'chat_id' => $chat_id,
 			'filename' => $filename,
+			'extension' => $extension,
 			'original_name' => $original,
 			'size' => $size,
 			'message_id' => $message_id,

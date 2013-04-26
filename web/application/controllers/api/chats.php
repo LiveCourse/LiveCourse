@@ -567,6 +567,80 @@ class Chats extends REST_Controller
 			return;
 		}
 	}
+	
+	/**
+	 * Create a thumbnail image from $inputFileName no taller or wider than 
+	 * $w or $h. Returns the new image resource or false on error.
+	 * Author: mthorn.net
+	 */
+	function _thumbnail($inputFileName, $w = 128, $h = 72)
+	{
+		$info = getimagesize($inputFileName);
+
+		$type = isset($info['type']) ? $info['type'] : $info[2];
+
+		// Check support of file type
+		if ( !(imagetypes() & $type) )
+		{
+			// Server does not support file type
+			return false;
+		}
+
+		$width  = isset($info['width'])  ? $info['width']  : $info[0];
+		$height = isset($info['height']) ? $info['height'] : $info[1];
+
+		$source_aspect_ratio = $width / $height;
+		$desired_aspect_ratio = $w / $h;
+	
+		if ($source_aspect_ratio > $desired_aspect_ratio)
+		{
+			//Source image is wider.
+			$t_h = $h;
+			$t_w = (int)($h * $source_aspect_ratio);
+		} else
+		{
+			//Source image is the same, or taller.
+			$t_w = $w;
+			$t_h = (int)($w / $source_aspect_ratio);
+		}
+	
+		$source_img = imagecreatefromstring(file_get_contents($inputFileName));
+	
+		$temp_img = imagecreatetruecolor($t_w, $t_h);
+
+		if ( $source_img === false )
+		{
+			// Could not load image
+			return false;
+		}
+	
+		//Resize the image into a temporary GD image
+		imagecopyresampled(
+			$temp_img,
+			$source_img,
+			0, 0,
+			0, 0,
+			$t_w, $t_h,
+			$width, $height
+		);
+
+		//Copy cropped region from temporary image into the desired GD image
+		$x0 = ($t_w - $w) / 2;
+		$y0 = ($t_h - $h) / 2;
+		$desired_img = imagecreatetruecolor($w, $h);
+		imagecopy(
+			$desired_img,
+			$temp_img,
+			0, 0,
+			$x0, $y0,
+			$w, $h
+		);
+	
+		imagedestroy($source_img);
+		imagedestroy($temp_img);
+
+		return $desired_img;
+	}
 
 	/**
 	 * Sends a message to the specified room, also supports uploading files tagged to a message
@@ -674,7 +748,7 @@ class Chats extends REST_Controller
 				return;
 			}
 			
-			$file_name .= '.'.$file_type;
+			//$file_name .= '.'.$file_type; // Extension is now stored separately.
 			if (!$file)
 			{
 				$this->response($this->rest_error(array("Invalid file uploaded!")), 404);
@@ -685,11 +759,34 @@ class Chats extends REST_Controller
 			$this->Model_S3->setAuth($this->config->item('access_key'), $this->config->item('secret_key'));
 
 			//Upload the file to S3
-			if (!$this->Model_S3->putObject($file, 'livecourse', $file_name, 'public-read-write'))
+			if (!$this->Model_S3->putObject($file, 'livecourse', 'uploads/' . $file_name . '.' . $file_type, 'public-read-write'))
 			{
 				$this->response($this->rest_error(array("Error uploading the file!")), 500);
 				return;
 			}
+			
+			//See if this is an image - and if it is, generate thumbnails.
+			if (($thumb_128 = $this->_thumbnail($_FILES['file']['tmp_name'], 128, 72)) !== false)
+			{
+				//Upload generated 128px thumbnail.
+				$t_128_filename = sys_get_temp_dir() . "/" . $file_name . "_128.jpg";
+				imagejpeg($thumb_128,$t_128_filename,80);
+				$t_128_file = $this->Model_S3->inputFile($t_128_filename);
+				$this->Model_S3->putObject($t_128_file, 'livecourse', 'thumbs/128/' . $file_name . '.jpg', 'public-read-write');
+				
+				//Generate 256px thumbnail, too.
+				$thumb_256 = $this->_thumbnail($_FILES['file']['tmp_name'], 256, 144);
+				$t_256_filename = sys_get_temp_dir() . "/" . $file_name . "_256.jpg";
+				imagejpeg($thumb_256,$t_256_filename,80);
+				$t_256_file = $this->Model_S3->inputFile($t_256_filename);
+				$this->Model_S3->putObject($t_256_file, 'livecourse', 'thumbs/256/' . $file_name . '.jpg', 'public-read-write');
+				
+				imagedestroy($thumb_128);
+				imagedestroy($thumb_256);
+				unlink($t_128_filename);
+				unlink($t_256_filename);
+			}
+			
 			//Add to database later, AFTER we get a message ID.
 
 		}
@@ -716,7 +813,7 @@ class Chats extends REST_Controller
 		if (isset($_FILES['file']))
 		{
 			//Add file to database.
-			$upload = $this->Model_Classes->add_file($user_id, $chat_id, $file_name, $original, $size, $message_id);
+			$upload = $this->Model_Classes->add_file($user_id, $chat_id, $file_name, $file_type, $original, $size, $message_id);
 			if (!$upload)
 			{
 				$this->response($this->rest_error(array("Error adding file entry to database!")), 404);

@@ -351,6 +351,18 @@ a.buttonLink:hover {
   margin-left: 16px;
   padding-right: 56px;
 }
+#ChatFrame #ChatMessages ul li .message a.image_upload img,
+#ChatFrame #HistoryMessages ul li .message a.image_upload img {
+  border: 2px solid #7e4f2e;
+  background-color: #e5cbb8;
+  padding: 8px;
+  clear: both;
+  margin: 8px 0 12px 20px;
+}
+#ChatFrame #ChatMessages ul li .message a.image_upload:hover img,
+#ChatFrame #HistoryMessages ul li .message a.image_upload:hover img {
+  background-color: #7e4f2e;
+}
 #ChatFrame #ChatMessages ul li .timestamp,
 #ChatFrame #HistoryMessages ul li .timestamp {
   font-size: 12px;
@@ -627,6 +639,10 @@ a.buttonLink:hover {
 }
 .DialogMessage a {
   display: inline;
+}
+.DialogMessage .image_preview {
+  max-width: 950px;
+  max-height: 390px;
 }
 #dialog_profile #user_icon {
   background-color: #e5cbb8;

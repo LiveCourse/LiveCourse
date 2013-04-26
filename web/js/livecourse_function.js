@@ -5,6 +5,22 @@
 var eventsource;
 var eventsource_notes;
 
+var valid_image_extensions = new Array("jpg","jpeg","png","bmp");
+
+/**
+ * Stuff to take care of on page load...
+ */
+$(function() {
+	// Clicking thumbnails should result in a dialog of the full image.
+	$("a.image_upload").unbind('click');
+	$("a.image_upload").click(function(event) {
+		event.preventDefault();
+		var imgdialog = dialog_new("Image Upload","<img class=\"image_preview\" src=\""+$(this).attr('href')+"\" alt=\"Image\"/>",true,true);
+		dialog_show(imgdialog);
+	});
+});
+
+
 /**
  * Shows a dialog to the user to be used for logging in.
  * allow_close - whether or not we should allow the log-in dialog to be closed.
@@ -1032,11 +1048,29 @@ function post_message(message,scroll,area)
 	append_html += '<div class="messageContainer"><div class="timestamp">'+timestamp+'<a class="flag" href="javascript:;" onclick="show_flag_message('+message.id+');"><img src="img/icon_flag.png" alt="Flag"></a></div><div class="message">'+escapeHtml(message.message_string).parseURL();
 	if (message.filename != null)
 	{
-		append_html += '<br><a class="file" href="http://s3.amazonaws.com/livecourse/'+message.filename+'">'+message.original_name+'</a>';
+		//Is this an image? Append a thumbnail! :D
+		if (valid_image_extensions.indexOf(message.extension) != -1)
+		{
+			append_html += '<br><a class="image_upload" href="http://livecourse.s3.amazonaws.com/uploads/'+message.filename+'.'+message.extension+'" target="_blank"><img src="http://livecourse.s3.amazonaws.com/thumbs/128/'+message.filename+'.jpg" alt="'+message.original_name+'" /></a>';
+		} else 
+		{
+			append_html += '<br><a class="file" href="http://livecourse.s3.amazonaws.com/uploads/'+message.filename+'.'+message.extension+'" target="_blank">'+message.original_name+'</a>';
+		}
 	}
 	append_html += '</div></div><div style="clear:both;"></div></li>';
 	
 	$(area+" ul").append(append_html);
+	
+	if (valid_image_extensions.indexOf(message.extension) != -1)
+	{
+		$("a.image_upload").unbind('click');
+		$("a.image_upload").click(function(event) {
+			event.preventDefault();
+			var imgdialog = dialog_new("Image Upload","<div style=\"text-align:center;\"><a href=\""+$(this).attr('href')+"\"><img class=\"image_preview\" src=\""+$(this).attr('href')+"\" alt=\"Image\" target=\"_blank\"/></a></div>",true,true);
+			dialog_show(imgdialog);
+		});
+	}
+	
 	$(area).attr('last_message_id',message.id);
 	$(area).attr('last_sender',message.user_id);
 	/* last_message_id = message.id; */
