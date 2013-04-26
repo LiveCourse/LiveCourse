@@ -221,8 +221,8 @@ public class ClassListFragment extends SherlockFragment implements OnItemClickLi
 		switch(item.getItemId())
 		{
 			case R.id.class_details_menu_item:
-				 ChatroomDialog dialog = new ChatroomDialog(this.longPressChatRoomSectionId);
-			        dialog.show(this.getSherlockActivity().getSupportFragmentManager(), "NoticeDialogFragment");
+				ChatroomDialog dialog = new ChatroomDialog(this.longPressChatRoomSectionId);
+				dialog.show(this.getSherlockActivity().getSupportFragmentManager(), "NoticeDialogFragment");
 				break;
 			case R.id.delete_class_menu_item:
 			    new Restful(Restful.UNSUBSCRIBE_CHAT_PATH, Restful.POST, new String[]{"id"},new String[]{this.longPressChatRoomChatId}, 1, this);

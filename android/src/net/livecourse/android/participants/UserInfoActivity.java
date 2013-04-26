@@ -11,6 +11,9 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -22,11 +25,13 @@ import com.actionbarsherlock.view.MenuItem;
 
 import net.livecourse.R;
 import net.livecourse.android.classlist.Chatroom;
+import net.livecourse.android.classlist.ChatroomDialog;
+import net.livecourse.android.classlist.ChatroomViewHolder;
 import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Utility;
 
-public class UserInfoActivity extends SherlockFragmentActivity implements OnRestCalled
+public class UserInfoActivity extends SherlockFragmentActivity implements OnRestCalled, OnItemClickListener
 {
 	private final String TAG = " == User Info Activity == ";
 	
@@ -99,17 +104,15 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 		bmp = Bitmap.createScaledBitmap(bmp, dwidth, (int) scale , true);
 		
 		Bitmap resizedbitmap=Bitmap.createBitmap(bmp,0,0, dwidth, dheight/4);
-		profilePic.setImageBitmap(resizedbitmap);
+		this.profilePic.setImageBitmap(resizedbitmap);
 		
-		userInfoView.addHeaderView(profilePic);
-    	/** 
-    	 * Create the adapter and set it to the list and populate it
-    	 * **/
-		emptyAList = new ArrayList<Chatroom>(10);
-        adapter = new UserInfoArrayAdapter(this,R.layout.classlist_item_layout, emptyAList);
-        
-		
-		userInfoView.setAdapter(adapter);        
+		this.userInfoView.addHeaderView(profilePic);
+
+		this.emptyAList = new ArrayList<Chatroom>(10);
+		this.adapter = new UserInfoArrayAdapter(this,R.layout.classlist_item_layout, emptyAList);
+				
+		this.userInfoView.setAdapter(this.adapter);
+		this.userInfoView.setOnItemClickListener(this);
 	}
 	
 	@Override
@@ -248,5 +251,12 @@ public class UserInfoActivity extends SherlockFragmentActivity implements OnRest
 	public void onRestCancelled(String restCall, String result) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) 
+	{
+		ChatroomDialog dialog = new ChatroomDialog(((ChatroomViewHolder)view.getTag()).sectionIdString, this.emptyAList.get(position - 1));
+		dialog.show(this.getSupportFragmentManager(), "NoticeDialogFragment");
 	}
 }

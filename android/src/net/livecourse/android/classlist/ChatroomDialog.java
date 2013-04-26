@@ -56,14 +56,14 @@ public class ChatroomDialog extends DialogFragment implements DialogInterface.On
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) 
 	{
-	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	    LayoutInflater inflater = this.getActivity().getLayoutInflater();	    
-	    	    
-	    builder.setView(inflater.inflate(R.layout.classlist_dialog_layout, null))
-	           .setNegativeButton(R.string.classlist_dialog_button_negative, this)
-	           .setTitle(this.sectionId);
-	    
-	    return builder.show();
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		LayoutInflater inflater = this.getActivity().getLayoutInflater();	    
+		
+		builder.setView				(inflater.inflate(R.layout.classlist_dialog_layout, null));
+		builder.setNegativeButton	(R.string.classlist_dialog_button_negative, this);
+		builder.setTitle			(this.sectionId);
+		
+		return builder.show();
 	}
 	
 	@Override
@@ -71,21 +71,21 @@ public class ChatroomDialog extends DialogFragment implements DialogInterface.On
 	{
 		super.onActivityCreated(savedInstanceState);
 		
-	    this.chatroomCrn 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_crn_text_view			);
-	    this.chatroomInstructor = (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_instructor_text_view	);
-	    this.chatroomType 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_type_text_view		);
-	    this.chatroomSection 	= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_section_text_view		);
-	    this.chatroomLocation 	= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_location_text_view	);
-	    this.chatroomTime 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_time_text_view		);
-	    this.chatroomStart 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_start_text_view		);
-	    this.chatroomEnd 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_end_text_view			);
-	    this.chatroomCapacity 	= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_capacity_text_view	);
-	    this.chatroomNotes 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_notes_text_view		);
-	    
-	    if(this.flag == this.DATA_FROM_DATABASE)
-	    	this.getActivity().getSupportLoaderManager().restartLoader(Globals.CHATROOM_LOADER, null, this);
-	    else if(this.flag == this.DATA_FROM_OBJECT)
-	    	this.populateDialogFromObject();
+		this.chatroomCrn 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_crn_text_view			);
+		this.chatroomInstructor = (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_instructor_text_view	);
+		this.chatroomType 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_type_text_view		);
+		this.chatroomSection 	= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_section_text_view		);
+		this.chatroomLocation 	= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_location_text_view	);
+		this.chatroomTime 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_time_text_view		);
+		this.chatroomStart 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_start_text_view		);
+		this.chatroomEnd 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_end_text_view			);
+		this.chatroomCapacity 	= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_capacity_text_view	);
+		this.chatroomNotes 		= (TextView) this.getDialog().findViewById(R.id.classlist_dialog_item_notes_text_view		);
+		
+		if(this.flag == this.DATA_FROM_DATABASE)
+			this.getActivity().getSupportLoaderManager().restartLoader(Globals.CHATROOM_LOADER, null, this);
+		else if(this.flag == this.DATA_FROM_OBJECT)
+			this.populateDialogFromObject();
 	}
 
 	@Override
@@ -132,24 +132,24 @@ public class ChatroomDialog extends DialogFragment implements DialogInterface.On
 		String classLocation 		= classBuilding + " " + classRoomNumber;
 		
 		String classTime = "";
-    	
-    	if(this.chatroom.getDowMonday()		.equals("1"))
-    		classTime += "M";
-    	if(this.chatroom.getDowTuesday()	.equals("1"))
-    		classTime += "T";
-    	if(this.chatroom.getDowWednesday()	.equals("1"))
-    		classTime += "W";
-    	if(this.chatroom.getDowThursday()	.equals("1"))
-    		classTime += "R";
-    	if(this.chatroom.getDowFriday()		.equals("1"))
-    		classTime += "F";
-    	if(this.chatroom.getDowSaturday()	.equals("1"))
-    		classTime += "S";
-    	if(this.chatroom.getDowSunday()		.equals("1"))
-    		classTime += "U";
-    	classTime += " " + Utility.convertMinutesTo24Hour(this.chatroom.getStartTime()) + " - " + Utility.convertMinutesTo24Hour(this.chatroom.getEndTime());
 		
-    	Log.d("Chatroom dialog", 	" ClassName: " 			+ className 		+
+		if(this.chatroom.getDowMonday()		.equals("1"))
+			classTime += "M";
+		if(this.chatroom.getDowTuesday()	.equals("1"))
+			classTime += "T";
+		if(this.chatroom.getDowWednesday()	.equals("1"))
+			classTime += "W";
+		if(this.chatroom.getDowThursday()	.equals("1"))
+			classTime += "R";
+		if(this.chatroom.getDowFriday()		.equals("1"))
+			classTime += "F";
+		if(this.chatroom.getDowSaturday()	.equals("1"))
+			classTime += "S";
+		if(this.chatroom.getDowSunday()		.equals("1"))
+			classTime += "U";
+		classTime += " " + Utility.convertMinutesTo24Hour(this.chatroom.getStartTime()) + " - " + Utility.convertMinutesTo24Hour(this.chatroom.getEndTime());
+		
+		Log.d("Chatroom dialog", 	" ClassName: " 			+ className 		+
 				" ClassSubjectCode: " 	+ classSubjectCode 	+
 				" ClassCourseNumber: " 	+ classCourseNumber +
 				" ClassRoomNumber: " 	+ classRoomNumber 	+
@@ -164,8 +164,8 @@ public class ChatroomDialog extends DialogFragment implements DialogInterface.On
 				" ClassInstructor: " 	+ classInstructor 	+
 				" ClassNotes: " 		+ classNotes		+
 				" ClassCapacity:" 		+ classCapacity);
-    	
-    	this.getDialog()			.setTitle(classTitle	);
+		
+		this.getDialog()			.setTitle(classTitle	);
 		
 		this.chatroomCrn			.setText(classCrn		);
 		this.chatroomInstructor		.setText(classInstructor);
@@ -176,8 +176,9 @@ public class ChatroomDialog extends DialogFragment implements DialogInterface.On
 		this.chatroomStart			.setText(classStartDate	);
 		this.chatroomEnd			.setText(classEndDate	);
 		this.chatroomCapacity		.setText(classCapacity	);
-		this.chatroomNotes			.setText(classNotes		);
+		this.chatroomNotes			.setText(classNotes		);		
 	}
+	
 	private void populateDialogFromDatabase(Cursor cursor)
 	{
 		if(!cursor.moveToFirst())
