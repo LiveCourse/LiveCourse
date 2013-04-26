@@ -1,5 +1,6 @@
 package net.livecourse.android.chat;
 
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.Calendar;
 
@@ -12,12 +13,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.DatePicker;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
 public class HistoryDatePickerFragment extends SherlockDialogFragment
 {
 	private boolean	invoked	= false;
+	private DatePicker mDatePickerInstance;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -28,6 +31,24 @@ public class HistoryDatePickerFragment extends SherlockDialogFragment
 		final int day = c.get(Calendar.DAY_OF_MONTH);
 
 		final DatePickerDialog picker = new DatePickerDialog(this.getSherlockActivity(), null, year, month, day);
+		
+		Field mDatePickerField = null;
+		try
+		{
+			mDatePickerField = picker.getClass().getDeclaredField("mDatePicker");
+			mDatePickerField.setAccessible(true);
+			this.mDatePickerInstance = (DatePicker) mDatePickerField.get(picker);
+		}
+		catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
+		
+		
 		picker.setCancelable(true);
 		picker.setCanceledOnTouchOutside(true);
 		picker.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener()
@@ -44,7 +65,7 @@ public class HistoryDatePickerFragment extends SherlockDialogFragment
 				public void onClick(DialogInterface dialog, int which)
 				{
 					Log.d("Picker", "Correct behavior!");
-					changeDateOnSet(picker.getDatePicker().getYear(), picker.getDatePicker().getMonth(), picker.getDatePicker().getDayOfMonth());
+					changeDateOnSet(mDatePickerInstance.getYear(), mDatePickerInstance.getMonth(), mDatePickerInstance.getDayOfMonth());
 				}
 			});
 

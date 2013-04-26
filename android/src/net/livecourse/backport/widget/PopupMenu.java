@@ -1,4 +1,4 @@
-package net.livecourse.widget;
+package net.livecourse.backport.widget;
 
 /*
  * Copyright (C) 2010 The Android Open Source Project
