@@ -238,6 +238,64 @@ class Sections extends REST_Controller
 	}
 	
 	/**
+	 * Leaves a user from a section
+	 *
+	 * id - The Chat ID String of the chat the user is to leave from
+	 *
+	 * returns
+	 *	401 if you are not logged in
+	 *	403 if no chat ID was specified
+	 *	404 if the specified chat doesn't exist
+	 *	403 if you've already left the specified chat
+	 *	200 and the Chat Information if successful
+	 */
+	public function leave_post()
+	{
+		$this->load->model('Model_Sections');
+
+		$session_id_string = $this->post('id');
+		
+		//Check to see if they are authenticated
+		$user_id = $this->authenticated_as;
+
+		if ($this->authenticated_as <= 0)
+		{
+			$this->response($this->rest_error(array("You must be logged in to perform this action.")), 401);
+			return;
+		}
+
+		//Check to make sure we have a chat id string
+		if (strlen($session_id_string) <= 0)
+		{
+			$this->response($this->rest_error(array("No section ID was specified.")), 403);
+			return;
+		}
+
+		//Try to find the chat
+		$section_id = $this->Model_Sections->get_id_from_string($session_id_string);
+
+		if ($section_id < 0)
+		{
+			$this->response($this->rest_error(array("Specified section does not exist.")), 404);
+			return;
+		}
+
+		//Verify that the user hasn't already left this chat room.
+		$already_joined = $this->Model_Sections->is_user_subscribed($user_id,$section_id);
+		if (!$already_joined)
+		{
+			$this->response($this->rest_error(array("You aren't subscribed to that section.")), 403);
+			return;
+		}
+
+		$this->Model_Sections->leave_section_by_id($user_id,$section_id);
+
+		$chatinfo = $this->Model_Sections->get_section_by_id($section_id);
+
+		$this->response($chatinfo, 200);
+	}
+	
+	/**
 	* This function will generate a QR code and return the URL to be embedded as an image.
 	*
 	* id - ID of the chat to join

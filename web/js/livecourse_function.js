@@ -385,17 +385,33 @@ function joinroom_show()
 									item.fadeIn();
 									item.click(function() {
 										if ($(this).hasClass("joined"))
-											return;
-										var _this = this;
-										section_join($(this).attr('id'),function (data) {
-												$(_this).addClass("joined");
-												Cufon.refresh();
-											}, function(xhr, status)
-											{
-												var errdialog = dialog_new("Error Joining","An error occurred while attempting to join this class section.",true,true);
-												errdialog.find(".DialogContainer").addClass("error");
-												dialog_show(errdialog);
-											});
+										{
+											current_chat_room = "";
+											var _this = this;
+											section_leave($(this).attr('id'), function (data)
+												{
+													$(_this).removeClass("joined");
+													Cufon.refresh();
+												}, function(xhr, status)
+												{
+													var errdialog = dialog_new("Error Leaving","An error occurred while attempting to leave this class section.",true,true);
+													errdialog.find(".DialogContainer").addClass("error");
+													dialog_show(errdialog);
+												});
+										}
+										else
+										{
+											var _this = this;
+											section_join($(this).attr('id'), function (data) {
+													$(_this).addClass("joined");
+													Cufon.refresh();
+												}, function(xhr, status)
+												{
+													var errdialog = dialog_new("Error Joining","An error occurred while attempting to join this class section.",true,true);
+													errdialog.find(".DialogContainer").addClass("error");
+													dialog_show(errdialog);
+												});
+										}
 									});
 								}
 								Cufon.refresh();
@@ -558,6 +574,32 @@ function section_join(section_idstring,success_callback,error_callback)
 				error_callback(xhr,status);
 			}
 			progress_indicator_hide(join_ind);
+		});
+
+}
+
+/**
+ * Leaves the logged in user from the specified class
+ */
+function section_leave(section_idstring,success_callback,error_callback)
+{
+	var leave_ind = progress_indicator_show();
+	call_api("sections/leave","POST",{id: section_idstring},
+		function (data) {
+			if (typeof success_callback != "undefined")
+			{
+				success_callback(data);
+			}
+			update_chat_list();
+			progress_indicator_hide(leave_ind);
+		},
+		function (xhr, status)
+		{
+			if (typeof error_callback != "undefined")
+			{
+				error_callback(xhr,status);
+			}
+			progress_indicator_hide(leave_ind);
 		});
 
 }

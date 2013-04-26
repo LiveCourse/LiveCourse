@@ -69,6 +69,22 @@ class Model_Sections extends CI_Model {
 	}
 	
 	/**
+	 * Leaves a user from a section specified by integer ID
+	 * user_id - ID of user to leave the specified chat
+	 * section_id - ID integer of chat to leave
+	 * returns NULL or FALSE if failed.
+	 */
+	function leave_section_by_id($user_id,$section_id,$permissions = 0)
+	{
+		//Now insert the data
+		$data = array(
+				'section_id'	=> $section_id,
+				'user_id'	=> $user_id
+				);
+		return $this->db->delete('lc_section_participants', $data); //Should return NULL or FALSE if failed.
+	}
+	
+	/**
 	 * Fetches sections that the specified user is a participant in.
 	 * user_id - ID of user
 	 * returns - array of section information
