@@ -9,6 +9,7 @@ import net.livecourse.rest.OnRestCalled;
 import net.livecourse.rest.Restful;
 import net.livecourse.utility.Globals;
 import net.livecourse.utility.Utility;
+import net.livecourse.widget.PopupMenu;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,7 +31,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.ActionMode;
@@ -207,15 +207,14 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 		if(v.getId() == R.id.upload_button_view)
 		{
 			PopupMenu popup = new PopupMenu(this.getSherlockActivity(), v);
-		    android.view.MenuInflater inflater = popup.getMenuInflater();
-		    inflater.inflate(R.menu.chat_upload_menu, popup.getMenu());
+		    popup.inflate(R.menu.chat_upload_menu);
 		    popup.setOnMenuItemClickListener(this);
 		    popup.show();
 		}
 	}
 	
 	@Override
-	public boolean onMenuItemClick(android.view.MenuItem item) 
+	public boolean onMenuItemClick(MenuItem item) 
 	{
 		switch(item.getItemId())
 		{
@@ -236,9 +235,9 @@ public class ChatFragment extends SherlockFragment implements OnClickListener, O
 			 */
 			case R.id.upload_from_gallery_item:
 				Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                this.getSherlockActivity().startActivityForResult(intent, Globals.GALLERY_RESULT);
+				intent.setType("image/*");
+				intent.setAction(Intent.ACTION_GET_CONTENT);
+				this.getSherlockActivity().startActivityForResult(intent, Globals.GALLERY_RESULT);
 				break;
 			/**
 			 * Uploading from file system, will open up any application that

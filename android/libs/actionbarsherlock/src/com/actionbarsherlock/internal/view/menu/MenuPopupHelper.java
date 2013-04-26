@@ -33,7 +33,6 @@ import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.PopupWindow;
 import com.actionbarsherlock.R;
-import com.actionbarsherlock.internal.view.View_HasStateListenerSupport;
 import com.actionbarsherlock.internal.view.View_OnAttachStateChangeListener;
 import com.actionbarsherlock.internal.widget.IcsListPopupWindow;
 import com.actionbarsherlock.view.MenuItem;
@@ -118,7 +117,7 @@ public class MenuPopupHelper implements AdapterView.OnItemClickListener, View.On
             final boolean addGlobalListener = mTreeObserver == null;
             mTreeObserver = anchor.getViewTreeObserver(); // Refresh to latest
             if (addGlobalListener) mTreeObserver.addOnGlobalLayoutListener(this);
-            ((View_HasStateListenerSupport)anchor).addOnAttachStateChangeListener(this);
+            //((View_HasStateListenerSupport)anchor).addOnAttachStateChangeListener(this);
             mPopup.setAnchorView(anchor);
         } else {
             return false;
@@ -145,7 +144,7 @@ public class MenuPopupHelper implements AdapterView.OnItemClickListener, View.On
             mTreeObserver.removeGlobalOnLayoutListener(this);
             mTreeObserver = null;
         }
-        ((View_HasStateListenerSupport)mAnchorView).removeOnAttachStateChangeListener(this);
+        //((View_HasStateListenerSupport)mAnchorView).removeOnAttachStateChangeListener(this);
     }
 
     public boolean isShowing() {
@@ -215,7 +214,7 @@ public class MenuPopupHelper implements AdapterView.OnItemClickListener, View.On
             if (!mTreeObserver.isAlive()) mTreeObserver = v.getViewTreeObserver();
             mTreeObserver.removeGlobalOnLayoutListener(this);
         }
-        ((View_HasStateListenerSupport)v).removeOnAttachStateChangeListener(this);
+        //((View_HasStateListenerSupport)v).removeOnAttachStateChangeListener(this);
     }
 
     @Override
